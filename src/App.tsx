@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Switch, HashRouter} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import SideBarComponent from "./components/sideBar.component";
 import HomePage from "./pages/home.component";
 import AboutPage from "./pages/about.component";
@@ -15,15 +15,13 @@ export default function App() {
     })
 
     return (
-        <HashRouter>
-            <div className="App">
-                <SideBarComponent/>
-                <Switch>
-                    <Route exact path="/" component={HomePage}/>
-                    <Route exact path="/about" component={AboutPage}/>
-                    {/*<Route exact path="*" component={ErrorPage} />*/}
-                </Switch>
-            </div>
-        </HashRouter>
+        <div className="App">
+            <SideBarComponent/>
+            <Routes>
+                <Route path="/" element={<HomePage />}/>
+                <Route path="/about" element={<AboutPage />}/>
+                <Route path="*" element={<HomePage />}/>
+            </Routes>
+        </div>
     );
 }
