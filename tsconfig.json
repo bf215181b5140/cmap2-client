@@ -45,13 +45,17 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2020",
     "module": "commonjs",
+    "jsx": "react-jsx",
     "lib": [
       "es2020",
       "dom"
     ]
   },
     "files": [
-      "src/electron.ts"
+      "src/electron.ts",
+      "src/preload.ts",
+      "src/osc/oscService.ts",
+      "src/webSocket/clientSocketService.ts"
     ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,25 +1,57 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 import * as path from "path";
+import {OscService} from "./osc/oscService";
+import {ClientSocketService} from "./webSocket/clientSocketService";
+import {FileSystemService} from "./fileSystem/fileSystemService";
+
+export const userDataPath: string = app.getPath('userData');
+export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080';
 
 function createWindow() {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
         width: 1024,
         height: 720,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
     });
+
+    const menu = Menu.buildFromTemplate([
+        {
+            label: app.name,
+            submenu: [
+                {
+                    click: () => mainWindow.webContents.send('update-counter', 1),
+                    label: 'Increment',
+                },
+                {
+                    click: () => mainWindow.webContents.send('update-counter', -1),
+                    label: 'Decrement',
+                }
+            ]
+        }
+
+    ])
+
+    Menu.setApplicationMenu(menu)
 
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, "index.html"));
 
-
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    if (!app.isPackaged) mainWindow.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+    FileSystemService.readApiKey()
+    ClientSocketService.init();
+    OscService.init();
+
     createWindow();
 
     app.on("activate", function () {

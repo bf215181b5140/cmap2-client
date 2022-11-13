@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Route, Switch, HashRouter} from "react-router-dom";
+import SideBarComponent from "./components/sideBar.component";
+import HomePage from "./pages/home.component";
+import AboutPage from "./pages/about.component";
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+    let counter: number = 0;
+
+    // @ts-ignore
+    window.electronAPI.onUpdateCounter((_event: any, value: any) => {
+        counter = counter + value;
+        console.log(counter);
+    })
+
+    return (
+        <HashRouter>
+            <div className="App">
+                <SideBarComponent/>
+                <Switch>
+                    <Route exact path="/" component={HomePage}/>
+                    <Route exact path="/about" component={AboutPage}/>
+                    {/*<Route exact path="*" component={ErrorPage} />*/}
+                </Switch>
+            </div>
+        </HashRouter>
+    );
 }
-
-export default App;
