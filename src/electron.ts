@@ -2,10 +2,12 @@ import { app, BrowserWindow, Menu } from "electron";
 import * as path from "path";
 import {OscService} from "./osc/oscService";
 import {ClientSocketService} from "./webSocket/clientSocketService";
-import {FileSystemService} from "./fileSystem/fileSystemService";
+import Store from 'electron-store';
+import {IpcRendererService} from "./shared/ipcRendererService";
 
-export const userDataPath: string = app.getPath('userData');
+// export const userDataPath: string = app.getPath('userData');
 export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080';
+export const clientStore = new Store();
 
 function createWindow() {
     // Create the browser window.
@@ -13,7 +15,7 @@ function createWindow() {
         width: 1024,
         height: 720,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'shared/preload.js')
         }
     });
 
@@ -48,7 +50,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
-    FileSystemService.readApiKey()
+    IpcRendererService.init();
     ClientSocketService.init();
     OscService.init();
 

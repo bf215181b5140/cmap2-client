@@ -51,12 +51,6 @@
       "dom"
     ]
   },
-    "files": [
-      "src/electron.ts",
-      "src/preload.ts",
-      "src/osc/oscService.ts",
-      "src/webSocket/clientSocketService.ts"
-    ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
