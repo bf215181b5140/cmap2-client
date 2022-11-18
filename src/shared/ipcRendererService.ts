@@ -1,5 +1,6 @@
 import {ipcMain, IpcMainEvent, IpcMainInvokeEvent} from "electron";
 import {clientStore} from "../electron";
+import {ClientSocketService} from "../webSocket/clientSocketService";
 
 export class IpcRendererService {
 
@@ -11,6 +12,7 @@ export class IpcRendererService {
 
         ipcMain.on('setApiKey', (event: IpcMainEvent, data: string) => {
             clientStore.set('apiKey', data);
+            ClientSocketService.init();
         });
 
     }

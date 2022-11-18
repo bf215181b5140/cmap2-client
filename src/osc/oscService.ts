@@ -1,15 +1,20 @@
-import {ArgumentType, Client, Message, Server} from 'node-osc';
+import {ArgumentType, Client, Message, Server } from 'node-osc';
 import {ClientSocketService} from "../webSocket/clientSocketService";
 
 export class OscService {
+
+    static ignoredParams: Set<string> = new Set(['VelocityZ', 'VelocityY', 'VelocityX', 'InStation', 'Seated', 'Upright', 'AngularY', 'Grounded', 'GestureRightWeight', 'GestureRight', 'GestureLeftWeight', 'GestureLeft', 'Voice', 'Viseme']);
 
     static oscServer = new Server(9001, '127.0.0.1');
     static oscClient = new Client('127.0.0.1', 9000);
 
     static init() {
-        this.oscServer.on('message', function (message: [string, ...ArgumentType[]]) {
+        this.oscServer.on('message', (message: [string, ...ArgumentType[]]) => {
             console.log('New message, length: ', message.length, ': ', message);
-            message.forEach(x => ClientSocketService.emit('parameter', x));
+            const parameter = message[0].slice(message[0].lastIndexOf('/')+1);
+            if(!this.ignoredParams.has(parameter)) {
+                ClientSocketService.emitParameter('parameter', new Message(parameter, message[1]))
+            }
         });
 
         setInterval(() => {

@@ -19,19 +19,9 @@ export default function HomePage() {
         window.electronAPI.setApiKey("");
     }
 
-    return (
-        <header className="App-header">
-            <img src="logo512.png" className="App-logo" alt="logo"/>
-            <p>Edit <code>src/App.tsx</code> and save to reload.</p>
-            <a className="App-link"
-               href="https://reactjs.org"
-               target="_blank"
-               rel="noopener noreferrer">
-                Learn React
-            </a>
+    return (<>
             <input name="apiKey" type="text" value={apiKey} onChange={(event: any) => setApiKey(event.target.value)}/>
             <button name="setApiKey" onClick={sendApiKey}>Set api key</button>
             <button name="deleteApiKey" onClick={removeApiKey}>Remove api key</button>
-        </header>
-    );
+        </>);
 }

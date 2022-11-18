@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from "electron";
+import { app, BrowserWindow } from "electron";
 import * as path from "path";
 import {OscService} from "./osc/oscService";
 import {ClientSocketService} from "./webSocket/clientSocketService";
@@ -18,25 +18,6 @@ function createWindow() {
             preload: path.join(__dirname, 'shared/preload.js')
         }
     });
-
-    const menu = Menu.buildFromTemplate([
-        {
-            label: app.name,
-            submenu: [
-                {
-                    click: () => mainWindow.webContents.send('update-counter', 1),
-                    label: 'Increment',
-                },
-                {
-                    click: () => mainWindow.webContents.send('update-counter', -1),
-                    label: 'Decrement',
-                }
-            ]
-        }
-
-    ])
-
-    Menu.setApplicationMenu(menu)
 
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, "index.html"));
