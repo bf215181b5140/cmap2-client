@@ -1,18 +1,19 @@
 import {ipcMain, IpcMainEvent, IpcMainInvokeEvent} from "electron";
-import {clientStore} from "../electron";
 import {ClientSocketService} from "../webSocket/clientSocketService";
+import {ClientStoreService} from "../util/clientStoreService";
+import {ClientCredentials} from "../global";
 
 export class IpcRendererService {
 
     static init() {
 
-        ipcMain.handle('getApiKey', async (event: IpcMainInvokeEvent, data: any[]) => {
-            return clientStore.get('apiKey');
+        ipcMain.handle('getClientCredentials', async (event: IpcMainInvokeEvent, data: any[]) => {
+            return ClientStoreService.getClientCredentials();
         });
 
-        ipcMain.on('setApiKey', (event: IpcMainEvent, data: string) => {
-            clientStore.set('apiKey', data);
-            ClientSocketService.init();
+        ipcMain.on('setClientCredentials', (event: IpcMainEvent, clientCredentials: ClientCredentials) => {
+            ClientStoreService.setClientCredentials(clientCredentials);
+            ClientSocketService.connect();
         });
 
     }

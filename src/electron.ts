@@ -2,12 +2,10 @@ import { app, BrowserWindow } from "electron";
 import * as path from "path";
 import {OscService} from "./osc/oscService";
 import {ClientSocketService} from "./webSocket/clientSocketService";
-import Store from 'electron-store';
 import {IpcRendererService} from "./shared/ipcRendererService";
 
 // export const userDataPath: string = app.getPath('userData');
 export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080';
-export const clientStore = new Store();
 
 function createWindow() {
     // Create the browser window.
@@ -32,7 +30,7 @@ function createWindow() {
 app.whenReady().then(() => {
 
     IpcRendererService.init();
-    ClientSocketService.init();
+    ClientSocketService.connect();
     OscService.init();
 
     createWindow();

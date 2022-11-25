@@ -1,20 +1,30 @@
 import {io, Socket} from "socket.io-client";
 import {OscService} from "../osc/oscService";
-import {clientStore, serverUrl} from "../electron";
+import {serverUrl} from "../electron";
 import {Message} from "node-osc";
+import {ClientStoreService} from "../util/clientStoreService";
+import {OscMessage} from "../global";
 
 export class ClientSocketService {
 
     static socket: Socket;
 
-    static init() {
-        if(clientStore.get('apiKey')) {
-            this.socket = io(serverUrl + '/clientSocket', {query: {clientApiKey: clientStore.get('apiKey')}});
+    static connect() {
+        const clientCredentials = ClientStoreService.getClientCredentials();
+        if(clientCredentials) {
+            if(this.socket) this.socket.close()
+            this.socket = io(serverUrl + '/clientSocket', {query: {username: clientCredentials.username, apiKey: clientCredentials.apiKey}});
 
-            console.log('Opened IO socket with clientApiKey: ', clientStore.get('apiKey'))
+            console.log('Opened IO socket with: ', ClientStoreService.getClientCredentials())
 
-            this.socket.on('parameter', (param: Message) => {
-                OscService.send(param);
+            this.socket.on('connect', () => console.log('Server confirmed socket connection'));
+
+            this.socket.on('disconnect', () => console.log('Server closed socket connection'));
+
+            this.socket.on('authenticated', () => console.log('Server authenticated socket connection'));
+
+            this.socket.on('parameter', (parameter: OscMessage) => {
+                OscService.send(new Message(parameter.address, parameter.args.at(0)!));
             });
         }
     }

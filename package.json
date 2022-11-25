@@ -16,10 +16,6 @@
     "package": "npm run build && npx electron-packager . cmap2 --ignore=^src$ --ignore=^public$ --ignore=^node_modules$ --ignore=^.gitignore$ --ignore=^package-lock.json$ --ignore=^README.md$ --ignore=^tsconfig"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
     "@types/node": "^16.18.3",
     "@types/node-osc": "^6.0.0",
     "@types/react": "^18.0.25",
@@ -31,11 +27,11 @@
     "react-router-dom": "6.4.3",
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.5.3",
-    "typescript": "^4.8.4",
-    "web-vitals": "^2.1.4"
+    "typescript": "^4.8.4"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",
+    "@types/react-dom": "^18.0.9",
     "electron-packager": "^17.1.1"
   },
   "eslintConfig": {

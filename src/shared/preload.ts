@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
+import {ClientCredentials} from "../global";
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    getApiKey: () => ipcRenderer.invoke('getApiKey').then(result => result),
-    setApiKey: (apiKey: string) => ipcRenderer.send('setApiKey', apiKey),
+    getClientCredentials: () => ipcRenderer.invoke('getClientCredentials').then(result => result),
+    setClientCredentials: (clientCredentials: ClientCredentials) => ipcRenderer.send('setClientCredentials', clientCredentials),
 })

@@ -1,6 +1,6 @@
 export interface IElectronAPI {
-    getApiKey: () => Promise<string>,
-    setApiKey: (apiKey: string) => void,
+    getClientCredentials: () => Promise<ClientCredentials>,
+    setClientCredentials: (clientCredentials: ClientCredentials) => void,
 }
 
 declare global {
@@ -13,4 +13,15 @@ export enum ConnectionStatus {
     CONNECTED,
     RECONNECTING,
     OFFLINE
+}
+
+export interface ClientCredentials {
+    username: string;
+    apiKey: string;
+}
+
+export interface OscMessage {
+    oscType: string;
+    address: string;
+    args: [boolean | number | string];
 }

@@ -13,13 +13,18 @@ export class OscService {
             console.log('New message, length: ', message.length, ': ', message);
             const parameter = message[0].slice(message[0].lastIndexOf('/')+1);
             if(!this.ignoredParams.has(parameter)) {
-                ClientSocketService.emitParameter('parameter', new Message(parameter, message[1]))
+                if(message[0].indexOf('/avatar/change') !== -1) {
+                    ClientSocketService.emitParameter('avatar', new Message(parameter, message[1]))
+                } else {
+                    ClientSocketService.emitParameter('parameter', new Message(parameter, message[1]))
+                }
             }
         });
 
         setInterval(() => {
-            console.log('Sending test OSC message: /avatar/parameters/Skin 5');
+            console.log('Sending test OSC message and socket ping: /avatar/parameters/Skin 5');
             this.oscClient.send(new Message('/avatar/parameters/Skin', 5));
+            ClientSocketService.emitParameter('parameter', new Message('/avatar/parameters/Skin', 5))
         }, 30000);
     }
 
