@@ -22,15 +22,13 @@ export class OscService {
         });
 
         setInterval(() => {
-            console.log('Sending test OSC message and socket ping: /avatar/parameters/Skin 5');
+            console.log('Sending test OSC message: /avatar/parameters/Skin 5');
             this.oscClient.send(new Message('/avatar/parameters/Skin', 5));
-            ClientSocketService.emitParameter('parameter', new Message('/avatar/parameters/Skin', 5))
         }, 30000);
     }
 
     static send(message: Message) {
         console.log('Sending OSC message:', message);
         this.oscClient.send(message);
-
     }
 }

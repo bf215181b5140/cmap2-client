@@ -3,6 +3,7 @@ import * as path from "path";
 import {OscService} from "./osc/oscService";
 import {ClientSocketService} from "./webSocket/clientSocketService";
 import {IpcRendererService} from "./shared/ipcRendererService";
+import {testing} from "./testing/testing.service";
 
 // export const userDataPath: string = app.getPath('userData');
 export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080';
@@ -32,6 +33,9 @@ app.whenReady().then(() => {
     IpcRendererService.init();
     ClientSocketService.connect();
     OscService.init();
+
+    // testing
+    testing();
 
     createWindow();
 
