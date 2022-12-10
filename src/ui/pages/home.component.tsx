@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {ClientCredentials} from "../../global";
 
+
 export default function HomePage() {
 
     // const [apiKey, setApiKey] = useState<string>("");

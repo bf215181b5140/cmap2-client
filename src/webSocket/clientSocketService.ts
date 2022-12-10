@@ -24,7 +24,10 @@ export class ClientSocketService {
             this.socket.on('authenticated', () => console.log('Server authenticated socket connection'));
 
             this.socket.on('parameter', (parameter: OscMessage) => {
-                OscService.send(new Message(parameter.address, parameter.args.at(0)!));
+                console.log('test message ', new Message('/avatar/parameters/Skin', 5));
+                console.log('my message ', new Message('/avatar/parameters/' + parameter.address, parameter.args.at(0)!));
+                console.log('parameter.args.at(0) ', typeof parameter.args.at(0));
+                OscService.send(new Message('/avatar/parameters/' + parameter.address, parameter.args.at(0)!));
             });
         }
     }

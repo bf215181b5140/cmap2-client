@@ -2,6 +2,8 @@ import {ipcMain, IpcMainEvent, IpcMainInvokeEvent} from "electron";
 import {ClientSocketService} from "../webSocket/clientSocketService";
 import {ClientStoreService} from "../util/clientStoreService";
 import {ClientCredentials} from "../global";
+import {mainWindow} from "../electron";
+import {WindowState} from "../enums";
 
 export class IpcRendererService {
 
@@ -16,5 +18,20 @@ export class IpcRendererService {
             ClientSocketService.connect();
         });
 
+        ipcMain.on('setWindowState', (event: IpcMainInvokeEvent, windowState: WindowState) => {
+            switch(windowState) {
+                case WindowState.HIDE:
+                    if(mainWindow) mainWindow.hide();
+                    break;
+                case WindowState.MINIMIZE:
+                    if(mainWindow) mainWindow.minimize();
+                    break;
+                case WindowState.CLOSE:
+                    if(mainWindow) mainWindow.close();
+                    break;
+                default:
+                    break;
+            }
+        })
     }
 }

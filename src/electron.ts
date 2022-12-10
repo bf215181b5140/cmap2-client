@@ -1,18 +1,25 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Tray, nativeImage, Menu } from "electron";
 import * as path from "path";
 import {OscService} from "./osc/oscService";
 import {ClientSocketService} from "./webSocket/clientSocketService";
 import {IpcRendererService} from "./shared/ipcRendererService";
 import {testing} from "./testing/testing.service";
 
+// --osc=9005:192.168.1.100:9006
+
 // export const userDataPath: string = app.getPath('userData');
 export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080';
+export let mainWindow: BrowserWindow;
 
-function createWindow() {
+function createWindow(): BrowserWindow {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-        width: 1024,
-        height: 720,
+        width: 1366,
+        height: 768,
+        frame: false,
+        transparent: true,
+        resizable: false,
+        skipTaskbar: false,
         webPreferences: {
             preload: path.join(__dirname, 'shared/preload.js')
         }
@@ -23,6 +30,8 @@ function createWindow() {
 
     // Open the DevTools.
     if (!app.isPackaged) mainWindow.webContents.openDevTools();
+
+    return mainWindow;
 }
 
 // This method will be called when Electron has finished
@@ -30,14 +39,26 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
+
     IpcRendererService.init();
     ClientSocketService.connect();
     OscService.init();
 
     // testing
-    testing();
+    // testing();
 
-    createWindow();
+    mainWindow = createWindow();
+
+    let tray = new Tray(nativeImage.createFromPath('public/logo192.png'));
+
+    const contextMenu = Menu.buildFromTemplate([
+        { label: 'Close window', type: 'normal', click: () => { if(mainWindow) mainWindow.hide(); } },
+        { label: 'Open window', type: 'normal', click: () => { if(mainWindow) mainWindow.show(); } },
+        { label: 'Exit', type: 'normal', click: () => {app.quit()} }
+    ])
+
+    tray.setToolTip('This is my application.')
+    tray.setContextMenu(contextMenu)
 
     app.on("activate", function () {
         // On macOS it's common to re-create a window in the app when the

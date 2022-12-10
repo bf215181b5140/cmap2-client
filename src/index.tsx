@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './ui/App';
 import {HashRouter} from "react-router-dom";
-import SideBarComponent from "./ui/components/sideBar.component";
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <React.StrictMode>
         <HashRouter>
-            <SideBarComponent />
             <App />
         </HashRouter>
     </React.StrictMode>
