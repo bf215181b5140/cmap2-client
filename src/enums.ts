@@ -5,8 +5,9 @@ export const enum WindowState {
 }
 
 export const enum SocketConnectionState {
-    DISCONNECTED,
-    CONNECTED,
     CONNECTING,
+    CONNECTED,
+    AUTHENTICATION_FAILED,
+    DISCONNECTED,
     ERROR,
 }

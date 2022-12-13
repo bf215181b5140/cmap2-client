@@ -32,6 +32,11 @@ export class IpcRendererService {
                 default:
                     break;
             }
-        })
+        });
+
+        ipcMain.handle('getConnectionStatus', async (event: IpcMainInvokeEvent, data: any[]) => {
+            return ClientSocketService.connectionStatus;
+        });
+
     }
 }

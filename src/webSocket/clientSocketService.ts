@@ -1,27 +1,72 @@
-import {io, Socket} from "socket.io-client";
-import {OscService} from "../osc/oscService";
-import {serverUrl} from "../electron";
-import {Message} from "node-osc";
-import {ClientStoreService} from "../util/clientStoreService";
-import {OscMessage} from "../global";
+import { io, Socket } from 'socket.io-client';
+import { OscService } from '../osc/oscService';
+import { mainWindow, serverUrl } from '../electron';
+import { Message } from 'node-osc';
+import { ClientStoreService } from '../util/clientStoreService';
+import { OscMessage, SocketConnectionStatus } from '../global';
+import { SocketConnectionState } from '../enums';
 
 export class ClientSocketService {
 
     static socket: Socket;
+    static connectionStatus: SocketConnectionStatus = {
+        state: SocketConnectionState.DISCONNECTED,
+        message: 'Not connected',
+        description: 'Failed to start connection'
+    };
 
     static connect() {
         const clientCredentials = ClientStoreService.getClientCredentials();
-        if(clientCredentials) {
-            if(this.socket) this.socket.close()
-            this.socket = io(serverUrl + '/clientSocket', {query: {username: clientCredentials.username, apiKey: clientCredentials.apiKey}});
+        if (clientCredentials) {
+            if (this.socket) this.socket.close();
+            this.socket = io(serverUrl + '/clientSocket', {
+                query: {
+                    username: clientCredentials.username,
+                    apiKey: clientCredentials.apiKey
+                }
+            });
 
-            console.log('Opened IO socket with: ', ClientStoreService.getClientCredentials())
+            this.connectionStatus = {
+                state: SocketConnectionState.CONNECTING,
+                message: 'Connecting',
+                description: 'Trying to connect with server...'
+            };
 
-            this.socket.on('connect', () => console.log('Server confirmed socket connection'));
+            this.socket.on('connect', () => {
+                this.connectionStatus = {
+                    state: SocketConnectionState.CONNECTING,
+                    message: 'Connecting',
+                    description: 'Waiting for server authentication.'
+                };
+                mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
+            });
 
-            this.socket.on('disconnect', () => console.log('Server closed socket connection'));
+            this.socket.on('authenticationFailed', () => {
+                this.connectionStatus = {
+                    state: SocketConnectionState.AUTHENTICATION_FAILED,
+                    message: 'Authentication failed',
+                    description: 'Your login information is wrong for the specified server.'
+                };
+                mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
+            });
 
-            this.socket.on('authenticated', () => console.log('Server authenticated socket connection'));
+            this.socket.on('authenticated', () => {
+                this.connectionStatus = {
+                    state: SocketConnectionState.CONNECTED,
+                    message: 'Connected',
+                    description: 'Connection to server established.'
+                };
+                mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
+            });
+
+            this.socket.on('disconnect', () => {
+                this.connectionStatus =  {
+                    state: SocketConnectionState.DISCONNECTED,
+                    message: 'Disconnected',
+                    description: 'Lost server connection, trying to reconnect...'
+                };
+                mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
+            });
 
             this.socket.on('parameter', (parameter: OscMessage) => {
                 console.log('test message ', new Message('/avatar/parameters/Skin', 5));
@@ -33,7 +78,7 @@ export class ClientSocketService {
     }
 
     static emitParameter(event: string, parameter: Message) {
-        if(this.socket) {
+        if (this.socket) {
             this.socket.emit(event, parameter);
         }
     }

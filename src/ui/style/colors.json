@@ -1,0 +1,31 @@
+{
+
+  "ui-background-1": "rgba(20, 24, 28, 0.98)",
+  "ui-background-2": "rgba(30, 36, 42, 0.95)",
+  "ui-background-3": "#1c222a",
+
+  "ui-primary-1": "#163136",
+  "ui-primary-2": "#1f4046",
+  "ui-primary-3": "#204951",
+  "ui-primary-4": "#3f9cb3",
+  "ui-primary-5": "#2baac1",
+  "ui-primary-6": "#35645f",
+
+  "ui-navBar-7": "#181f24DD",
+  "ui-navBar-8": "#025b66",
+  "ui-navBar-9": "#10888e",
+  "ui-navBar-10": "#156472",
+  "ui-navBar-11": "#54bed1",
+  "ui-navBar-12": "#10888e",
+  "ui-navBar-13": "#6ce6fc",
+
+  "text-1": "#B8B9B9",
+  "text-2": "#B8B9B9",
+  "text-3": "#B8B9B9",
+  "text-4": "#B8B9B9",
+
+  "success": "#99ff55",
+  "error": "#ff5555",
+  "warning": "#ffbb55",
+  "info": "#3355ff"
+}

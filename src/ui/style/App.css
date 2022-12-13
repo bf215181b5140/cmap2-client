@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'Dosis-Bold';
+    src: local('Dosis-Bold'), url(./Dosis-Bold.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Noto-Sans-Regular';
+    src: local('Noto-Sans-Regular'), url(./Noto-Sans-Regular.ttf) format('truetype');
+}
+
+body {
+    font-family: Dosis-Bold, sans-serif;
+    font-size: 18px;
+    color: #b8b9b9;
+}
+
+p {
+    font-family: Noto-Sans-Regular, serif;
+}

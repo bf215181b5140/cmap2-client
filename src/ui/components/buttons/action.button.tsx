@@ -1,9 +1,16 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import colors from '../../style/colors.json';
 
-export default function ActionButton(props: any) {
+interface ActionButtonProps {
+    children?: any,
+    action?: () => void,
+    icon: string
+}
+
+export default function ActionButton({ children, action, icon }: ActionButtonProps) {
 
     return (<ActionButtonStyled>
-        <button onClick={props.action}>{props.icon && <i className={props.icon}></i>} {props.children}</button>
+        <button onClick={action}>{icon && <i className={icon}></i>} {children}</button>
     </ActionButtonStyled>);
 }
 
@@ -11,26 +18,27 @@ const ActionButtonStyled = styled.div`
   display: inline-block;
 
   button {
+    font-family: Dosis-Bold, sans-serif;
     margin: 7px;
     padding: 10px;
-    color: #b8b9b9;
-    background: #163136;
-    border: 2px solid #1f4046;
+    color: ${colors['text-1']};
+    background: ${colors['ui-primary-1']};
+    border: 2px solid ${colors['ui-primary-2']};
     border-radius: 7px;
     font-size: 20px;
     transition: 0.15s linear;
 
     :hover {
-      transform: scale(1.1) perspective(1px);
-      background: #204951;
-      border: 2px solid #3f9cb3;
+      transform: scale(1.05) perspective(1px);
+      background: ${colors['ui-primary-3']};
+      border: 2px solid ${colors['ui-primary-4']};
     }
 
     i {
-      color: #2baac1;
+      color: ${colors['ui-primary-5']};
       float: left;
       font-size: 1.75em;
-      margin: -0.2em 0 -0.2em -0.2em;
+      margin: -0.12em 0 -0.12em -0.12em;
     }
   }
 `;

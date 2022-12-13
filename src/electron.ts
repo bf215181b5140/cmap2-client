@@ -14,7 +14,7 @@ export let mainWindow: BrowserWindow;
 function createWindow(): BrowserWindow {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-        width: 1366,
+        width: 1124,
         height: 768,
         frame: false,
         transparent: true,

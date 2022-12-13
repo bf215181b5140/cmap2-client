@@ -44,6 +44,7 @@
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
     "preserveConstEnums": true,
+    "resolveJsonModule": true,
     "target": "es2020",
     "module": "commonjs",
     "jsx": "react-jsx",
@@ -51,11 +52,5 @@
       "es2020",
       "dom"
     ]
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
   }
 }

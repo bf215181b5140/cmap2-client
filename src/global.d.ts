@@ -1,9 +1,12 @@
 import {SocketConnectionState, WindowState} from "./enums";
+import { IpcRendererEvent } from 'electron';
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
     setClientCredentials: (clientCredentials: ClientCredentials) => void,
-    setWindowState: (windowState: WindowState) => void;
+    setWindowState: (windowState: WindowState) => void,
+    updateConnectionStatus: (callback: (event: any, connectionStatus: SocketConnectionStatus) => void) => void
+    getConnectionStatus: () => Promise<SocketConnectionStatus>,
 }
 
 declare global {

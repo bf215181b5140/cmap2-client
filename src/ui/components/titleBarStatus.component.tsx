@@ -1,24 +1,24 @@
 import styled from "styled-components";
-import {SocketConnectionStatus} from "../../global";
-import {SocketConnectionState} from "../../enums";
-
+import { SocketConnectionStatus } from "../../global";
+import { SocketConnectionState } from "../../enums";
+import { useContext } from 'react';
+import { ConnectionStatusContext } from '../App';
 
 export function TitleBarStatus() {
 
-    const connection: SocketConnectionStatus = {state: SocketConnectionState.CONNECTING, message: 'connecting...', description: 'Establishing connection'}
+    const connection = useContext(ConnectionStatusContext);
 
-    function ConnectionInfo() {
-        switch(connection.state) {
-            case SocketConnectionState.CONNECTING:
-                return <span>{connection.message}</span>;
-            default:
-                return <span>Unknown</span>;
-        }
-
-    }
+    // function ConnectionInfo() {
+    //     switch (connection.state) {
+    //         case SocketConnectionState.CONNECTING:
+    //             return <span>{connection.message}</span>;
+    //         default:
+    //             return <span>Unknown</span>;
+    //     }
+    // }
 
     return (<TitleBarStatusStyled>
-        <ConnectionInfo />
+        <span>{connection.message}</span>
     </TitleBarStatusStyled>);
 }
 

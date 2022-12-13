@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {WindowState} from "../../enums";
 import ActionButton from "./buttons/action.button";
 import {TitleBarStatus} from "./titleBarStatus.component";
+import colors from '../style/colors.json';
 
 export default function TitleBar() {
 
@@ -22,7 +23,7 @@ export default function TitleBar() {
 const TitleBarStyled = styled.div`
   width: 800px;
   padding: 0 10px;
-  background: rgba(30, 36, 42, 0.85);
+  background-color: ${colors["ui-background-2"]};
   border-radius: 20px 20px 0 0;
   display: flex;
   flex-direction: row;
