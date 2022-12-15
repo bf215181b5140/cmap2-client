@@ -3,6 +3,8 @@ import { ClientCredentials } from '../../global';
 import { ConnectionStatusContext } from '../App';
 import useConnectionIcon from '../hooks/connectionIcon.hook';
 import styled from 'styled-components';
+import Input from "../components/form/input.component";
+import ActionButton from "../components/buttons/action.button";
 
 export default function HomePage() {
 
@@ -59,13 +61,21 @@ export default function HomePage() {
         <h3>{connection.description}</h3>
         <i className={connectionIcon.type} style={{
             color: connectionIcon.color,
-            fontSize: '5em'
-        }}></i>
+            fontSize: '6em',
+            margin: '20px'
+        }} />
 
-        <input name="username" type="text" value={clientCredentials.username} onChange={(event: any) => usernameOnChange(event.target.value)} />
-        <input name="apiKey" type="text" value={clientCredentials.apiKey} onChange={(event: any) => apiKeyOnChange(event.target.value)} />
-        <button name="setApiKey" onClick={sendClientCredentials}>Connect</button>
-        <button name="deleteApiKey" onClick={clearClientCredentials}>Clear</button>
+        {/*<input name="username" type="text" value={clientCredentials.username} onChange={(event: any) => usernameOnChange(event.target.value)} />*/}
+        {/*<input name="apiKey" type="text" value={clientCredentials.apiKey} onChange={(event: any) => apiKeyOnChange(event.target.value)} />*/}
+        <Input inputName="username" inputType="text" inputValue={clientCredentials.username}
+               inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
+        <Input inputName="apiKey" inputType="text" inputValue={clientCredentials.apiKey} inputOnChange={(event: any) => apiKeyOnChange(event.target.value)} />
+        {/*<button name="setApiKey" onClick={sendClientCredentials}>Connect</button>*/}
+        {/*<button name="deleteApiKey" onClick={clearClientCredentials}>Clear</button>*/}
+        <div>
+            <ActionButton action={sendClientCredentials}>Connect</ActionButton>
+            <ActionButton action={clearClientCredentials}>Clear</ActionButton>
+        </div>
     </HomePageStyled>);
 }
 
@@ -73,4 +83,6 @@ const HomePageStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100%;
 `;

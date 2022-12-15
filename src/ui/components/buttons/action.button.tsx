@@ -4,7 +4,7 @@ import colors from '../../style/colors.json';
 interface ActionButtonProps {
     children?: any,
     action?: () => void,
-    icon: string
+    icon?: string
 }
 
 export default function ActionButton({ children, action, icon }: ActionButtonProps) {

@@ -26,13 +26,11 @@ export default function App() {
         <ConnectionStatusContext.Provider value={connectionStatus}>
             <TitleBar />
             <MainWindow>
-                <div>
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="*" element={<HomePage />} />
                     </Routes>
-                </div>
             </MainWindow>
             <NavBar />
         </ConnectionStatusContext.Provider>
