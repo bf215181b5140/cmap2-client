@@ -1,10 +1,10 @@
-export const enum WindowState {
+export enum WindowState {
     HIDE,
     MINIMIZE,
     CLOSE,
 }
 
-export const enum SocketConnectionState {
+export enum SocketConnectionState {
     CONNECTING,
     CONNECTED,
     AUTHENTICATION_FAILED,

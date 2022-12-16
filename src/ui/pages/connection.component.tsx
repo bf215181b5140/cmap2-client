@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import Input from "../components/form/input.component";
 import ActionButton from "../components/buttons/action.button";
 
-export default function HomePage() {
+export default function ConnectionPage() {
 
     // connection status
     const connection = useContext(ConnectionStatusContext);
@@ -67,8 +67,7 @@ export default function HomePage() {
 
         {/*<input name="username" type="text" value={clientCredentials.username} onChange={(event: any) => usernameOnChange(event.target.value)} />*/}
         {/*<input name="apiKey" type="text" value={clientCredentials.apiKey} onChange={(event: any) => apiKeyOnChange(event.target.value)} />*/}
-        <Input inputName="username" inputType="text" inputValue={clientCredentials.username}
-               inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
+        <Input inputName="username" inputType="text" inputValue={clientCredentials.username} inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
         <Input inputName="apiKey" inputType="text" inputValue={clientCredentials.apiKey} inputOnChange={(event: any) => apiKeyOnChange(event.target.value)} />
         {/*<button name="setApiKey" onClick={sendClientCredentials}>Connect</button>*/}
         {/*<button name="deleteApiKey" onClick={clearClientCredentials}>Clear</button>*/}

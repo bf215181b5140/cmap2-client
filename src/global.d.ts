@@ -31,3 +31,23 @@ export interface SocketConnectionStatus {
     message: string;
     description: string | null;
 }
+
+export interface ReactProps {
+    children?: any;
+}
+
+export interface ClientData {
+    username: string;
+    displayName: string;
+    url: string;
+    profilePicture: any;
+    description: string;
+    hidden: boolean;
+
+    avatars: Avatar[];
+}
+
+export interface Avatar {
+    avatarId: number;
+    avatar: string;
+}

@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import HomePage from './pages/home.component';
+import ConnectionPage from './pages/connection.component';
 import AboutPage from './pages/about.component';
 import React from 'react';
 import styled from 'styled-components';
@@ -18,6 +18,12 @@ export const ConnectionStatusContext = React.createContext<SocketConnectionStatu
     description: ''
 });
 
+export const ClientDataContext = React.createContext<SocketConnectionStatus>({
+    state: SocketConnectionState.DISCONNECTED,
+    message: 'Not connected',
+    description: ''
+});
+
 export default function App() {
 
     const connectionStatus = useConnectionStatus();
@@ -27,9 +33,9 @@ export default function App() {
             <TitleBar />
             <MainWindow>
                     <Routes>
-                        <Route path="/" element={<HomePage />} />
+                        <Route path="/" element={<ConnectionPage />} />
                         <Route path="/about" element={<AboutPage />} />
-                        <Route path="*" element={<HomePage />} />
+                        <Route path="*" element={<ConnectionPage />} />
                     </Routes>
             </MainWindow>
             <NavBar />
