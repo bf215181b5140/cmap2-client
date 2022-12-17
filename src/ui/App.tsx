@@ -9,8 +9,18 @@ import './style/App.css';
 import 'remixicon/fonts/remixicon.css';
 import colors from './style/colors.json';
 import useConnectionStatus from './hooks/connectionStatus.hook';
-import { SocketConnectionStatus } from '../global';
-import { SocketConnectionState } from '../enums';
+import { ClientCredentials, SocketConnectionStatus } from '../shared/global';
+import { SocketConnectionState } from '../shared/enums';
+import { ClientData } from '../shared/clientData';
+import useClientData from './hooks/clientData.hook';
+import useClientCredentials from './hooks/clientCredentials.hook';
+import ProfilePage from './pages/profile.component';
+
+export const ClientCredentialsContext = React.createContext<ClientCredentials>({
+    apiKey: '',
+    username: '',
+    serverUrl: ''
+});
 
 export const ConnectionStatusContext = React.createContext<SocketConnectionStatus>({
     state: SocketConnectionState.DISCONNECTED,
@@ -18,27 +28,30 @@ export const ConnectionStatusContext = React.createContext<SocketConnectionStatu
     description: ''
 });
 
-export const ClientDataContext = React.createContext<SocketConnectionStatus>({
-    state: SocketConnectionState.DISCONNECTED,
-    message: 'Not connected',
-    description: ''
-});
+export const ClientDataContext = React.createContext<ClientData | null>(null);
 
 export default function App() {
 
+    const clientCredentials = useClientCredentials();
     const connectionStatus = useConnectionStatus();
+    const clientData = useClientData(connectionStatus, clientCredentials);
 
     return (<AppStyled>
         <ConnectionStatusContext.Provider value={connectionStatus}>
+        <ClientDataContext.Provider value={clientData}>
+        <ClientCredentialsContext.Provider value={clientCredentials}>
             <TitleBar />
             <MainWindow>
                     <Routes>
                         <Route path="/" element={<ConnectionPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="*" element={<ConnectionPage />} />
                     </Routes>
             </MainWindow>
             <NavBar />
+        </ClientCredentialsContext.Provider>
+        </ClientDataContext.Provider>
         </ConnectionStatusContext.Provider>
     </AppStyled>);
 }

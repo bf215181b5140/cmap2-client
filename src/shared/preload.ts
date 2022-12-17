@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { ClientCredentials, SocketConnectionStatus } from '../global';
-import { WindowState } from "../enums";
+import { ClientCredentials, SocketConnectionStatus } from './global';
+import { WindowState } from "./enums";
 
 contextBridge.exposeInMainWorld('electronAPI', {
     getClientCredentials: () => ipcRenderer.invoke('getClientCredentials').then(result => result),

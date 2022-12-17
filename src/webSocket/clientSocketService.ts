@@ -3,8 +3,8 @@ import { OscService } from '../osc/oscService';
 import { mainWindow, serverUrl } from '../electron';
 import { Message } from 'node-osc';
 import { ClientStoreService } from '../util/clientStoreService';
-import { OscMessage, SocketConnectionStatus } from '../global';
-import { SocketConnectionState } from '../enums';
+import { OscMessage, SocketConnectionStatus } from '../shared/global';
+import { SocketConnectionState } from '../shared/enums';
 
 export class ClientSocketService {
 

@@ -1,19 +1,28 @@
 import styled from 'styled-components';
 import ContentBox from '../components/contentBox.component';
+import ProfileForm from '../components/form/profile.form';
 
 export default function ProfilePage() {
 
-    return(
+    return (
         <ProfilePageStyled>
-            <ContentBox><img src={""} alt="Profile picture" /></ContentBox>
+            <ContentBox flex={1}><img src={''} alt="Profile picture" /></ContentBox>
+            <ContentBox>
+                <ProfileForm />
+            </ContentBox>
+            <ContentBox flexBasis={'100%'}>
+                Donec ac enim porttitor, pretium est vel, mattis eros. Quisque et nibh ac urna hendrerit fringilla in non nulla. Sed facilisis metus
+                luctus, porta nisl sit amet, feugiat est. Nullam aliquam semper elit nec rutrum. Ut at lacus ut mauris finibus varius. Nunc ultricies lacinia
+                lacus, a viverra velit sodales at. In mauris purus, scelerisque ac interdum nec, condimentum nec metus.
+            </ContentBox>
         </ProfilePageStyled>
     );
 }
 
 const ProfilePageStyled = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  display:flex;
+  margin: 20px;
+  display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
 `;

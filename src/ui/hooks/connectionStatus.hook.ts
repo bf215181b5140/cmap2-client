@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { SocketConnectionStatus } from '../../global';
-import { SocketConnectionState } from '../../enums';
+import { SocketConnectionStatus } from '../../shared/global';
+import { SocketConnectionState } from '../../shared/enums';
 
 export default function useConnectionStatus() {
 

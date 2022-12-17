@@ -1,5 +1,4 @@
 import {SocketConnectionState, WindowState} from "./enums";
-import { IpcRendererEvent } from 'electron';
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
@@ -18,6 +17,7 @@ declare global {
 export interface ClientCredentials {
     username: string;
     apiKey: string;
+    serverUrl: string;
 }
 
 export interface OscMessage {
@@ -34,20 +34,4 @@ export interface SocketConnectionStatus {
 
 export interface ReactProps {
     children?: any;
-}
-
-export interface ClientData {
-    username: string;
-    displayName: string;
-    url: string;
-    profilePicture: any;
-    description: string;
-    hidden: boolean;
-
-    avatars: Avatar[];
-}
-
-export interface Avatar {
-    avatarId: number;
-    avatar: string;
 }

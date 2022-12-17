@@ -1,5 +1,5 @@
 import Store from "electron-store";
-import {ClientCredentials} from "../global";
+import {ClientCredentials} from "../shared/global";
 
 export class ClientStoreService {
     static clientStore = new Store();
@@ -11,7 +11,7 @@ export class ClientStoreService {
         if(username == null || apiKey == null) return null;
 
         // @ts-ignore
-        return { username: username, apiKey: apiKey } as ClientCredentials;
+        return { username: username, apiKey: apiKey, serverUrl: 'http://localhost:8080' } as ClientCredentials;
     }
 
     static setClientCredentials(clientCredentials: ClientCredentials) {

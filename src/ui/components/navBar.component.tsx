@@ -8,7 +8,7 @@ export default function NavBar() {
             <NavBarLink to="/" icon="ri-wifi-fill" />
             <NavBarLink to="/profile" icon="ri-user-fill" />
             <NavBarLink to="/avatar" icon="ri-contacts-book-fill" />
-            <NavBarLink to="/layout" icon="ri-menu-4-fill" />
+            {/* <NavBarLink to="/layout" icon="ri-menu-4-fill" /> */}
             <NavBarLink to="/buttons" icon="ri-cursor-fill" />
             <NavBarLink to="/stats" icon="ri-pie-chart-2-fill" />
             <NavBarLink to="/settings" icon="ri-settings-3-fill" />

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {WindowState} from "../../enums";
+import {WindowState} from "../../shared/enums";
 import ActionButton from "./buttons/action.button";
 import {TitleBarStatus} from "./titleBarStatus.component";
 import colors from '../style/colors.json';

@@ -1,5 +1,5 @@
-import { SocketConnectionStatus } from '../../global';
-import { SocketConnectionState } from '../../enums';
+import { SocketConnectionStatus } from '../../shared/global';
+import { SocketConnectionState } from '../../shared/enums';
 import colors from '../style/colors.json';
 
 export default function useConnectionIcon(connectionStatus: SocketConnectionStatus) {

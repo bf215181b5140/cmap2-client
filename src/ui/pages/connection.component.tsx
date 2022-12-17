@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import { ClientCredentials } from '../../global';
-import { ConnectionStatusContext } from '../App';
+import { ClientCredentials } from '../../shared/global';
+import { ClientCredentialsContext, ConnectionStatusContext } from '../App';
 import useConnectionIcon from '../hooks/connectionIcon.hook';
 import styled from 'styled-components';
 import Input from "../components/form/input.component";
@@ -9,50 +9,60 @@ import ActionButton from "../components/buttons/action.button";
 export default function ConnectionPage() {
 
     // connection status
+    const clientCredentials = useContext(ClientCredentialsContext);
     const connection = useContext(ConnectionStatusContext);
     const connectionIcon = useConnectionIcon(connection);
 
     // Client credentials
-    const [clientCredentials, setClientCredentials] = useState<ClientCredentials>({
+    const [credentialsForm, setCredentialsForm] = useState<ClientCredentials>({
         apiKey: '',
-        username: ''
+        username: '',
+        serverUrl: ''
     });
 
+    // useEffect(() => {
+    //     window.electronAPI.getClientCredentials()
+    //         .then(result => {
+    //             if (result != null) {
+    //                 setClientCredentials(result);
+    //             }
+    //         });
+    // }, []);
+
     useEffect(() => {
-        window.electronAPI.getClientCredentials()
-            .then(result => {
-                if (result != null) {
-                    setClientCredentials(result);
-                }
-            });
-    }, []);
+        setCredentialsForm(clientCredentials);
+        console.log('ConnectionPage useEffect [clientCredentials]')
+    }, [clientCredentials])
 
     function usernameOnChange(value: string) {
-        setClientCredentials({
-            apiKey: clientCredentials.apiKey,
-            username: value
+        setCredentialsForm({
+            apiKey: credentialsForm.apiKey,
+            username: value,
+            serverUrl: clientCredentials.serverUrl
         });
     }
 
     function apiKeyOnChange(value: string) {
-        setClientCredentials({
+        setCredentialsForm({
             apiKey: value,
-            username: clientCredentials.username
+            username: credentialsForm.username,
+            serverUrl: clientCredentials.serverUrl
         });
     }
 
     function sendClientCredentials() {
-        window.electronAPI.setClientCredentials(clientCredentials);
+        window.electronAPI.setClientCredentials(credentialsForm);
     }
 
     function clearClientCredentials() {
-        setClientCredentials({
-            apiKey: '',
-            username: ''
-        });
+        // setClientCredentials({
+        //     apiKey: '',
+        //     username: ''
+        // });
         window.electronAPI.setClientCredentials({
             apiKey: '',
-            username: ''
+            username: '',
+            serverUrl: ''
         });
     }
 
@@ -67,8 +77,8 @@ export default function ConnectionPage() {
 
         {/*<input name="username" type="text" value={clientCredentials.username} onChange={(event: any) => usernameOnChange(event.target.value)} />*/}
         {/*<input name="apiKey" type="text" value={clientCredentials.apiKey} onChange={(event: any) => apiKeyOnChange(event.target.value)} />*/}
-        <Input inputName="username" inputType="text" inputValue={clientCredentials.username} inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
-        <Input inputName="apiKey" inputType="text" inputValue={clientCredentials.apiKey} inputOnChange={(event: any) => apiKeyOnChange(event.target.value)} />
+        <Input inputName="username" inputType="text" inputValue={credentialsForm.username} inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
+        <Input inputName="apiKey" inputType="text" inputValue={credentialsForm.apiKey} inputOnChange={(event: any) => apiKeyOnChange(event.target.value)} />
         {/*<button name="setApiKey" onClick={sendClientCredentials}>Connect</button>*/}
         {/*<button name="deleteApiKey" onClick={clearClientCredentials}>Clear</button>*/}
         <div>
