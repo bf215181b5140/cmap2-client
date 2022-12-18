@@ -1,5 +1,5 @@
 import Store from "electron-store";
-import {ClientCredentials} from "../shared/global";
+import {ClientCredentials} from "../../shared/global";
 
 export class ClientStoreService {
     static clientStore = new Store();

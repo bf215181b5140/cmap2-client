@@ -1,8 +1,8 @@
 import {ipcMain, IpcMainEvent, IpcMainInvokeEvent} from "electron";
-import {ClientSocketService} from "../webSocket/clientSocketService";
-import {ClientStoreService} from "../util/clientStoreService";
+import {ClientSocketService} from "../electron/webSocket/clientSocketService";
+import {ClientStoreService} from "../electron/util/clientStoreService";
 import {ClientCredentials} from "./global";
-import {mainWindow} from "../electron";
+import {mainWindow} from "../electron/electron";
 import {WindowState} from "./enums";
 
 export class IpcRendererService {
