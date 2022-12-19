@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "electron-vite build"
+    "build": "electron-vite build",
+    "package": "npx electron-packager . cmap2 --ignore=^src$ --ignore=^public$ --ignore=^node_modules$ --ignore=^.gitignore$ --ignore=^package-lock.json$ --ignore=^README.md$ --ignore=^tsconfig --ignore=^electron.vite.config.ts"
   },
   "dependencies": {
     "node-osc": "^8.0.6",
