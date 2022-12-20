@@ -13,7 +13,8 @@ if (!app.requestSingleInstanceLock()) {
 // --osc=9005:192.168.1.100:9006
 
 // export const userDataPath: string = app.getPath('userData');
-export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080';
+export const serverUrl: string = 'http://localhost:8080';
+// export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080'; TODO
 export let mainWindow: BrowserWindow;
 
 function createWindow(): BrowserWindow {
@@ -35,7 +36,7 @@ function createWindow(): BrowserWindow {
         mainWindow.loadURL('http://127.0.0.1:5173/');
         mainWindow.webContents.openDevTools();
     } else {
-        mainWindow.loadFile(path.join(__dirname, "index.html"));
+        mainWindow.loadFile(path.join(__dirname, "../ui/index.html"));
     }
 
     return mainWindow;
