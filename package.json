@@ -7,7 +7,8 @@
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
     "build": "electron-vite build",
-    "package": "npx electron-packager . cmap2 --ignore=^src$ --ignore=^public$ --ignore=^node_modules$ --ignore=^.gitignore$ --ignore=^package-lock.json$ --ignore=^README.md$ --ignore=^tsconfig --ignore=^electron.vite.config.ts"
+    "package": "npx electron-packager . cmap2 --ignore=^src$ --ignore=^public$ --ignore=^node_modules$ --ignore=^.gitignore$ --ignore=^package-lock.json$ --ignore=^README.md$ --ignore=^tsconfig --ignore=^electron.vite.config.ts",
+    "build-prod": "electron-builder build"
   },
   "dependencies": {
     "node-osc": "^8.0.6",
@@ -23,6 +24,7 @@
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^3.0.0",
     "electron": "^22.0.0",
+    "electron-builder": "^23.6.0",
     "electron-packager": "^17.1.1",
     "electron-store": "^8.1.0",
     "electron-vite": "^1.0.16",
@@ -35,9 +37,19 @@
     "typescript": "^4.9.4",
     "vite": "^4.0.2"
   },
-  "debug": {
-    "env": {
-      "VITE_DEV_SERVER_URL": "http://127.0.0.1:7777"
-    }
+  "build": {
+    "appId": "your.id",
+    "win": {
+      "target": "portable"
+    },
+    "portable": {
+      "unicode": false,
+      "artifactName": "my_electron_app.exe"
+    },
+    "files": [
+      "build/**/*",
+      "package.json"
+    ],
+    "extends": null
   }
 }
