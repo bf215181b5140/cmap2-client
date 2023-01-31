@@ -2,13 +2,19 @@ import { app, BrowserWindow, Tray, nativeImage, Menu } from "electron";
 import * as path from "path";
 import {OscService} from "./osc/oscService";
 import {ClientSocketService} from "./webSocket/clientSocketService";
-import {IpcRendererService} from "./shared/ipcRendererService";
+import {IpcRendererService} from "../shared/ipcRendererService";
 import {testing} from "./testing/testing.service";
+
+if (!app.requestSingleInstanceLock()) {
+    app.quit()
+    process.exit(0)
+}
 
 // --osc=9005:192.168.1.100:9006
 
 // export const userDataPath: string = app.getPath('userData');
-export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080';
+export const serverUrl: string = 'http://localhost:8080';
+// export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080'; TODO
 export let mainWindow: BrowserWindow;
 
 function createWindow(): BrowserWindow {
@@ -21,15 +27,17 @@ function createWindow(): BrowserWindow {
         resizable: false,
         skipTaskbar: false,
         webPreferences: {
-            preload: path.join(__dirname, 'shared/preload.js')
+            preload: path.join(__dirname, '../shared/preload.js')
         }
     });
 
     // and load the index.html of the app.
-    mainWindow.loadFile(path.join(__dirname, "index.html"));
-
-    // Open the DevTools.
-    if (!app.isPackaged) mainWindow.webContents.openDevTools();
+    if (!app.isPackaged) {
+        mainWindow.loadURL('http://127.0.0.1:5173/');
+        mainWindow.webContents.openDevTools();
+    } else {
+        mainWindow.loadFile(path.join(__dirname, "../ui/index.html"));
+    }
 
     return mainWindow;
 }
@@ -71,9 +79,7 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
+    if (process.platform !== "darwin") app.quit();
 });
 
 // In this file you can include the rest of your app"s specific main process
