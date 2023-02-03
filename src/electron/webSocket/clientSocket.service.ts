@@ -1,8 +1,8 @@
 import { io, Socket } from 'socket.io-client';
-import { OscService } from '../osc/oscService';
+import { OscService } from '../osc/osc.service';
 import { mainWindow, serverUrl } from '../electron';
 import { Message } from 'node-osc';
-import { ClientStoreService } from '../util/clientStoreService';
+import { ClientStoreService } from '../util/clientStore.service';
 import { OscMessage, SocketConnectionStatus } from '../../shared/global';
 import { SocketConnectionState } from '../../shared/enums';
 
@@ -15,9 +15,13 @@ export class ClientSocketService {
         description: 'Failed to start connection'
     };
 
+    // Connect to web server
     static connect() {
+
+        // Get client credentials for authentication
         const clientCredentials = ClientStoreService.getClientCredentials();
         if (clientCredentials) {
+
             if (this.socket) this.socket.close();
             this.socket = io(serverUrl + '/clientSocket', {
                 query: {
@@ -74,6 +78,15 @@ export class ClientSocketService {
                 console.log('parameter.args.at(0) ', typeof parameter.args.at(0));
                 OscService.send(new Message('/avatar/parameters/' + parameter.address, parameter.args.at(0)!));
             });
+
+        } else {
+            if (this.socket) this.socket.close();
+            this.connectionStatus =  {
+                state: SocketConnectionState.DISCONNECTED,
+                message: 'Not connected',
+                description: 'Failed to start connection'
+            };
+            mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
         }
     }
 

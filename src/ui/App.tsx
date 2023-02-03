@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import ConnectionPage from './pages/connection.component';
-import AboutPage from './pages/about.component';
+import ConnectionPage from './pages/connection.page';
+import AboutPage from './pages/about.page';
 import React from 'react';
 import styled from 'styled-components';
 import TitleBar from './components/titleBar.component';
@@ -14,7 +14,7 @@ import { SocketConnectionState } from '../shared/enums';
 import { ClientData } from '../shared/clientData';
 import useClientData from './hooks/clientData.hook';
 import useClientCredentials from './hooks/clientCredentials.hook';
-import ProfilePage from './pages/profile.component';
+import ProfilePage from './pages/profile.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>({
     apiKey: '',

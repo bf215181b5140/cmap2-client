@@ -1,7 +1,9 @@
-import {ClientSocketService} from "../webSocket/clientSocketService";
+import {ClientSocketService} from "../webSocket/clientSocket.service";
 import {Message} from "node-osc";
 
 export function testing() {
+
+    // Send random parameters to web server
     setInterval(() => {
         const parameters: string[] = ['Skin', 'Outfit', 'Socks'];
         const parameter: string | undefined = parameters.at(Math.floor(Math.random() * 3));

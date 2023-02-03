@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Tray, nativeImage, Menu } from "electron";
 import * as path from "path";
-import {OscService} from "./osc/oscService";
-import {ClientSocketService} from "./webSocket/clientSocketService";
+import {OscService} from "./osc/osc.service";
+import {ClientSocketService} from "./webSocket/clientSocket.service";
 import {IpcRendererService} from "../shared/ipcRendererService";
 import {testing} from "./testing/testing.service";
 
@@ -10,11 +10,9 @@ if (!app.requestSingleInstanceLock()) {
     process.exit(0)
 }
 
-// --osc=9005:192.168.1.100:9006
-
-// export const userDataPath: string = app.getPath('userData');
 export const serverUrl: string = 'http://localhost:8080';
 // export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080'; TODO
+
 export let mainWindow: BrowserWindow;
 
 function createWindow(): BrowserWindow {
@@ -47,26 +45,24 @@ function createWindow(): BrowserWindow {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
-
     IpcRendererService.init();
     ClientSocketService.connect();
     OscService.init();
 
-    // testing
+    // testing service
     // testing();
 
     mainWindow = createWindow();
 
+    // create tray icon
     let tray = new Tray(nativeImage.createFromPath('public/logo192.png'));
-
     const contextMenu = Menu.buildFromTemplate([
-        { label: 'Close window', type: 'normal', click: () => { if(mainWindow) mainWindow.hide(); } },
-        { label: 'Open window', type: 'normal', click: () => { if(mainWindow) mainWindow.show(); } },
+        { label: 'Open', type: 'normal', click: () => { if(mainWindow) mainWindow.show(); } },
         { label: 'Exit', type: 'normal', click: () => {app.quit()} }
     ])
-
-    tray.setToolTip('This is my application.')
     tray.setContextMenu(contextMenu)
+    tray.setToolTip('This is my application.')
+
 
     app.on("activate", function () {
         // On macOS it's common to re-create a window in the app when the

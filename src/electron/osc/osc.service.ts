@@ -1,5 +1,5 @@
 import {ArgumentType, Client, Message, Server } from 'node-osc';
-import {ClientSocketService} from "../webSocket/clientSocketService";
+import {ClientSocketService} from "../webSocket/clientSocket.service";
 
 export class OscService {
 
@@ -10,7 +10,7 @@ export class OscService {
 
     static init() {
         this.oscServer.on('message', (message: [string, ...ArgumentType[]]) => {
-            console.log('New message, length: ', message.length, ': ', message);
+            console.log('Received OSC message from VRChat: ', message);
             const parameter = message[0].slice(message[0].lastIndexOf('/')+1);
             if(!this.ignoredParams.has(parameter)) {
                 if(message[0].indexOf('/avatar/change') !== -1) {
@@ -20,15 +20,10 @@ export class OscService {
                 }
             }
         });
-
-        setInterval(() => {
-            console.log('Sending test OSC message: /avatar/parameters/Skin 5');
-            this.oscClient.send(new Message('/avatar/parameters/Skin', 5));
-        }, 30000);
     }
 
     static send(message: Message) {
-        console.log('Sending OSC message:', message);
+        console.log('Sending OSC message to VRChat:', message);
         this.oscClient.send(message);
     }
 }
