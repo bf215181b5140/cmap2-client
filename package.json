@@ -8,9 +8,11 @@
     "dev": "electron-vite dev",
     "build": "electron-vite build",
     "package": "npx electron-packager ./ --platform win32 --overwrite",
-    "electron-build": "electron-builder"
+    "electron-build": "electron-builder",
+    "postinstall": "npm update cmap2-shared"
   },
   "dependencies": {
+    "keytar": "^7.9.0",
     "node-osc": "^8.0.6",
     "remixicon": "^2.5.0",
     "socket.io-client": "^4.5.4"
@@ -23,6 +25,7 @@
     "@types/react-dom": "^18.0.9",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^3.0.0",
+    "cmap2-shared": "git://github.com/bf215181b5140/cmap2-shared.git",
     "electron": "^22.0.0",
     "electron-builder": "^23.6.0",
     "electron-packager": "^17.1.1",

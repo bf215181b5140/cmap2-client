@@ -54,7 +54,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "composite": true,
+//    "composite": true,
   },
   "include": ["src", "package.json"],
 }
