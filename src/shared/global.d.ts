@@ -1,4 +1,6 @@
-import {SocketConnectionState, WindowState} from "./enums";
+import {SocketConnectionState, WindowState} from "./enums"
+import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
@@ -12,12 +14,6 @@ declare global {
     interface Window {
         electronAPI: IElectronAPI
     }
-}
-
-export interface ClientCredentials {
-    username: string;
-    apiKey: string;
-    serverUrl: string;
 }
 
 export interface OscMessage {

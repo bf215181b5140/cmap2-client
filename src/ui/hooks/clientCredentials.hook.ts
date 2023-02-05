@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
-import { ClientCredentials } from '../../shared/global';
+import { ClientCredentials } from 'cmap2-shared/clientCredentials';
 
 export default function useClientCredentials() {
 
-    const [clientCredentials, setClientCredentials] = useState<ClientCredentials>({
-        apiKey: '',
-        username: '',
-        serverUrl: ''
-    });
+    const [clientCredentials, setClientCredentials] = useState<ClientCredentials>(new ClientCredentials());
 
     useEffect(() => {
         window.electronAPI.getClientCredentials()

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { ClientCredentials } from '../../shared/global';
+import { ClientCredentials } from 'cmap2-shared/clientCredentials';
 import { ClientCredentialsContext, ConnectionStatusContext } from '../App';
 import useConnectionIcon from '../hooks/connectionIcon.hook';
 import styled from 'styled-components';
@@ -14,20 +14,7 @@ export default function ConnectionPage() {
     const connectionIcon = useConnectionIcon(connection);
 
     // Client credentials
-    const [credentialsForm, setCredentialsForm] = useState<ClientCredentials>({
-        apiKey: '',
-        username: '',
-        serverUrl: ''
-    });
-
-    // useEffect(() => {
-    //     window.electronAPI.getClientCredentials()
-    //         .then(result => {
-    //             if (result != null) {
-    //                 setClientCredentials(result);
-    //             }
-    //         });
-    // }, []);
+    const [credentialsForm, setCredentialsForm] = useState<ClientCredentials>(new ClientCredentials());
 
     useEffect(() => {
         setCredentialsForm(clientCredentials);
@@ -36,15 +23,15 @@ export default function ConnectionPage() {
 
     function usernameOnChange(value: string) {
         setCredentialsForm({
-            apiKey: credentialsForm.apiKey,
+            password: credentialsForm.password,
             username: value,
             serverUrl: clientCredentials.serverUrl
         });
     }
 
-    function apiKeyOnChange(value: string) {
+    function passwordOnChange(value: string) {
         setCredentialsForm({
-            apiKey: value,
+            password: value,
             username: credentialsForm.username,
             serverUrl: clientCredentials.serverUrl
         });
@@ -55,15 +42,7 @@ export default function ConnectionPage() {
     }
 
     function clearClientCredentials() {
-        // setClientCredentials({
-        //     apiKey: '',
-        //     username: ''
-        // });
-        window.electronAPI.setClientCredentials({
-            apiKey: '',
-            username: '',
-            serverUrl: ''
-        });
+        window.electronAPI.setClientCredentials(new ClientCredentials());
     }
 
     return (<HomePageStyled>
@@ -75,12 +54,8 @@ export default function ConnectionPage() {
             margin: '20px'
         }} />
 
-        {/*<input name="username" type="text" value={clientCredentials.username} onChange={(event: any) => usernameOnChange(event.target.value)} />*/}
-        {/*<input name="apiKey" type="text" value={clientCredentials.apiKey} onChange={(event: any) => apiKeyOnChange(event.target.value)} />*/}
         <Input inputName="username" inputType="text" inputValue={credentialsForm.username} inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
-        <Input inputName="apiKey" inputType="text" inputValue={credentialsForm.apiKey} inputOnChange={(event: any) => apiKeyOnChange(event.target.value)} />
-        {/*<button name="setApiKey" onClick={sendClientCredentials}>Connect</button>*/}
-        {/*<button name="deleteApiKey" onClick={clearClientCredentials}>Clear</button>*/}
+        <Input inputName="password" inputType="password" inputValue={credentialsForm.password} inputOnChange={(event: any) => passwordOnChange(event.target.value)} />
         <div>
             <ActionButton action={sendClientCredentials}>Connect</ActionButton>
             <ActionButton action={clearClientCredentials}>Clear</ActionButton>

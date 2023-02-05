@@ -26,7 +26,7 @@ export class ClientSocketService {
             this.socket = io(serverUrl + '/clientSocket', {
                 query: {
                     username: clientCredentials.username,
-                    apiKey: clientCredentials.apiKey
+                    password: clientCredentials.password
                 }
             });
 

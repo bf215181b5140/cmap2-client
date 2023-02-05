@@ -9,18 +9,15 @@ import './style/App.css';
 import 'remixicon/fonts/remixicon.css';
 import colors from './style/colors.json';
 import useConnectionStatus from './hooks/connectionStatus.hook';
-import { ClientCredentials, SocketConnectionStatus } from '../shared/global';
+import { SocketConnectionStatus } from '../shared/global';
+import { ClientCredentials } from 'cmap2-shared/clientCredentials';
 import { SocketConnectionState } from '../shared/enums';
 import { ClientData } from '../shared/clientData';
 import useClientData from './hooks/clientData.hook';
 import useClientCredentials from './hooks/clientCredentials.hook';
 import ProfilePage from './pages/profile.page';
 
-export const ClientCredentialsContext = React.createContext<ClientCredentials>({
-    apiKey: '',
-    username: '',
-    serverUrl: ''
-});
+export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
 
 export const ConnectionStatusContext = React.createContext<SocketConnectionStatus>({
     state: SocketConnectionState.DISCONNECTED,

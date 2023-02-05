@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ClientData } from '../../shared/clientData';
-import { ClientCredentials, SocketConnectionStatus } from '../../shared/global';
+import { SocketConnectionStatus } from '../../shared/global';
+import { ClientCredentials } from 'cmap2-shared/clientCredentials';
 import { SocketConnectionState } from '../../shared/enums';
 
 export default function useClientData(connectionStatus: SocketConnectionStatus, clientCredentials: ClientCredentials) {

@@ -1,5 +1,5 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { ClientCredentials, SocketConnectionStatus } from './global';
+import { contextBridge, ipcRenderer } from 'electron';
+import { ClientCredentials } from 'cmap2-shared/clientCredentials';
 import { WindowState } from "./enums";
 
 contextBridge.exposeInMainWorld('electronAPI', {
