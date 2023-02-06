@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
 import { ClientData } from '../../shared/clientData';
-import { SocketConnectionStatus } from '../../shared/global';
 import { ClientCredentials } from 'cmap2-shared/clientCredentials';
-import { SocketConnectionState } from '../../shared/enums';
+import { ConnectionStatus, ConnectionStatusCode } from '../../shared/ConnectionStatus';
 
-export default function useClientData(connectionStatus: SocketConnectionStatus, clientCredentials: ClientCredentials) {
+export default function useClientData(connectionStatus: ConnectionStatus, clientCredentials: ClientCredentials) {
 
     const [clientData, setClientData] = useState<ClientData | null>(null);
 
     useEffect(() => {
-        if (connectionStatus.state === SocketConnectionState.CONNECTED) {
-            console.log('useClientData CONNECTED');
+        if (connectionStatus.code === ConnectionStatusCode.CONNECTED) {
             if (clientCredentials.username !== '') {
                 fetch(clientCredentials.serverUrl + '/api/clientData/' + clientCredentials.username)
                     .then((response: Response) => {

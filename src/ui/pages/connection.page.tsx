@@ -21,19 +21,27 @@ export default function ConnectionPage() {
         console.log('ConnectionPage useEffect [clientCredentials]')
     }, [clientCredentials])
 
+    function serverUrlOnChange(value: string) {
+        setCredentialsForm({
+            serverUrl: value,
+            username: credentialsForm.username,
+            password: credentialsForm.password
+        });
+    }
+
     function usernameOnChange(value: string) {
         setCredentialsForm({
-            password: credentialsForm.password,
+            serverUrl: credentialsForm.serverUrl,
             username: value,
-            serverUrl: clientCredentials.serverUrl
+            password: credentialsForm.password
         });
     }
 
     function passwordOnChange(value: string) {
         setCredentialsForm({
-            password: value,
+            serverUrl: credentialsForm.serverUrl,
             username: credentialsForm.username,
-            serverUrl: clientCredentials.serverUrl
+            password: value
         });
     }
 
@@ -43,6 +51,7 @@ export default function ConnectionPage() {
 
     function clearClientCredentials() {
         window.electronAPI.setClientCredentials(new ClientCredentials());
+        setCredentialsForm(new ClientCredentials());
     }
 
     return (<HomePageStyled>
@@ -54,8 +63,9 @@ export default function ConnectionPage() {
             margin: '20px'
         }} />
 
-        <Input inputName="username" inputType="text" inputValue={credentialsForm.username} inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
-        <Input inputName="password" inputType="password" inputValue={credentialsForm.password} inputOnChange={(event: any) => passwordOnChange(event.target.value)} />
+        <Input label="Server" inputName="serverUrl" inputType="text" inputValue={credentialsForm.serverUrl} inputOnChange={(event: any) => serverUrlOnChange(event.target.value)} />
+        <Input label="Username" inputName="username" inputType="text" inputValue={credentialsForm.username} inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
+        <Input label="Password" inputName="password" inputType="password" inputValue={credentialsForm.password} inputOnChange={(event: any) => passwordOnChange(event.target.value)} />
         <div>
             <ActionButton action={sendClientCredentials}>Connect</ActionButton>
             <ActionButton action={clearClientCredentials}>Clear</ActionButton>

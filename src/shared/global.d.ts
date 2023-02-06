@@ -1,31 +1,19 @@
-import {SocketConnectionState, WindowState} from "./enums"
+import { WindowState } from './enums';
 import { ClientCredentials } from 'cmap2-shared/clientCredentials';
-
+import { ConnectionStatus } from '../shared/ConnectionStatus';
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
     setClientCredentials: (clientCredentials: ClientCredentials) => void,
     setWindowState: (windowState: WindowState) => void,
-    updateConnectionStatus: (callback: (event: any, connectionStatus: SocketConnectionStatus) => void) => void
-    getConnectionStatus: () => Promise<SocketConnectionStatus>,
+    updateConnectionStatus: (callback: (event: any, connectionStatus: ConnectionStatus) => void) => void
+    getConnectionStatus: () => Promise<ConnectionStatus>,
 }
 
 declare global {
     interface Window {
-        electronAPI: IElectronAPI
+        electronAPI: IElectronAPI;
     }
-}
-
-export interface OscMessage {
-    oscType: string;
-    address: string;
-    args: [boolean | number | string];
-}
-
-export interface SocketConnectionStatus {
-    state: SocketConnectionState;
-    message: string;
-    description: string | null;
 }
 
 export interface ReactProps {

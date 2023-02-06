@@ -14,9 +14,9 @@ export class OscService {
             const parameter = message[0].slice(message[0].lastIndexOf('/')+1);
             if(!this.ignoredParams.has(parameter)) {
                 if(message[0].indexOf('/avatar/change') !== -1) {
-                    ClientSocketService.emitParameter('avatar', new Message(parameter, message[1]))
+                    ClientSocketService.sendParameter('avatar', new Message(parameter, message[1]))
                 } else {
-                    ClientSocketService.emitParameter('parameter', new Message(parameter, message[1]))
+                    ClientSocketService.sendParameter('parameter', new Message(parameter, message[1]))
                 }
             }
         });

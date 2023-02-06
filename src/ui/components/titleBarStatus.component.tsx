@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { SocketConnectionStatus } from "../../shared/global";
-import { SocketConnectionState } from "../../shared/enums";
 import { useContext } from 'react';
 import { ConnectionStatusContext } from '../App';
 
