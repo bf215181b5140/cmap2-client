@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+import { ClientCredentials } from 'cmap2-shared';
 import { WindowState } from "./enums";
 
 contextBridge.exposeInMainWorld('electronAPI', {

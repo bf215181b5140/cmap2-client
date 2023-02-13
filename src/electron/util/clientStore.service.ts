@@ -1,5 +1,5 @@
 import Store from 'electron-store';
-import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+import { ClientCredentials } from 'cmap2-shared';
 
 export class ClientStoreService {
     static clientStore = new Store({encryptionKey: "cmap2-client-settingsnp"});

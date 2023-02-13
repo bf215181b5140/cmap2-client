@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+import { ClientCredentials } from 'cmap2-shared';
 
 export default function useClientCredentials() {
 

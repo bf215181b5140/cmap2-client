@@ -3,11 +3,11 @@ import colors from '../../style/colors.json';
 import { ReactProps } from '../../../shared/global';
 
 interface InputProps extends ReactProps {
-    label?: string;
-    inputName?: string;
-    inputType: string;
-    inputValue?: string;
-    inputPlaceholder?: string;
+    label?: string | null | undefined;
+    inputName?: string | null | undefined;
+    inputType: string | null | undefined;
+    inputValue?: string | null | undefined;
+    inputPlaceholder?: string | null | undefined;
     inputOnChange?: (event: any) => void;
     inputWidth?: string;
     formProps?: any;
@@ -55,5 +55,5 @@ const InputStyled = styled.input<InputProps>`
 `;
 
 const InputLabel = styled.span`
-font-weight: bold;
+  font-weight: bold;
 `;

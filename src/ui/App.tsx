@@ -9,7 +9,7 @@ import './style/App.css';
 import 'remixicon/fonts/remixicon.css';
 import colors from './style/colors.json';
 import useConnectionStatus from './hooks/connectionStatus.hook';
-import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+import { ClientCredentials } from 'cmap2-shared';
 import { ClientData } from '../shared/clientData';
 import useClientData from './hooks/clientData.hook';
 import useClientCredentials from './hooks/clientCredentials.hook';

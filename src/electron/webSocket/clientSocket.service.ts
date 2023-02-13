@@ -1,25 +1,22 @@
 import { io, Socket } from 'socket.io-client';
 import { OscService } from '../osc/osc.service';
-import { mainWindow, serverUrl } from '../electron';
+import { mainWindow } from '../electron';
 import { Message } from 'node-osc';
 import { ClientStoreService } from '../util/clientStore.service';
 import { ConnectionStatus, ConnectionStatusCode } from '../../shared/ConnectionStatus';
-import { OscMessage } from 'cmap2-shared/common.interfaces';
+import { OscMessage } from 'cmap2-shared';
 
 export class ClientSocketService {
 
     static socket: Socket;
     static connectionStatus: ConnectionStatus = new ConnectionStatus(ConnectionStatusCode.DISCONNECTED);
 
-    // Connect to web server
     static connect() {
-
-        // Get client credentials for authentication
         const clientCredentials = ClientStoreService.getClientCredentials();
         if (clientCredentials) {
 
             if (this.socket) this.socket.close();
-            this.socket = io(serverUrl + '/clientSocket', {
+            this.socket = io(clientCredentials.serverUrl + '/clientSocket', {
                 query: {
                     username: clientCredentials.username,
                     password: clientCredentials.password

@@ -1,5 +1,5 @@
 import { WindowState } from './enums';
-import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+import { ClientCredentials } from 'cmap2-shared';
 import { ConnectionStatus } from '../shared/ConnectionStatus';
 
 export interface IElectronAPI {

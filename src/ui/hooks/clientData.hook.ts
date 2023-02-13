@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ClientData } from '../../shared/clientData';
-import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+import { ClientCredentials } from 'cmap2-shared';
 import { ConnectionStatus, ConnectionStatusCode } from '../../shared/ConnectionStatus';
 
 export default function useClientData(connectionStatus: ConnectionStatus, clientCredentials: ClientCredentials) {

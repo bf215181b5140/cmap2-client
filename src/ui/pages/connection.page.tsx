@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+import { ClientCredentials } from 'cmap2-shared';
 import { ClientCredentialsContext, ConnectionStatusContext } from '../App';
 import useConnectionIcon from '../hooks/connectionIcon.hook';
 import styled from 'styled-components';

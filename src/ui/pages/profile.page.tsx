@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import ContentBox from '../components/contentBox.component';
-import ProfileForm from '../components/form/profile.form';
+import FormBuilderComponent from '../components/form/formBuilder.component';
 
 export default function ProfilePage() {
 
@@ -8,7 +8,7 @@ export default function ProfilePage() {
         <ProfilePageStyled>
             <ContentBox flex={1}><img src={''} alt="Profile picture" /></ContentBox>
             <ContentBox>
-                <ProfileForm />
+                <FormBuilderComponent name={'profile'} displayLabel={true} />
             </ContentBox>
             <ContentBox flexBasis={'100%'}>
                 Donec ac enim porttitor, pretium est vel, mattis eros. Quisque et nibh ac urna hendrerit fringilla in non nulla. Sed facilisis metus

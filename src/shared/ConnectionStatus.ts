@@ -1,14 +1,14 @@
 export class ConnectionStatus {
-    code: ConnectionStatusCode;
+    code: ConnectionStatusCode = ConnectionStatusCode.DISCONNECTED;
     message: string = '';
     description: string = '';
 
     constructor(code: ConnectionStatusCode) {
-        this.code = code;
         this.setStatus(code);
     }
 
     public setStatus(code: ConnectionStatusCode) {
+        this.code = code;
         switch (code) {
             case ConnectionStatusCode.NO_CREDENTIALS:
                 this.message = 'Waiting';

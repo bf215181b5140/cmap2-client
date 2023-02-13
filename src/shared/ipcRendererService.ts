@@ -1,7 +1,7 @@
 import {ipcMain, IpcMainEvent, IpcMainInvokeEvent} from "electron";
 import {ClientSocketService} from "../electron/webSocket/clientSocket.service";
 import {ClientStoreService} from "../electron/util/clientStore.service";
-import { ClientCredentials } from 'cmap2-shared/clientCredentials';
+import { ClientCredentials } from 'cmap2-shared';
 import {mainWindow} from "../electron/electron";
 import {WindowState} from "./enums";
 
