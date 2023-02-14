@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { FormField, FormMeta } from 'cmap2-shared';
 import { ClientCredentialsContext } from '../../App';
 import { ReactProps } from '@/shared/global';
+import colors from '../../style/colors.json';
 
 interface FormBuilderProps extends ReactProps {
     name?: string;
@@ -15,7 +16,7 @@ export default function FormBuilderComponent({name, displayLabel}: FormBuilderPr
 
     const clientCredentials = useContext(ClientCredentialsContext);
     const [formMeta, setFormMeta] = useState<FormMeta>();
-    const {register, handleSubmit} = useForm();
+    const {register, formState: {errors}, handleSubmit} = useForm();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,20 +61,90 @@ export default function FormBuilderComponent({name, displayLabel}: FormBuilderPr
         return options;
     }
 
+    function validationMessage(type: string): string {
+        switch (type) {
+            case 'required':
+                return 'This field is required';
+                break;
+            case 'minLength':
+                return 'Too short';
+                break;
+            case 'maxLength':
+                return 'Too long';
+                break;
+            case 'pattern':
+                return 'Can\'t validate this shit';
+                break;
+        }
+        return 'Bad input';
+    }
+
     return (<>{displayLabel && <h1>{formMeta?.label}</h1>}
         <FormStyled onSubmit={handleSubmit(onSubmit, onValidationFail)}>
-            {formMeta && formMeta.fields?.map((field: FormField) => (
-                <Input inputType={field.type} label={field.label} formProps={{
-                    ...register(field.name!, {
-                        ...fieldOptions(field)
-                    })
-                }} />
-            ))}
-            <Input inputType="submit" />
+            <TableStyled>
+                {formMeta && formMeta.fields?.map((field: FormField) => (
+                    <>
+                        <tr>
+                            <th>
+                                {field.label}
+                            </th>
+                            <td>
+                                <Input inputType={field.type} formProps={{
+                                    ...register(field.name!, {
+                                        ...fieldOptions(field)
+                                    })
+                                }} />
+                            </td>
+                        </tr>
+                        {errors[field.name!] &&
+                            <tr>
+                                <td></td>
+                                <ValidationText>
+                                    <i className="ri-arrow-up-s-line"> </i><span>{validationMessage(errors[field.name!]?.type?.toString()!)}</span>
+                                </ValidationText>
+                            </tr>
+                        }
+                    </>
+                ))}
+                <tr>
+                    <Input inputType="submit" />
+                </tr>
+            </TableStyled>
         </FormStyled></>);
 }
 
 const FormStyled = styled.form`
   //display:flex;
   //flex-direction: column;
+`;
+
+const TableStyled = styled.table`
+  border: none;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  border-spacing: 0px;
+
+  tr {
+    margin: 0;
+    padding: 0;
+  }
+
+  tr > th {
+    margin: 0;
+    padding: 0;
+    text-align: right;
+  }
+
+  tr > td {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+`;
+
+const ValidationText = styled.td`
+  font-size: 14px;
+  color: ${colors['error']};
+  text-indent: 15px;
 `;

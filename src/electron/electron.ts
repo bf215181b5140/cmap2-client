@@ -1,13 +1,13 @@
-import { app, BrowserWindow, Tray, nativeImage, Menu } from "electron";
-import * as path from "path";
-import {OscService} from "./osc/osc.service";
-import {ClientSocketService} from "./webSocket/clientSocket.service";
-import {IpcRendererService} from "../shared/ipcRendererService";
-import {testing} from "./testing/testing.service";
+import { app, BrowserWindow, Tray, nativeImage, Menu } from 'electron';
+import * as path from 'path';
+import { OscService } from './osc/osc.service';
+import { ClientSocketService } from './webSocket/clientSocket.service';
+import { IpcRendererService } from '../shared/ipcRendererService';
+import { testing } from './testing/testing.service';
 
 if (!app.requestSingleInstanceLock()) {
-    app.quit()
-    process.exit(0)
+    app.quit();
+    process.exit(0);
 }
 
 export const serverUrl: string = 'http://localhost:8080';
@@ -34,7 +34,7 @@ function createWindow(): BrowserWindow {
         mainWindow.loadURL('http://127.0.0.1:5173/');
         mainWindow.webContents.openDevTools();
     } else {
-        mainWindow.loadFile(path.join(__dirname, "../ui/index.html"));
+        mainWindow.loadFile(path.join(__dirname, '../ui/index.html'));
     }
 
     return mainWindow;
@@ -57,14 +57,21 @@ app.whenReady().then(() => {
     // create tray icon
     let tray = new Tray(nativeImage.createFromPath('public/logo192.png'));
     const contextMenu = Menu.buildFromTemplate([
-        { label: 'Open', type: 'normal', click: () => { if(mainWindow) mainWindow.show(); } },
-        { label: 'Exit', type: 'normal', click: () => {app.quit()} }
-    ])
-    tray.setContextMenu(contextMenu)
-    tray.setToolTip('This is my application.')
+        {
+            label: 'Open', type: 'normal', click: () => {
+                if (mainWindow) mainWindow.show();
+            }
+        },
+        {
+            label: 'Exit', type: 'normal', click: () => {
+                app.quit();
+            }
+        }
+    ]);
+    tray.setContextMenu(contextMenu);
+    tray.setToolTip('This is my application.');
 
-
-    app.on("activate", function () {
+    app.on('activate', function () {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -74,8 +81,8 @@ app.whenReady().then(() => {
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") app.quit();
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit();
 });
 
 // In this file you can include the rest of your app"s specific main process
