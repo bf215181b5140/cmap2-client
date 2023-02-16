@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
-import Input from './input.component';
+import FormInput from './formInput.component';
 import { useContext, useEffect, useState } from 'react';
-import { FormField, FormMeta } from 'cmap2-shared';
+import { FieldType, FormField, FormMeta } from 'cmap2-shared';
 import { ClientCredentialsContext } from '../../App';
 import { ReactProps } from '@/shared/global';
 import colors from '../../style/colors.json';
@@ -82,14 +82,14 @@ export default function FormBuilderComponent({name, displayLabel}: FormBuilderPr
     return (<>{displayLabel && <h1>{formMeta?.label}</h1>}
         <FormStyled onSubmit={handleSubmit(onSubmit, onValidationFail)}>
             <TableStyled>
-                {formMeta && formMeta.fields?.map((field: FormField) => (
+                {formMeta && formMeta.fields?.sort((a: FormField, b: FormField) => a.order - b.order).map((field: FormField) => (
                     <>
                         <tr>
                             <th>
                                 {field.label}
                             </th>
                             <td>
-                                <Input inputType={field.type} formProps={{
+                                <FormInput inputType={field.type} formProps={{
                                     ...register(field.name!, {
                                         ...fieldOptions(field)
                                     })
@@ -107,7 +107,7 @@ export default function FormBuilderComponent({name, displayLabel}: FormBuilderPr
                     </>
                 ))}
                 <tr>
-                    <Input inputType="submit" />
+                    <FormInput inputType={FieldType.Submit} />
                 </tr>
             </TableStyled>
         </FormStyled></>);

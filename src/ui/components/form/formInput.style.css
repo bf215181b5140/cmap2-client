@@ -1,0 +1,29 @@
+.formInput {
+    margin: 7px;
+    padding: 10px;
+    /*color: ${colors['text-1']};*/
+    /*background: ${colors['ui-primary-1']};*/
+    /*border: 2px solid ${colors['ui-primary-2']};*/
+    border-radius: 7px;
+    transition: 0.15s linear;
+}
+
+.formInput:hover {
+    /*transform: ${props => props.inputType === 'submit' ? 'scale(1.05) perspective(1px)' : 'none'};*/
+    /*background: ${colors['ui-primary-3']};*/
+    /*border: 2px solid ${colors['ui-primary-4']};*/
+}
+
+.formInput:focus-visible {
+    /*background: ${colors['ui-primary-3']};*/
+    /*border: 2px solid ${colors['ui-primary-4']};*/
+    outline: none;
+}
+
+.formInputi {
+    /*color: ${colors['ui-primary-5']};*/
+    float: left;
+    font-size: 1.75em;
+    margin: -0.12em 0 -0.12em -0.12em;
+}
+
