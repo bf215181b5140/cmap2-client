@@ -49,6 +49,7 @@ export default function App() {
 }
 
 const MainWindow = styled.div`
+  overflow: auto;
   width: 100%;
   background-color: ${colors['ui-background-1']};
   border: 2px solid ${colors['ui-background-3']};

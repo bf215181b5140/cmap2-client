@@ -1,48 +1,67 @@
 import styled from 'styled-components';
 import colors from '../../style/colors.json';
 import { ReactProps } from '../../../shared/global';
-import { FieldType } from 'cmap2-shared';
+import { InputType } from 'cmap2-shared';
 import { Field } from 'react-hook-form';
+import { FieldOption, FormField } from 'cmap2-shared/src/forms';
 
 interface FormInputProps extends ReactProps {
-    label?: string | null | undefined;
-    inputName?: string | null | undefined;
-    inputType: string | null | undefined;
-    inputValue?: string | null | undefined;
-    inputPlaceholder?: string | null | undefined;
-    inputOnChange?: (event: any) => void;
-    inputWidth?: string;
+    name?: string;
+    value?: string | number;
+    type: InputType;
+    // editable?: boolean;
+    options?: FieldOption[] | null;
+
+    onChange?: (event: any) => void;
+    width?: string;
+    placeholder?: string;
     formProps?: any;
 }
 
-export default function FormInput({inputName, inputType, inputValue, inputPlaceholder, inputOnChange, inputWidth, formProps, children}: FormInputProps) {
+export default function FormInput(props: FormInputProps) {
 
-    switch(inputType) {
-        case FieldType.Text:
-        // case FieldType.Password:
-            return (<FormInputContainer fieldType={inputType}>
-                <input className={"FormField"} name={inputName} type={inputType} value={inputValue} placeholder={inputPlaceholder}
-                                 onChange={inputOnChange} {...formProps}>
-                    {children}
+    switch (props.type) {
+        case InputType.Text:
+        case InputType.Password:
+        case InputType.File:
+            return (<FormInputContainer>
+                <input className={'FormField'} type={props.type} name={props.name} value={props.value} placeholder={props.placeholder}
+                       onChange={props.onChange} {...props.formProps} key={props.name}>
+                    {props.children}
                 </input>
             </FormInputContainer>);
-        case FieldType.Textarea:
-            return (<FormInputContainer fieldType={inputType}>
-                <textarea className={"FormField"} name={inputName} type={inputType} value={inputValue} placeholder={inputPlaceholder}
-                                 onChange={inputOnChange} {...formProps}>
-                    {children}
+        case InputType.Textarea:
+            return (<FormInputContainer>
+                <textarea className={'FormField'} name={props.name} value={props.value} placeholder={props.placeholder}
+                          onChange={props.onChange} {...props.formProps} key={props.name}>
+                    {props.children}
                 </textarea>
             </FormInputContainer>);
+        case InputType.Boolean:
+            return (<FormInputContainer>
+                {[{key: 'Y', value: 'Yes'}, {key: 'N', value: 'No'}].map(option => (
+                    <>
+                        <input className={'FormField'} type={InputType.Radio} name={props.name} value={option.value} id={option.key}
+                               {...props.formProps} key={option.key}>
+                        </input>
+                        <label htmlFor={option.key}>{option.value}</label>
+                    </>
+                ))}
+            </FormInputContainer>);
+        case InputType.Submit:
+            return (<FormInputContainer inputType={props.type}><input type={props.type} className={'FormField'} /></FormInputContainer>);
         default:
-            return(<></>);
+            return (<></>);
     }
 }
 
-const FormInputContainer = styled.div<{ fieldType: FieldType }>`
+const FormInputContainer = styled.div<{ inputType?: InputType }>`
   margin: 0;
   padding: 0;
-  
+
   .FormField {
+    font-family: Dosis-Bold, sans-serif;
+    font-size: 16px;
     margin: 7px;
     padding: 10px;
     color: ${colors['text-1']};
@@ -53,7 +72,7 @@ const FormInputContainer = styled.div<{ fieldType: FieldType }>`
   }
 
   .FormField:hover {
-    transform: ${props => props.fieldType === FieldType.Submit ? 'scale(1.05) perspective(1px)' : 'none'};
+    transform: ${props => props.inputType === InputType.Submit ? 'scale(1.05) perspective(1px)' : 'none'};
     background: ${colors['ui-primary-3']};
     border: 2px solid ${colors['ui-primary-4']};
   }
@@ -65,7 +84,7 @@ const FormInputContainer = styled.div<{ fieldType: FieldType }>`
   }
 
   // i {
-  //   color: ${colors['ui-primary-5']};
+    //   color: ${colors['ui-primary-5']};
   //   float: left;
   //   font-size: 1.75em;
   //   margin: -0.12em 0 -0.12em -0.12em;

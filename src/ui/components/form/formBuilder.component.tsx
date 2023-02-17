@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import FormInput from './formInput.component';
 import { useContext, useEffect, useState } from 'react';
-import { FieldType, FormField, FormMeta } from 'cmap2-shared';
+import { InputType, FormField, FormMeta } from 'cmap2-shared';
 import { ClientCredentialsContext } from '../../App';
 import { ReactProps } from '@/shared/global';
 import colors from '../../style/colors.json';
@@ -80,37 +80,35 @@ export default function FormBuilderComponent({name, displayLabel}: FormBuilderPr
     }
 
     return (<>{displayLabel && <h1>{formMeta?.label}</h1>}
-        <FormStyled onSubmit={handleSubmit(onSubmit, onValidationFail)}>
+        {formMeta && <FormStyled onSubmit={handleSubmit(onSubmit, onValidationFail)}>
             <TableStyled>
-                {formMeta && formMeta.fields?.sort((a: FormField, b: FormField) => a.order - b.order).map((field: FormField) => (
-                    <>
-                        <tr>
-                            <th>
-                                {field.label}
-                            </th>
-                            <td>
-                                <FormInput inputType={field.type} formProps={{
-                                    ...register(field.name!, {
-                                        ...fieldOptions(field)
-                                    })
-                                }} />
-                            </td>
-                        </tr>
-                        {errors[field.name!] &&
+                <tbody>
+                    {formMeta.fields?.sort((a: FormField, b: FormField) => a.order - b.order).map((field: FormField) => (
+                        <>
                             <tr>
-                                <td></td>
-                                <ValidationText>
-                                    <i className="ri-arrow-up-s-line"> </i><span>{validationMessage(errors[field.name!]?.type?.toString()!)}</span>
-                                </ValidationText>
+                                <th>
+                                    {field.label}
+                                </th>
+                                <td>
+                                    <FormInput type={field.type} options={field.options} {...register(field.name!, {...fieldOptions(field)})} />
+                                </td>
                             </tr>
-                        }
-                    </>
-                ))}
-                <tr>
-                    <FormInput inputType={FieldType.Submit} />
-                </tr>
+                            {errors[field.name!] &&
+                                <tr>
+                                    <td></td>
+                                    <ValidationText>
+                                        <i className="ri-arrow-up-s-line"> </i><span>{validationMessage(errors[field.name!]?.type?.toString()!)}</span>
+                                    </ValidationText>
+                                </tr>
+                            }
+                        </>
+                    ))}
+                    <tr>
+                        <FormInput type={InputType.Submit} />
+                    </tr>
+                </tbody>
             </TableStyled>
-        </FormStyled></>);
+        </FormStyled>}</>);
 }
 
 const FormStyled = styled.form`
