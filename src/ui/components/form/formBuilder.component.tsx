@@ -83,29 +83,31 @@ export default function FormBuilderComponent({name, displayLabel}: FormBuilderPr
         {formMeta && <FormStyled onSubmit={handleSubmit(onSubmit, onValidationFail)}>
             <TableStyled>
                 <tbody>
-                    {formMeta.fields?.sort((a: FormField, b: FormField) => a.order - b.order).map((field: FormField) => (
-                        <>
+                {formMeta.fields?.sort((a: FormField, b: FormField) => a.order - b.order).map((field: FormField) => (
+                    <>
+                        <tr>
+                            <th>
+                                {field.label}
+                            </th>
+                            <td>
+                                <FormInput type={field.type} options={field.options} {...register(field.name!, {...fieldOptions(field)})} key={field.name} />
+                            </td>
+                        </tr>
+                        {errors[field.name!] &&
                             <tr>
-                                <th>
-                                    {field.label}
-                                </th>
-                                <td>
-                                    <FormInput type={field.type} options={field.options} {...register(field.name!, {...fieldOptions(field)})} />
-                                </td>
+                                <td></td>
+                                <ValidationText>
+                                    <i className="ri-arrow-up-s-line"> </i><span>{validationMessage(errors[field.name!]?.type?.toString()!)}</span>
+                                </ValidationText>
                             </tr>
-                            {errors[field.name!] &&
-                                <tr>
-                                    <td></td>
-                                    <ValidationText>
-                                        <i className="ri-arrow-up-s-line"> </i><span>{validationMessage(errors[field.name!]?.type?.toString()!)}</span>
-                                    </ValidationText>
-                                </tr>
-                            }
-                        </>
-                    ))}
-                    <tr>
+                        }
+                    </>
+                ))}
+                <tr>
+                    <td colSpan={2}>
                         <FormInput type={InputType.Submit} />
-                    </tr>
+                    </td>
+                </tr>
                 </tbody>
             </TableStyled>
         </FormStyled>}</>);

@@ -23,17 +23,18 @@ export default function FormInput(props: FormInputProps) {
     switch (props.type) {
         case InputType.Text:
         case InputType.Password:
+        case InputType.Url:
         case InputType.File:
             return (<FormInputContainer>
                 <input className={'FormField'} type={props.type} name={props.name} value={props.value} placeholder={props.placeholder}
-                       onChange={props.onChange} {...props.formProps} key={props.name}>
+                       onChange={props.onChange} {...props.formProps}>
                     {props.children}
                 </input>
             </FormInputContainer>);
         case InputType.Textarea:
             return (<FormInputContainer>
                 <textarea className={'FormField'} name={props.name} value={props.value} placeholder={props.placeholder}
-                          onChange={props.onChange} {...props.formProps} key={props.name}>
+                          onChange={props.onChange} {...props.formProps}>
                     {props.children}
                 </textarea>
             </FormInputContainer>);
@@ -44,7 +45,7 @@ export default function FormInput(props: FormInputProps) {
                         <input className={'FormField'} type={InputType.Radio} name={props.name} value={option.value} id={option.key}
                                {...props.formProps} key={option.key}>
                         </input>
-                        <label htmlFor={option.key}>{option.value}</label>
+                        <label htmlFor={option.key} key={option.key}>{option.value}</label>
                     </>
                 ))}
             </FormInputContainer>);
@@ -55,7 +56,7 @@ export default function FormInput(props: FormInputProps) {
     }
 }
 
-const FormInputContainer = styled.div<{ inputType?: InputType }>`
+const FormInputContainer = styled.span<{ inputType?: InputType }>`
   margin: 0;
   padding: 0;
 

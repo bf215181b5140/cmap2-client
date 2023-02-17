@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { ClientCredentials } from 'cmap2-shared';
+import { ClientCredentials, InputType } from 'cmap2-shared';
 import { ClientCredentialsContext, ConnectionStatusContext } from '../App';
 import useConnectionIcon from '../hooks/connectionIcon.hook';
 import styled from 'styled-components';
@@ -63,9 +63,9 @@ export default function ConnectionPage() {
             margin: '20px'
         }} />
 
-        <FormInput label="Server" name="serverUrl" inputType="text" inputValue={credentialsForm.serverUrl} inputOnChange={(event: any) => serverUrlOnChange(event.target.value)} />
-        <FormInput label="Username" name="username" inputType="text" inputValue={credentialsForm.username} inputOnChange={(event: any) => usernameOnChange(event.target.value)} />
-        <FormInput label="Password" name="password" inputType="password" inputValue={credentialsForm.password} inputOnChange={(event: any) => passwordOnChange(event.target.value)} />
+        <FormInput name="serverUrl" type={InputType.Url} value={credentialsForm.serverUrl} onChange={(event: any) => serverUrlOnChange(event.target.value)} />
+        <FormInput name="username" type={InputType.Text} value={credentialsForm.username} onChange={(event: any) => usernameOnChange(event.target.value)} />
+        <FormInput name="password" type={InputType.Password} value={credentialsForm.password} onChange={(event: any) => passwordOnChange(event.target.value)} />
         <div>
             <ActionButton action={sendClientCredentials}>Connect</ActionButton>
             <ActionButton action={clearClientCredentials}>Clear</ActionButton>
