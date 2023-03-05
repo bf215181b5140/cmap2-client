@@ -8,24 +8,27 @@ import { ReactProps } from '@/shared/global';
 import colors from '../../style/colors.json';
 
 interface FormBuilderProps extends ReactProps {
-    name?: string;
-    displayLabel?: boolean;
+    formName?: string;
+    showLabel?: boolean;
 }
 
-export default function FormBuilderComponent({name, displayLabel}: FormBuilderProps) {
+export default function FormBuilderComponent({formName, showLabel}: FormBuilderProps) {
 
     const clientCredentials = useContext(ClientCredentialsContext);
     const [formMeta, setFormMeta] = useState<FormMeta>();
     const {register, formState: {errors}, handleSubmit} = useForm();
 
+    function fetchUrl(): string {
+        return clientCredentials.serverUrl + '/api/form/' + formName + '/' + clientCredentials.username;
+    }
+
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(clientCredentials.serverUrl + '/api/form/' + name);
+            const res = await fetch(fetchUrl(), {method: 'GET'});
             const resData = await res.json() as FormMeta;
             console.log('Recieved data from server for form: ', resData);
             setFormMeta(resData);
         };
-
         fetchData();
     }, []);
 
@@ -34,8 +37,8 @@ export default function FormBuilderComponent({name, displayLabel}: FormBuilderPr
 
         const body = JSON.stringify(formData);
         console.log('formData as json: ', body);
-        const res = await fetch(clientCredentials.serverUrl + '/api/form/' + name, {
-            method: 'POST',
+        const res = await fetch(fetchUrl(), {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'jwt': 'jwt-token'
@@ -79,7 +82,7 @@ export default function FormBuilderComponent({name, displayLabel}: FormBuilderPr
         return 'Bad input';
     }
 
-    return (<>{displayLabel && <h1>{formMeta?.label}</h1>}
+    return (<>{showLabel && <h1>{formMeta?.label}</h1>}
         {formMeta && <FormStyled onSubmit={handleSubmit(onSubmit, onValidationFail)}>
             <TableStyled>
                 <tbody>

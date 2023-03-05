@@ -8,7 +8,7 @@ export default function ProfilePage() {
         <ProfilePageStyled>
             <ContentBox flex={1}><img src={''} alt="Profile picture" /></ContentBox>
             <ContentBox>
-                <FormBuilderComponent name={'profile'} displayLabel={true} />
+                <FormBuilderComponent formName={'profile'} showLabel={true} />
             </ContentBox>
             <ContentBox flexBasis={'100%'}>
                 Donec ac enim porttitor, pretium est vel, mattis eros. Quisque et nibh ac urna hendrerit fringilla in non nulla. Sed facilisis metus
