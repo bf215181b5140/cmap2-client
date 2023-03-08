@@ -12,10 +12,13 @@
     "postinstall": "npm update cmap2-shared"
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.11",
+    "json-schema-to-zod": "^0.6.3",
     "keytar": "^7.9.0",
     "node-osc": "^8.0.6",
     "remixicon": "^2.5.0",
-    "socket.io-client": "^4.5.4"
+    "socket.io-client": "^4.5.4",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/electron": "^1.6.10",
