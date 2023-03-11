@@ -1,93 +1,135 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import colors from '../../style/colors.json';
 import { ReactProps } from '../../../shared/global';
 import { InputType } from 'cmap2-shared';
-import { Field } from 'react-hook-form';
 import { FieldOption, FormField } from 'cmap2-shared/src/forms';
+import { UseFormRegister } from 'react-hook-form';
 
 interface FormInputProps extends ReactProps {
-    name?: string;
-    value?: string | number;
     type: InputType;
-    // editable?: boolean;
+    name?: string;
+    register?: any;
+    errors?: any;
     options?: FieldOption[] | null;
-
-    onChange?: (event: any) => void;
-    width?: string;
-    placeholder?: string;
-    formProps?: any;
 }
 
 export default function FormInput(props: FormInputProps) {
+
+    function hasErrors(): boolean {
+        return props.name && props.errors && props.errors[props.name!];
+    }
+
+    function ErrorMessage() {
+        if (hasErrors()) {
+            return <ErrorStyled>{props.errors[props.name!].message?.toString()}</ErrorStyled>;
+        }
+        return null;
+    }
 
     switch (props.type) {
         case InputType.Text:
         case InputType.Password:
         case InputType.Url:
         case InputType.File:
-            return (<FormInputContainer>
-                <input className={'FormField'} type={props.type} name={props.name} value={props.value} placeholder={props.placeholder}
-                       onChange={props.onChange} {...props.formProps}>
-                    {props.children}
-                </input>
-            </FormInputContainer>);
+            return (<>
+                <InputStyled type={props.type} {...props.register(props.name)} errors={hasErrors()} />
+                <ErrorMessage />
+            </>);
         case InputType.Textarea:
-            return (<FormInputContainer>
-                <textarea className={'FormField'} name={props.name} value={props.value} placeholder={props.placeholder}
-                          onChange={props.onChange} {...props.formProps}>
+            return (<>
+                <TextareaStyled {...props.register(props.name)} errors={hasErrors()} >
                     {props.children}
-                </textarea>
-            </FormInputContainer>);
+                </TextareaStyled>
+                <ErrorMessage />
+            </>);
         case InputType.Boolean:
-            return (<FormInputContainer>
-                {[{key: 'Y', value: 'Yes'}, {key: 'N', value: 'No'}].map(option => (
-                    <>
-                        <input className={'FormField'} type={InputType.Radio} name={props.name} value={option.value} id={option.key}
-                               {...props.formProps} key={option.key}>
-                        </input>
-                        <label htmlFor={option.key} key={option.key}>{option.value}</label>
-                    </>
-                ))}
-            </FormInputContainer>);
+            return (<>
+                <CheckboxStyled errors={hasErrors()}>
+                    <input type={InputType.Checkbox} {...props.register(props.name)} />
+                    <i className={'ri-add-fill'}></i>
+                </CheckboxStyled>
+                <ErrorMessage />
+            </>);
+        case InputType.Select:
+            return (<>
+                <SelectStyled {...props.register(props.name)} errors={hasErrors()}>
+                    {props.options && props.options.map((option) => (<option value={option.key}>{option.value}</option>))}
+                </SelectStyled>
+                <ErrorMessage />
+            </>);
         case InputType.Submit:
-            return (<FormInputContainer inputType={props.type}><input type={props.type} className={'FormField'} /></FormInputContainer>);
+            return (<InputStyled type={props.type} value={'Save'} />);
+        case InputType.Hidden:
+            return (<InputStyled type={props.type} />);
         default:
             return (<></>);
     }
 }
 
-const FormInputContainer = styled.span<{ inputType?: InputType }>`
-  margin: 0;
-  padding: 0;
+const globalStyle = css<{ errors?: boolean }>`
+  font-family: Dosis-Bold, sans-serif;
+  font-size: 16px;
+  margin: 7px;
+  padding: 10px;
+  color: ${colors['text-1']};
+  background: ${colors['ui-primary-1']};
+  border: 2px solid ${colors['ui-primary-2']};
+  border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-2']};
+  border-radius: 7px;
+  transition: 0.15s linear;
+  width: 350px;
 
-  .FormField {
-    font-family: Dosis-Bold, sans-serif;
-    font-size: 16px;
-    margin: 7px;
-    padding: 10px;
-    color: ${colors['text-1']};
-    background: ${colors['ui-primary-1']};
-    border: 2px solid ${colors['ui-primary-2']};
-    border-radius: 7px;
-    transition: 0.15s linear;
+  :hover {
+    background: ${colors['ui-primary-3']};
+    border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-4']};
   }
 
-  .FormField:hover {
-    transform: ${props => props.inputType === InputType.Submit ? 'scale(1.05) perspective(1px)' : 'none'};
+  :focus-visible {
     background: ${colors['ui-primary-3']};
-    border: 2px solid ${colors['ui-primary-4']};
-  }
-
-  .FormField:focus-visible {
-    background: ${colors['ui-primary-3']};
-    border: 2px solid ${colors['ui-primary-4']};
+    border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-4']};
     outline: none;
   }
-
-  // i {
-    //   color: ${colors['ui-primary-5']};
-  //   float: left;
-  //   font-size: 1.75em;
-  //   margin: -0.12em 0 -0.12em -0.12em;
-  // }
 `;
+
+const InputStyled = styled.input<{ type?: InputType, errors?: boolean }>`
+  ${globalStyle};
+  ${props => props.type === InputType.Submit ? 'width: auto;' : null};
+  
+  :hover {
+    transform: ${props => props.type === InputType.Submit ? 'scale(1.05) perspective(1px)' : 'none'};
+  }
+`;
+
+const TextareaStyled = styled.textarea<{ errors?: boolean }>`
+  ${globalStyle};
+`;
+
+const SelectStyled = styled.select<{ errors?: boolean }>`
+  ${globalStyle};
+`;
+
+const CheckboxStyled = styled.span<{ errors?: boolean }>`
+  ${globalStyle};
+  padding: 2px;
+  //height:10px;
+
+  input[type=checkbox] {
+    //visibility: hidden;
+  }
+
+  i {
+    visibility: hidden;
+  }
+
+  input[type=checkbox]:checked ~ i {
+    visibility: visible;
+  }
+`;
+
+const ErrorStyled = styled.div`
+  margin: -6px 10px 0 10px;
+  font-size: 12px;
+  text-align: center;
+  color: ${colors['error']};
+`;
+

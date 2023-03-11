@@ -16,6 +16,7 @@ import useClientCredentials from './hooks/clientCredentials.hook';
 import ProfilePage from './pages/profile.page';
 import { ConnectionStatus, ConnectionStatusCode } from '../shared/ConnectionStatus';
 import AvatarPage from './pages/avatar.page';
+import ButtonPage from './pages/button.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
 
@@ -39,6 +40,7 @@ export default function App() {
                         <Route path="/" element={<ConnectionPage />} />
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/avatar" element={<AvatarPage />} />
+                        <Route path="/button*" element={<ButtonPage />} />
                         <Route path="/about" element={<AboutPage />} />
                         <Route path="*" element={<ConnectionPage />} />
                     </Routes>

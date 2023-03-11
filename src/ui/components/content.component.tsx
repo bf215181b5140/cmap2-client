@@ -1,17 +1,22 @@
 import { ReactProps } from '../../shared/global';
 import styled from 'styled-components';
 
-export default function Content(props: ReactProps) {
+interface ContentProps extends ReactProps {
+    flexDirection?: string;
+}
 
-    return(<ContentStyled>
+export default function Content(props: ContentProps) {
+
+    return(<ContentStyled flexDirection={props.flexDirection}>
         {props.children}
     </ContentStyled>)
 }
 
-const ContentStyled = styled.div`
+const ContentStyled = styled.div<{ flexDirection?: string }>`
   margin: 20px;
   display: flex;
-  flex-direction: row;
+  flex-direction: ${props => props.flexDirection ? props.flexDirection : 'row'};
   flex-wrap: wrap;
+  //align-items: flex-start;
   gap: 20px;
 `;

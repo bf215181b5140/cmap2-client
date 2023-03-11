@@ -4,38 +4,96 @@ import { useContext, useEffect, useState } from 'react';
 import { ClientCredentialsContext } from '../App';
 import Content from '../components/content.component';
 import colors from '../style/colors.json';
+import { AvatarDto, ButtonDto, LayoutDto } from 'cmap2-shared/dist/dtos';
+import { useNavigate } from 'react-router-dom';
+import FormInput from '../components/form/formInput.component';
+import { InputType } from 'cmap2-shared';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
+import LayoutComponent from '../components/layout.component';
 
 export default function AvatarPage() {
 
     const clientCredentials = useContext(ClientCredentialsContext);
-    const [avatars, setavatars] = useState<any>();
+    const [avatars, setavatars] = useState<AvatarDto[]>();
+    const [selectedAvatar, setSelectedAvatar] = useState<AvatarDto | null>(null);
+    const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await fetch(clientCredentials.serverUrl + '/api/avatars/' + clientCredentials.username, {method: 'GET'});
-            const resData = await res.json();
+            const res = await fetch(clientCredentials.serverUrl + '/api/avatar/' + clientCredentials.username, {method: 'GET'});
+            const resData = await res.json() as AvatarDto[];
             console.log('Recieved /api/avatar/readAvatars: ', resData);
             setavatars(resData);
         };
         fetchData();
     }, []);
 
+    function pickAvatar(avatar: AvatarDto | null) {
+        setSelectedAvatar(avatar);
+        setValue('id', avatar?.id);
+        setValue('vrcId', avatar?.vrcId);
+        setValue('label', avatar?.label);
+        setValue('default', avatar?.default);
+        setValue('order', avatar?.order);
+    }
+
+    function onSubmit(formData: any) {
+        console.log(formData);
+        fetch(clientCredentials.serverUrl + '/api/avatar/' + clientCredentials.username, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'jwt': 'jwt-token' // TODO
+            },
+            body: JSON.stringify(formData)
+        }).then((res) => console.log('/api/avatar/ post response:', res)).catch((err) => console.log('/api/avatar/ post error:', err));
+    }
+
     return (<>
         <SidePanel>
             <h2>Avatars</h2>
-            <button>KissMa</button>
-            <button>Other avatar</button>
-            <button className={'addButton'}><i className={'ri-add-fill'}></i></button>
+            {avatars && avatars.map((avatar: AvatarDto) => (
+                <button onClick={() => pickAvatar(avatar)} key={avatar.id}>{avatar.label}</button>
+            ))}
+            <button className={'addButton'} onClick={() => pickAvatar(null)}><i className={'ri-add-fill'}></i></button>
         </SidePanel>
-        <Content>
-            <ContentBox></ContentBox>
-            <ContentBox>
-            </ContentBox>
-            <ContentBox flexBasis={'100%'}>
-                Donec ac enim porttitor, pretium est vel, mattis eros. Quisque et nibh ac urna hendrerit fringilla in non nulla. Sed facilisis metus
-                luctus, porta nisl sit amet, feugiat est. Nullam aliquam semper elit nec rutrum. Ut at lacus ut mauris finibus varius. Nunc ultricies lacinia
-                lacus, a viverra velit sodales at. In mauris purus, scelerisque ac interdum nec, condimentum nec metus.
-            </ContentBox>
+        <Content flexDirection={'column'}>
+            {selectedAvatar && <ContentBox>
+                <h1>{selectedAvatar.label}</h1>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <table>
+                        <tbody>
+                        {/* TODO HIDDEN FIELDS */}
+                        <tr>
+                            <th>Label</th>
+                            <td><FormInput type={InputType.Text} register={register} name={'label'} errors={errors} /></td>
+                        </tr>
+                        <tr>
+                            <th>VRChat avatar ID</th>
+                            <td><FormInput type={InputType.Text} register={register} name={'vrcId'} errors={errors} /></td>
+                        </tr>
+                        <tr>
+                            <th>Default avatar</th>
+                            <td><FormInput type={InputType.Boolean} register={register} name={'default'} errors={errors} /></td>
+                        </tr>
+                        <tr>
+                            <th>Order</th>
+                            <td>
+                                <FormInput type={InputType.Select} register={register} name={'order'} errors={errors}
+                                           options={avatars && avatars.map((x, index) => ({key: (index + 1).toString(), value: (index + 1).toString()}))} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={2}><FormInput type={InputType.Submit} /></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </ContentBox>}
+            {selectedAvatar && selectedAvatar.layouts.map((layout: LayoutDto, index) => (
+                <LayoutComponent layout={layout} avatarId={selectedAvatar?.id} order={index + 1} />))}
         </Content>
     </>);
 }

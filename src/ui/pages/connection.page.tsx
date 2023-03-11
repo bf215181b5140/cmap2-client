@@ -63,9 +63,9 @@ export default function ConnectionPage() {
             margin: '20px'
         }} />
 
-        <FormInput name="serverUrl" type={InputType.Url} value={credentialsForm.serverUrl} onChange={(event: any) => serverUrlOnChange(event.target.value)} />
-        <FormInput name="username" type={InputType.Text} value={credentialsForm.username} onChange={(event: any) => usernameOnChange(event.target.value)} />
-        <FormInput name="password" type={InputType.Password} value={credentialsForm.password} onChange={(event: any) => passwordOnChange(event.target.value)} />
+        {/* <FormInput name="serverUrl" type={InputType.Url} value={credentialsForm.serverUrl} onChange={(event: any) => serverUrlOnChange(event.target.value)} /> */}
+        {/* <FormInput name="username" type={InputType.Text} value={credentialsForm.username} onChange={(event: any) => usernameOnChange(event.target.value)} /> */}
+        {/* <FormInput name="password" type={InputType.Password} value={credentialsForm.password} onChange={(event: any) => passwordOnChange(event.target.value)} /> */}
         <div>
             <ActionButton action={sendClientCredentials}>Connect</ActionButton>
             <ActionButton action={clearClientCredentials}>Clear</ActionButton>
