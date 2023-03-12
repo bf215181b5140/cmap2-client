@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import ContentBox from '../components/contentBox.component';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { ClientCredentialsContext } from '../App';
 import Content from '../components/content.component';
 import colors from '../style/colors.json';
@@ -17,7 +17,7 @@ export default function AvatarPage() {
 
     const clientCredentials = useContext(ClientCredentialsContext);
     const [avatars, setavatars] = useState<AvatarDto[]>();
-    const [selectedAvatar, setSelectedAvatar] = useState<AvatarDto | null>(null);
+    const [selectedAvatar, setSelectedAvatar] = useState<AvatarDto>();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
     useEffect(() => {
@@ -26,21 +26,28 @@ export default function AvatarPage() {
             const resData = await res.json() as AvatarDto[];
             console.log('Recieved /api/avatar/readAvatars: ', resData);
             setavatars(resData);
+            const defaultAvatar = resData.find((avatar) => avatar.default);
+            if (defaultAvatar) {
+                setSelectedAvatar(defaultAvatar);
+            } else {
+                setSelectedAvatar(new AvatarDto());
+            }
         };
         fetchData();
     }, []);
 
-    function pickAvatar(avatar: AvatarDto | null) {
+    useEffect(() => {
+        setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
+        setValue('vrcId', selectedAvatar?.vrcId);
+        setValue('label', selectedAvatar?.label);
+        setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
+    }, [selectedAvatar]);
+
+    const pickAvatar = useCallback((avatar: AvatarDto) => {
         setSelectedAvatar(avatar);
-        setValue('id', avatar?.id);
-        setValue('vrcId', avatar?.vrcId);
-        setValue('label', avatar?.label);
-        setValue('default', avatar?.default);
-        setValue('order', avatar?.order);
-    }
+    }, []);
 
     function onSubmit(formData: any) {
-        console.log(formData);
         fetch(clientCredentials.serverUrl + '/api/avatar/' + clientCredentials.username, {
             method: 'POST',
             headers: {
@@ -49,6 +56,13 @@ export default function AvatarPage() {
             },
             body: JSON.stringify(formData)
         }).then((res) => console.log('/api/avatar/ post response:', res)).catch((err) => console.log('/api/avatar/ post error:', err));
+
+        // todo if fetch success
+        // setSelectedAvatar({...selectedAvatar,
+        // label: formData.label})
+        // sele.layout.label = formData.label;
+        // resetForm();
+        // setEditing(false);
     }
 
     return (<>
@@ -57,15 +71,15 @@ export default function AvatarPage() {
             {avatars && avatars.map((avatar: AvatarDto) => (
                 <button onClick={() => pickAvatar(avatar)} key={avatar.id}>{avatar.label}</button>
             ))}
-            <button className={'addButton'} onClick={() => pickAvatar(null)}><i className={'ri-add-fill'}></i></button>
+            <button className={'addButton'} onClick={() => pickAvatar(new AvatarDto())}><i className={'ri-add-fill'}></i></button>
         </SidePanel>
         <Content flexDirection={'column'}>
             {selectedAvatar && <ContentBox>
-                <h1>{selectedAvatar.label}</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    <FormInput type={InputType.Hidden} register={register} name={'id'} />
+                    {errors?.id?.message?.toString()}
                     <table>
                         <tbody>
-                        {/* TODO HIDDEN FIELDS */}
                         <tr>
                             <th>Label</th>
                             <td><FormInput type={InputType.Text} register={register} name={'label'} errors={errors} /></td>
@@ -79,21 +93,15 @@ export default function AvatarPage() {
                             <td><FormInput type={InputType.Boolean} register={register} name={'default'} errors={errors} /></td>
                         </tr>
                         <tr>
-                            <th>Order</th>
-                            <td>
-                                <FormInput type={InputType.Select} register={register} name={'order'} errors={errors}
-                                           options={avatars && avatars.map((x, index) => ({key: (index + 1).toString(), value: (index + 1).toString()}))} />
-                            </td>
-                        </tr>
-                        <tr>
                             <td colSpan={2}><FormInput type={InputType.Submit} /></td>
                         </tr>
                         </tbody>
                     </table>
                 </form>
             </ContentBox>}
-            {selectedAvatar && selectedAvatar.layouts.map((layout: LayoutDto, index) => (
-                <LayoutComponent layout={layout} avatarId={selectedAvatar?.id} order={index + 1} />))}
+            {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
+                <LayoutComponent layout={layout} avatarId={selectedAvatar?.id} order={index + 1} key={index} />))}
+            {selectedAvatar && <LayoutComponent layout={new LayoutDto()} avatarId={selectedAvatar?.id} order={selectedAvatar.layouts?.length + 1} />}
         </Content>
     </>);
 }

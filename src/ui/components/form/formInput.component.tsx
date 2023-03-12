@@ -11,6 +11,8 @@ interface FormInputProps extends ReactProps {
     register?: any;
     errors?: any;
     options?: FieldOption[] | null;
+    value?: string;
+    onClick?: () => void;
 }
 
 export default function FormInput(props: FormInputProps) {
@@ -58,7 +60,9 @@ export default function FormInput(props: FormInputProps) {
                 <ErrorMessage />
             </>);
         case InputType.Submit:
-            return (<InputStyled type={props.type} value={'Save'} />);
+            return (<InputStyled type={InputType.Submit} button={true} value={'Save'} />);
+        case InputType.Button:
+            return (<InputStyled type={InputType.Button} button={true} value={props.value} onClick={props.onClick} />);
         case InputType.Hidden:
             return (<InputStyled type={props.type} />);
         default:
@@ -91,12 +95,12 @@ const globalStyle = css<{ errors?: boolean }>`
   }
 `;
 
-const InputStyled = styled.input<{ type?: InputType, errors?: boolean }>`
+const InputStyled = styled.input<{ button?: boolean, errors?: boolean }>`
   ${globalStyle};
-  ${props => props.type === InputType.Submit ? 'width: auto;' : null};
+  ${props => props.button ? 'width: auto;' : null};
   
   :hover {
-    transform: ${props => props.type === InputType.Submit ? 'scale(1.05) perspective(1px)' : 'none'};
+    transform: ${props => props.button ? 'scale(1.05) perspective(1px)' : 'none'};
   }
 `;
 
