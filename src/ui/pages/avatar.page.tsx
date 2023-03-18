@@ -12,40 +12,22 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
 import LayoutComponent from '../components/layout.component';
+import { Layout } from '@/shared/clientData';
+import useAvatarPage from '../hooks/avatarPage.hook';
 
 export default function AvatarPage() {
 
     const clientCredentials = useContext(ClientCredentialsContext);
-    const [avatars, setavatars] = useState<AvatarDto[]>();
-    const [selectedAvatar, setSelectedAvatar] = useState<AvatarDto>();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
+    const {avatars, setAvatars, selectedAvatar, setSelectedAvatar, addChild, removeChild} = useAvatarPage(clientCredentials);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch(clientCredentials.serverUrl + '/api/avatar/' + clientCredentials.username, {method: 'GET'});
-            const resData = await res.json() as AvatarDto[];
-            console.log('Recieved /api/avatar/readAvatars: ', resData);
-            setavatars(resData);
-            const defaultAvatar = resData.find((avatar) => avatar.default);
-            if (defaultAvatar) {
-                setSelectedAvatar(defaultAvatar);
-            } else {
-                setSelectedAvatar(new AvatarDto());
-            }
-        };
-        fetchData();
-    }, []);
-
+    // set form fields
     useEffect(() => {
         setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
         setValue('vrcId', selectedAvatar?.vrcId);
         setValue('label', selectedAvatar?.label);
         setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
     }, [selectedAvatar]);
-
-    const pickAvatar = useCallback((avatar: AvatarDto) => {
-        setSelectedAvatar(avatar);
-    }, []);
 
     function onSubmit(formData: any) {
         fetch(clientCredentials.serverUrl + '/api/avatar/' + clientCredentials.username, {
@@ -55,23 +37,28 @@ export default function AvatarPage() {
                 'jwt': 'jwt-token' // TODO
             },
             body: JSON.stringify(formData)
-        }).then((res) => console.log('/api/avatar/ post response:', res)).catch((err) => console.log('/api/avatar/ post error:', err));
-
-        // todo if fetch success
-        // setSelectedAvatar({...selectedAvatar,
-        // label: formData.label})
-        // sele.layout.label = formData.label;
-        // resetForm();
-        // setEditing(false);
+        }).then(async (res) => {
+            const resBody = await res.json();
+            console.log()
+            if (formData.id && resBody === true) {
+                setSelectedAvatar({...selectedAvatar!, label: formData.label, vrcId: formData.vrcId, default: formData.default});
+            } else {
+                setAvatars([...avatars!, resBody]);
+                setSelectedAvatar(resBody);
+            }
+            console.log('/api/avatar/ post response:', resBody);
+        }).catch((err) => {
+            console.log('/api/avatar/ post error:', err);
+        });
     }
 
     return (<>
         <SidePanel>
             <h2>Avatars</h2>
             {avatars && avatars.map((avatar: AvatarDto) => (
-                <button onClick={() => pickAvatar(avatar)} key={avatar.id}>{avatar.label}</button>
+                <button onClick={() => setSelectedAvatar(avatar)} key={avatar.id}>{avatar.label}</button>
             ))}
-            <button className={'addButton'} onClick={() => pickAvatar(new AvatarDto())}><i className={'ri-add-fill'}></i></button>
+            <button className={'addButton'} onClick={() => setSelectedAvatar(new AvatarDto())}><i className={'ri-add-fill'}></i></button>
         </SidePanel>
         <Content flexDirection={'column'}>
             {selectedAvatar && <ContentBox>
@@ -100,8 +87,11 @@ export default function AvatarPage() {
                 </form>
             </ContentBox>}
             {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
-                <LayoutComponent layout={layout} avatarId={selectedAvatar?.id} order={index + 1} key={index} />))}
-            {selectedAvatar && <LayoutComponent layout={new LayoutDto()} avatarId={selectedAvatar?.id} order={selectedAvatar.layouts?.length + 1} />}
+                <LayoutComponent layout={layout} avatarId={selectedAvatar?.id} order={index + 1} key={index} removeChild={removeChild} />))
+            }
+            {selectedAvatar &&
+                <LayoutComponent layout={new LayoutDto()} avatarId={selectedAvatar?.id} order={selectedAvatar.layouts?.length + 1} addChild={addChild} />
+            }
         </Content>
     </>);
 }

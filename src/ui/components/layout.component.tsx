@@ -17,6 +17,8 @@ interface LayoutComponentProps extends ReactProps {
     layout: LayoutDto;
     order: number;
     avatarId?: string;
+    addChild?: (layout: LayoutDto) => void;
+    removeChild?: (id: string) => void;
 }
 
 export default function LayoutComponent(props: LayoutComponentProps) {
@@ -39,23 +41,52 @@ export default function LayoutComponent(props: LayoutComponentProps) {
         resetForm();
     }, []);
 
-    function onSubmit(formData: any) {
+    async function onSubmit(formData: any) {
         // formData.parentId = props.avatarId;
         console.log('onSubmit layout:', formData);
-        fetch(clientCredentials.serverUrl + '/api/layout/' + clientCredentials.username, {
+        let response = null;
+        await fetch(clientCredentials.serverUrl + '/api/layout/' + clientCredentials.username, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'jwt': 'jwt-token' // TODO
             },
             body: JSON.stringify(formData)
-        }).then((res) => console.log('/api/layout/ post response:', res)).catch((err) => console.log('/api/layout/ post error:', err));
+        }).then(async (res) => {
+            response = await res.json();
+            console.log('/api/layout/ post response:', response);
+            if (props.addChild && response) props.addChild(response);
+        }).catch((err) => {
+            console.log('/api/layout/ post error:', err);
+        });
 
         // todo if fetch success
         // todo what happens when new one is added
-        props.layout.label = formData.label;
-        resetForm();
-        setEditing(false);
+        if (formData.id) {
+            props.layout.label = formData.label;
+            resetForm();
+            setEditing(false);
+        } else {
+            // if (props.addChild && response) props.addChild(response);
+        }
+    }
+
+    function onDelete() {
+        fetch(clientCredentials.serverUrl + '/api/layout/' + clientCredentials.username, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'jwt': 'jwt-token' // TODO
+            },
+            body: JSON.stringify({id: props.layout.id})
+        }).then(async (res) => {
+            console.log('/api/layout/ delete response:', res);
+        }).catch((err) => {
+            console.log('/api/layout/ delete error:', err);
+        });
+
+        // todo if fetch success
+        if (props.removeChild) props.removeChild(props.layout.id);
     }
 
     return (<ContentBox>
@@ -69,6 +100,7 @@ export default function LayoutComponent(props: LayoutComponentProps) {
             <FormInput type={InputType.Hidden} register={register} name={'order'} />
             <FormInput type={InputType.Hidden} register={register} name={'parentId'} />
             <FormInput type={InputType.Submit} />
+            {props.layout.id && <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete()}></FormInput>}
             <FormInput type={InputType.Button} value={'Cancel'} onClick={() => {
                 resetForm();
                 setEditing(false);
