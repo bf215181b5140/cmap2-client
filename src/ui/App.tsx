@@ -13,7 +13,6 @@ import { ClientCredentials } from 'cmap2-shared';
 import useClientCredentials from './hooks/clientCredentials.hook';
 import ProfilePage from './pages/profile/profile.page';
 import AvatarPage from './pages/avatar/avatar.page';
-import ButtonPage from './pages/button.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
 
@@ -28,8 +27,7 @@ export default function App() {
             <MainWindow>
                 <Routes>
                     <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/avatar" element={<AvatarPage />} />
-                    <Route path="/button*" element={<ButtonPage />} />
+                    <Route path="/avatar/*" element={<AvatarPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
                 </Routes>
