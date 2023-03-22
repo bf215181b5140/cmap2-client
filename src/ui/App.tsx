@@ -1,55 +1,42 @@
 import { Route, Routes } from 'react-router-dom';
 import ConnectionPage from './pages/connection.page';
 import AboutPage from './pages/about.page';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TitleBar from './components/titleBar.component';
 import NavBar from './components/navBar.component';
 import './style/App.css';
 import 'remixicon/fonts/remixicon.css';
 import colors from './style/colors.json';
-import useConnectionStatus from './hooks/connectionStatus.hook';
+import useSocketConnection from './hooks/socketConnection.hook';
 import { ClientCredentials } from 'cmap2-shared';
-import { ClientData } from '../shared/clientData';
-import useClientData from './hooks/clientData.hook';
 import useClientCredentials from './hooks/clientCredentials.hook';
-import ProfilePage from './pages/profile.page';
-import { ConnectionStatus, ConnectionStatusCode } from '../shared/ConnectionStatus';
-import AvatarPage from './pages/avatar.page';
+import ProfilePage from './pages/profile/profile.page';
+import AvatarPage from './pages/avatar/avatar.page';
 import ButtonPage from './pages/button.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
 
-export const ConnectionStatusContext = React.createContext<ConnectionStatus>(new ConnectionStatus(ConnectionStatusCode.DISCONNECTED));
-
-export const ClientDataContext = React.createContext<ClientData | null>(null);
-
 export default function App() {
 
-    const clientCredentials = useClientCredentials();
-    const connectionStatus = useConnectionStatus();
-    const clientData = useClientData(connectionStatus, clientCredentials);
+    const {clientCredentials} = useClientCredentials();
+    const socketConnection = useSocketConnection();
 
-    return (<AppStyled>
-        <ConnectionStatusContext.Provider value={connectionStatus}>
-        <ClientDataContext.Provider value={clientData}>
-        <ClientCredentialsContext.Provider value={clientCredentials}>
-            <TitleBar />
+    return (<ClientCredentialsContext.Provider value={clientCredentials}>
+        <AppStyled>
+            <TitleBar socketConnection={socketConnection} />
             <MainWindow>
-                    <Routes>
-                        <Route path="/" element={<ConnectionPage />} />
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/avatar" element={<AvatarPage />} />
-                        <Route path="/button*" element={<ButtonPage />} />
-                        <Route path="/about" element={<AboutPage />} />
-                        <Route path="*" element={<ConnectionPage />} />
-                    </Routes>
+                <Routes>
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/avatar" element={<AvatarPage />} />
+                    <Route path="/button*" element={<ButtonPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
+                </Routes>
             </MainWindow>
             <NavBar />
-        </ClientCredentialsContext.Provider>
-        </ClientDataContext.Provider>
-        </ConnectionStatusContext.Provider>
-    </AppStyled>);
+        </AppStyled>
+    </ClientCredentialsContext.Provider>);
 }
 
 const MainWindow = styled.div`

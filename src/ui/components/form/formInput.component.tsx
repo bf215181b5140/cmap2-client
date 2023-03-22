@@ -60,7 +60,7 @@ export default function FormInput(props: FormInputProps) {
                 <ErrorMessage />
             </>);
         case InputType.Submit:
-            return (<InputStyled type={InputType.Submit} button={true} value={'Save'} />);
+            return (<InputStyled type={InputType.Submit} button={true} value={props.value ? props.value : 'Save'} />);
         case InputType.Button:
             return (<InputStyled type={InputType.Button} button={true} value={props.value} onClick={props.onClick} />);
         case InputType.Hidden:

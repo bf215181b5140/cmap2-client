@@ -3,13 +3,13 @@ import { OscService } from '../osc/osc.service';
 import { mainWindow } from '../electron';
 import { Message } from 'node-osc';
 import { ClientStoreService } from '../util/clientStore.service';
-import { ConnectionStatus, ConnectionStatusCode } from '../../shared/ConnectionStatus';
+import { SocketConnectionStatus, SocketConnectionStatusCode } from '../../shared/SocketConnectionStatus';
 import { OscMessage } from 'cmap2-shared';
 
 export class ClientSocketService {
 
     static socket: Socket;
-    static connectionStatus: ConnectionStatus = new ConnectionStatus(ConnectionStatusCode.DISCONNECTED);
+    static connectionStatus: SocketConnectionStatus = new SocketConnectionStatus(SocketConnectionStatusCode.DISCONNECTED);
 
     static connect() {
         const clientCredentials = ClientStoreService.getClientCredentials();
@@ -23,25 +23,25 @@ export class ClientSocketService {
                 }
             });
 
-            this.connectionStatus.setStatus(ConnectionStatusCode.CONNECTING);
+            this.connectionStatus.setStatus(SocketConnectionStatusCode.CONNECTING);
 
             this.socket.on('connect', () => {
-                this.connectionStatus.setStatus(ConnectionStatusCode.AUTHENTICATING);
+                this.connectionStatus.setStatus(SocketConnectionStatusCode.AUTHENTICATING);
                 mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
             });
 
             this.socket.on('authenticationFailed', () => {
-                this.connectionStatus.setStatus(ConnectionStatusCode.AUTHENTICATION_FAILED);
+                this.connectionStatus.setStatus(SocketConnectionStatusCode.AUTHENTICATION_FAILED);
                 mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
             });
 
             this.socket.on('authenticated', () => {
-                this.connectionStatus.setStatus(ConnectionStatusCode.CONNECTED);
+                this.connectionStatus.setStatus(SocketConnectionStatusCode.CONNECTED);
                 mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
             });
 
             this.socket.on('disconnect', () => {
-                this.connectionStatus.setStatus(ConnectionStatusCode.DISCONNECTED);
+                this.connectionStatus.setStatus(SocketConnectionStatusCode.DISCONNECTED);
                 mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
             });
 
@@ -51,7 +51,7 @@ export class ClientSocketService {
 
         } else {
             if (this.socket) this.socket.close();
-            this.connectionStatus.setStatus(ConnectionStatusCode.NO_CREDENTIALS);
+            this.connectionStatus.setStatus(SocketConnectionStatusCode.NO_CREDENTIALS);
             mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
         }
     }

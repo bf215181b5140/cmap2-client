@@ -15,5 +15,9 @@ export default function useClientCredentials() {
             });
     }, []);
 
-    return clientCredentials;
+    const setClientToken = (token: string) => {
+        setClientCredentials({...clientCredentials, apiToken: token});
+    };
+
+    return {clientCredentials, setClientToken, setClientCredentials};
 }

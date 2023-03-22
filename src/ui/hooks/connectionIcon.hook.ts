@@ -1,31 +1,31 @@
 import colors from '../style/colors.json';
-import { ConnectionStatus, ConnectionStatusCode } from '../../shared/ConnectionStatus';
+import { SocketConnectionStatus, SocketConnectionStatusCode } from '../../shared/SocketConnectionStatus';
 
-export default function useConnectionIcon(connectionStatus: ConnectionStatus) {
+export default function useConnectionIcon(connectionStatus: SocketConnectionStatus) {
 
     let type: string = '';
     let color: string = '';
 
     switch(connectionStatus.code) {
-        case ConnectionStatusCode.NO_CREDENTIALS:
+        case SocketConnectionStatusCode.NO_CREDENTIALS:
             type = 'ri-loader-fill';
             color = colors['text-1'];
             break;
-        case ConnectionStatusCode.CONNECTED:
+        case SocketConnectionStatusCode.CONNECTED:
             type = 'ri-wifi-fill';
             color = colors['success'];
             break;
-        case ConnectionStatusCode.DISCONNECTED:
+        case SocketConnectionStatusCode.DISCONNECTED:
             type = 'ri-wifi-off-fill';
             color = colors['warning'];
             break;
-        case ConnectionStatusCode.CONNECTING:
-        case ConnectionStatusCode.AUTHENTICATING:
+        case SocketConnectionStatusCode.CONNECTING:
+        case SocketConnectionStatusCode.AUTHENTICATING:
             type = 'ri-wifi-fill';
             color = colors['info'];
             break;
-        case ConnectionStatusCode.ERROR:
-        case ConnectionStatusCode.AUTHENTICATION_FAILED:
+        case SocketConnectionStatusCode.ERROR:
+        case SocketConnectionStatusCode.AUTHENTICATION_FAILED:
             type = 'ri-wifi-off-fill';
             color = colors['error'];
             break;

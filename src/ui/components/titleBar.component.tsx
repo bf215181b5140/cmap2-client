@@ -4,14 +4,14 @@ import ActionButton from "./buttons/action.button";
 import {TitleBarStatus} from "./titleBarStatus.component";
 import colors from '../style/colors.json';
 
-export default function TitleBar() {
+export default function TitleBar(props: any) {
 
     function setWindowState(state: WindowState) {
         window.electronAPI.setWindowState(state);
     }
 
     return (<TitleBarStyled>
-        <TitleBarStatus />
+        <TitleBarStatus socketConnection={props.socketConnection} />
         <TitleBarButtons>
             <ActionButton action={() => setWindowState(WindowState.MINIMIZE)} icon={"ri-subtract-fill"}>Minimize</ActionButton>
             <ActionButton action={() => setWindowState(WindowState.HIDE)} icon={"ri-close-fill"}>Close</ActionButton>
