@@ -27,7 +27,7 @@ export default function App() {
             <MainWindow>
                 <Routes>
                     <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/avatar/*" element={<AvatarPage />} />
+                    <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
                 </Routes>

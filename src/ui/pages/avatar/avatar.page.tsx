@@ -11,9 +11,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
 import LayoutComponent from '../../components/layout.component';
 import useAvatarPage from './avatar.hook';
+import { useParams } from "react-router-dom";
 
 export default function AvatarPage() {
 
+    const routeParams = useParams();
     const {avatars, selectedAvatar, setSelectedAvatar, onSubmit, addChild, removeChild} = useAvatarPage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
@@ -24,6 +26,8 @@ export default function AvatarPage() {
         setValue('label', selectedAvatar?.label);
         setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
     }, [selectedAvatar]);
+
+    console.log('AvatarPage routeParams:', routeParams);
 
     return (<>
         <SidePanel>
