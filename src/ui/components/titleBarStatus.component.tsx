@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { ReactProps } from '@/shared/global';
-import { SocketConnectionStatus } from '@/shared/SocketConnectionStatus';
+import { SocketConnection } from '../../shared/SocketConnection';
 
 interface TitleBarStatusProps extends ReactProps {
-    socketConnection: SocketConnectionStatus;
+    socketConnection: SocketConnection;
 }
 
 export function TitleBarStatus(props: TitleBarStatusProps) {

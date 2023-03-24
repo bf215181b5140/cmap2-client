@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { SocketConnectionStatus, SocketConnectionStatusCode } from '../../shared/SocketConnectionStatus';
+import { SocketConnection } from '../../shared/SocketConnection';
 
 export default function useSocketConnection() {
 
-    const [socketConnectionStatus, setSocketConnectionStatus] = useState<SocketConnectionStatus>(new SocketConnectionStatus(SocketConnectionStatusCode.DISCONNECTED));
+    const [socketConnectionStatus, setSocketConnectionStatus] = useState<SocketConnection>(new SocketConnection());
 
     useEffect(() => {
         window.electronAPI.getConnectionStatus().then(result => {
             setSocketConnectionStatus(result);
         })
 
-        window.electronAPI.updateConnectionStatus((event: any, connectionStatus: SocketConnectionStatus) => {
+        window.electronAPI.updateConnectionStatus((event: any, connectionStatus: SocketConnection) => {
             setSocketConnectionStatus(connectionStatus);
         });
     }, []);

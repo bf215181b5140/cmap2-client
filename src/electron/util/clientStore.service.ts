@@ -1,8 +1,8 @@
 import Store from 'electron-store';
-import { ClientCredentials } from 'cmap2-shared';
+import { ClientCredentials } from '../../shared/global';
 
 export class ClientStoreService {
-    static clientStore = new Store({encryptionKey: "cmap2-client-settingsnp"});
+    static clientStore = new Store({encryptionKey: "client-settings"});
 
     static getClientCredentials(): ClientCredentials | null {
         return this.clientStore.get('clientCredentials') as ClientCredentials;

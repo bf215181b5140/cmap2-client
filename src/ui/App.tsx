@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import ConnectionPage from './pages/connection.page';
 import AboutPage from './pages/about.page';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import TitleBar from './components/titleBar.component';
 import NavBar from './components/navBar.component';
@@ -9,10 +9,10 @@ import './style/App.css';
 import 'remixicon/fonts/remixicon.css';
 import colors from './style/colors.json';
 import useSocketConnection from './hooks/socketConnection.hook';
-import { ClientCredentials } from 'cmap2-shared';
 import useClientCredentials from './hooks/clientCredentials.hook';
 import ProfilePage from './pages/profile/profile.page';
 import AvatarPage from './pages/avatar/avatar.page';
+import { ClientCredentials } from '../shared/global';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
 

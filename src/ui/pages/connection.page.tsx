@@ -4,14 +4,14 @@ import { ClientCredentialsContext } from '../App';
 import useConnectionIcon from '../hooks/connectionIcon.hook';
 import styled from 'styled-components';
 import FormInput from '../components/form/formInput.component';
-import { SocketConnectionStatus, SocketConnectionStatusCode } from '../../shared/SocketConnectionStatus';
+import { SocketConnection, SocketConnectionType } from '../../shared/SocketConnection';
 import { ReactProps } from '../../shared/global';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { z } from 'zod';
 
 interface ConnectionPageProps extends ReactProps {
-    socketConnection: SocketConnectionStatus;
+    socketConnection: SocketConnection;
 }
 
 export default function ConnectionPage(props: ConnectionPageProps) {
@@ -23,7 +23,8 @@ export default function ConnectionPage(props: ConnectionPageProps) {
         resolver: zodResolver(z.object({
             serverUrl: z.string().url(),
             username: z.string(),
-            password: z.string()
+            password: z.string(),
+            autoLogin: z.boolean()
         }))
     });
 
@@ -31,17 +32,20 @@ export default function ConnectionPage(props: ConnectionPageProps) {
         setValue('serverUrl', clientCredentials.serverUrl);
         setValue('username', clientCredentials.username);
         setValue('password', clientCredentials.password);
+        setValue('autoLogin', clientCredentials.autoLogin);
     }, [clientCredentials]);
 
     function onSubmit(formData: any) {
+        console.log('ConnectionPage formData', formData)
         clientCredentials.serverUrl = formData.serverUrl;
         clientCredentials.username = formData.username;
         clientCredentials.password = formData.password;
+        clientCredentials.autoLogin = formData.autoLogin;
         window.electronAPI.setClientCredentials(clientCredentials);
     }
 
     function onDisconnect() {
-        // window.electronAPI.disconnectFromServer();
+        window.electronAPI.disconnectSocket();
     }
 
     return (<HomePageStyled>
@@ -69,7 +73,11 @@ export default function ConnectionPage(props: ConnectionPageProps) {
                     <td><FormInput type={InputType.Password} register={register} name={'password'} errors={errors} /></td>
                 </tr>
                 <tr>
-                    <td colSpan={2}>{props.socketConnection.code === SocketConnectionStatusCode.CONNECTED ?
+                    <th>Connect automatically</th>
+                    <td><FormInput type={InputType.Boolean} register={register} name={'autoLogin'} errors={errors} /></td>
+                </tr>
+                <tr>
+                    <td colSpan={2}>{props.socketConnection.type === SocketConnectionType.SUCCESS ?
                         (<FormInput type={InputType.Button} onClick={() => onDisconnect} value={'Disconnect'} />) :
                         (<FormInput type={InputType.Submit} value={'Connect'} />)
                     }

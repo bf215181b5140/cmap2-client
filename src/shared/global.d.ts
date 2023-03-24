@@ -1,13 +1,13 @@
 import { WindowState } from './enums';
-import { ClientCredentials } from 'cmap2-shared';
-import { SocketConnectionStatus } from './SocketConnectionStatus';
+import { SocketConnection } from './SocketConnection';
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
     setClientCredentials: (clientCredentials: ClientCredentials) => void,
     setWindowState: (windowState: WindowState) => void,
-    updateConnectionStatus: (callback: (event: any, connectionStatus: SocketConnectionStatus) => void) => void
-    getConnectionStatus: () => Promise<SocketConnectionStatus>,
+    updateConnectionStatus: (callback: (event: any, connectionStatus: SocketConnection) => void) => void
+    getConnectionStatus: () => Promise<SocketConnection>,
+    disconnectSocket: () => void,
 }
 
 declare global {
@@ -18,4 +18,12 @@ declare global {
 
 export interface ReactProps {
     children?: any;
+}
+
+export class ClientCredentials {
+    serverUrl: string = '';
+    username: string = '';
+    password: string = '';
+    apiToken: string | undefined | null;
+    autoLogin: boolean = false;
 }

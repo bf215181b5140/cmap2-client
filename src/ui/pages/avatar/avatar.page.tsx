@@ -3,7 +3,7 @@ import ContentBox from '../../components/contentBox.component';
 import { useEffect } from 'react';
 import Content from '../../components/content.component';
 import colors from '../../style/colors.json';
-import { AvatarDto, LayoutDto } from 'cmap2-shared/dist/dtos';
+import { AvatarDto, LayoutDto } from 'cmap2-shared';
 import FormInput from '../../components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';

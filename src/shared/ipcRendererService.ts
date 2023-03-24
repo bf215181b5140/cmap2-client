@@ -1,41 +1,45 @@
-import {ipcMain, IpcMainEvent, IpcMainInvokeEvent} from "electron";
-import {ClientSocketService} from "../electron/webSocket/clientSocket.service";
-import {ClientStoreService} from "../electron/util/clientStore.service";
-import { ClientCredentials } from 'cmap2-shared';
-import {mainWindow} from "../electron/electron";
-import {WindowState} from "./enums";
+import { ipcMain, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
+import { ClientSocketService } from '../electron/webSocket/clientSocket.service';
+import { ClientStoreService } from '../electron/util/clientStore.service';
+import { mainWindow } from '../electron/electron';
+import { WindowState } from './enums';
+import { ClientCredentials } from './global';
 
 export class IpcRendererService {
 
     static init() {
 
-        ipcMain.handle('getClientCredentials', async (event: IpcMainInvokeEvent, data: any[]) => {
+        ipcMain.handle('getClientCredentials', async () => {
             return ClientStoreService.getClientCredentials();
         });
 
         ipcMain.on('setClientCredentials', (event: IpcMainEvent, clientCredentials: ClientCredentials) => {
             ClientStoreService.setClientCredentials(clientCredentials);
-            ClientSocketService.connect();
+            ClientSocketService.connect(clientCredentials);
         });
 
         ipcMain.on('setWindowState', (event: IpcMainInvokeEvent, windowState: WindowState) => {
-            switch(windowState) {
+            switch (windowState) {
                 case WindowState.HIDE:
-                    if(mainWindow) mainWindow.hide();
+                    if (mainWindow) mainWindow.hide();
                     break;
                 case WindowState.MINIMIZE:
-                    if(mainWindow) mainWindow.minimize();
+                    if (mainWindow) mainWindow.minimize();
                     break;
                 case WindowState.CLOSE:
-                    if(mainWindow) mainWindow.close();
+                    if (mainWindow) mainWindow.close();
                     break;
                 default:
                     break;
             }
         });
 
-        ipcMain.handle('getConnectionStatus', async (event: IpcMainInvokeEvent, data: any[]) => {
+        ipcMain.handle('getConnectionStatus', async () => {
             return ClientSocketService.connectionStatus;
+        });
+
+        ipcMain.on('disconnectSocket', () => {
+            ClientSocketService.disconnect();
         });
 
     }

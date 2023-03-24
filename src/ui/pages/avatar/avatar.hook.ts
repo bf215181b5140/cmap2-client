@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AvatarDto, LayoutDto } from 'cmap2-shared/dist/dtos';
+import { AvatarDto, LayoutDto } from 'cmap2-shared';
 import useCustomFetch from '../../hooks/customFetch.hook';
 
 export default function useAvatarPage() {

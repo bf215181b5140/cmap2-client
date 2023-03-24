@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { ClientCredentialsContext } from '../App';
 
 export default function useCustomFetch() {
@@ -19,7 +19,7 @@ export default function useCustomFetch() {
             if (init && init.headers) {
                 init.headers = {...init?.headers, Authorization: 'Bearer ' + clientCredentials.apiToken};
             } else {
-                init = {...init, headers: {'Authorization': 'Bearer ' + clientCredentials.apiToken,'Content-Type': 'application/json'}};
+                init = {...init, headers: {'Authorization': '' + clientCredentials.apiToken,'Content-Type': 'application/json'}};
             }
 
             const url = clientCredentials.serverUrl + '/api/' + urlSuffix;
@@ -54,7 +54,7 @@ export default function useCustomFetch() {
             }).then(async res => {
                 console.log('authentication in useFetch successful??', res.status);
                 if (res.ok || res.status === 200) {
-                    const token = await res.json();
+                    const token = await res.text();
                     console.log('authenticate token:', token);
                     clientCredentials.apiToken = token;
                     return true;

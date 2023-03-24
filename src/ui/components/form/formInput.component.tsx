@@ -2,8 +2,7 @@ import styled, { css } from 'styled-components';
 import colors from '../../style/colors.json';
 import { ReactProps } from '../../../shared/global';
 import { InputType } from 'cmap2-shared';
-import { FieldOption, FormField } from 'cmap2-shared/src/forms';
-import { UseFormRegister } from 'react-hook-form';
+import { FieldOption } from 'cmap2-shared';
 
 interface FormInputProps extends ReactProps {
     type: InputType;
