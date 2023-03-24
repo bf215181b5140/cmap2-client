@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ClientCredentials } from 'cmap2-shared';
+import { ClientCredentials } from '../../shared/global';
 
 export default function useClientCredentials() {
 
@@ -15,5 +15,9 @@ export default function useClientCredentials() {
             });
     }, []);
 
-    return clientCredentials;
+    const setClientToken = (token: string) => {
+        setClientCredentials({...clientCredentials, apiToken: token});
+    };
+
+    return {clientCredentials, setClientToken, setClientCredentials};
 }

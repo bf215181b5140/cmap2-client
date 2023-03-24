@@ -1,22 +1,15 @@
 import styled from "styled-components";
-import { useContext } from 'react';
-import { ConnectionStatusContext } from '../App';
+import { ReactProps } from '@/shared/global';
+import { SocketConnection } from '../../shared/SocketConnection';
 
-export function TitleBarStatus() {
+interface TitleBarStatusProps extends ReactProps {
+    socketConnection: SocketConnection;
+}
 
-    const connection = useContext(ConnectionStatusContext);
-
-    // function ConnectionInfo() {
-    //     switch (connection.state) {
-    //         case SocketConnectionState.CONNECTING:
-    //             return <span>{connection.message}</span>;
-    //         default:
-    //             return <span>Unknown</span>;
-    //     }
-    // }
+export function TitleBarStatus(props: TitleBarStatusProps) {
 
     return (<TitleBarStatusStyled>
-        <span>{connection.message}</span>
+        <span>{props.socketConnection.message}</span>
     </TitleBarStatusStyled>);
 }
 

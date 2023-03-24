@@ -1,17 +1,15 @@
 import ContentBox from '../components/contentBox.component';
 import { ReactProps } from '@/shared/global';
-import { ButtonDto, LayoutDto } from 'cmap2-shared/dist/dtos';
+import { ButtonDto, LayoutDto } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
-import { Form, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FormInput from '../components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { ClientCredentialsContext } from '../App';
 import { layoutSchema } from 'cmap2-shared/dist/validationSchemas';
 import styled from 'styled-components';
-import { Layout } from '@/shared/clientData';
 
 interface LayoutComponentProps extends ReactProps {
     layout: LayoutDto;

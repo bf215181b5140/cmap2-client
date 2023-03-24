@@ -2,8 +2,7 @@ import styled, { css } from 'styled-components';
 import colors from '../../style/colors.json';
 import { ReactProps } from '../../../shared/global';
 import { InputType } from 'cmap2-shared';
-import { FieldOption, FormField } from 'cmap2-shared/src/forms';
-import { UseFormRegister } from 'react-hook-form';
+import { FieldOption } from 'cmap2-shared';
 
 interface FormInputProps extends ReactProps {
     type: InputType;
@@ -60,7 +59,7 @@ export default function FormInput(props: FormInputProps) {
                 <ErrorMessage />
             </>);
         case InputType.Submit:
-            return (<InputStyled type={InputType.Submit} button={true} value={'Save'} />);
+            return (<InputStyled type={InputType.Submit} button={true} value={props.value ? props.value : 'Save'} />);
         case InputType.Button:
             return (<InputStyled type={InputType.Button} button={true} value={props.value} onClick={props.onClick} />);
         case InputType.Hidden:

@@ -1,25 +1,23 @@
 import styled from 'styled-components';
-import ContentBox from '../components/contentBox.component';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { ClientCredentialsContext } from '../App';
-import Content from '../components/content.component';
-import colors from '../style/colors.json';
-import { AvatarDto, ButtonDto, LayoutDto } from 'cmap2-shared/dist/dtos';
-import { useNavigate } from 'react-router-dom';
-import FormInput from '../components/form/formInput.component';
+import ContentBox from '../../components/contentBox.component';
+import { useEffect } from 'react';
+import Content from '../../components/content.component';
+import colors from '../../style/colors.json';
+import { AvatarDto, LayoutDto } from 'cmap2-shared';
+import FormInput from '../../components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
-import LayoutComponent from '../components/layout.component';
-import { Layout } from '@/shared/clientData';
-import useAvatarPage from '../hooks/avatarPage.hook';
+import LayoutComponent from '../../components/layout.component';
+import useAvatarPage from './avatar.hook';
+import { useParams } from "react-router-dom";
 
 export default function AvatarPage() {
 
-    const clientCredentials = useContext(ClientCredentialsContext);
+    const routeParams = useParams();
+    const {avatars, selectedAvatar, setSelectedAvatar, onSubmit, addChild, removeChild} = useAvatarPage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
-    const {avatars, setAvatars, selectedAvatar, setSelectedAvatar, addChild, removeChild} = useAvatarPage(clientCredentials);
 
     // set form fields
     useEffect(() => {
@@ -29,28 +27,7 @@ export default function AvatarPage() {
         setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
     }, [selectedAvatar]);
 
-    function onSubmit(formData: any) {
-        fetch(clientCredentials.serverUrl + '/api/avatar/' + clientCredentials.username, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'jwt': 'jwt-token' // TODO
-            },
-            body: JSON.stringify(formData)
-        }).then(async (res) => {
-            const resBody = await res.json();
-            console.log()
-            if (formData.id && resBody === true) {
-                setSelectedAvatar({...selectedAvatar!, label: formData.label, vrcId: formData.vrcId, default: formData.default});
-            } else {
-                setAvatars([...avatars!, resBody]);
-                setSelectedAvatar(resBody);
-            }
-            console.log('/api/avatar/ post response:', resBody);
-        }).catch((err) => {
-            console.log('/api/avatar/ post error:', err);
-        });
-    }
+    console.log('AvatarPage routeParams:', routeParams);
 
     return (<>
         <SidePanel>
