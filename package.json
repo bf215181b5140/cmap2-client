@@ -30,7 +30,7 @@
     "@vitejs/plugin-react": "^3.0.0",
     "cmap2-shared": "git://github.com/bf215181b5140/cmap2-shared.git",
     "electron": "^22.0.0",
-    "electron-builder": "^23.6.0",
+    "electron-builder": "^24.1.1",
     "electron-packager": "^17.1.1",
     "electron-store": "^8.1.0",
     "electron-vite": "^1.0.16",
