@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import ConnectionPage from './pages/connection.page';
 import AboutPage from './pages/about.page';
-import React from 'react';
+import React, { useReducer } from 'react';
 import styled from 'styled-components';
 import TitleBar from './components/titleBar.component';
 import NavBar from './components/navBar.component';
@@ -14,29 +14,37 @@ import ProfilePage from './pages/profile/profile.page';
 import AvatarPage from './pages/avatar/avatar.page';
 import { ClientCredentials } from '../shared/classes';
 import SettingsPage from './pages/settings.page';
+import useToast from './hooks/toast.hook';
+import { ToastComponent } from './components/toast.component';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
+export const ToastContext = React.createContext<(action: any) => void>(() => {});
 
 export default function App() {
 
     const {clientCredentials} = useClientCredentials();
     const socketConnection = useSocketConnection();
+    const {toasts, toastsDispatch} = useToast();
 
-    return (<ClientCredentialsContext.Provider value={clientCredentials}>
+    return (
         <AppStyled>
-            <TitleBar socketConnection={socketConnection} />
-            <MainWindow>
-                <Routes>
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarPage />} />
-                    <Route path="/settings" element={<SettingsPage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                    <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
-                </Routes>
-            </MainWindow>
-            <NavBar />
-        </AppStyled>
-    </ClientCredentialsContext.Provider>);
+            <ClientCredentialsContext.Provider value={clientCredentials}>
+                <ToastContext.Provider value={toastsDispatch}>
+                    <TitleBar socketConnection={socketConnection} />
+                    <MainWindow>
+                        <Routes>
+                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarPage />} />
+                            <Route path="/settings" element={<SettingsPage />} />
+                            <Route path="/about" element={<AboutPage />} />
+                            <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
+                        </Routes>
+                        <ToastComponent toasts={toasts} dispatch={toastsDispatch} />
+                    </MainWindow>
+                    <NavBar />
+                </ToastContext.Provider>
+            </ClientCredentialsContext.Provider>
+        </AppStyled>);
 }
 
 const MainWindow = styled.div`
@@ -47,6 +55,7 @@ const MainWindow = styled.div`
   border-radius: 10px;
   box-sizing: border-box;
   flex: 1;
+  position: relative;
 `;
 
 const AppStyled = styled.div`

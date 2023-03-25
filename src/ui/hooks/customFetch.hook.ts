@@ -1,12 +1,13 @@
 import { useContext } from 'react';
-import { ClientCredentialsContext } from '../App';
+import { ClientCredentialsContext, ToastContext } from '../App';
+import { ToastType } from '../components/toast.component';
 
 export default function useCustomFetch() {
 
     const clientCredentials = useContext(ClientCredentialsContext);
+    const toastsDispatch = useContext(ToastContext);
 
     const customFetch = async (urlSuffix: RequestInfo | URL, init?: RequestInit): Promise<any> => {
-        console.log('useCustomFetch clientCredentials: ', clientCredentials)
         try {
             if (!clientCredentials) {
                 return null;
@@ -32,15 +33,19 @@ export default function useCustomFetch() {
                     return res;
                 }).then(async res => {
                     if (res.ok || (res.status >= 200 && res.status <= 300)) {
-                        // todo custom popup message
                         return await res.json();
                     } else {
                         throw new Error('custom fetch bad response on url: ' + url + 'with status code: ' + res.status);
                     }
                 });
+
         } catch (e) {
-            console.log('useFetch customFetch catch:', e);
-            // todo custom popup message
+            if (e instanceof Error) {
+                toastsDispatch({
+                    type: 'add',
+                    toast: {message: e.message, type: ToastType.ERROR}
+                });
+            }
             return null;
         }
     };
