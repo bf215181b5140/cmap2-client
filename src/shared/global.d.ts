@@ -1,5 +1,6 @@
 import { WindowState } from './enums';
 import { SocketConnection } from './SocketConnection';
+import { ApplicationSettings, ClientCredentials } from './classes';
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
@@ -8,6 +9,8 @@ export interface IElectronAPI {
     updateConnectionStatus: (callback: (event: any, connectionStatus: SocketConnection) => void) => void
     getConnectionStatus: () => Promise<SocketConnection>,
     disconnectSocket: () => void,
+    getApplicationSettings: () => Promise<ApplicationSettings | null>,
+    setApplicationSettings: (applicationSettings: ApplicationSettings) => void,
 }
 
 declare global {
@@ -18,12 +21,4 @@ declare global {
 
 export interface ReactProps {
     children?: any;
-}
-
-export class ClientCredentials {
-    serverUrl: string = '';
-    username: string = '';
-    password: string = '';
-    apiToken: string | undefined | null;
-    autoLogin: boolean = false;
 }

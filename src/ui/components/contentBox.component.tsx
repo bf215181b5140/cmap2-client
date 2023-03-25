@@ -11,7 +11,7 @@ interface ContentBoxProps extends ReactProps {
 export default function ContentBox(props: ContentBoxProps) {
 
     return (<ContentBoxStyled flex={props.flex} flexBasis={props.flexBasis}>
-        {props.loading === true ? props.children : <ContentLoading>
+        {props.loading !== true ? props.children : <ContentLoading>
             <div className={'loader'}></div>
         </ContentLoading>}
     </ContentBoxStyled>);

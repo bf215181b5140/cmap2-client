@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { WindowState } from './enums';
-import { ClientCredentials } from './global';
+import { ApplicationSettings, ClientCredentials } from './classes';
 
 contextBridge.exposeInMainWorld('electronAPI', {
     getClientCredentials: () => ipcRenderer.invoke('getClientCredentials').then(result => result),
@@ -9,4 +9,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     updateConnectionStatus: (callback: any) => ipcRenderer.on('updateConnectionStatus', callback),
     getConnectionStatus: () => ipcRenderer.invoke('getConnectionStatus').then(result => result),
     disconnectSocket: () => ipcRenderer.send('disconnectSocket'),
+    getApplicationSettings: () => ipcRenderer.invoke('getApplicationSettings').then(result => result),
+    setApplicationSettings: (applicationSettings: ApplicationSettings) => ipcRenderer.send('setApplicationSettings', applicationSettings),
 });

@@ -14,8 +14,8 @@ export default function TitleBar(props: any) {
         <TitleBarStatus socketConnection={props.socketConnection} />
         <TitleBarButtons>
             <ActionButton action={() => setWindowState(WindowState.MINIMIZE)} icon={"ri-subtract-fill"}>Minimize</ActionButton>
-            <ActionButton action={() => setWindowState(WindowState.HIDE)} icon={"ri-close-fill"}>Close</ActionButton>
-            <ActionButton action={() => setWindowState(WindowState.CLOSE)} icon={"ri-close-fill"}>Exit</ActionButton>
+            <ActionButton action={() => setWindowState(WindowState.TRAY)} icon={"ri-arrow-right-down-line"}>Tray</ActionButton>
+            <ActionButton action={() => setWindowState(WindowState.EXIT)} icon={"ri-close-fill"}>Exit</ActionButton>
         </TitleBarButtons>
     </TitleBarStyled>);
 }

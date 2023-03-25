@@ -3,8 +3,9 @@ import { OscService } from '../osc/osc.service';
 import { Message } from 'node-osc';
 import { SocketConnection, SocketConnectionType } from '../../shared/SocketConnection';
 import { OscMessage } from 'cmap2-shared';
-import { ClientCredentials } from '../../shared/global';
+import { ClientCredentials } from '../../shared/classes';
 import { ClientStoreService } from '../util/clientStore.service';
+import { mainWindow } from '../electron';
 
 export class ClientSocketService {
 
@@ -28,17 +29,21 @@ export class ClientSocketService {
         });
 
         this.connectionStatus.setConnection(SocketConnectionType.MESSAGE, 'Connecting...', '');
+        this.updateConnectionStatus()
 
         this.socket.on('joined', () => {
             this.connectionStatus.setConnection(SocketConnectionType.SUCCESS, 'Connected', '');
+            this.updateConnectionStatus()
         });
 
         this.socket.on('error', (message: string) => {
             this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Error', message);
+            this.updateConnectionStatus()
         });
 
         this.socket.on('disconnect', () => {
             this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Disconnected');
+            this.updateConnectionStatus()
         });
 
         this.socket.on('parameter', (parameter: OscMessage) => {
@@ -48,12 +53,17 @@ export class ClientSocketService {
 
     static disconnect() {
         if (this.socket) this.socket.close();
-        this.connectionStatus = new SocketConnection();
+        this.connectionStatus.setConnection(SocketConnectionType.MESSAGE, 'Not connected', '');
+        this.updateConnectionStatus()
     }
 
     static sendParameter(event: string, parameter: Message) {
         if (this.socket) {
             this.socket.emit(event, parameter);
         }
+    }
+
+    static updateConnectionStatus() {
+        if (mainWindow) mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
     }
 }

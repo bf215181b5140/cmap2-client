@@ -1,9 +1,9 @@
-import { ipcMain, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
+import { app, ipcMain, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { ClientSocketService } from '../electron/webSocket/clientSocket.service';
 import { ClientStoreService } from '../electron/util/clientStore.service';
 import { mainWindow } from '../electron/electron';
 import { WindowState } from './enums';
-import { ClientCredentials } from './global';
+import { ApplicationSettings, ClientCredentials } from './classes';
 
 export class IpcRendererService {
 
@@ -18,16 +18,24 @@ export class IpcRendererService {
             ClientSocketService.connect(clientCredentials);
         });
 
+        ipcMain.handle('getApplicationSettings', async () => {
+            return ClientStoreService.getApplicationSettings();
+        });
+
+        ipcMain.on('setApplicationSettings', (event: IpcMainEvent, applicationSettings: ApplicationSettings) => {
+            ClientStoreService.setApplicationSettings(applicationSettings);
+        });
+
         ipcMain.on('setWindowState', (event: IpcMainInvokeEvent, windowState: WindowState) => {
             switch (windowState) {
-                case WindowState.HIDE:
-                    if (mainWindow) mainWindow.hide();
-                    break;
                 case WindowState.MINIMIZE:
-                    if (mainWindow) mainWindow.minimize();
+                    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.minimize();
                     break;
-                case WindowState.CLOSE:
-                    if (mainWindow) mainWindow.close();
+                case WindowState.TRAY:
+                    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.close();
+                    break;
+                case WindowState.EXIT:
+                    app.quit();
                     break;
                 default:
                     break;

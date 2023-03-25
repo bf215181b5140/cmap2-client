@@ -21,11 +21,11 @@ export default function ProfilePage() {
 
     return (
         <Content>
-            <ContentBox flex={1} loading={!!client}>
+            <ContentBox flex={1} loading={!client}>
                 <img src={'' + client?.picture} alt="Profile picture" />
                 <p>Account type or status</p>
             </ContentBox>
-            <ContentBox loading={!!client}>
+            <ContentBox loading={!client}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <table>
                         <tbody>

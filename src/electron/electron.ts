@@ -4,6 +4,7 @@ import { OscService } from './osc/osc.service';
 import { ClientSocketService } from './webSocket/clientSocket.service';
 import { IpcRendererService } from '../shared/ipcRendererService';
 import { testing } from './testing/testing.service';
+import { ClientStoreService } from './util/clientStore.service';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -13,7 +14,7 @@ if (!app.requestSingleInstanceLock()) {
 export const serverUrl: string = 'http://localhost:8080';
 // export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080'; TODO
 
-export let mainWindow: BrowserWindow;
+export let mainWindow: BrowserWindow | null;
 
 function createWindow(): BrowserWindow {
     // Create the browser window.
@@ -52,14 +53,22 @@ app.whenReady().then(() => {
     // testing service
     // testing();
 
-    mainWindow = createWindow();
+    const applicationSettings = ClientStoreService.getApplicationSettings();
+    if (!applicationSettings || applicationSettings.startMinimized !== true) mainWindow = createWindow();
 
     // create tray icon
     let tray = new Tray(nativeImage.createFromPath('public/logo192.png'));
     const contextMenu = Menu.buildFromTemplate([
         {
             label: 'Open', type: 'normal', click: () => {
-                if (mainWindow) mainWindow.show();
+                if (!mainWindow || mainWindow.isDestroyed()) mainWindow = createWindow();
+            }
+        },
+        {
+            label: 'Close', type: 'normal', click: () => {
+                if (mainWindow && !mainWindow.isDestroyed()) {
+                    mainWindow.close();
+                }
             }
         },
         {
@@ -71,19 +80,8 @@ app.whenReady().then(() => {
     tray.setContextMenu(contextMenu);
     tray.setToolTip('This is my application.');
 
-    app.on('activate', function () {
-        // On macOS it's common to re-create a window in the app when the
-        // dock icon is clicked and there are no other windows open.
-        if (BrowserWindow.getAllWindows().length === 0) createWindow();
-    });
+    app.on('window-all-closed', (event: any) => {
+        // prevent terminating main process
+        event.preventDefault()
+    })
 });
-
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit();
-});
-
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.

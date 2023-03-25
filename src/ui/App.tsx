@@ -12,7 +12,8 @@ import useSocketConnection from './hooks/socketConnection.hook';
 import useClientCredentials from './hooks/clientCredentials.hook';
 import ProfilePage from './pages/profile/profile.page';
 import AvatarPage from './pages/avatar/avatar.page';
-import { ClientCredentials } from '../shared/global';
+import { ClientCredentials } from '../shared/classes';
+import SettingsPage from './pages/settings.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
 
@@ -28,6 +29,7 @@ export default function App() {
                 <Routes>
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/about" element={<AboutPage />} />
                     <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
                 </Routes>

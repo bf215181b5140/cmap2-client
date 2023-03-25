@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ClientCredentials } from '../../shared/global';
+import { ClientCredentials } from '../../shared/classes';
 
 export default function useClientCredentials() {
 
