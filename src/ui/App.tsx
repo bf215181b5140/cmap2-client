@@ -15,7 +15,7 @@ import AvatarPage from './pages/avatar/avatar.page';
 import { ClientCredentials } from '../shared/classes';
 import SettingsPage from './pages/settings.page';
 import useToast from './hooks/toast.hook';
-import { ToastComponent } from './components/toast.component';
+import { Toast, ToastComponent, ToastType } from './components/toast.component';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
 export const ToastContext = React.createContext<(action: any) => void>(() => {});
@@ -32,6 +32,10 @@ export default function App() {
                 <ToastContext.Provider value={toastsDispatch}>
                     <TitleBar socketConnection={socketConnection} />
                     <MainWindow>
+                        <button onClick={() => toastsDispatch({
+                            type: 'add',
+                            toast: {message: 'e.message', type: ToastType.ERROR}
+                        })}>Toast</button>
                         <Routes>
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarPage />} />

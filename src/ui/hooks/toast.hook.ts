@@ -22,7 +22,7 @@ function toastReducer(state: Toast[], action: Action): Toast[] {
 export default function useToast() {
     const [toasts, dispatch] = useReducer(toastReducer, []);
 
-    const toastsDispatch = (action: Action) => {
+    const toastsDispatch = (action: any) => {
         if (action.type === "add") {
             action.toast.id = (Math.random() + 1).toString(36).substring(7);
             action.dispatch = dispatch;

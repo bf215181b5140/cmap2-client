@@ -17,7 +17,7 @@ export default function ProfilePage() {
         setValue('displayName', client?.displayName);
         setValue('bio', client?.bio);
         setValue('hidden', client?.hidden);
-    }, []);
+    }, [client]);
 
     return (
         <Content>

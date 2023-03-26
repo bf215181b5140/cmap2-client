@@ -9,8 +9,11 @@ export default function useAvatarPage() {
     const [selectedAvatarId, setSelectedAvatarId] = useState<string | null>(null);
 
     useEffect(() => {
+        console.log('useAvatarPage useEffect []');
         customFetch('avatar').then(data => setAvatars(data));
     }, []);
+
+    console.log('useAvatarPage');
 
     const selectedAvatar = avatars?.find(avi => avi.id === selectedAvatarId);
 
@@ -21,9 +24,6 @@ export default function useAvatarPage() {
         }
         setSelectedAvatarId(avatar.id);
     };
-
-    console.log('useAvatarPage avatars', avatars);
-    console.log('useAvatarPage selectedAvatar', selectedAvatar);
 
     const onSubmit = (formData: any) => {
         customFetch('avatar', {

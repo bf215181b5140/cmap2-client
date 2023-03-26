@@ -36,7 +36,6 @@ export default function ConnectionPage(props: ConnectionPageProps) {
     }, [clientCredentials]);
 
     function onSubmit(formData: any) {
-        console.log('ConnectionPage formData', formData)
         clientCredentials.serverUrl = formData.serverUrl;
         clientCredentials.username = formData.username;
         clientCredentials.password = formData.password;
@@ -46,6 +45,10 @@ export default function ConnectionPage(props: ConnectionPageProps) {
 
     function onDisconnect() {
         window.electronAPI.disconnectSocket();
+    }
+
+    function onUrlReset() {
+        setValue('serverUrl', 'http://localhost:8080');
     }
 
     return (<HomePageStyled>
@@ -62,7 +65,7 @@ export default function ConnectionPage(props: ConnectionPageProps) {
                 <tbody>
                 <tr>
                     <th>Server URL</th>
-                    <td><FormInput type={InputType.Url} register={register} name={'serverUrl'} errors={errors} /></td>
+                    <td><FormInput type={InputType.Url} register={register} name={'serverUrl'} errors={errors} /><FormInput type={InputType.Button} onClick={() => onUrlReset()} value={'Reset'} /></td>
                 </tr>
                 <tr>
                     <th>Username</th>
@@ -78,7 +81,7 @@ export default function ConnectionPage(props: ConnectionPageProps) {
                 </tr>
                 <tr>
                     <td colSpan={2}>{props.socketConnection.type === SocketConnectionType.SUCCESS ?
-                        (<FormInput type={InputType.Button} onClick={() => onDisconnect} value={'Disconnect'} />) :
+                        (<FormInput type={InputType.Button} onClick={() => onDisconnect()} value={'Disconnect'} />) :
                         (<FormInput type={InputType.Submit} value={'Connect'} />)
                     }
                     </td>

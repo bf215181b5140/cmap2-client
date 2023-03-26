@@ -10,6 +10,9 @@
   "ui-primary-4": "#3f9cb3",
   "ui-primary-5": "#2baac1",
   "ui-primary-6": "#35645f",
+  "ui-primary-7": "#1f2932",
+  "ui-primary-8": "#313131",
+  "ui-primary-9": "#0e131c",
 
   "ui-navBar-7": "#181f24DD",
   "ui-navBar-8": "#025b66",
@@ -21,8 +24,9 @@
 
   "text-1": "#B8B9B9",
   "text-2": "#9b9c9c",
-  "text-3": "#B8B9B9",
-  "text-4": "#B8B9B9",
+  "text-3": "#dddede",
+  "text-4": "#f1f2f2",
+  "text-5": "#676868",
 
   "success": "#99ff55",
   "error": "#ff5555",

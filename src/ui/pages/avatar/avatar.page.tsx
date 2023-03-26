@@ -12,6 +12,7 @@ import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
 import LayoutComponent from '../../components/layout.component';
 import useAvatarPage from './avatar.hook';
 import { useParams } from "react-router-dom";
+import { SidePanel, SidePanelButton } from '../../components/SidePanel.component';
 
 export default function AvatarPage() {
 
@@ -21,21 +22,21 @@ export default function AvatarPage() {
 
     // set form fields
     useEffect(() => {
+        console.log('AvatarPage useEffect [selectedAvatar]');
         setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
         setValue('vrcId', selectedAvatar?.vrcId);
         setValue('label', selectedAvatar?.label);
         setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
     }, [selectedAvatar]);
 
-    console.log('AvatarPage routeParams:', routeParams);
+    console.log('AvatarPage');
 
     return (<>
-        <SidePanel>
-            <h2>Avatars</h2>
+        <SidePanel title={'Avatars'} icon={'ri-contacts-book-fill'}>
             {avatars && avatars.map((avatar: AvatarDto) => (
-                <button onClick={() => setSelectedAvatar(avatar)} key={avatar.id}>{avatar.label}</button>
+                <SidePanelButton active={selectedAvatar && selectedAvatar.id === avatar.id} onClick={() => setSelectedAvatar(avatar)} key={avatar.id}>{avatar.label}</SidePanelButton>
             ))}
-            <button className={'addButton'} onClick={() => setSelectedAvatar(new AvatarDto())}><i className={'ri-add-fill'}></i></button>
+            <SidePanelButton className={'addButton'} onClick={() => setSelectedAvatar(new AvatarDto())}><i className={'ri-add-fill'}></i></SidePanelButton>
         </SidePanel>
         <Content flexDirection={'column'}>
             {selectedAvatar && <ContentBox>
@@ -72,44 +73,3 @@ export default function AvatarPage() {
         </Content>
     </>);
 }
-
-const SidePanel = styled.div`
-  margin: 0 20px 0 0;
-  padding: 0 7px;
-  width: 166px;
-  height: 100%;
-  float: left;
-  background-color: ${colors['ui-background-3']};
-
-  h2 {
-    margin: 5px 5px 15px 5px;
-  }
-
-  button {
-    font-family: Dosis-Bold, sans-serif;
-    margin: 7px 0;
-    padding: 7px;
-    display: block;
-    width: 100%;
-    color: ${colors['text-1']};
-    background: ${colors['ui-primary-1']};
-    border: 2px solid ${colors['ui-primary-2']};
-    border-radius: 7px;
-    font-size: 16px;
-    transition: 0.15s linear;
-
-    :hover {
-      //transform: scale(1.05) perspective(1px);
-      background: ${colors['ui-primary-3']};
-      border: 2px solid ${colors['ui-primary-4']};
-    }
-  }
-
-  button.addButton {
-    background: ${colors['ui-background-3']};
-
-    i {
-      font-size: 24px;
-    }
-  }
-`;
