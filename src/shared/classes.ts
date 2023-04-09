@@ -3,9 +3,9 @@ export class ClientCredentials {
     username: string = '';
     password: string = '';
     apiToken: string | undefined | null;
-    autoLogin: boolean = false;
 }
 
 export class ApplicationSettings {
     startMinimized: boolean | undefined | null;
+    autoLogin: boolean | undefined | null;
 }

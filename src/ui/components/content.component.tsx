@@ -2,7 +2,7 @@ import { ReactProps } from '../../shared/global';
 import styled from 'styled-components';
 
 interface ContentProps extends ReactProps {
-    flexDirection?: string;
+    flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
 }
 
 export default function Content(props: ContentProps) {

@@ -25,7 +25,7 @@ const ActionButtonStyled = styled.div`
     background: ${colors['ui-primary-1']};
     border: 2px solid ${colors['ui-primary-2']};
     border-radius: 7px;
-    font-size: 20px;
+    font-size: 16px;
     transition: 0.15s linear;
 
     :hover {

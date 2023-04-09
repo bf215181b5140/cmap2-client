@@ -23,8 +23,7 @@ export default function ConnectionPage(props: ConnectionPageProps) {
         resolver: zodResolver(z.object({
             serverUrl: z.string().url(),
             username: z.string(),
-            password: z.string(),
-            autoLogin: z.boolean()
+            password: z.string()
         }))
     });
 
@@ -32,14 +31,12 @@ export default function ConnectionPage(props: ConnectionPageProps) {
         setValue('serverUrl', clientCredentials.serverUrl);
         setValue('username', clientCredentials.username);
         setValue('password', clientCredentials.password);
-        setValue('autoLogin', clientCredentials.autoLogin);
     }, [clientCredentials]);
 
     function onSubmit(formData: any) {
         clientCredentials.serverUrl = formData.serverUrl;
         clientCredentials.username = formData.username;
         clientCredentials.password = formData.password;
-        clientCredentials.autoLogin = formData.autoLogin;
         window.electronAPI.setClientCredentials(clientCredentials);
     }
 
@@ -74,10 +71,6 @@ export default function ConnectionPage(props: ConnectionPageProps) {
                 <tr>
                     <th>Password</th>
                     <td><FormInput type={InputType.Password} register={register} name={'password'} errors={errors} /></td>
-                </tr>
-                <tr>
-                    <th>Connect automatically</th>
-                    <td><FormInput type={InputType.Boolean} register={register} name={'autoLogin'} errors={errors} /></td>
                 </tr>
                 <tr>
                     <td colSpan={2}>{props.socketConnection.type === SocketConnectionType.SUCCESS ?

@@ -12,14 +12,10 @@ export class ClientSocketService {
     static socket: Socket;
     static connectionStatus: SocketConnection = new SocketConnection();
 
-    static init() {
+    static connect() {
         const clientCredentials = ClientStoreService.getClientCredentials();
-        if (clientCredentials && clientCredentials.autoLogin) {
-            this.connect(clientCredentials);
-        }
-    }
+        if (!clientCredentials) return;
 
-    static connect(clientCredentials: ClientCredentials) {
         if (this.socket) this.socket.close();
         this.socket = io(clientCredentials.serverUrl + '/clientSocket', {
             query: {

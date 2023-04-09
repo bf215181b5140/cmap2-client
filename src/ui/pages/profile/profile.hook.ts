@@ -8,18 +8,18 @@ export default function useProlfilePage() {
     const [client, setClient] = useState<ClientDto | null>();
 
     useEffect(() => {
-        customFetch('profile').then(data => setClient(data));
+        customFetch('profile').then(res => {
+            if (res?.body) setClient(res.body);
+        });
     }, []);
 
     const onSubmit = (formData: any) => {
         void customFetch('profile', {
             method: 'POST',
             body: JSON.stringify(formData)
-        }).then(data => {
-            if(data && data === true && client) {
-                client.displayName = formData.displayName;
-                client.bio = formData.bio;
-                client.hidden = formData.hidden;
+        }).then(res => {
+            if(res) {
+                setClient({...client, ...formData});
             }
         });
     }

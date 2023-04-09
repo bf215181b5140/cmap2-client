@@ -32,10 +32,10 @@ export default function App() {
                 <ToastContext.Provider value={toastsDispatch}>
                     <TitleBar socketConnection={socketConnection} />
                     <MainWindow>
-                        <button onClick={() => toastsDispatch({
-                            type: 'add',
-                            toast: {message: 'e.message', type: ToastType.ERROR}
-                        })}>Toast</button>
+                        {/* <button onClick={() => toastsDispatch({ */}
+                        {/*     type: 'add', */}
+                        {/*     toast: {message: 'e.message', type: ToastType.ERROR} */}
+                        {/* })}>Toast</button> */}
                         <Routes>
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarPage />} />
@@ -43,8 +43,8 @@ export default function App() {
                             <Route path="/about" element={<AboutPage />} />
                             <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
                         </Routes>
-                        <ToastComponent toasts={toasts} dispatch={toastsDispatch} />
                     </MainWindow>
+                    <ToastComponent toasts={toasts} dispatch={toastsDispatch} />
                     <NavBar />
                 </ToastContext.Provider>
             </ClientCredentialsContext.Provider>

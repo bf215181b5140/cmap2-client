@@ -1,60 +1,55 @@
-import { useEffect, useState } from 'react';
-import { AvatarDto, LayoutDto } from 'cmap2-shared';
+import { useEffect, useReducer, useState } from 'react';
+import { AvatarDto, ButtonDto, LayoutDto } from 'cmap2-shared';
 import useCustomFetch from '../../hooks/customFetch.hook';
+import { useNavigate, useParams } from 'react-router-dom';
+import avatarReducer from './avatar.reducer';
 
 export default function useAvatarPage() {
 
+    const navigate = useNavigate();
+    const routeParams = useParams();
     const customFetch = useCustomFetch();
-    const [avatars, setAvatars] = useState<AvatarDto[] | null>();
-    const [selectedAvatarId, setSelectedAvatarId] = useState<string | null>(null);
+    const [avatars, avatarDataDispatch] = useReducer(avatarReducer, []);
 
     useEffect(() => {
-        console.log('useAvatarPage useEffect []');
-        customFetch('avatar').then(data => setAvatars(data));
+        customFetch('avatar').then(res => {
+            if (res) {
+                avatarDataDispatch({type: 'setAvatars', avatars: res.body});
+                const defAvatar = res.body.find((avatar: AvatarDto) => avatar.default);
+                if (defAvatar) navigate('/avatar/' + defAvatar.id);
+            }
+        });
     }, []);
 
-    console.log('useAvatarPage');
+    const selectedAvatar = findAvatar();
 
-    const selectedAvatar = avatars?.find(avi => avi.id === selectedAvatarId);
-
-    const setSelectedAvatar = (avatar: AvatarDto) => {
-        let exists = avatars?.find(avi => avi.id === avatar.id);
-        if (!exists) {
-            avatars?.push(avatar);
+    function findAvatar() {
+        if (routeParams.avatarId) {
+            if (routeParams.avatarId === 'new') return new AvatarDto();
+            return avatars.find(avi => avi.id === routeParams.avatarId);
         }
-        setSelectedAvatarId(avatar.id);
-    };
+        return undefined;
+    }
 
-    const onSubmit = (formData: any) => {
-        customFetch('avatar', {
-            method: 'POST',
-            body: JSON.stringify(formData)
-        }).then(res => {
-            if (res) {
-                if (formData.id && res === true) {
-                    setSelectedAvatar({...selectedAvatar!, label: formData.label, vrcId: formData.vrcId, default: formData.default});
-                } else {
-                    setAvatars([...avatars!, res]);
-                    setSelectedAvatar(res);
-                }
-            }
-            console.log('/api/avatar/ post response:', res);
-        });
-    };
+    const selectedLayout = findLayout();
 
-    const addChild = (layout: LayoutDto) => {
-        if (selectedAvatar?.layouts) {
-            selectedAvatar.layouts.push(layout);
-            // setAvatars([...avatars!]);
+    function findLayout() {
+        if (routeParams.avatarId && routeParams.layoutId) {
+            return avatars.find(a => a.id === routeParams.avatarId)?.layouts.find(l => l.id === routeParams.layoutId);
         }
-    };
+        return undefined;
+    }
 
-    const removeChild = (childId: string) => {
-        if (selectedAvatar?.layouts) {
-            selectedAvatar.layouts = selectedAvatar.layouts.filter((layout) => layout.id !== childId);
-            // setAvatars([...avatars!]);
+    const selectedButton = findButton();
+
+    function findButton() {
+        if (routeParams.avatarId && routeParams.layoutId && routeParams.buttonId) {
+            if (routeParams.buttonId === 'new') return new ButtonDto();
+            return avatars.find(a => a.id === routeParams.avatarId)?.layouts.find(l => l.id === routeParams.layoutId)?.buttons
+                .find(b => b.id === routeParams.buttonId);
         }
-    };
+        return undefined;
+    }
 
-    return {avatars, setAvatars, selectedAvatar, setSelectedAvatar, onSubmit, addChild, removeChild};
+    return {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton};
 }

@@ -47,13 +47,13 @@ function createWindow(): BrowserWindow {
 app.whenReady().then(() => {
 
     IpcRendererService.init();
-    ClientSocketService.init();
     OscService.init();
 
     // testing service
     // testing();
 
     const applicationSettings = ClientStoreService.getApplicationSettings();
+    if (applicationSettings && applicationSettings.autoLogin === true) ClientSocketService.connect();
     if (!applicationSettings || applicationSettings.startMinimized !== true) mainWindow = createWindow();
 
     // create tray icon

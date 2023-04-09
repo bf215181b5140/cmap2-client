@@ -12,7 +12,8 @@ export default function SettingsPage() {
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({
         resolver: zodResolver(
             z.object({
-                startMinimized: z.boolean()
+                startMinimized: z.boolean(),
+                autoLogin: z.boolean()
             })
         )
     });
@@ -21,6 +22,7 @@ export default function SettingsPage() {
         window.electronAPI.getApplicationSettings().then(applicationSettings => {
             if (applicationSettings) {
                 setValue('startMinimized', applicationSettings.startMinimized);
+                setValue('autoLogin', applicationSettings.autoLogin);
             }
         });
     }, []);
@@ -38,6 +40,10 @@ export default function SettingsPage() {
                     <tr>
                         <th>Start minimized to tray</th>
                         <td><FormInput type={InputType.Boolean} register={register} name={'startMinimized'} errors={errors} /></td>
+                    </tr>
+                    <tr>
+                        <th>Connect automatically</th>
+                        <td><FormInput type={InputType.Boolean} register={register} name={'autoLogin'} errors={errors} /></td>
                     </tr>
                     <tr>
                         <td colSpan={2}><FormInput type={InputType.Submit} /></td>

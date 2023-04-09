@@ -11,38 +11,60 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
 import LayoutComponent from '../../components/layout.component';
 import useAvatarPage from './avatar.hook';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 import { SidePanel, SidePanelButton } from '../../components/SidePanel.component';
+import ButtonComponent from '../../components/button.component';
+import useCustomFetch from '../../hooks/customFetch.hook';
 
 export default function AvatarPage() {
 
-    const routeParams = useParams();
-    const {avatars, selectedAvatar, setSelectedAvatar, onSubmit, addChild, removeChild} = useAvatarPage();
+    const navigate = useNavigate();
+    const customFetch = useCustomFetch();
+    const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton} = useAvatarPage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
     // set form fields
     useEffect(() => {
-        console.log('AvatarPage useEffect [selectedAvatar]');
         setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
         setValue('vrcId', selectedAvatar?.vrcId);
         setValue('label', selectedAvatar?.label);
         setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
     }, [selectedAvatar]);
 
-    console.log('AvatarPage');
+    if (selectedAvatar && selectedLayout && selectedButton) {
+        return (<ButtonComponent button={selectedButton} avatar={selectedAvatar} layout={selectedLayout} avatarDataDispatch={avatarDataDispatch} />)
+    }
+
+    function onSave(formData: any) {
+        customFetch('avatar', {
+            method: formData.id ? 'POST' : 'PUT',
+            body: JSON.stringify(formData)
+        }).then(res => {
+            if (res?.code === 200) avatarDataDispatch({type: 'editAvatar', avatar: formData});
+            if (res?.code === 201) avatarDataDispatch({type: 'addAvatar', avatar: res.body});
+        });
+    }
+
+    function onDelete(avatar: AvatarDto) {
+        customFetch('avatar', {
+            method: 'DELETE',
+            body: JSON.stringify(avatar.id)
+        }).then(res => {
+            if (res?.code === 200) avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
+        });
+    }
 
     return (<>
         <SidePanel title={'Avatars'} icon={'ri-contacts-book-fill'}>
             {avatars && avatars.map((avatar: AvatarDto) => (
-                <SidePanelButton active={selectedAvatar && selectedAvatar.id === avatar.id} onClick={() => setSelectedAvatar(avatar)} key={avatar.id}>{avatar.label}</SidePanelButton>
+                <SidePanelButton active={selectedAvatar && selectedAvatar.id === avatar.id} onClick={() => navigate('/avatar/' + avatar.id)} key={avatar.id}>{avatar.label}</SidePanelButton>
             ))}
-            <SidePanelButton className={'addButton'} onClick={() => setSelectedAvatar(new AvatarDto())}><i className={'ri-add-fill'}></i></SidePanelButton>
+            <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}><i className={'ri-add-fill'}></i></SidePanelButton>
         </SidePanel>
         <Content flexDirection={'column'}>
             {selectedAvatar && <ContentBox>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSave)}>
                     <FormInput type={InputType.Hidden} register={register} name={'id'} />
-                    {errors?.id?.message?.toString()}
                     <table>
                         <tbody>
                         <tr>
@@ -58,17 +80,18 @@ export default function AvatarPage() {
                             <td><FormInput type={InputType.Boolean} register={register} name={'default'} errors={errors} /></td>
                         </tr>
                         <tr>
-                            <td colSpan={2}><FormInput type={InputType.Submit} /></td>
+                            <td><FormInput type={InputType.Submit} /></td>
+                            <td><FormInput type={InputType.Button} value="Delete" onClick={() => onDelete} /></td>
                         </tr>
                         </tbody>
                     </table>
                 </form>
             </ContentBox>}
             {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
-                <LayoutComponent layout={layout} avatarId={selectedAvatar?.id} order={index + 1} key={index} removeChild={removeChild} />))
+                <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} avatarDataDispatch={avatarDataDispatch} />))
             }
             {selectedAvatar &&
-                <LayoutComponent layout={new LayoutDto()} avatarId={selectedAvatar?.id} order={selectedAvatar.layouts?.length + 1} addChild={addChild} />
+                <LayoutComponent layout={new LayoutDto()} avatar={selectedAvatar} order={selectedAvatar.layouts?.length + 1} avatarDataDispatch={avatarDataDispatch} />
             }
         </Content>
     </>);

@@ -15,7 +15,7 @@ export class IpcRendererService {
 
         ipcMain.on('setClientCredentials', (event: IpcMainEvent, clientCredentials: ClientCredentials) => {
             ClientStoreService.setClientCredentials(clientCredentials);
-            ClientSocketService.connect(clientCredentials);
+            ClientSocketService.connect();
         });
 
         ipcMain.handle('getApplicationSettings', async () => {

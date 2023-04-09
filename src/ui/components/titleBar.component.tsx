@@ -22,9 +22,9 @@ export default function TitleBar(props: any) {
 
 const TitleBarStyled = styled.div`
   width: 800px;
-  padding: 0 10px;
+  padding: 0px;
   background-color: ${colors["ui-background-2"]};
-  border-radius: 20px 20px 0 0;
+  border-radius: 8px 8px 0 0;
   display: flex;
   flex-direction: row;
   justify-content: end;

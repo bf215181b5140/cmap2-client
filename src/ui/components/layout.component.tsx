@@ -1,37 +1,38 @@
 import ContentBox from '../components/contentBox.component';
 import { ReactProps } from '@/shared/global';
-import { ButtonDto, LayoutDto } from 'cmap2-shared';
+import { AvatarDto, ButtonDto, LayoutDto } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';
 import FormInput from '../components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { ClientCredentialsContext } from '../App';
+import React, { useCallback, useEffect, useState } from 'react';
 import { layoutSchema } from 'cmap2-shared/dist/validationSchemas';
 import styled from 'styled-components';
+import ParameterButton from './buttons/parameter.button';
+import useCustomFetch from '../hooks/customFetch.hook';
+import { AvatarReducerAction } from '../pages/avatar/avatar.reducer';
 
 interface LayoutComponentProps extends ReactProps {
     layout: LayoutDto;
     order: number;
-    avatarId?: string;
-    addChild?: (layout: LayoutDto) => void;
-    removeChild?: (id: string) => void;
+    avatar: AvatarDto;
+    avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function LayoutComponent(props: LayoutComponentProps) {
+export default function LayoutComponent({layout, order, avatar, avatarDataDispatch, children}: LayoutComponentProps) {
 
-    const clientCredentials = useContext(ClientCredentialsContext);
-    const {register, formState: {errors, isDirty, submitCount}, reset, handleSubmit} = useForm({resolver: zodResolver(layoutSchema)});
     const navigate = useNavigate();
+    const customFetch = useCustomFetch();
+    const {register, formState: {errors}, reset, handleSubmit} = useForm({resolver: zodResolver(layoutSchema)});
     const [inEdit, setEditing] = useState<boolean>(false);
 
     const resetForm = useCallback(() => {
         reset({
-            id: props.layout.id,
-            label: props.layout.label,
-            order: props.order,
-            parentId: props.avatarId
+            id: layout.id,
+            label: layout.label,
+            order: order,
+            parentId: avatar.id
         });
     }, []);
 
@@ -39,66 +40,37 @@ export default function LayoutComponent(props: LayoutComponentProps) {
         resetForm();
     }, []);
 
-    async function onSubmit(formData: any) {
-        // formData.parentId = props.avatarId;
-        console.log('onSubmit layout:', formData);
-        let response = null;
-        await fetch(clientCredentials.serverUrl + '/api/layout/' + clientCredentials.username, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'jwt': 'jwt-token' // TODO
-            },
+    function onSave(formData: any) {
+        customFetch('layout', {
+            method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData)
-        }).then(async (res) => {
-            response = await res.json();
-            console.log('/api/layout/ post response:', response);
-            if (props.addChild && response) props.addChild(response);
-        }).catch((err) => {
-            console.log('/api/layout/ post error:', err);
+        }).then(res => {
+            if (res?.code === 200) avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatar.id});
+            if (res?.code === 201) avatarDataDispatch({type: 'addLayout', layout: res.body, avatarId: avatar.id});
         });
-
-        // todo if fetch success
-        // todo what happens when new one is added
-        if (formData.id) {
-            props.layout.label = formData.label;
-            resetForm();
-            setEditing(false);
-        } else {
-            // if (props.addChild && response) props.addChild(response);
-        }
     }
 
-    function onDelete() {
-        fetch(clientCredentials.serverUrl + '/api/layout/' + clientCredentials.username, {
+    function onDelete(layout: LayoutDto) {
+        customFetch('layout', {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'jwt': 'jwt-token' // TODO
-            },
-            body: JSON.stringify({id: props.layout.id})
-        }).then(async (res) => {
-            console.log('/api/layout/ delete response:', res);
-        }).catch((err) => {
-            console.log('/api/layout/ delete error:', err);
+            body: JSON.stringify(layout.id)
+        }).then(res => {
+            if (res?.code === 200) avatarDataDispatch({type: 'removeLayout', layout: layout, avatarId: avatar.id});
         });
-
-        // todo if fetch success
-        if (props.removeChild) props.removeChild(props.layout.id);
     }
 
     return (<ContentBox>
         {!inEdit && <>
-            {props.layout.id && <LayoutLabel>{props.layout.label}</LayoutLabel>}
-            <FormInput type={InputType.Button} value={props.layout.id ? 'Edit' : 'Add new'} onClick={() => setEditing(true)}></FormInput>
+            {layout.id && <LayoutLabel>{layout.label}</LayoutLabel>}
+            <FormInput type={InputType.Button} value={layout.id ? 'Edit' : 'Add new'} onClick={() => setEditing(true)}></FormInput>
         </>}
-        {inEdit && <form onSubmit={handleSubmit(onSubmit)}>
+        {inEdit && <form onSubmit={handleSubmit(onSave)}>
             <FormInput type={InputType.Hidden} register={register} name={'id'} />
-            <FormInput type={InputType.Text} register={register} name={'label'} errors={errors} />
-            <FormInput type={InputType.Hidden} register={register} name={'order'} />
             <FormInput type={InputType.Hidden} register={register} name={'parentId'} />
+            <FormInput type={InputType.Hidden} register={register} name={'order'} />
+            <FormInput type={InputType.Text} register={register} name={'label'} errors={errors} />
             <FormInput type={InputType.Submit} />
-            {props.layout.id && <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete()}></FormInput>}
+            {layout.id && <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(layout)}></FormInput>}
             <FormInput type={InputType.Button} value={'Cancel'} onClick={() => {
                 resetForm();
                 setEditing(false);
@@ -106,9 +78,12 @@ export default function LayoutComponent(props: LayoutComponentProps) {
             <p>{errors?.id?.message?.toString()}</p>
         </form>}
         <hr />
-        {props.layout.buttons?.map((button: ButtonDto) => (
-            <button onClick={() => navigate('/button/' + props.avatarId + '/' + props.layout.id + '/' + button.id)} key={button.id}>{button.label}</button>
-        ))}
+        <ButtonsBox>
+            {layout.buttons?.map((button: ButtonDto) => (
+                <ParameterButton button={button} key={button.id} flexBasis="calc(25% - (3 * 15px / 4))"
+                                 onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/' + button.id)} />
+            ))}
+        </ButtonsBox>
     </ContentBox>);
 }
 
@@ -116,4 +91,13 @@ const LayoutLabel = styled.h2`
   margin: 7px;
   font-size: 20px;
   display: inline-block;
+`;
+
+const ButtonsBox = styled.div`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
 `;

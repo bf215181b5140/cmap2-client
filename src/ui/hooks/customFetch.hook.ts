@@ -2,12 +2,17 @@ import { useContext } from 'react';
 import { ClientCredentialsContext, ToastContext } from '../App';
 import { ToastType } from '../components/toast.component';
 
+interface CustomFetchResponse {
+    code: number;
+    body: any;
+}
+
 export default function useCustomFetch() {
 
     const clientCredentials = useContext(ClientCredentialsContext);
     const toastsDispatch = useContext(ToastContext);
 
-    const customFetch = async (urlSuffix: RequestInfo | URL, init?: RequestInit): Promise<any> => {
+    const customFetch = async (urlSuffix: RequestInfo | URL, init?: RequestInit): Promise<CustomFetchResponse | null> => {
         try {
             if (!clientCredentials) {
                 return null;
@@ -18,12 +23,13 @@ export default function useCustomFetch() {
             }
 
             if (init && init.headers) {
-                init.headers = {...init?.headers, Authorization: 'Bearer ' + clientCredentials.apiToken};
+                init.headers = {...init?.headers, Authorization: '' + clientCredentials.apiToken};
             } else {
-                init = {...init, headers: {'Authorization': '' + clientCredentials.apiToken,'Content-Type': 'application/json'}};
+                init = {...init, headers: {'Authorization': '' + clientCredentials.apiToken, 'Content-Type': 'application/json'}};
             }
 
             const url = clientCredentials.serverUrl + '/api/' + urlSuffix;
+
             return await fetch(url, init)
                 .then(async res => {
                     if (res.status === 401) {
@@ -32,8 +38,8 @@ export default function useCustomFetch() {
                     }
                     return res;
                 }).then(async res => {
-                    if (res.ok || (res.status >= 200 && res.status <= 300)) {
-                        return await res.json();
+                    if (res.ok) {
+                        return {code: res.status, body: await res.json()};
                     } else {
                         throw new Error('custom fetch bad response on url: ' + url + 'with status code: ' + res.status);
                     }
