@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
 import Content from '../components/content.component';
+import { FormTable, FormControl } from '../components/form/formTable.component';
 
 export default function SettingsPage() {
 
@@ -35,8 +36,7 @@ export default function SettingsPage() {
         <ContentBox>
             <h2>Settings</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <table>
-                    <tbody>
+                <FormTable>
                     <tr>
                         <th>Start minimized to tray</th>
                         <td><FormInput type={InputType.Boolean} register={register} name={'startMinimized'} errors={errors} /></td>
@@ -45,11 +45,10 @@ export default function SettingsPage() {
                         <th>Connect automatically</th>
                         <td><FormInput type={InputType.Boolean} register={register} name={'autoLogin'} errors={errors} /></td>
                     </tr>
-                    <tr>
-                        <td colSpan={2}><FormInput type={InputType.Submit} /></td>
-                    </tr>
-                    </tbody>
-                </table>
+                </FormTable>
+                <FormControl>
+                    <FormInput type={InputType.Submit} />
+                </FormControl>
             </form>
         </ContentBox>
     </Content>);

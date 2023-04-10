@@ -11,6 +11,7 @@ interface FormInputProps extends ReactProps {
     errors?: any;
     options?: FieldOption[] | null;
     value?: string;
+    disabled?: boolean;
     onClick?: () => void;
 }
 
@@ -33,7 +34,7 @@ export default function FormInput(props: FormInputProps) {
         case InputType.Url:
         case InputType.File:
             return (<>
-                <InputStyled type={props.type} {...props.register(props.name)} errors={hasErrors()} />
+                <InputStyled type={props.type} {...props.register(props.name)} disabled={props.disabled === true} errors={hasErrors()} />
                 <ErrorMessage />
             </>);
         case InputType.Textarea:
@@ -63,7 +64,7 @@ export default function FormInput(props: FormInputProps) {
         case InputType.Button:
             return (<InputStyled type={InputType.Button} button={true} value={props.value} onClick={props.onClick} />);
         case InputType.Hidden:
-            return (<InputStyled type={props.type} />);
+            return (<><InputStyled type={props.type} /><ErrorMessage /></>);
         default:
             return (<></>);
     }
@@ -91,6 +92,10 @@ const globalStyle = css<{ errors?: boolean }>`
     background: ${colors['ui-primary-3']};
     border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-4']};
     outline: none;
+  }
+
+  :disabled {
+    filter: saturate(0.5%);
   }
 `;
 

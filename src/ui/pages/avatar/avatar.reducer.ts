@@ -16,8 +16,7 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
         case 'setAvatars':
             return action.avatars;
         case 'addAvatar':
-            state.push(action.avatar);
-            return state;
+            return [...state, action.avatar];
         case 'editAvatar':
             return state.map(avatar => {
                 if (avatar.id === action.avatar.id) return {...avatar, ...action.avatar};
@@ -26,13 +25,14 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
         case 'removeAvatar':
             return state.filter(avatar => avatar.id !== action.avatar.id);
         case 'addLayout':
-            const avatar = state.find(avatar => avatar.id === action.avatarId);
-            if (avatar) avatar.layouts.push(action.layout);
-            return state;
+            return state.map(avatar => {
+                if (avatar.id === action.avatarId) avatar.layouts.push(action.layout);
+                return avatar;
+            });
         case 'editLayout':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) {
-                    avatar.layouts.map(layout => {
+                    avatar.layouts = avatar.layouts.map(layout => {
                         if (layout.id === action.layout.id) return {...layout, ...action.layout};
                         return layout;
                     });
@@ -45,15 +45,16 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
                 return avatar;
             });
         case 'addButton':
-            const layout = state.find(avatar => avatar.id === action.avatarId)?.layouts.find(layout => layout.id === action.layoutId);
-            if (layout) layout.buttons.push(action.button);
-            return state;
+            return state.map(avatar => {
+                if (avatar.id === action.avatarId) avatar.layouts.find(layout => layout.id === action.layoutId)?.buttons.push(action.button);
+                return avatar;
+            });
         case 'editButton':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) {
-                    avatar.layouts.map(layout => {
+                    avatar.layouts = avatar.layouts.map(layout => {
                         if (layout.id === action.layoutId) {
-                            layout.buttons.map(button => {
+                            layout.buttons = layout.buttons.map(button => {
                                 if (button.id === action.button.id) return {...button, ...action.button};
                                 return button;
                             });
@@ -66,8 +67,8 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
         case 'removeButton':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) {
-                    avatar.layouts.map(layout => {
-                        if (layout.id !== action.layoutId) layout.buttons = layout.buttons.filter(button => button.id !== action.button.id);
+                    avatar.layouts = avatar.layouts.map(layout => {
+                        if (layout.id === action.layoutId) layout.buttons = layout.buttons.filter(button => button.id !== action.button.id);
                         return layout;
                     });
                 }

@@ -7,6 +7,7 @@ import FormInput from '../../components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
 import Content from '../../components/content.component';
 import useProlfilePage from './profile.hook';
+import { FormTable, FormControl } from '../../components/form/formTable.component';
 
 export default function ProfilePage() {
 
@@ -27,8 +28,7 @@ export default function ProfilePage() {
             </ContentBox>
             <ContentBox loading={!client}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <table>
-                        <tbody>
+                    <FormTable>
                         <tr>
                             <th>Display name</th>
                             <td><FormInput type={InputType.Text} register={register} name={'displayName'} errors={errors} /></td>
@@ -41,11 +41,8 @@ export default function ProfilePage() {
                             <th>Hide profile</th>
                             <td><FormInput type={InputType.Boolean} register={register} name={'hidden'} errors={errors} /></td>
                         </tr>
-                        <tr>
-                            <td colSpan={2}><FormInput type={InputType.Submit} /></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    </FormTable>
+                    <FormControl><FormInput type={InputType.Submit} /></FormControl>
                 </form>
             </ContentBox>
         </Content>

@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import ConnectionPage from './pages/connection.page';
 import AboutPage from './pages/about.page';
-import React, { useReducer } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import TitleBar from './components/titleBar.component';
 import NavBar from './components/navBar.component';
@@ -15,7 +15,7 @@ import AvatarPage from './pages/avatar/avatar.page';
 import { ClientCredentials } from '../shared/classes';
 import SettingsPage from './pages/settings.page';
 import useToast from './hooks/toast.hook';
-import { Toast, ToastComponent, ToastType } from './components/toast.component';
+import { ToastComponent} from './components/toast.component';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentials>(new ClientCredentials());
 export const ToastContext = React.createContext<(action: any) => void>(() => {});

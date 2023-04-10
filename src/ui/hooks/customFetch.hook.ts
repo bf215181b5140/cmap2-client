@@ -39,7 +39,8 @@ export default function useCustomFetch() {
                     return res;
                 }).then(async res => {
                     if (res.ok) {
-                        return {code: res.status, body: await res.json()};
+                        const resBody = res.headers.get('Content-Length') === '0' ? {} : await res.json();
+                        return {code: res.status, body: resBody};
                     } else {
                         throw new Error('custom fetch bad response on url: ' + url + 'with status code: ' + res.status);
                     }
@@ -63,11 +64,8 @@ export default function useCustomFetch() {
                 method: 'GET',
                 headers: {'password': clientCredentials.password, 'Content-Type': 'application/json'},
             }).then(async res => {
-                console.log('authentication in useFetch successful??', res.status);
                 if (res.ok || res.status === 200) {
-                    const token = await res.text();
-                    console.log('authenticate token:', token);
-                    clientCredentials.apiToken = token;
+                    clientCredentials.apiToken = await res.text();
                     return true;
                 } else {
                     throw new Error('Can\'t authenticate, error code: ' + res.status);

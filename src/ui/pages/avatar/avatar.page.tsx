@@ -9,12 +9,13 @@ import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
-import LayoutComponent from '../../components/layout.component';
+import LayoutComponent from './layout.component';
 import useAvatarPage from './avatar.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SidePanel, SidePanelButton } from '../../components/SidePanel.component';
-import ButtonComponent from '../../components/button.component';
+import ButtonComponent from './button.component';
 import useCustomFetch from '../../hooks/customFetch.hook';
+import { FormControl, FormTable } from '../../components/form/formTable.component';
 
 export default function AvatarPage() {
 
@@ -48,7 +49,7 @@ export default function AvatarPage() {
     function onDelete(avatar: AvatarDto) {
         customFetch('avatar', {
             method: 'DELETE',
-            body: JSON.stringify(avatar.id)
+            body: JSON.stringify(avatar)
         }).then(res => {
             if (res?.code === 200) avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
         });
@@ -61,12 +62,12 @@ export default function AvatarPage() {
             ))}
             <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}><i className={'ri-add-fill'}></i></SidePanelButton>
         </SidePanel>
+        <h1>Avatar</h1>
         <Content flexDirection={'column'}>
             {selectedAvatar && <ContentBox>
                 <form onSubmit={handleSubmit(onSave)}>
                     <FormInput type={InputType.Hidden} register={register} name={'id'} />
-                    <table>
-                        <tbody>
+                    <FormTable>
                         <tr>
                             <th>Label</th>
                             <td><FormInput type={InputType.Text} register={register} name={'label'} errors={errors} /></td>
@@ -79,14 +80,14 @@ export default function AvatarPage() {
                             <th>Default avatar</th>
                             <td><FormInput type={InputType.Boolean} register={register} name={'default'} errors={errors} /></td>
                         </tr>
-                        <tr>
-                            <td><FormInput type={InputType.Submit} /></td>
-                            <td><FormInput type={InputType.Button} value="Delete" onClick={() => onDelete} /></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    </FormTable>
+                    <FormControl>
+                        <FormInput type={InputType.Submit} />
+                        <FormInput type={InputType.Button} value="Delete" onClick={() => onDelete(selectedAvatar)} />
+                    </FormControl>
                 </form>
             </ContentBox>}
+            {selectedAvatar?.id && <h1>Button groups</h1>}
             {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
                 <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} avatarDataDispatch={avatarDataDispatch} />))
             }
