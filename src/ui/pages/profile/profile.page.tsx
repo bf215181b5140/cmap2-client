@@ -11,7 +11,7 @@ import { FormTable, FormControl } from '../../components/form/formTable.componen
 
 export default function ProfilePage() {
 
-    const {client, onSubmit} = useProlfilePage();
+    const {client, clientTier, onSubmit} = useProlfilePage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
 
     useEffect(() => {
@@ -24,7 +24,7 @@ export default function ProfilePage() {
         <Content>
             <ContentBox flex={1} loading={!client}>
                 <img src={'' + client?.picture} alt="Profile picture" />
-                <p>Account type or status</p>
+                {clientTier && <p>{clientTier.tier}</p>}
             </ContentBox>
             <ContentBox loading={!client}>
                 <form onSubmit={handleSubmit(onSubmit)}>

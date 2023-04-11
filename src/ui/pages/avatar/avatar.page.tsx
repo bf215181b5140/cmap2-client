@@ -1,8 +1,6 @@
-import styled from 'styled-components';
 import ContentBox from '../../components/contentBox.component';
 import { useEffect } from 'react';
 import Content from '../../components/content.component';
-import colors from '../../style/colors.json';
 import { AvatarDto, LayoutDto } from 'cmap2-shared';
 import FormInput from '../../components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
@@ -11,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
 import LayoutComponent from './layout.component';
 import useAvatarPage from './avatar.hook';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SidePanel, SidePanelButton } from '../../components/SidePanel.component';
 import ButtonComponent from './button.component';
 import useCustomFetch from '../../hooks/customFetch.hook';
@@ -21,7 +19,7 @@ export default function AvatarPage() {
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
-    const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton} = useAvatarPage();
+    const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier} = useAvatarPage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
     // set form fields
@@ -33,16 +31,16 @@ export default function AvatarPage() {
     }, [selectedAvatar]);
 
     if (selectedAvatar && selectedLayout && selectedButton) {
-        return (<ButtonComponent button={selectedButton} avatar={selectedAvatar} layout={selectedLayout} avatarDataDispatch={avatarDataDispatch} />)
+        return (<ButtonComponent button={selectedButton} avatar={selectedAvatar} layout={selectedLayout} avatarDataDispatch={avatarDataDispatch} />);
     }
 
     function onSave(formData: any) {
-        customFetch('avatar', {
+        customFetch<AvatarDto>('avatar', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData)
         }).then(res => {
             if (res?.code === 200) avatarDataDispatch({type: 'editAvatar', avatar: formData});
-            if (res?.code === 201) avatarDataDispatch({type: 'addAvatar', avatar: res.body});
+            if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addAvatar', avatar: res.body});
         });
     }
 
@@ -58,9 +56,11 @@ export default function AvatarPage() {
     return (<>
         <SidePanel title={'Avatars'} icon={'ri-contacts-book-fill'}>
             {avatars && avatars.map((avatar: AvatarDto) => (
-                <SidePanelButton active={selectedAvatar && selectedAvatar.id === avatar.id} onClick={() => navigate('/avatar/' + avatar.id)} key={avatar.id}>{avatar.label}</SidePanelButton>
+                <SidePanelButton active={selectedAvatar && selectedAvatar.id === avatar.id} onClick={() => navigate('/avatar/' + avatar.id)}
+                                 key={avatar.id}>{avatar.label}</SidePanelButton>
             ))}
-            <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}><i className={'ri-add-fill'}></i></SidePanelButton>
+            {avatars.length < clientTier.avatars &&
+                <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}><i className={'ri-add-fill'}></i></SidePanelButton>}
         </SidePanel>
         <h1>Avatar</h1>
         <Content flexDirection={'column'}>
@@ -89,10 +89,12 @@ export default function AvatarPage() {
             </ContentBox>}
             {selectedAvatar?.id && <h1>Button groups</h1>}
             {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
-                <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} avatarDataDispatch={avatarDataDispatch} />))
+                <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}
+                                 avatarDataDispatch={avatarDataDispatch} />))
             }
-            {selectedAvatar &&
-                <LayoutComponent layout={new LayoutDto()} avatar={selectedAvatar} order={selectedAvatar.layouts?.length + 1} avatarDataDispatch={avatarDataDispatch} />
+            {selectedAvatar && selectedAvatar.layouts.length < clientTier.layouts &&
+                <LayoutComponent layout={new LayoutDto()} avatar={selectedAvatar} order={selectedAvatar.layouts?.length + 1}
+                                 clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} />
             }
         </Content>
     </>);

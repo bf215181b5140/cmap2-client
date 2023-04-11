@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
-import { AvatarDto, ButtonDto, LayoutDto } from 'cmap2-shared';
+import { AvatarDto, Avatars, ButtonDto, TierDto } from 'cmap2-shared';
 import useCustomFetch from '../../hooks/customFetch.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 import avatarReducer from './avatar.reducer';
@@ -10,12 +10,14 @@ export default function useAvatarPage() {
     const routeParams = useParams();
     const customFetch = useCustomFetch();
     const [avatars, avatarDataDispatch] = useReducer(avatarReducer, []);
+    const [clientTier, setClientTier] = useState<TierDto>(new TierDto());
 
     useEffect(() => {
-        customFetch('avatar').then(res => {
-            if (res) {
-                avatarDataDispatch({type: 'setAvatars', avatars: res.body});
-                const defAvatar = res.body.find((avatar: AvatarDto) => avatar.default);
+        customFetch<Avatars>('avatar').then(res => {
+            if (res?.body) {
+                avatarDataDispatch({type: 'setAvatars', avatars: res.body.avatars});
+                setClientTier(res.body.tier);
+                const defAvatar = res.body.avatars.find((avatar: AvatarDto) => avatar.default);
                 if (defAvatar) navigate('/avatar/' + defAvatar.id);
             }
         });
@@ -51,5 +53,5 @@ export default function useAvatarPage() {
         return undefined;
     }
 
-    return {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton};
+    return {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier};
 }

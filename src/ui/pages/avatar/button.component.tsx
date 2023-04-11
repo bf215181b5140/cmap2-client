@@ -3,7 +3,6 @@ import { ReactProps } from '../../../shared/global';
 import { AvatarDto, ButtonDto, ButtonType, FieldOption, InputType, LayoutDto, ValueType } from 'cmap2-shared';
 import Content from '../../components/content.component';
 import { useNavigate } from 'react-router-dom';
-import ActionButton from '../../components/buttons/action.button';
 import ParameterButton from '../../components/buttons/parameter.button';
 import React, { useEffect } from 'react';
 import { AvatarReducerAction } from './avatar.reducer';
@@ -31,7 +30,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     useEffect(() => {
         setValue('id', button.id ? button.id : null);
         setValue('parentId', layout.id);
-        setValue('order', 0);
+        setValue('order', 0); // todo
         setValue('label', button.label);
         setValue('path', button.path);
         setValue('value', button.value);
@@ -44,12 +43,12 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     }
 
     function onSave(formData: any) {
-        customFetch('button', {
+        customFetch<ButtonDto>('button', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData)
         }).then(res => {
             if (res?.code === 200) avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
-            if (res?.code === 201) avatarDataDispatch({type: 'addButton', button: res.body, avatarId: avatar.id, layoutId: layout.id});
+            if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addButton', button: res.body, avatarId: avatar.id, layoutId: layout.id});
             navigate(-1);
         });
     }

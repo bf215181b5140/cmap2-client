@@ -1,12 +1,12 @@
 import ContentBox from '../../components/contentBox.component';
 import { ReactProps } from '../../../shared/global';
-import { AvatarDto, ButtonDto, LayoutDto } from 'cmap2-shared';
+import { AvatarDto, ButtonDto, LayoutDto, TierDto } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';
 import FormInput from '../../components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { layoutSchema } from 'cmap2-shared/dist/validationSchemas';
 import styled from 'styled-components';
 import ParameterButton from '../../components/buttons/parameter.button';
@@ -18,10 +18,11 @@ interface LayoutComponentProps extends ReactProps {
     layout: LayoutDto;
     order: number;
     avatar: AvatarDto;
+    clientTier: TierDto;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function LayoutComponent({layout, order, avatar, avatarDataDispatch, children}: LayoutComponentProps) {
+export default function LayoutComponent({layout, order, avatar, avatarDataDispatch, clientTier}: LayoutComponentProps) {
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
@@ -42,13 +43,13 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
     }, []);
 
     function onSave(formData: any) {
-        customFetch('layout', {
+        customFetch<LayoutDto>('layout', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData)
         }).then(res => {
             console.log('onSave res');
             if (res?.code === 200) avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatar.id});
-            if (res?.code === 201) avatarDataDispatch({type: 'addLayout', layout: res.body, avatarId: avatar.id});
+            if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addLayout', layout: res.body, avatarId: avatar.id});
             setEditing(false);
         });
     }
@@ -95,8 +96,8 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
                 <ParameterButton button={button} key={button.id} flexBasis="calc(25% - (3 * 15px / 4))"
                                  onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/' + button.id)} />
             ))}
-            <ParameterButton button={new ButtonDto()} key={'new'} flexBasis="calc(25% - (3 * 15px / 4))"
-                             onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/new')} />
+            {layout.buttons.length < clientTier.buttons && <ParameterButton button={new ButtonDto()} key={'new'} flexBasis="calc(25% - (3 * 15px / 4))"
+                              onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/new')} />}
         </ButtonsBox>}
     </ContentBox>);
 }

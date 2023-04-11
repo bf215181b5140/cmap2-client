@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import { ClientCredentialsContext, ToastContext } from '../App';
 import { ToastType } from '../components/toast.component';
 
-interface CustomFetchResponse {
+interface CustomFetchResponse<T> {
     code: number;
-    body: any;
+    body: T | null;
 }
 
 export default function useCustomFetch() {
@@ -12,10 +12,10 @@ export default function useCustomFetch() {
     const clientCredentials = useContext(ClientCredentialsContext);
     const toastsDispatch = useContext(ToastContext);
 
-    const customFetch = async (urlSuffix: RequestInfo | URL, init?: RequestInit): Promise<CustomFetchResponse | null> => {
+    async function customFetch<T>(urlSuffix: RequestInfo | URL, init?: RequestInit) {
         try {
             if (!clientCredentials) {
-                return null;
+                throw new Error('No client credentials');
             }
 
             if (!clientCredentials.apiToken) {
@@ -39,10 +39,20 @@ export default function useCustomFetch() {
                     return res;
                 }).then(async res => {
                     if (res.ok) {
-                        const resBody = res.headers.get('Content-Length') === '0' ? {} : await res.json();
-                        return {code: res.status, body: resBody};
+                        const result: CustomFetchResponse<T> = {code: res.status, body: null};
+                        if (res.headers.get('Content-Length') === '0') {
+                            return result;
+                        }
+                        if (res.headers.get('Content-Type')?.startsWith('application/json')) {
+                            result.body = await res.json() as T;
+                            return result;
+                        } else {
+                            throw new Error('custom fetch not a application/json response');
+                            // await res.text();
+                            // return result;
+                        }
                     } else {
-                        throw new Error('custom fetch bad response on url: ' + url + 'with status code: ' + res.status);
+                        throw new Error('custom fetch bad response on url: ' + url + ' with status code: ' + res.status);
                     }
                 });
 
@@ -55,7 +65,7 @@ export default function useCustomFetch() {
             }
             return null;
         }
-    };
+    }
 
     const authenticate = async (): Promise<boolean> => {
         if (clientCredentials?.username && clientCredentials?.password) {
