@@ -34,6 +34,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         setValue('label', button.label);
         setValue('path', button.path);
         setValue('value', button.value);
+        setValue('valueType', button.valueType);
         setValue('buttonType', button.buttonType);
         setValue('image', button.image);
     }, []);

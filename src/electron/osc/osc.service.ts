@@ -1,15 +1,32 @@
 import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { ClientSocketService } from '../webSocket/clientSocket.service';
+import { ClientStoreService } from '../util/clientStore.service';
+import { OscSettings } from '../../shared/classes';
 
 export class OscService {
 
+    static oscServer: Server;
+    static oscClient: Client;
     static ignoredParams: Set<string> = new Set(['VelocityZ', 'VelocityY', 'VelocityX', 'InStation', 'Seated', 'Upright', 'AngularY', 'Grounded',
                                                  'GestureRightWeight', 'GestureRight', 'GestureLeftWeight', 'GestureLeft', 'Voice', 'Viseme']);
 
-    static oscServer = new Server(9001, '127.0.0.1');
-    static oscClient = new Client('127.0.0.1', 9000);
+    static start() {
 
-    static init() {
+        if (this.oscServer) this.oscServer.close();
+        if (this.oscClient) this.oscClient.close();
+
+        const storeSettings = ClientStoreService.getApplicationSettings();
+        const oscSettings = new OscSettings();
+
+        if (storeSettings) {
+            if (storeSettings.oscIp) oscSettings.oscIp = storeSettings.oscIp;
+            if (storeSettings.oscInPort) oscSettings.oscInPort = storeSettings.oscInPort;
+            if (storeSettings.oscOutPort) oscSettings.oscOutPort = storeSettings.oscOutPort;
+        }
+
+        this.oscClient = new Client(oscSettings.oscIp!, oscSettings.oscInPort!);
+        this.oscServer = new Server(oscSettings.oscOutPort!, oscSettings.oscIp!);
+
         this.oscServer.on('message', (message: [string, ...ArgumentType[]]) => {
             console.log('Received OSC message from VRChat: ', message);
             const parameter = message[0].slice(message[0].lastIndexOf('/') + 1);
@@ -25,6 +42,6 @@ export class OscService {
 
     static send(message: Message) {
         console.log('Sending OSC message to VRChat:', message);
-        this.oscClient.send(message);
+        if (this.oscClient) this.oscClient.send(message);
     }
 }

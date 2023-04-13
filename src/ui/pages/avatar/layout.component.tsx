@@ -59,7 +59,7 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
             method: 'DELETE',
             body: JSON.stringify(layout)
         }).then(res => {
-            console.log('onDelete', res)
+            console.log('onDelete', res);
             if (res?.code === 200) avatarDataDispatch({type: 'removeLayout', layout: layout, avatarId: avatar.id});
         });
     }
@@ -96,8 +96,9 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
                 <ParameterButton button={button} key={button.id} flexBasis="calc(25% - (3 * 15px / 4))"
                                  onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/' + button.id)} />
             ))}
-            {layout.buttons.length < clientTier.buttons && <ParameterButton button={new ButtonDto()} key={'new'} flexBasis="calc(25% - (3 * 15px / 4))"
-                              onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/new')} />}
+            {clientTier.buttons && layout.buttons.length < clientTier.buttons &&
+                <ParameterButton button={new ButtonDto()} key={'new'} flexBasis="calc(25% - (3 * 15px / 4))"
+                                 onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/new')} />}
         </ButtonsBox>}
     </ContentBox>);
 }

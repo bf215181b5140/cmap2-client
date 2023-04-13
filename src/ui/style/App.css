@@ -10,12 +10,13 @@
 
 body {
     font-family: Dosis-Bold, sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     color: #b8b9b9;
 }
 
 p {
     font-family: Noto-Sans-Regular, serif;
+    font-size: 14px;
 }
 
 /* width */

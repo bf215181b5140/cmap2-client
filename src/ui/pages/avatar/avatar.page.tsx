@@ -20,14 +20,15 @@ export default function AvatarPage() {
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
     const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier} = useAvatarPage();
-    const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
+    const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
     // set form fields
     useEffect(() => {
-        setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
-        setValue('vrcId', selectedAvatar?.vrcId);
-        setValue('label', selectedAvatar?.label);
-        setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
+        // setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
+        // setValue('vrcId', selectedAvatar?.vrcId);
+        // setValue('label', selectedAvatar?.label);
+        // setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
+        reset(selectedAvatar);
     }, [selectedAvatar]);
 
     if (selectedAvatar && selectedLayout && selectedButton) {
@@ -59,7 +60,7 @@ export default function AvatarPage() {
                 <SidePanelButton active={selectedAvatar && selectedAvatar.id === avatar.id} onClick={() => navigate('/avatar/' + avatar.id)}
                                  key={avatar.id}>{avatar.label}</SidePanelButton>
             ))}
-            {avatars.length < clientTier.avatars &&
+            {clientTier?.avatars && avatars.length < clientTier.avatars &&
                 <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}><i className={'ri-add-fill'}></i></SidePanelButton>}
         </SidePanel>
         <h1>Avatar</h1>
@@ -92,7 +93,7 @@ export default function AvatarPage() {
                 <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}
                                  avatarDataDispatch={avatarDataDispatch} />))
             }
-            {selectedAvatar && selectedAvatar.layouts.length < clientTier.layouts &&
+            {clientTier?.layouts && selectedAvatar && selectedAvatar.layouts.length < clientTier.layouts &&
                 <LayoutComponent layout={new LayoutDto()} avatar={selectedAvatar} order={selectedAvatar.layouts?.length + 1}
                                  clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} />
             }

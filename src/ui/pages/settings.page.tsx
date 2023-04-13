@@ -7,28 +7,33 @@ import { z } from 'zod';
 import { useEffect } from 'react';
 import Content from '../components/content.component';
 import { FormTable, FormControl } from '../components/form/formTable.component';
+import { ApplicationSettings } from '../../shared/classes';
 
 export default function SettingsPage() {
 
-    const {register, setValue, formState: {errors}, handleSubmit} = useForm({
+    const {register, reset, setValue, formState: {errors}, handleSubmit} = useForm({
         resolver: zodResolver(
             z.object({
                 startMinimized: z.boolean(),
-                autoLogin: z.boolean()
+                autoLogin: z.boolean(),
+                oscIp: z.string().optional(),
+                oscInPort: z.number().optional(),
+                oscOutPort: z.number().optional(),
             })
         )
     });
 
     useEffect(() => {
         window.electronAPI.getApplicationSettings().then(applicationSettings => {
+            console.log(applicationSettings);
             if (applicationSettings) {
-                setValue('startMinimized', applicationSettings.startMinimized);
-                setValue('autoLogin', applicationSettings.autoLogin);
+                reset(applicationSettings);
             }
         });
     }, []);
 
     function onSubmit(formData: any) {
+        if (formData.oscIp === '') formData.oscIp = undefined;
         window.electronAPI.setApplicationSettings(formData);
     }
 
@@ -44,6 +49,21 @@ export default function SettingsPage() {
                     <tr>
                         <th>Connect automatically</th>
                         <td><FormInput type={InputType.Boolean} register={register} name={'autoLogin'} errors={errors} /></td>
+                    </tr>
+                </FormTable>
+                <h2>OSC settings</h2>
+                <FormTable>
+                    <tr>
+                        <th>VRChat lan IP</th>
+                        <td><FormInput type={InputType.Text} register={register} name={'oscIp'} placeholder={'127.0.0.1'} errors={errors} /></td>
+                    </tr>
+                    <tr>
+                        <th>VRChat osc receiving port</th>
+                        <td><FormInput type={InputType.Number} register={register} name={'oscInPort'} placeholder={'9000'} errors={errors} /></td>
+                    </tr>
+                    <tr>
+                        <th>VRChat osc sending port</th>
+                        <td><FormInput type={InputType.Number} register={register} name={'oscOutPort'} placeholder={'9001'} errors={errors} /></td>
                     </tr>
                 </FormTable>
                 <FormControl>

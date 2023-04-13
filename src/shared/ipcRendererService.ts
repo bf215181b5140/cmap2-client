@@ -4,6 +4,7 @@ import { ClientStoreService } from '../electron/util/clientStore.service';
 import { mainWindow } from '../electron/electron';
 import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
+import { OscService } from '../electron/osc/osc.service';
 
 export class IpcRendererService {
 
@@ -22,8 +23,16 @@ export class IpcRendererService {
             return ClientStoreService.getApplicationSettings();
         });
 
-        ipcMain.on('setApplicationSettings', (event: IpcMainEvent, applicationSettings: ApplicationSettings) => {
-            ClientStoreService.setApplicationSettings(applicationSettings);
+        ipcMain.on('setApplicationSettings', (event: IpcMainEvent, appSettings: ApplicationSettings) => {
+            const oldSettings = ClientStoreService.getApplicationSettings();
+            ClientStoreService.setApplicationSettings(appSettings);
+            if (oldSettings) {
+                if (oldSettings.oscIp !== appSettings.oscIp ||
+                    oldSettings.oscInPort !== appSettings.oscInPort ||
+                    oldSettings.oscOutPort !== appSettings.oscOutPort) {
+                    OscService.start();
+                }
+            }
         });
 
         ipcMain.on('setWindowState', (event: IpcMainInvokeEvent, windowState: WindowState) => {

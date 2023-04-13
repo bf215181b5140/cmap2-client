@@ -47,7 +47,7 @@ function createWindow(): BrowserWindow {
 app.whenReady().then(() => {
 
     IpcRendererService.init();
-    OscService.init();
+    OscService.start();
 
     // testing service
     // testing();
