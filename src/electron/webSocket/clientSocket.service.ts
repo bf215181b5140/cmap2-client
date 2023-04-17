@@ -43,7 +43,7 @@ export class ClientSocketService {
         });
 
         this.socket.on('parameter', (parameter: OscMessage) => {
-            OscService.send(new Message('/avatar/parameters/' + parameter.address, parameter.args.at(0)!));
+            OscService.send(parameter);
         });
     }
 

@@ -1,14 +1,19 @@
-import { ArgumentType, Client, Message, Server } from 'node-osc';
+import { ArgumentType, Client, Message, MessageLike, Server } from 'node-osc';
 import { ClientSocketService } from '../webSocket/clientSocket.service';
 import { ClientStoreService } from '../util/clientStore.service';
 import { OscSettings } from '../../shared/classes';
+import { OscMessage } from 'cmap2-shared';
 
 export class OscService {
 
     static oscServer: Server;
     static oscClient: Client;
-    static ignoredParams: Set<string> = new Set(['VelocityZ', 'VelocityY', 'VelocityX', 'InStation', 'Seated', 'Upright', 'AngularY', 'Grounded',
-                                                 'GestureRightWeight', 'GestureRight', 'GestureLeftWeight', 'GestureLeft', 'Voice', 'Viseme']);
+    static ignoredParams: Set<string> = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
+                                                 '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
+                                                 '/avatar/parameters/AngularY', '/avatar/parameters/Grounded',
+                                                 '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureRight',
+                                                 '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
+                                                 '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude']);
 
     static start() {
 
@@ -29,19 +34,20 @@ export class OscService {
 
         this.oscServer.on('message', (message: [string, ...ArgumentType[]]) => {
             console.log('Received OSC message from VRChat: ', message);
-            const parameter = message[0].slice(message[0].lastIndexOf('/') + 1);
-            if (!this.ignoredParams.has(parameter)) {
+            if (!this.ignoredParams.has(message[0])) {
                 if (message[0].indexOf('/avatar/change') !== -1) {
-                    ClientSocketService.sendParameter('avatar', new Message(parameter, message[1]));
+                    ClientSocketService.sendParameter('avatar', new Message(message[0].slice(message[0].lastIndexOf('/') + 1), message[1]));
                 } else {
-                    ClientSocketService.sendParameter('parameter', new Message(parameter, message[1]));
+                    ClientSocketService.sendParameter('parameter', new Message(message[0], message[1]));
                 }
             }
         });
     }
 
-    static send(message: Message) {
-        console.log('Sending OSC message to VRChat:', message);
-        if (this.oscClient) this.oscClient.send(message);
+    static send(message: OscMessage) {
+        if (this.oscClient) {
+            console.log('Sending OSC message to VRChat:', message);
+            this.oscClient.send(new Message(message.address, ...message.args));
+        }
     }
 }
