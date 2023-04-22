@@ -1,19 +1,23 @@
-import FormInput from './form/formInput.component';
-import { InputType } from 'cmap2-shared';
-import React from 'react';
+import { globalInputStyle } from './form/formInput.component';
+import React, { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import useCustomFetch from '../hooks/customFetch.hook';
 import { ReactProps } from '../../shared/global';
+import styled from 'styled-components';
+import colors from 'cmap2-shared/src/colors.json';
 
 interface FileUploadProps extends ReactProps {
     parentType: string,
-    parentId: string
+    parentId: string,
+    uploadCallback?: (picture: string) => void
 }
 
-export default function FileUpload({parentType, parentId}: FileUploadProps) {
+export default function FileUpload({parentType, parentId, uploadCallback}: FileUploadProps) {
 
     const customFetch = useCustomFetch();
-    const {register, setValue, formState: {errors}, handleSubmit} = useForm();
+    const {register, watch, reset, formState: {errors}, handleSubmit} = useForm();
+    const submitRef: RefObject<HTMLInputElement> = useRef(null);
+    const selectedFile = watch('file');
 
     const onSubmit = (formData: any) => {
         if (formData.file[0]) {
@@ -22,19 +26,80 @@ export default function FileUpload({parentType, parentId}: FileUploadProps) {
             data.append('parentId', parentId);
             data.append('file', formData.file[0]);
 
-            customFetch('file', {
+            customFetch<string>('file', {
                 method: 'POST',
                 body: data
             }).then(res => {
-                // if(res?.code === 200) {
-                //     setClient({...client, ...formData});
-                // }
+                if (res?.body) {
+                    if (uploadCallback) uploadCallback(res.body);
+                    onClearFiles();
+                }
             });
         }
     };
 
+    const onBrowse = () => {
+        const input = document.getElementById('fileInput');
+        if (input) input.click();
+    }
+
+    const onUpload = () => {
+        if (submitRef?.current) {
+            submitRef?.current?.click();
+        }
+    }
+
+    const onClearFiles = () => {
+        reset({file: undefined});
+    }
+
     return (<form onSubmit={handleSubmit(onSubmit)}>
-        <FormInput type={InputType.File} register={register} name={'file'} errors={errors} />
-        <FormInput type={InputType.Submit} />
+        <FileInputHidden type='file' {...register('file')} id="fileInput" />
+        <FileInputStyled>
+            {!selectedFile?.[0]?.name && <div className="browse" onClick={onBrowse}><i className={'ri-image-add-line'}></i></div>}
+            {selectedFile?.[0]?.name && <>
+                <FileName>{selectedFile?.[0]?.name}</FileName>
+                <div onClick={onUpload}><i className={'ri-upload-2-line'}></i></div>
+                <div onClick={onClearFiles}><i className={'ri-close-line'}></i></div>
+            </>}
+        </FileInputStyled>
+        <FileInputHidden type='submit' ref={submitRef} />
     </form>);
 }
+
+const FileInputHidden = styled.input<{ errors?: boolean }>`
+  display: none;
+`;
+
+const FileName = styled.div`
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const FileInputStyled = styled.div<{ errors?: boolean }>`
+  ${globalInputStyle};
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  
+  :hover {
+    background: ${colors['ui-primary-1']};
+  }
+
+  div {
+    flex: 1;
+    text-align: center;
+    color: ${colors['ui-primary-2']};
+    cursor: pointer;
+    padding: 1em;
+    
+      :hover {
+        color: ${colors['ui-primary-4']};
+      }
+  }
+  
+  i {
+    font-size: 3em;
+  }
+`;
+

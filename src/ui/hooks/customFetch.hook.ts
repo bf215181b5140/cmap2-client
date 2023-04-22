@@ -46,11 +46,15 @@ export default function useCustomFetch() {
                         if (res.headers.get('Content-Type')?.startsWith('application/json')) {
                             result.body = await res.json() as T;
                             return result;
-                        } else {
-                            throw new Error('custom fetch not a application/json response');
-                            // await res.text();
-                            // return result;
                         }
+                        if (res.headers.get('Content-Type')?.startsWith('text/html')) {
+                            result.body = await res.text() as T;
+                            return result;
+                        }
+
+                        throw new Error('custom fetch not a application/json or text/html response');
+                        // await res.text();
+                        // return result;
                     } else {
                         throw new Error('custom fetch bad response on url: ' + url + ' with status code: ' + res.status);
                     }

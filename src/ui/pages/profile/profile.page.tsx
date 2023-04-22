@@ -16,7 +16,7 @@ import colors from '../../style/colors.json';
 export default function ProfilePage() {
 
     const clientCredentials = useContext(ClientCredentialsContext);
-    const {client, clientTier, onSubmit} = useProlfilePage();
+    const {client, clientTier, onSubmit, setClientPicture} = useProlfilePage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
 
     useEffect(() => {
@@ -31,7 +31,7 @@ export default function ProfilePage() {
                 {client && <>
                     <ProfilePictureStyled src={clientCredentials.serverUrl + '/' + client?.picture} alt="Profile picture" />
                     {clientTier && <p>{clientTier.tier}</p>}
-                    <FileUpload parentType="profile" parentId={client?.id} />
+                    <FileUpload parentType="profile" parentId={client?.id} uploadCallback={setClientPicture} />
                 </>}
             </ContentBox>
             <ContentBox loading={!client}>

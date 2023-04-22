@@ -37,11 +37,6 @@ export default function FormInput(props: FormInputProps) {
                 <InputStyled type={props.type} {...props.register(props.name)} disabled={props.disabled === true} placeholder={props.placeholder} errors={hasErrors()} />
                 <ErrorMessage />
             </>);
-        case InputType.File:
-            return (<>
-                <InputStyled type={props.type} {...props.register(props.name)} disabled={props.disabled === true} errors={hasErrors()} />
-                <ErrorMessage />
-            </>);
         case InputType.Number:
             return (<>
                 <InputStyled type={props.type} {...props.register(props.name, {
@@ -82,7 +77,7 @@ export default function FormInput(props: FormInputProps) {
     }
 }
 
-const globalStyle = css<{ errors?: boolean }>`
+export const globalInputStyle = css<{ errors?: boolean }>`
   font-family: Dosis-Bold, sans-serif;
   font-size: 1em;
   margin: 7px;
@@ -112,7 +107,7 @@ const globalStyle = css<{ errors?: boolean }>`
 `;
 
 const InputStyled = styled.input<{ button?: boolean, errors?: boolean }>`
-  ${globalStyle};
+  ${globalInputStyle};
   ${props => props.button ? 'width: auto;' : null};
   
   :hover {
@@ -121,15 +116,15 @@ const InputStyled = styled.input<{ button?: boolean, errors?: boolean }>`
 `;
 
 const TextareaStyled = styled.textarea<{ errors?: boolean }>`
-  ${globalStyle};
+  ${globalInputStyle};
 `;
 
 const SelectStyled = styled.select<{ errors?: boolean }>`
-  ${globalStyle};
+  ${globalInputStyle};
 `;
 
 const CheckboxStyled = styled.span<{ errors?: boolean }>`
-  ${globalStyle};
+  ${globalInputStyle};
   padding: 2px;
   //height:10px;
 

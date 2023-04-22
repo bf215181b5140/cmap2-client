@@ -29,5 +29,11 @@ export default function useProlfilePage() {
         });
     }
 
-    return {client, clientTier, onSubmit};
+    function setClientPicture(picture: string) {
+        if (client) {
+            setClient({...client, picture: picture});
+        }
+    }
+
+    return {client, clientTier, onSubmit, setClientPicture};
 }
