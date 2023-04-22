@@ -33,9 +33,13 @@ export default function FormInput(props: FormInputProps) {
         case InputType.Text:
         case InputType.Password:
         case InputType.Url:
-        case InputType.File:
             return (<>
                 <InputStyled type={props.type} {...props.register(props.name)} disabled={props.disabled === true} placeholder={props.placeholder} errors={hasErrors()} />
+                <ErrorMessage />
+            </>);
+        case InputType.File:
+            return (<>
+                <InputStyled type={props.type} {...props.register(props.name)} disabled={props.disabled === true} errors={hasErrors()} />
                 <ErrorMessage />
             </>);
         case InputType.Number:

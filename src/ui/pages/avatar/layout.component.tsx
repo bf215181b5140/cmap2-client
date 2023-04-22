@@ -45,7 +45,8 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
     function onSave(formData: any) {
         customFetch<LayoutDto>('layout', {
             method: formData.id ? 'POST' : 'PUT',
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            headers: {'Content-Type': 'application/json'}
         }).then(res => {
             console.log('onSave res');
             if (res?.code === 200) avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatar.id});
@@ -57,7 +58,8 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
     function onDelete(layout: LayoutDto) {
         customFetch('layout', {
             method: 'DELETE',
-            body: JSON.stringify(layout)
+            body: JSON.stringify(layout),
+            headers: {'Content-Type': 'application/json'}
         }).then(res => {
             console.log('onDelete', res);
             if (res?.code === 200) avatarDataDispatch({type: 'removeLayout', layout: layout, avatarId: avatar.id});

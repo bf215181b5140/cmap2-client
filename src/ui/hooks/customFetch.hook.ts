@@ -25,7 +25,7 @@ export default function useCustomFetch() {
             if (init && init.headers) {
                 init.headers = {...init?.headers, Authorization: '' + clientCredentials.apiToken};
             } else {
-                init = {...init, headers: {'Authorization': '' + clientCredentials.apiToken, 'Content-Type': 'application/json'}};
+                init = {...init, headers: {'Authorization': '' + clientCredentials.apiToken}};
             }
 
             const url = clientCredentials.serverUrl + '/api/' + urlSuffix;

@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { buttonSchema } from 'cmap2-shared/dist/validationSchemas';
 import FormInput from '../../components/form/formInput.component';
 import { FormTable, FormControl } from '../../components/form/formTable.component';
+import FileUpload from '../../components/fileUpload.component';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;
@@ -46,7 +47,8 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     function onSave(formData: any) {
         customFetch<ButtonDto>('button', {
             method: formData.id ? 'POST' : 'PUT',
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            headers: {'Content-Type': 'application/json'}
         }).then(res => {
             if (res?.code === 200) avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
             if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addButton', button: res.body, avatarId: avatar.id, layoutId: layout.id});
@@ -57,7 +59,8 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     function onDelete(button: ButtonDto) {
         customFetch('button', {
             method: 'DELETE',
-            body: JSON.stringify(button)
+            body: JSON.stringify(button),
+            headers: {'Content-Type': 'application/json'}
         }).then(res => {
             if (res?.code === 200) avatarDataDispatch({type: 'removeButton', button: button, avatarId: avatar.id, layoutId: layout.id});
             navigate(-1);
@@ -70,6 +73,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
             <h1>Preview</h1>
             <ParameterButton button={button} />
             <p>use it to test it ingame</p>
+            <FileUpload parentType="button" parentId={button?.id} />
         </ContentBox>
         <ContentBox>
             <form onSubmit={handleSubmit(onSave)}>
@@ -96,10 +100,6 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                     <tr>
                         <th>Button type</th>
                         <td><FormInput type={InputType.Select} options={getOptions(ButtonType)} register={register} name={'buttonType'} errors={errors} /></td>
-                    </tr>
-                    <tr>
-                        <th>image</th>
-                        <td><FormInput type={InputType.File} register={register} name={'image'} errors={errors} /></td>
                     </tr>
                 </FormTable>
                 <FormControl>

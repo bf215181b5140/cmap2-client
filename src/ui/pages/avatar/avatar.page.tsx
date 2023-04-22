@@ -38,7 +38,8 @@ export default function AvatarPage() {
     function onSave(formData: any) {
         customFetch<AvatarDto>('avatar', {
             method: formData.id ? 'POST' : 'PUT',
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            headers: {'Content-Type': 'application/json'}
         }).then(res => {
             if (res?.code === 200) avatarDataDispatch({type: 'editAvatar', avatar: formData});
             if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addAvatar', avatar: res.body});
@@ -48,7 +49,8 @@ export default function AvatarPage() {
     function onDelete(avatar: AvatarDto) {
         customFetch('avatar', {
             method: 'DELETE',
-            body: JSON.stringify(avatar)
+            body: JSON.stringify(avatar),
+            headers: {'Content-Type': 'application/json'}
         }).then(res => {
             if (res?.code === 200) avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
         });

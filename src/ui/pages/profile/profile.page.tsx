@@ -1,5 +1,5 @@
 import ContentBox from '../../components/contentBox.component';
-import { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { profileSchema } from 'cmap2-shared/dist/validationSchemas';
@@ -8,9 +8,14 @@ import { InputType } from 'cmap2-shared';
 import Content from '../../components/content.component';
 import useProlfilePage from './profile.hook';
 import { FormTable, FormControl } from '../../components/form/formTable.component';
+import FileUpload from '../../components/fileUpload.component';
+import { ClientCredentialsContext } from '../../App';
+import styled from 'styled-components';
+import colors from '../../style/colors.json';
 
 export default function ProfilePage() {
 
+    const clientCredentials = useContext(ClientCredentialsContext);
     const {client, clientTier, onSubmit} = useProlfilePage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
 
@@ -23,8 +28,11 @@ export default function ProfilePage() {
     return (
         <Content>
             <ContentBox flex={1} loading={!client}>
-                <img src={'' + client?.picture} alt="Profile picture" />
-                {clientTier && <p>{clientTier.tier}</p>}
+                {client && <>
+                    <ProfilePictureStyled src={clientCredentials.serverUrl + '/' + client?.picture} alt="Profile picture" />
+                    {clientTier && <p>{clientTier.tier}</p>}
+                    <FileUpload parentType="profile" parentId={client?.id} />
+                </>}
             </ContentBox>
             <ContentBox loading={!client}>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -48,3 +56,10 @@ export default function ProfilePage() {
         </Content>
     );
 }
+
+const ProfilePictureStyled = styled.img`
+  width: 100%;
+  border: 3px solid ${colors['ui-primary-1']};
+  border-radius: 8px;
+  box-sizing: border-box;
+`;

@@ -20,7 +20,8 @@ export default function useProlfilePage() {
     const onSubmit = (formData: any) => {
         customFetch('profile', {
             method: 'POST',
-            body: JSON.stringify(formData)
+            body: JSON.stringify(formData),
+            headers: {'Content-Type': 'application/json'}
         }).then(res => {
             if(res?.code === 200) {
                 setClient({...client, ...formData});
