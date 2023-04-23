@@ -8,6 +8,10 @@
     src: local('Noto-Sans-Regular'), url(./Noto-Sans-Regular.ttf) format('truetype');
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Dosis-Bold, sans-serif;
     font-size: 16px;

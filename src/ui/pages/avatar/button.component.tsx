@@ -26,21 +26,14 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
-    const {register, setValue, formState: {errors}, reset, handleSubmit} = useForm({resolver: zodResolver(buttonSchema)});
+    const {register, setValue, formState: {errors}, reset, watch, handleSubmit} = useForm({resolver: zodResolver(buttonSchema)});
+    const watchButtonType = watch('buttonType');
 
     useEffect(() => {
-        setValue('id', button.id ? button.id : null);
-        setValue('parentId', layout.id);
-        setValue('order', 0); // todo
-        setValue('label', button.label);
-        setValue('path', button.path);
-        setValue('value', button.value);
-        setValue('valueType', button.valueType);
-        setValue('buttonType', button.buttonType);
-        setValue('image', button.image);
+        reset({...button, order: 0, parentId: layout.id});
     }, []);
 
-    function getOptions(enumType: any): FieldOption[] {
+    function getInputOptions(enumType: any): FieldOption[] {
         return Object.keys(enumType).map((key: string) => ({key: enumType[key], value: key}));
     }
 
@@ -67,13 +60,19 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         });
     }
 
+    function setButtonPicture(picture: string) {
+        avatarDataDispatch({type: 'changeButtonPicture', picture: picture, buttonId: button.id, avatarId: avatar.id, layoutId: layout.id})
+    }
+
+    console.log(watchButtonType)
+
     return (<Content flexDirection="row">
         <ContentBox flexBasis="100%">{avatar.label + ' -> ' + layout.label}</ContentBox>
         <ContentBox flex={1}>
-            <h1>Preview</h1>
+            <h2>Preview</h2>
             <ParameterButton button={button} />
-            <p>use it to test it ingame</p>
-            <FileUpload parentType="button" parentId={button?.id} />
+            <br/>
+            {button.id && <FileUpload parentType="button" parentId={button?.id} uploadCallback={setButtonPicture} />}
         </ContentBox>
         <ContentBox>
             <form onSubmit={handleSubmit(onSave)}>
@@ -94,12 +93,18 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                         <td><FormInput type={InputType.Text} register={register} name={'value'} errors={errors} /></td>
                     </tr>
                     <tr>
+                        <th>Secondary value</th>
+                        <td><FormInput type={InputType.Text} register={register} name={'valueAlt'} errors={errors} disabled={
+                            watchButtonType !== ButtonType.Slider && watchButtonType !== ButtonType.Toggle
+                        } /></td>
+                    </tr>
+                    <tr>
                         <th>Value type</th>
-                        <td><FormInput type={InputType.Select} options={getOptions(ValueType)} register={register} name={'valueType'} errors={errors} /></td>
+                        <td><FormInput type={InputType.Select} options={getInputOptions(ValueType)} register={register} name={'valueType'} errors={errors} /></td>
                     </tr>
                     <tr>
                         <th>Button type</th>
-                        <td><FormInput type={InputType.Select} options={getOptions(ButtonType)} register={register} name={'buttonType'} errors={errors} /></td>
+                        <td><FormInput type={InputType.Select} options={getInputOptions(ButtonType)} register={register} name={'buttonType'} errors={errors} /></td>
                     </tr>
                 </FormTable>
                 <FormControl>

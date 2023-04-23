@@ -53,19 +53,23 @@ export default function FileUpload({parentType, parentId, uploadCallback}: FileU
         reset({file: undefined});
     }
 
-    return (<form onSubmit={handleSubmit(onSubmit)}>
+    return (<FileUploadStyled onSubmit={handleSubmit(onSubmit)}>
         <FileInputHidden type='file' {...register('file')} id="fileInput" />
         <FileInputStyled>
-            {!selectedFile?.[0]?.name && <div className="browse" onClick={onBrowse}><i className={'ri-image-add-line'}></i></div>}
+            {/* <div className="browse"><i className={'ri-image-add-line'}></i></div> */}
+            <FileName onClick={onBrowse}>{selectedFile?.[0]?.name ? selectedFile?.[0]?.name : <i className={'ri-image-add-line'} />}</FileName>
             {selectedFile?.[0]?.name && <>
-                <FileName>{selectedFile?.[0]?.name}</FileName>
                 <div onClick={onUpload}><i className={'ri-upload-2-line'}></i></div>
                 <div onClick={onClearFiles}><i className={'ri-close-line'}></i></div>
             </>}
         </FileInputStyled>
         <FileInputHidden type='submit' ref={submitRef} />
-    </form>);
+    </FileUploadStyled>);
 }
+
+const FileUploadStyled = styled.form`
+  //margin: 10px;
+`;
 
 const FileInputHidden = styled.input<{ errors?: boolean }>`
   display: none;
@@ -81,6 +85,7 @@ const FileInputStyled = styled.div<{ errors?: boolean }>`
   display: flex;
   flex-direction: row;
   padding: 0;
+  margin: 0;
   
   :hover {
     background: ${colors['ui-primary-1']};

@@ -39,8 +39,8 @@ export default function SettingsPage() {
 
     return (<Content>
         <ContentBox>
-            <h2>Settings</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
+                <h2>Settings</h2>
                 <FormTable>
                     <tr>
                         <th>Start minimized to tray</th>

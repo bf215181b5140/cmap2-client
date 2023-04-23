@@ -9,7 +9,8 @@ export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDto[] } |
     { type: 'removeLayout', layout: LayoutDto, avatarId: string } |
     { type: 'addButton', button: ButtonDto, layoutId: string, avatarId: string } |
     { type: 'editButton', button: ButtonDto, layoutId: string, avatarId: string } |
-    { type: 'removeButton', button: ButtonDto, layoutId: string, avatarId: string };
+    { type: 'removeButton', button: ButtonDto, layoutId: string, avatarId: string } |
+    { type: 'changeButtonPicture', picture: string, buttonId: string, layoutId: string, avatarId: string };
 
 export default function avatarReducer(state: AvatarDto[], action: AvatarReducerAction) {
     switch (action.type) {
@@ -69,6 +70,21 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
                 if (avatar.id === action.avatarId) {
                     avatar.layouts = avatar.layouts.map(layout => {
                         if (layout.id === action.layoutId) layout.buttons = layout.buttons.filter(button => button.id !== action.button.id);
+                        return layout;
+                    });
+                }
+                return avatar;
+            });
+        case 'changeButtonPicture':
+            return state.map(avatar => {
+                if (avatar.id === action.avatarId) {
+                    avatar.layouts = avatar.layouts.map(layout => {
+                        if (layout.id === action.layoutId) {
+                            layout.buttons = layout.buttons.map(button => {
+                                if (button.id === action.buttonId) return {...button, image: action.picture};
+                                return button;
+                            });
+                        }
                         return layout;
                     });
                 }

@@ -30,8 +30,12 @@ export default function ProfilePage() {
             <ContentBox flex={1} loading={!client}>
                 {client && <>
                     <ProfilePictureStyled src={clientCredentials.serverUrl + '/' + client?.picture} alt="Profile picture" />
-                    {clientTier && <p>{clientTier.tier}</p>}
+                    <br/>
                     <FileUpload parentType="profile" parentId={client?.id} uploadCallback={setClientPicture} />
+                    {clientTier && <>
+                        <h3>Account tier</h3>
+                        <p>{clientTier.tier}</p>
+                    </>}
                 </>}
             </ContentBox>
             <ContentBox loading={!client}>
@@ -62,4 +66,5 @@ const ProfilePictureStyled = styled.img`
   border: 3px solid ${colors['ui-primary-1']};
   border-radius: 8px;
   box-sizing: border-box;
+  display: block;
 `;
