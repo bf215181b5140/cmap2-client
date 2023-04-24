@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react';
 import { AvatarDto, Avatars, ButtonDto, TierDto } from 'cmap2-shared';
-import useCustomFetch from '../../hooks/customFetch.hook';
+import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 import avatarReducer from './avatar.reducer';
 

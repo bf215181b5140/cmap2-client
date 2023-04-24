@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ClientDto, Profile, TierDto } from 'cmap2-shared';
-import useCustomFetch from '../../hooks/customFetch.hook';
+import useCustomFetch from '../../shared/hooks/customFetch.hook';
 
 export default function useProlfilePage() {
 

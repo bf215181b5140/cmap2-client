@@ -1,18 +1,18 @@
-import ContentBox from '../../components/contentBox.component';
+import ContentBox from '../../shared/components/contentBox.component';
 import { ReactProps } from '../../../shared/global';
 import { AvatarDto, ButtonDto, LayoutDto, TierDto } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';
-import FormInput from '../../components/form/formInput.component';
+import FormInput from '../../shared/components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
 import React, { useEffect, useState } from 'react';
 import { layoutSchema } from 'cmap2-shared/dist/validationSchemas';
 import styled from 'styled-components';
-import ParameterButton from '../../components/buttons/parameter.button';
-import useCustomFetch from '../../hooks/customFetch.hook';
+import ParameterButton from '../../shared/components/parameterButton.component';
+import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { AvatarReducerAction } from './avatar.reducer';
-import { FormTable } from '../../components/form/formTable.component';
+import { FormTable } from '../../shared/components/form/formTable.component';
 
 interface LayoutComponentProps extends ReactProps {
     layout: LayoutDto;

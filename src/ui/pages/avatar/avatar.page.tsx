@@ -1,8 +1,8 @@
-import ContentBox from '../../components/contentBox.component';
+import ContentBox from '../../shared/components/contentBox.component';
 import { useEffect } from 'react';
-import Content from '../../components/content.component';
+import Content from '../../shared/components/content.component';
 import { AvatarDto, LayoutDto } from 'cmap2-shared';
-import FormInput from '../../components/form/formInput.component';
+import FormInput from '../../shared/components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,10 +10,10 @@ import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
 import LayoutComponent from './layout.component';
 import useAvatarPage from './avatar.hook';
 import { useNavigate } from 'react-router-dom';
-import { SidePanel, SidePanelButton } from '../../components/SidePanel.component';
+import { SidePanel, SidePanelButton } from '../../shared/components/sidePanel.component';
 import ButtonComponent from './button.component';
-import useCustomFetch from '../../hooks/customFetch.hook';
-import { FormControl, FormTable } from '../../components/form/formTable.component';
+import useCustomFetch from '../../shared/hooks/customFetch.hook';
+import { FormControl, FormTable } from '../../shared/components/form/formTable.component';
 
 export default function AvatarPage() {
 

@@ -63,16 +63,15 @@ app.whenReady().then(() => {
             label: 'Open', type: 'normal', click: () => {
                 if (!mainWindow || mainWindow.isDestroyed()) mainWindow = createWindow();
             }
-        },
-        {
+        }, {
             label: 'Close', type: 'normal', click: () => {
                 if (mainWindow && !mainWindow.isDestroyed()) {
                     mainWindow.close();
                 }
             }
-        },
-        {
+        }, {
             label: 'Exit', type: 'normal', click: () => {
+                tray.destroy();
                 app.quit();
             }
         }
@@ -82,6 +81,6 @@ app.whenReady().then(() => {
 
     app.on('window-all-closed', (event: any) => {
         // prevent terminating main process
-        event.preventDefault()
-    })
+        event.preventDefault();
+    });
 });

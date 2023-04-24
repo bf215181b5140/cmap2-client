@@ -1,18 +1,18 @@
-import ContentBox from '../../components/contentBox.component';
+import ContentBox from '../../shared/components/contentBox.component';
 import { ReactProps } from '../../../shared/global';
 import { AvatarDto, ButtonDto, ButtonType, FieldOption, InputType, LayoutDto, ValueType } from 'cmap2-shared';
-import Content from '../../components/content.component';
+import Content from '../../shared/components/content.component';
 import { useNavigate } from 'react-router-dom';
-import ParameterButton from '../../components/buttons/parameter.button';
+import ParameterButton from '../../shared/components/parameterButton.component';
 import React, { useEffect } from 'react';
 import { AvatarReducerAction } from './avatar.reducer';
-import useCustomFetch from '../../hooks/customFetch.hook';
+import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { buttonSchema } from 'cmap2-shared/dist/validationSchemas';
-import FormInput from '../../components/form/formInput.component';
-import { FormTable, FormControl } from '../../components/form/formTable.component';
-import FileUpload from '../../components/fileUpload.component';
+import FormInput from '../../shared/components/form/formInput.component';
+import { FormTable, FormControl } from '../../shared/components/form/formTable.component';
+import FileUpload from '../../shared/components/fileUpload.component';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;

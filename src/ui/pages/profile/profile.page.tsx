@@ -1,21 +1,21 @@
-import ContentBox from '../../components/contentBox.component';
+import ContentBox from '../../shared/components/contentBox.component';
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { profileSchema } from 'cmap2-shared/dist/validationSchemas';
-import FormInput from '../../components/form/formInput.component';
+import FormInput from '../../shared/components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
-import Content from '../../components/content.component';
+import Content from '../../shared/components/content.component';
 import useProlfilePage from './profile.hook';
-import { FormTable, FormControl } from '../../components/form/formTable.component';
-import FileUpload from '../../components/fileUpload.component';
-import { ClientCredentialsContext } from '../../App';
+import { FormTable, FormControl } from '../../shared/components/form/formTable.component';
+import FileUpload from '../../shared/components/fileUpload.component';
+import { ClientCredentialsContext } from '../../app/App';
 import styled from 'styled-components';
-import colors from '../../style/colors.json';
+import colors from 'cmap2-shared/src/colors.json';
 
 export default function ProfilePage() {
 
-    const clientCredentials = useContext(ClientCredentialsContext);
+    const {clientCredentials} = useContext(ClientCredentialsContext);
     const {client, clientTier, onSubmit, setClientPicture} = useProlfilePage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
 
