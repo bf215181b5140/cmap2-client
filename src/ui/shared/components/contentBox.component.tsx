@@ -29,6 +29,25 @@ const ContentBoxStyled = styled.div<ContentBoxProps>`
     margin: 0.5em 0 1em 0;
     padding: 0;
   }
+  
+  h2 {
+    font-size: 1.4em;
+    color: ${colors['font-header-2']};
+    padding: 0;
+    margin: 0.5em 0;
+  }
+  
+  h3 {
+    font-size: 1em;
+    color: ${colors['font-text-2']};
+    text-transform: uppercase;
+    padding: 0;
+    margin: 0.5em 0;
+  }
+  
+  p {
+    margin: 5px 0;
+  }
 `;
 
 const ContentLoading = styled.div`

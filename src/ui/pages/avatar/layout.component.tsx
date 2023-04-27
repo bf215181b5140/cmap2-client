@@ -1,7 +1,7 @@
 import ContentBox from '../../shared/components/contentBox.component';
 import { ReactProps } from '../../../shared/global';
 import { AvatarDto, ButtonDto, LayoutDto, TierDto } from 'cmap2-shared';
-import ParameterButton from 'cmap2-shared/src/parameter.button';
+import ParameterButton from 'cmap2-shared/src/components/parameter.button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';

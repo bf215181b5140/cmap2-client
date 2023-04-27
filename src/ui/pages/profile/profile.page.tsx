@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { profileSchema } from 'cmap2-shared/dist/validationSchemas';
 import FormInput from '../../shared/components/form/formInput.component';
-import { InputType } from 'cmap2-shared';
+import { ClientTier, InputType } from 'cmap2-shared';
 import Content from '../../shared/components/content.component';
 import useProlfilePage from './profile.hook';
 import { FormTable, FormControl } from '../../shared/components/form/formTable.component';
@@ -12,6 +12,7 @@ import FileUpload from '../../shared/components/fileUpload.component';
 import { ClientCredentialsContext } from '../../app/App';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
+import TierBadge from '../../shared/components/tierBadge.component';
 
 export default function ProfilePage() {
 
@@ -32,9 +33,10 @@ export default function ProfilePage() {
                     <ProfilePictureStyled src={clientCredentials.serverUrl + '/' + client?.picture} alt="Profile picture" />
                     <br/>
                     <FileUpload parentType="profile" parentId={client?.id} uploadCallback={setClientPicture} />
+                    <br/>
                     {clientTier && <>
                         <h3>Account tier</h3>
-                        <p>{clientTier.tier}</p>
+                        <TierBadge tier={clientTier.tier} />
                     </>}
                 </>}
             </ContentBox>
@@ -57,6 +59,12 @@ export default function ProfilePage() {
                     <FormControl><FormInput type={InputType.Submit} /></FormControl>
                 </form>
             </ContentBox>
+            <ContentBox flexBasis='100%'>
+                <h2>Website background</h2>
+            </ContentBox>
+            <ContentBox flexBasis='100%'>
+                <h2>Buttons style</h2>
+            </ContentBox>
         </Content>
     );
 }
@@ -68,3 +76,4 @@ const ProfilePictureStyled = styled.img`
   box-sizing: border-box;
   display: block;
 `;
+
