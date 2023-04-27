@@ -1,3 +1,7 @@
+import { ButtonDto } from 'cmap2-shared';
+import ParameterButton from 'cmap2-shared/src/parameter.button';
+import React from 'react';
+
 export default function AboutPage() {
 
     return (

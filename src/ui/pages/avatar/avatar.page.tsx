@@ -62,7 +62,7 @@ export default function AvatarPage() {
                 <SidePanelButton active={selectedAvatar && selectedAvatar.id === avatar.id} onClick={() => navigate('/avatar/' + avatar.id)}
                                  key={avatar.id}>{avatar.label}</SidePanelButton>
             ))}
-            {clientTier?.avatars && avatars.length < clientTier.avatars &&
+            {(clientTier?.avatars && avatars.length < clientTier.avatars) &&
                 <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}><i className={'ri-add-fill'}></i></SidePanelButton>}
         </SidePanel>
         <h1>Avatar</h1>

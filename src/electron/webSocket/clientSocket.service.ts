@@ -30,10 +30,16 @@ export class ClientSocketService {
         this.socket.on('joined', () => {
             this.connectionStatus.setConnection(SocketConnectionType.SUCCESS, 'Connected', '');
             this.updateConnectionStatus()
+            this.sendData('activity', OscService.isActive);
         });
 
         this.socket.on('error', (message: string) => {
             this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Error', message);
+            this.updateConnectionStatus()
+        });
+
+        this.socket.on('connect_error', (err: Error) => {
+            this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Error', err.message);
             this.updateConnectionStatus()
         });
 
@@ -56,6 +62,12 @@ export class ClientSocketService {
     static sendParameter(event: string, parameter: Message) {
         if (this.socket) {
             this.socket.emit(event, parameter);
+        }
+    }
+
+    static sendData(event: string, data: any) {
+        if (this.socket) {
+            this.socket.emit(event, data);
         }
     }
 

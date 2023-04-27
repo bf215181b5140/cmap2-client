@@ -3,7 +3,7 @@ import { ReactProps } from '../../../shared/global';
 import { AvatarDto, ButtonDto, ButtonType, FieldOption, InputType, LayoutDto, ValueType } from 'cmap2-shared';
 import Content from '../../shared/components/content.component';
 import { useNavigate } from 'react-router-dom';
-import ParameterButton from '../../shared/components/parameterButton.component';
+import ParameterButton from 'cmap2-shared/src/parameter.button';
 import React, { useEffect } from 'react';
 import { AvatarReducerAction } from './avatar.reducer';
 import useCustomFetch from '../../shared/hooks/customFetch.hook';

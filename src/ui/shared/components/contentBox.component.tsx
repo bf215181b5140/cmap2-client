@@ -23,6 +23,12 @@ const ContentBoxStyled = styled.div<ContentBoxProps>`
   flex: ${props => props.flex || 2};
   flex-basis: ${props => props.flexBasis || '0%'};
   padding: 15px;
+  
+  hr {
+    border: 1px solid ${colors['app-bg-opaque']};
+    margin: 0.5em 0 1em 0;
+    padding: 0;
+  }
 `;
 
 const ContentLoading = styled.div`

@@ -1,6 +1,7 @@
 import ContentBox from '../../shared/components/contentBox.component';
 import { ReactProps } from '../../../shared/global';
 import { AvatarDto, ButtonDto, LayoutDto, TierDto } from 'cmap2-shared';
+import ParameterButton from 'cmap2-shared/src/parameter.button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +10,6 @@ import { InputType } from 'cmap2-shared';
 import React, { useEffect, useState } from 'react';
 import { layoutSchema } from 'cmap2-shared/dist/validationSchemas';
 import styled from 'styled-components';
-import ParameterButton from '../../shared/components/parameterButton.component';
 import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { AvatarReducerAction } from './avatar.reducer';
 import { FormTable } from '../../shared/components/form/formTable.component';
@@ -98,7 +98,7 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
                 <ParameterButton button={button} key={button.id} flexBasis="calc(25% - (3 * 15px / 4))"
                                  onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/' + button.id)} />
             ))}
-            {clientTier.buttons && layout.buttons.length < clientTier.buttons &&
+            {(clientTier.buttons && layout.buttons.length < clientTier.buttons) &&
                 <ParameterButton button={new ButtonDto()} key={'new'} flexBasis="calc(25% - (3 * 15px / 4))"
                                  onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/new')} />}
         </ButtonsBox>}
