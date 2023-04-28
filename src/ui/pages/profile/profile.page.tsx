@@ -13,11 +13,13 @@ import { ClientCredentialsContext } from '../../app/App';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import TierBadge from '../../shared/components/tierBadge.component';
+import ButtonStylePicker from "./buttonStylePicker/buttonStylePicker";
+import BackgroundPicker from "./backgroundPicker/backgroundPicker.component";
 
 export default function ProfilePage() {
 
     const {clientCredentials} = useContext(ClientCredentialsContext);
-    const {client, clientTier, onSubmit, setClientPicture} = useProlfilePage();
+    const {client, backgrounds, buttonStyles, onSubmit, setClientPicture} = useProlfilePage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
 
     useEffect(() => {
@@ -34,9 +36,9 @@ export default function ProfilePage() {
                     <br/>
                     <FileUpload parentType="profile" parentId={client?.id} uploadCallback={setClientPicture} />
                     <br/>
-                    {clientTier && <>
+                    {client.tier && <>
                         <h3>Account tier</h3>
-                        <TierBadge tier={clientTier.tier} />
+                        <TierBadge tier={client.tier.tier} />
                     </>}
                 </>}
             </ContentBox>
@@ -59,12 +61,8 @@ export default function ProfilePage() {
                     <FormControl><FormInput type={InputType.Submit} /></FormControl>
                 </form>
             </ContentBox>
-            <ContentBox flexBasis='100%'>
-                <h2>Website background</h2>
-            </ContentBox>
-            <ContentBox flexBasis='100%'>
-                <h2>Buttons style</h2>
-            </ContentBox>
+            <BackgroundPicker client={client} backgrounds={backgrounds} />
+            <ButtonStylePicker client={client} buttonStyles={buttonStyles} />
         </Content>
     );
 }

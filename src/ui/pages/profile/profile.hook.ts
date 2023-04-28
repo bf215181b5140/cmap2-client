@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
-import { ClientDto, Profile, TierDto } from 'cmap2-shared';
+import { BackgroundDto, ButtonStyleDto, ClientDto, Profile, TierDto } from 'cmap2-shared';
 import useCustomFetch from '../../shared/hooks/customFetch.hook';
 
 export default function useProlfilePage() {
 
     const customFetch = useCustomFetch();
-    const [client, setClient] = useState<ClientDto | null>();
-    const [clientTier, setClientTier] = useState<TierDto | null>();
+    const [client, setClient] = useState<ClientDto | null>(null);
+    const [backgrounds, setBackgrounds] = useState<BackgroundDto[] | null>(null);
+    const [buttonStyles, setButtonStyles] = useState<ButtonStyleDto[] | null>(null);
 
     useEffect(() => {
         customFetch<Profile>('profile').then(res => {
             if (res?.body) {
                 setClient(res.body.client);
-                setClientTier(res.body.tier);
+                setBackgrounds(res.body.backgrounds);
+                setButtonStyles(res.body.buttonStyles);
             }
         });
     }, []);
@@ -35,5 +37,5 @@ export default function useProlfilePage() {
         }
     }
 
-    return {client, clientTier, onSubmit, setClientPicture};
+    return {client, backgrounds, buttonStyles, onSubmit, setClientPicture};
 }
