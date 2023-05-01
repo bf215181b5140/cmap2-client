@@ -56,7 +56,6 @@ export default function FileUpload({parentType, parentId, uploadCallback}: FileU
     return (<FileUploadStyled onSubmit={handleSubmit(onSubmit)}>
         <FileInputHidden type='file' {...register('file')} id="fileInput" />
         <FileInputStyled>
-            {/* <div className="browse"><i className={'ri-image-add-line'}></i></div> */}
             <FileName onClick={onBrowse}>{selectedFile?.[0]?.name ? selectedFile?.[0]?.name : <i className={'ri-image-add-line'} />}</FileName>
             {selectedFile?.[0]?.name && <>
                 <div onClick={onUpload}><i className={'ri-upload-2-line'}></i></div>

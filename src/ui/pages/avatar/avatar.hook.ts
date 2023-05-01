@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
-import { AvatarDto, Avatars, ButtonDto, TierDto } from 'cmap2-shared';
+import { AvatarDto, Avatars, ButtonDto, ButtonStyleDto, LayoutDto, TierDto } from 'cmap2-shared';
 import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 import avatarReducer from './avatar.reducer';
@@ -11,47 +11,60 @@ export default function useAvatarPage() {
     const customFetch = useCustomFetch();
     const [avatars, avatarDataDispatch] = useReducer(avatarReducer, []);
     const [clientTier, setClientTier] = useState<TierDto>(new TierDto());
+    const [clientButtonStyle, setClientButtonStyle] = useState<ButtonStyleDto>(new ButtonStyleDto());
+    const [selectedAvatar, setAvatar] = useState<AvatarDto | undefined>(undefined);
+    const [selectedLayout, setLayout] = useState<LayoutDto | undefined>(undefined);
+    const [selectedButton, setButton] = useState<ButtonDto | undefined>(undefined);
 
     useEffect(() => {
         customFetch<Avatars>('avatar').then(res => {
             if (res?.body) {
                 avatarDataDispatch({type: 'setAvatars', avatars: res.body.avatars});
                 setClientTier(res.body.tier);
-                const defAvatar = res.body.avatars.find((avatar: AvatarDto) => avatar.default);
-                if (defAvatar) navigate('/avatar/' + defAvatar.id);
+                setClientButtonStyle(res.body.buttonStyle);
+                setDefaultOrFirstAvatar(res.body.avatars);
             }
         });
     }, []);
 
-    const selectedAvatar = findAvatar();
+    function setDefaultOrFirstAvatar(list?: AvatarDto[]) {
+        const tempList = list ? list : avatars;
+        if (tempList) {
+            const tempAvatar = tempList.find((avatar: AvatarDto) => avatar.default);
+            if (tempAvatar) {
+                navigate('/avatar/' + tempAvatar.id);
+            } else if (tempList[0]?.id) {
+                navigate('/avatar/' + tempList[0].id);
+            }
+        }
+    }
 
-    function findAvatar() {
+    useEffect(() => {
         if (routeParams.avatarId) {
-            if (routeParams.avatarId === 'new') return new AvatarDto();
-            return avatars.find(avi => avi.id === routeParams.avatarId);
+            if (routeParams.avatarId === 'new') {
+                setAvatar(new AvatarDto());
+            } else {
+                setAvatar(avatars.find(avi => avi.id === routeParams.avatarId));
+            }
+        } else {
+            setDefaultOrFirstAvatar();
         }
-        return undefined;
-    }
-
-    const selectedLayout = findLayout();
-
-    function findLayout() {
         if (routeParams.avatarId && routeParams.layoutId) {
-            return avatars.find(a => a.id === routeParams.avatarId)?.layouts.find(l => l.id === routeParams.layoutId);
+            setLayout(avatars.find(a => a.id === routeParams.avatarId)?.layouts?.find(l => l.id === routeParams.layoutId));
+        } else {
+            setLayout(undefined);
         }
-        return undefined;
-    }
-
-    const selectedButton = findButton();
-
-    function findButton() {
         if (routeParams.avatarId && routeParams.layoutId && routeParams.buttonId) {
-            if (routeParams.buttonId === 'new') return new ButtonDto();
-            return avatars.find(a => a.id === routeParams.avatarId)?.layouts.find(l => l.id === routeParams.layoutId)?.buttons
-                .find(b => b.id === routeParams.buttonId);
+            if (routeParams.buttonId === 'new') {
+                setButton(new ButtonDto());
+            } else {
+                setButton(avatars.find(a => a.id === routeParams.avatarId)?.layouts?.find(l => l.id === routeParams.layoutId)?.buttons
+                    ?.find(b => b.id === routeParams.buttonId));
+            }
+        } else {
+            setButton(undefined);
         }
-        return undefined;
-    }
+    }, [routeParams]);
 
-    return {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier};
+    return {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle};
 }

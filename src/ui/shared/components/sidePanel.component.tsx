@@ -1,4 +1,3 @@
-import { AvatarDto } from 'cmap2-shared';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import { ReactProps } from '../../../shared/global';
@@ -38,13 +37,13 @@ const Title = styled.div`
 
 const SidePanelStyled = styled.div`
   margin: 0 20px 0 0;
-  padding: 0 7px;
+  padding: 0 10px;
   width: 220px;
   height: 100%;
   float: left;
   position: sticky;
   top: 0;
-  background-color: ${colors['ui-primary-7']};
+  background-color: ${colors['menu-bg']};
 
   h1 {
     display: block;
@@ -58,25 +57,25 @@ const SidePanelStyled = styled.div`
 export const SidePanelButton = styled.button<{active?: boolean}>`
     font-family: Dosis-Bold, sans-serif;
     margin: 10px 0;
-    padding: 7px;
+    padding: 8px;
     display: block;
     width: 100%;
     color: ${colors['text-1']};
-    background-color: ${props => props.active ? colors['ui-primary-3'] : colors['ui-primary-8']};
-    border: 2px solid ${props => props.active ? colors['ui-primary-4'] : 'transparent'};
+    background-color: ${props => props.active ? colors['button-2-hover-bg'] : colors['button-2-bg']};
+    border: 2px solid ${props => props.active ? colors['button-2-hover-border'] : colors['button-2-border']};
     border-radius: 7px;
     font-size: 16px;
     transition: 0.15s linear;
-    box-shadow: 0 0 5px ${colors['ui-primary-9']};
+    box-shadow: 0 0 5px ${colors['app-bg-opaque']};
 
     :hover {
       //transform: scale(1.05) perspective(1px);
       // background: ${colors['ui-primary-3']};
-      border: 2px solid ${colors['ui-primary-4']};
+      border: 2px solid ${colors['button-2-hover-border']};
     }
 
   &.addButton {
-    background: ${colors['ui-primary-7']};
+    // background: ${colors['ui-primary-7']};
 
     i {
       font-size: 24px;

@@ -12,14 +12,14 @@ import FileUpload from '../../shared/components/fileUpload.component';
 import { ClientCredentialsContext } from '../../app/App';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
-import TierBadge from '../../shared/components/tierBadge.component';
+import TierBadge from './components/tierBadge.component';
 import ButtonStylePicker from "./buttonStylePicker/buttonStylePicker";
 import BackgroundPicker from "./backgroundPicker/backgroundPicker.component";
 
 export default function ProfilePage() {
 
     const {clientCredentials} = useContext(ClientCredentialsContext);
-    const {client, backgrounds, buttonStyles, onSubmit, setClientPicture} = useProlfilePage();
+    const {client, backgrounds, buttonStyles, onSubmit, setClientPicture, setClientBackground, setClientButtonStyle} = useProlfilePage();
     const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
 
     useEffect(() => {
@@ -32,13 +32,13 @@ export default function ProfilePage() {
         <Content>
             <ContentBox flex={1} loading={!client}>
                 {client && <>
-                    <ProfilePictureStyled src={clientCredentials.serverUrl + '/' + client?.picture} alt="Profile picture" />
+                    <ProfilePictureStyled src={clientCredentials.serverUrl + '/' + client.picture} alt="Profile picture" />
                     <br/>
-                    <FileUpload parentType="profile" parentId={client?.id} uploadCallback={setClientPicture} />
+                    <FileUpload parentType="profile" parentId={client.id} uploadCallback={setClientPicture} />
                     <br/>
                     {client.tier && <>
                         <h3>Account tier</h3>
-                        <TierBadge tier={client.tier.tier} />
+                        <TierBadge tier={client.tier} />
                     </>}
                 </>}
             </ContentBox>
@@ -61,8 +61,8 @@ export default function ProfilePage() {
                     <FormControl><FormInput type={InputType.Submit} /></FormControl>
                 </form>
             </ContentBox>
-            <BackgroundPicker client={client} backgrounds={backgrounds} />
-            <ButtonStylePicker client={client} buttonStyles={buttonStyles} />
+            <BackgroundPicker client={client} setFunction={setClientBackground} backgrounds={backgrounds} />
+            <ButtonStylePicker client={client} setFunction={setClientButtonStyle} buttonStyles={buttonStyles} />
         </Content>
     );
 }

@@ -41,6 +41,7 @@ export class OscService {
         if (!this.activityInterval) this.activityInterval = setInterval(this.activityChecker, 60000);
 
         this.oscServer.on('message', (message: [string, ...ArgumentType[]]) => {
+            console.log('new param from vrc', message)
             this.lastActivity = Date.now();
             if (!this.isActive) {
                 this.isActive = true;

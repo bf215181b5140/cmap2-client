@@ -16,6 +16,7 @@ import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from '../pages/settings/settings.page';
 import useToast from './toast/toast.hook';
 import { ToastComponent } from './toast/toast.component';
+import TiersPage from '../pages/tiers/tiers.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
@@ -44,6 +45,7 @@ export default function App() {
                         <Routes>
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarPage />} />
+                            <Route path="/tiers" element={<TiersPage />} />
                             <Route path="/settings" element={<SettingsPage />} />
                             <Route path="/about" element={<AboutPage />} />
                             <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />

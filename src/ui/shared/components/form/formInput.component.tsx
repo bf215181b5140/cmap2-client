@@ -3,6 +3,7 @@ import colors from 'cmap2-shared/src/colors.json';
 import { ReactProps } from '../../../../shared/global';
 import { InputType } from 'cmap2-shared';
 import { FieldOption } from 'cmap2-shared';
+import Icon from 'cmap2-shared/dist/components/icon.component';
 
 interface FormInputProps extends ReactProps {
     type: InputType;
@@ -12,6 +13,7 @@ interface FormInputProps extends ReactProps {
     options?: FieldOption[] | null;
     value?: string;
     disabled?: boolean;
+    readOnly?: boolean;
     placeholder?: string;
     onClick?: () => void;
 }
@@ -29,24 +31,31 @@ export default function FormInput(props: FormInputProps) {
         return null;
     }
 
+    function booleanClick(id: string) {
+        console.log('clocking', id)
+        const input = document.getElementById(id);
+        if (input) input.click();
+    }
+
     switch (props.type) {
         case InputType.Text:
         case InputType.Password:
         case InputType.Url:
             return (<>
-                <InputStyled type={props.type} {...props.register(props.name)} disabled={props.disabled === true} placeholder={props.placeholder} errors={hasErrors()} />
+                <InputStyled type={props.type} {...props.register(props.name)} readOnly={props.readOnly === true} placeholder={props.placeholder}
+                             errors={hasErrors()} />
                 <ErrorMessage />
             </>);
         case InputType.Number:
             return (<>
                 <InputStyled type={props.type} {...props.register(props.name, {
                     setValueAs: (v: string) => v === '' ? undefined : parseInt(v),
-                })} disabled={props.disabled === true} placeholder={props.placeholder} errors={hasErrors()} />
+                })} readOnly={props.readOnly === true} placeholder={props.placeholder} errors={hasErrors()} />
                 <ErrorMessage />
             </>);
         case InputType.Textarea:
             return (<>
-                <TextareaStyled {...props.register(props.name)} errors={hasErrors()} >
+                <TextareaStyled {...props.register(props.name)} errors={hasErrors()}>
                     {props.children}
                 </TextareaStyled>
                 <ErrorMessage />
@@ -54,8 +63,10 @@ export default function FormInput(props: FormInputProps) {
         case InputType.Boolean:
             return (<>
                 <CheckboxStyled errors={hasErrors()}>
-                    <input type={InputType.Checkbox} {...props.register(props.name)} />
-                    <i className={'ri-add-fill'}></i>
+                    <input type={InputType.Checkbox} {...props.register(props.name)} id={props.name + '-booleanInput'} />
+                    <div onClick={() => booleanClick(props.name + '-booleanInput')}>
+                        <Icon icon="ri-check-fill" />
+                    </div>
                 </CheckboxStyled>
                 <ErrorMessage />
             </>);
@@ -102,6 +113,7 @@ export const globalInputStyle = css<{ errors?: boolean }>`
   }
 
   :disabled {
+    pointer-events: none;
     filter: saturate(0.5%);
   }
 `;
@@ -109,9 +121,14 @@ export const globalInputStyle = css<{ errors?: boolean }>`
 const InputStyled = styled.input<{ button?: boolean, errors?: boolean }>`
   ${globalInputStyle};
   ${props => props.button ? 'width: auto;' : null};
-  
+
   :hover {
     transform: ${props => props.button ? 'scale(1.05) perspective(1px)' : 'none'};
+  }
+
+  &[type=text]:read-only, &[type=number]:read-only {
+    pointer-events: none;
+    filter: saturate(0.5%);
   }
 `;
 
@@ -124,19 +141,23 @@ const SelectStyled = styled.select<{ errors?: boolean }>`
 `;
 
 const CheckboxStyled = styled.span<{ errors?: boolean }>`
-  ${globalInputStyle};
-  padding: 2px;
-  //height:10px;
-
   input[type=checkbox] {
-    //visibility: hidden;
+    display: none;
+  }
+  
+  div {
+    ${globalInputStyle};
+    width: fit-content;
+    cursor: pointer;
+    padding: 0;
   }
 
-  i {
+  div i {
+    font-size: 2em;
     visibility: hidden;
   }
 
-  input[type=checkbox]:checked ~ i {
+  input[type=checkbox]:checked ~ div i {
     visibility: visible;
   }
 `;

@@ -27,13 +27,16 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
             return state.filter(avatar => avatar.id !== action.avatar.id);
         case 'addLayout':
             return state.map(avatar => {
-                if (avatar.id === action.avatarId) avatar.layouts.push(action.layout);
+                if (avatar.id === action.avatarId) {
+                    if (!avatar.layouts) avatar.layouts = [];
+                    avatar.layouts.push(action.layout);
+                }
                 return avatar;
             });
         case 'editLayout':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) {
-                    avatar.layouts = avatar.layouts.map(layout => {
+                    avatar.layouts = avatar.layouts?.map(layout => {
                         if (layout.id === action.layout.id) return {...layout, ...action.layout};
                         return layout;
                     });
@@ -42,20 +45,26 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
             });
         case 'removeLayout':
             return state.map(avatar => {
-                if (avatar.id === action.avatarId) avatar.layouts = avatar.layouts.filter(layout => layout.id !== action.layout.id);
+                if (avatar.id === action.avatarId) avatar.layouts = avatar.layouts?.filter(layout => layout.id !== action.layout.id);
                 return avatar;
             });
         case 'addButton':
             return state.map(avatar => {
-                if (avatar.id === action.avatarId) avatar.layouts.find(layout => layout.id === action.layoutId)?.buttons.push(action.button);
+                if (avatar.id === action.avatarId && avatar.layouts) {
+                    const tempLayout = avatar.layouts.find(layout => layout.id === action.layoutId);
+                    if (tempLayout) {
+                        if (!tempLayout.buttons) tempLayout.buttons = [];
+                        tempLayout.buttons.push(action.button);
+                    }
+                }
                 return avatar;
             });
         case 'editButton':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) {
-                    avatar.layouts = avatar.layouts.map(layout => {
+                    avatar.layouts = avatar.layouts?.map(layout => {
                         if (layout.id === action.layoutId) {
-                            layout.buttons = layout.buttons.map(button => {
+                            layout.buttons = layout.buttons?.map(button => {
                                 if (button.id === action.button.id) return {...button, ...action.button};
                                 return button;
                             });
@@ -68,8 +77,8 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
         case 'removeButton':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) {
-                    avatar.layouts = avatar.layouts.map(layout => {
-                        if (layout.id === action.layoutId) layout.buttons = layout.buttons.filter(button => button.id !== action.button.id);
+                    avatar.layouts = avatar.layouts?.map(layout => {
+                        if (layout.id === action.layoutId) layout.buttons = layout.buttons?.filter(button => button.id !== action.button.id);
                         return layout;
                     });
                 }
@@ -78,9 +87,9 @@ export default function avatarReducer(state: AvatarDto[], action: AvatarReducerA
         case 'changeButtonPicture':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) {
-                    avatar.layouts = avatar.layouts.map(layout => {
+                    avatar.layouts = avatar.layouts?.map(layout => {
                         if (layout.id === action.layoutId) {
-                            layout.buttons = layout.buttons.map(button => {
+                            layout.buttons = layout.buttons?.map(button => {
                                 if (button.id === action.buttonId) return {...button, image: action.picture};
                                 return button;
                             });

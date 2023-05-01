@@ -11,7 +11,7 @@ import { ApplicationSettings } from '../../../shared/classes';
 
 export default function SettingsPage() {
 
-    const {register, reset, setValue, formState: {errors}, handleSubmit} = useForm({
+    const {register, reset, watch, formState: {errors}, handleSubmit} = useForm({
         resolver: zodResolver(
             z.object({
                 startMinimized: z.boolean(),
@@ -22,6 +22,9 @@ export default function SettingsPage() {
             })
         )
     });
+
+    const test = watch('startMinimized')
+    console.log('watcg', test)
 
     useEffect(() => {
         window.electronAPI.getApplicationSettings().then(applicationSettings => {

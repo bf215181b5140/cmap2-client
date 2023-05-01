@@ -25,17 +25,32 @@ export default function useProlfilePage() {
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
-            if(res?.code === 200) {
+            if (res?.code === 200) {
                 setClient({...client, ...formData});
             }
         });
-    }
+    };
 
     function setClientPicture(picture: string) {
-        if (client) {
-            setClient({...client, picture: picture});
-        }
+        setClient(prevState => {
+            if (!prevState) return null;
+            return {...prevState, picture: picture};
+        });
     }
 
-    return {client, backgrounds, buttonStyles, onSubmit, setClientPicture};
+    function setClientBackground(background: BackgroundDto) {
+        setClient(prevState => {
+            if (!prevState) return null;
+            return {...prevState, background: background};
+        });
+    }
+
+    function setClientButtonStyle(buttonStyle: ButtonStyleDto) {
+        setClient(prevState => {
+            if (!prevState) return null;
+            return {...prevState, buttonStyle: buttonStyle};
+        });
+    }
+
+    return {client, backgrounds, buttonStyles, onSubmit, setClientPicture, setClientBackground, setClientButtonStyle};
 }

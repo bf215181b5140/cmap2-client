@@ -7,32 +7,32 @@ import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
-import LayoutComponent from './layout.component';
+import LayoutComponent from './layout/layout.component';
 import useAvatarPage from './avatar.hook';
 import { useNavigate } from 'react-router-dom';
 import { SidePanel, SidePanelButton } from '../../shared/components/sidePanel.component';
-import ButtonComponent from './button.component';
+import ButtonComponent from './button/button.component';
 import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { FormControl, FormTable } from '../../shared/components/form/formTable.component';
+import Icon from 'cmap2-shared/dist/components/icon.component';
 
 export default function AvatarPage() {
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
-    const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier} = useAvatarPage();
+    const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle} = useAvatarPage();
     const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
-    // set form fields
     useEffect(() => {
-        // setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
-        // setValue('vrcId', selectedAvatar?.vrcId);
-        // setValue('label', selectedAvatar?.label);
-        // setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
-        reset(selectedAvatar);
+        setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
+        setValue('vrcId', selectedAvatar?.vrcId);
+        setValue('label', selectedAvatar?.label);
+        setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
     }, [selectedAvatar]);
 
     if (selectedAvatar && selectedLayout && selectedButton) {
-        return (<ButtonComponent button={selectedButton} avatar={selectedAvatar} layout={selectedLayout} avatarDataDispatch={avatarDataDispatch} />);
+        return (<ButtonComponent button={selectedButton} avatar={selectedAvatar} layout={selectedLayout} buttonStyle={clientButtonStyle}
+                                 avatarDataDispatch={avatarDataDispatch} />);
     }
 
     function onSave(formData: any) {
@@ -42,7 +42,10 @@ export default function AvatarPage() {
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
             if (res?.code === 200) avatarDataDispatch({type: 'editAvatar', avatar: formData});
-            if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addAvatar', avatar: res.body});
+            if (res?.code === 201 && res.body) {
+                avatarDataDispatch({type: 'addAvatar', avatar: res.body});
+                navigate('/avatar/' + res.body.id)
+            }
         });
     }
 
@@ -52,9 +55,14 @@ export default function AvatarPage() {
             body: JSON.stringify(avatar),
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
-            if (res?.code === 200) avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
+            if (res?.code === 200) {
+                avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
+                navigate('/avatar');
+            }
         });
     }
+
+    console.log(selectedAvatar)
 
     return (<>
         <SidePanel title={'Avatars'} icon={'ri-contacts-book-fill'}>
@@ -63,7 +71,10 @@ export default function AvatarPage() {
                                  key={avatar.id}>{avatar.label}</SidePanelButton>
             ))}
             {(clientTier?.avatars && avatars.length < clientTier.avatars) &&
-                <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}><i className={'ri-add-fill'}></i></SidePanelButton>}
+                <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}
+                                 active={selectedAvatar && selectedAvatar.id === null}>
+                    <Icon icon='ri-add-fill' />
+                </SidePanelButton>}
         </SidePanel>
         <h1>Avatar</h1>
         <Content flexDirection={'column'}>
@@ -93,11 +104,11 @@ export default function AvatarPage() {
             {selectedAvatar?.id && <h1>Button groups</h1>}
             {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
                 <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}
-                                 avatarDataDispatch={avatarDataDispatch} />))
+                                 avatarDataDispatch={avatarDataDispatch} buttonStyle={clientButtonStyle} />))
             }
-            {clientTier?.layouts && selectedAvatar && selectedAvatar.layouts.length < clientTier.layouts &&
-                <LayoutComponent layout={new LayoutDto()} avatar={selectedAvatar} order={selectedAvatar.layouts?.length + 1}
-                                 clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} />
+            {clientTier?.layouts && selectedAvatar?.id && (!selectedAvatar.layouts || selectedAvatar.layouts.length < clientTier.layouts) &&
+                <LayoutComponent layout={new LayoutDto()} avatar={selectedAvatar} order={(selectedAvatar.layouts?.length || 0) + 1}
+                                 clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} buttonStyle={clientButtonStyle} />
             }
         </Content>
     </>);
