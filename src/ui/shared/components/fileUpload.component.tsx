@@ -50,6 +50,7 @@ export default function FileUpload({parentType, parentId, uploadCallback}: FileU
     }
 
     const onClearFiles = () => {
+        console.log('onClearFiles')
         reset({file: undefined});
     }
 
@@ -96,8 +97,9 @@ const FileInputStyled = styled.div<{ errors?: boolean }>`
     color: ${colors['ui-primary-2']};
     cursor: pointer;
     padding: 1em;
-    
-      :hover {
+    transition: 0.15s linear;
+
+    :hover {
         color: ${colors['ui-primary-4']};
       }
   }

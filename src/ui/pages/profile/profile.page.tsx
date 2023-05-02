@@ -13,19 +13,21 @@ import { ClientCredentialsContext } from '../../app/App';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import TierBadge from './components/tierBadge.component';
-import ButtonStylePicker from "./buttonStylePicker/buttonStylePicker";
-import BackgroundPicker from "./backgroundPicker/backgroundPicker.component";
+import ButtonStylePicker from './buttonStylePicker/buttonStylePicker';
+import BackgroundPicker from './backgroundPicker/backgroundPicker.component';
 
 export default function ProfilePage() {
 
     const {clientCredentials} = useContext(ClientCredentialsContext);
     const {client, backgrounds, buttonStyles, onSubmit, setClientPicture, setClientBackground, setClientButtonStyle} = useProlfilePage();
-    const {register, setValue, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
+    const {register, reset, formState: {errors, isDirty}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
 
     useEffect(() => {
-        setValue('displayName', client?.displayName);
-        setValue('bio', client?.bio);
-        setValue('hidden', client?.hidden);
+        reset({
+            displayName: client?.displayName,
+            bio: client?.bio,
+            hidden: client?.hidden
+        });
     }, [client]);
 
     return (
@@ -33,9 +35,9 @@ export default function ProfilePage() {
             <ContentBox flex={1} loading={!client}>
                 {client && <>
                     <ProfilePictureStyled src={clientCredentials.serverUrl + '/' + client.picture} alt="Profile picture" />
-                    <br/>
+                    <br />
                     <FileUpload parentType="profile" parentId={client.id} uploadCallback={setClientPicture} />
-                    <br/>
+                    <br />
                     {client.tier && <>
                         <h3>Account tier</h3>
                         <TierBadge tier={client.tier} />
@@ -58,7 +60,7 @@ export default function ProfilePage() {
                             <td><FormInput type={InputType.Boolean} register={register} name={'hidden'} errors={errors} /></td>
                         </tr>
                     </FormTable>
-                    <FormControl><FormInput type={InputType.Submit} /></FormControl>
+                    <FormControl><FormInput type={InputType.Submit} disabled={!isDirty} /></FormControl>
                 </form>
             </ContentBox>
             <BackgroundPicker client={client} setFunction={setClientBackground} backgrounds={backgrounds} />

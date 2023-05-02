@@ -59,5 +59,9 @@ export class IpcRendererService {
             ClientSocketService.disconnect();
         });
 
+        ipcMain.on('forwardOscToRenderer', (event: IpcMainEvent, forward: boolean) => {
+            OscService.forwardOscToRenderer = forward;
+        });
+
     }
 }

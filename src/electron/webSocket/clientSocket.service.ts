@@ -72,6 +72,6 @@ export class ClientSocketService {
     }
 
     static updateConnectionStatus() {
-        if (mainWindow) mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
+        if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
     }
 }

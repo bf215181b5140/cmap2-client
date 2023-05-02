@@ -21,13 +21,15 @@ export default function AvatarPage() {
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
     const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle} = useAvatarPage();
-    const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
+    const {register, setValue, reset, formState: {errors, isDirty}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
     useEffect(() => {
-        setValue('id', selectedAvatar?.id ? selectedAvatar?.id : null);
-        setValue('vrcId', selectedAvatar?.vrcId);
-        setValue('label', selectedAvatar?.label);
-        setValue('default', selectedAvatar?.default ? selectedAvatar?.default : false);
+        reset({
+            id: selectedAvatar?.id ? selectedAvatar?.id : null,
+            vrcId: selectedAvatar?.vrcId,
+            label: selectedAvatar?.label,
+            default: selectedAvatar?.default ? selectedAvatar?.default : false,
+        });
     }, [selectedAvatar]);
 
     if (selectedAvatar && selectedLayout && selectedButton) {
@@ -41,7 +43,15 @@ export default function AvatarPage() {
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
-            if (res?.code === 200) avatarDataDispatch({type: 'editAvatar', avatar: formData});
+            if (res?.code === 200) {
+                avatarDataDispatch({type: 'editAvatar', avatar: formData});
+                reset({
+                    id: formData?.id ? formData?.id : null,
+                    vrcId: formData?.vrcId,
+                    label: formData?.label,
+                    default: formData?.default ? formData?.default : false,
+                });
+            }
             if (res?.code === 201 && res.body) {
                 avatarDataDispatch({type: 'addAvatar', avatar: res.body});
                 navigate('/avatar/' + res.body.id)
@@ -96,7 +106,7 @@ export default function AvatarPage() {
                         </tr>
                     </FormTable>
                     <FormControl>
-                        <FormInput type={InputType.Submit} />
+                        <FormInput type={InputType.Submit} disabled={!isDirty} />
                         <FormInput type={InputType.Button} value="Delete" onClick={() => onDelete(selectedAvatar)} />
                     </FormControl>
                 </form>

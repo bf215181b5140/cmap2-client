@@ -30,7 +30,7 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
-    const {register, formState: {errors}, reset, handleSubmit} = useForm({defaultValues: {
+    const {register, formState: {errors, isDirty}, reset, handleSubmit} = useForm({defaultValues: {
             id: layout.id,
             label: layout.label,
             order: order,
@@ -48,7 +48,15 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
-            if (res?.code === 200) avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatar.id});
+            if (res?.code === 200) {
+                avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatar.id});
+                reset({
+                    id: formData.id,
+                    label: formData.label,
+                    order: order,
+                    parentId: formData.id
+                });
+            }
             if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addLayout', layout: res.body, avatarId: avatar.id});
             setEditing(false);
         });
@@ -80,10 +88,15 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
                 <tr>
                     <td><FormInput type={InputType.Text} register={register} name={'label'} errors={errors} /></td>
                     <td style={{textAlign: 'right'}}>
-                        <FormInput type={InputType.Submit} />
+                        <FormInput type={InputType.Submit} disabled={!isDirty} />
                         {layout.id && <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(layout)}></FormInput>}
                         <FormInput type={InputType.Button} value={'Cancel'} onClick={() => {
-                            reset();
+                            reset({
+                                id: layout.id,
+                                label: layout.label,
+                                order: order,
+                                parentId: avatar.id
+                            });
                             setEditing(false);
                         }} />
                     </td>

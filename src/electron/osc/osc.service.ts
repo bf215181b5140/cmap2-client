@@ -3,6 +3,7 @@ import { ClientSocketService } from '../webSocket/clientSocket.service';
 import { ClientStoreService } from '../util/clientStore.service';
 import { OscSettings } from '../../shared/classes';
 import { OscMessage } from 'cmap2-shared';
+import { mainWindow } from '../electron';
 
 export class OscService {
 
@@ -13,6 +14,8 @@ export class OscService {
     static lastActivity: number = 0;
     static isActive: boolean = false;
     static activityIntervalMs: number = 60000;
+
+    static forwardOscToRenderer: boolean = false;
 
     static ignoredParams: Set<string> = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
                                                  '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
@@ -41,7 +44,6 @@ export class OscService {
         if (!this.activityInterval) this.activityInterval = setInterval(this.activityChecker, 60000);
 
         this.oscServer.on('message', (message: [string, ...ArgumentType[]]) => {
-            console.log('new param from vrc', message)
             this.lastActivity = Date.now();
             if (!this.isActive) {
                 this.isActive = true;
@@ -52,6 +54,11 @@ export class OscService {
                     ClientSocketService.sendParameter('avatar', new Message(message[0].slice(message[0].lastIndexOf('/') + 1), message[1]));
                 } else {
                     ClientSocketService.sendParameter('parameter', new Message(message[0], message[1]));
+                    if (this.forwardOscToRenderer && mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('oscMessage', {
+                        address: message[0],
+                        args: [message[1]]
+                    } as OscMessage);
+
                 }
             }
         });

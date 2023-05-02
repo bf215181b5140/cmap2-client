@@ -15,6 +15,7 @@ import { FormTable, FormControl } from '../../../shared/components/form/formTabl
 import FileUpload from '../../../shared/components/fileUpload.component';
 import { z } from 'zod';
 import Icon from 'cmap2-shared/dist/components/icon.component';
+import ListenForParameter from './listenForParameter.component';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;
@@ -29,7 +30,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
-    const {register, formState: {errors}, watch, handleSubmit} = useForm({
+    const {register, setValue, reset, formState: {errors, isDirty}, watch, handleSubmit} = useForm<ButtonDto>({
         defaultValues: {...button, order: 0, parentId: layout.id},
         resolver: zodResolver(buttonSchema)
     });
@@ -39,13 +40,16 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         return Object.keys(enumType).map((key: string) => ({key: enumType[key], value: key}));
     }
 
-    function onSave(formData: any) {
+    function onSave(formData: ButtonDto) {
         customFetch<ButtonDto>('button', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
-            if (res?.code === 200) avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
+            if (res?.code === 200) {
+                avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
+                reset({...formData, order: 0, parentId: layout.id});
+            }
             if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addButton', button: res.body, avatarId: avatar.id, layoutId: layout.id});
             navigate(-1);
         });
@@ -65,6 +69,11 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     function setButtonPicture(picture: string) {
         avatarDataDispatch({type: 'changeButtonPicture', picture: picture, buttonId: button.id, avatarId: avatar.id, layoutId: layout.id});
         navigate(-1);
+    }
+
+    function setFormDataFromOsc(data: ButtonDto) {
+        setValue('path', data.path);
+        setValue('value', data.value);
     }
 
     return (<Content flexDirection="row">
@@ -115,11 +124,12 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                     </tr>
                 </FormTable>
                 <FormControl>
-                    <FormInput type={InputType.Submit} />
+                    <FormInput type={InputType.Submit} disabled={!isDirty} />
                     <FormInput type={InputType.Button} value="Delete" onClick={() => onDelete(button)} />
                     <FormInput type={InputType.Button} value="Cancel" onClick={() => navigate(-1)} />
                 </FormControl>
             </form>
         </ContentBox>
+        <ListenForParameter applyMessage={setFormDataFromOsc} />
     </Content>);
 }
