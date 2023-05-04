@@ -65,8 +65,9 @@ export const SidePanelButton = styled.button<{active?: boolean}>`
     border: 2px solid ${props => props.active ? colors['button-2-hover-border'] : colors['button-2-border']};
     border-radius: 7px;
     font-size: 16px;
-    transition: 0.15s linear;
+    transition: 0.1s linear;
     box-shadow: 0 0 5px ${colors['app-bg-opaque']};
+    cursor: pointer;
 
     :hover {
       //transform: scale(1.05) perspective(1px);

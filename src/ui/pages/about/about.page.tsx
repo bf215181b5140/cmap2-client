@@ -1,27 +1,42 @@
-import { ButtonDto } from 'cmap2-shared';
-import ParameterButton from 'cmap2-shared/src/parameter.button';
+import colors from 'cmap2-shared/src/colors.json';
 import React from 'react';
+import { Content, ContentBox } from 'cmap2-shared/src/components/contentBox.component';
+import styled from 'styled-components';
+import { ContentBoxWidth } from 'cmap2-shared/src';
 
 export default function AboutPage() {
 
-    return (
-        <p>
-            Ipsa provident excepturi repellendus. Velit corporis harum et consequatur reiciendis
-            earum. Accusantium quaerat dolores labore illo. Et id laudantium voluptas sequi
-            mollitia.
-
-            Dolorem enim distinctio amet necessitatibus rerum. Et eius numquam id asperiores et
-            omnis. Dolore qui et sed.
-
-            Ad aliquam laborum eum excepturi autem quas et natus. Accusantium totam occaecati
-            excepturi iste voluptas alias. Consectetur autem dolores et adipisci illo aliquid.
-
-            Quod deleniti laudantium dicta ea sint nam aut. Accusamus incidunt sint numquam eveniet
-            similique quas quis reiciendis. Non quasi omnis dolor ad sit. Assumenda necessitatibus
-            voluptates delectus molestias officia et non qui.
-
-            Et qui eum voluptas perferendis et repellat voluptatem sunt. Dolores beatae possimus cum
-            libero. Id quis corrupti nemo aliquam ea nostrum. Dolorum illo totam et consequatur.
-        </p>
-    );
+    return (<>
+        <Content>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Third}><ButtonsBox><Test/><Test/></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Third}><ButtonsBox><Test/><Test/><Test/><Test/></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Third}><ButtonsBox><Test/><Test/><Test></Test></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Third}><ButtonsBox><Test/></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Half}><ButtonsBox><Test/><Test/><Test/></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Half}><ButtonsBox><Test/><Test/><Test/></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Half}><ButtonsBox><Test/><Test/><Test/></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Half}><ButtonsBox><Test/><Test/><Test/></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Third}><ButtonsBox><Test/><Test/><Test/></ButtonsBox></ContentBox>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Full}><ButtonsBox><Test/><Test/><Test/><Test/><Test/></ButtonsBox></ContentBox>
+        </Content>
+    </>);
 }
+
+const ButtonsBox = styled.div`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+`;
+
+const Test = styled.div`
+  background-color: ${colors['button-2-bg']};
+  flex-grow: 2; // option two try disable this, maybe with basis on 0
+  //flex-basis: 0;
+  min-width: 160px;
+  max-width: 200px;
+  aspect-ratio: 16/9;
+`;

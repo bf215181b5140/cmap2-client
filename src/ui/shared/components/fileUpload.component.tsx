@@ -51,10 +51,10 @@ export default function FileUpload({parentType, parentId, uploadCallback}: FileU
 
     const onClearFiles = () => {
         console.log('onClearFiles')
-        reset({file: undefined});
+        reset({file: null});
     }
 
-    return (<FileUploadStyled onSubmit={handleSubmit(onSubmit)}>
+    return (<form onSubmit={handleSubmit(onSubmit)}>
         <FileInputHidden type='file' {...register('file')} id="fileInput" />
         <FileInputStyled>
             <FileName onClick={onBrowse}>{selectedFile?.[0]?.name ? selectedFile?.[0]?.name : <i className={'ri-image-add-line'} />}</FileName>
@@ -64,23 +64,14 @@ export default function FileUpload({parentType, parentId, uploadCallback}: FileU
             </>}
         </FileInputStyled>
         <FileInputHidden type='submit' ref={submitRef} />
-    </FileUploadStyled>);
+    </form>);
 }
 
-const FileUploadStyled = styled.form`
-  //margin: 10px;
-`;
-
-const FileInputHidden = styled.input<{ errors?: boolean }>`
+const FileInputHidden = styled.input`
   display: none;
 `;
 
-const FileName = styled.div`
-  text-overflow: ellipsis;
-  overflow: hidden;
-`;
-
-const FileInputStyled = styled.div<{ errors?: boolean }>`
+const FileInputStyled = styled.div`
   ${globalInputStyle};
   display: flex;
   flex-direction: row;
@@ -96,8 +87,8 @@ const FileInputStyled = styled.div<{ errors?: boolean }>`
     text-align: center;
     color: ${colors['ui-primary-2']};
     cursor: pointer;
-    padding: 1em;
-    transition: 0.15s linear;
+    padding: 12px;
+    transition: 0.1s linear;
 
     :hover {
         color: ${colors['ui-primary-4']};
@@ -109,3 +100,8 @@ const FileInputStyled = styled.div<{ errors?: boolean }>`
   }
 `;
 
+const FileName = styled.div`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;

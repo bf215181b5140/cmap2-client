@@ -98,7 +98,7 @@ export const globalInputStyle = css<{ errors?: boolean }>`
   border: 2px solid ${colors['ui-primary-2']};
   border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-2']};
   border-radius: 7px;
-  transition: 0.15s linear;
+  transition: 0.1s linear;
   width: 350px;
 
   :hover {
@@ -114,6 +114,7 @@ export const globalInputStyle = css<{ errors?: boolean }>`
 
   :disabled {
     pointer-events: none;
+    color: ${colors['font-text-disabled']};
     filter: saturate(0.5%);
   }
 `;
@@ -130,6 +131,10 @@ const InputStyled = styled.input<{ button?: boolean, errors?: boolean }>`
     pointer-events: none;
     filter: saturate(0.5%);
   }
+  
+  &[type=button], &[type=submit] {
+    cursor: pointer;
+  }
 `;
 
 const TextareaStyled = styled.textarea<{ errors?: boolean }>`
@@ -138,6 +143,8 @@ const TextareaStyled = styled.textarea<{ errors?: boolean }>`
 
 const SelectStyled = styled.select<{ errors?: boolean }>`
   ${globalInputStyle};
+
+  cursor: pointer;
 `;
 
 const CheckboxStyled = styled.span<{ errors?: boolean }>`
