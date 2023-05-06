@@ -8,6 +8,31 @@ export default function AboutPage() {
 
     return (<>
         <Content>
+            <ContentBox title='Test title' flexBasis={ContentBoxWidth.Full}>
+                <Masonry>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger </Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger </Test2>
+                    <Test2>nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger </Test2>
+                    <Test2>nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger </Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger </Test2>
+                    <Test2>nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger</Test2>
+                    <Test2>nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger </Test2>
+                    <Test2>nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger </Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger nigger </Test2>
+                    <Test2>nigger nigger</Test2>
+                    <Test2>nigger nigger nigger nigger nigger nigger nigger nigger</Test2>
+                </Masonry>
+            </ContentBox>
+
             <ContentBox title='Test title' flexBasis={ContentBoxWidth.Third}><ButtonsBox><Test/><Test/></ButtonsBox></ContentBox>
             <ContentBox title='Test title' flexBasis={ContentBoxWidth.Third}><ButtonsBox><Test/><Test/><Test/><Test/></ButtonsBox></ContentBox>
             <ContentBox title='Test title' flexBasis={ContentBoxWidth.Third}><ButtonsBox><Test/><Test/><Test></Test></ButtonsBox></ContentBox>
@@ -39,4 +64,25 @@ const Test = styled.div`
   min-width: 160px;
   max-width: 200px;
   aspect-ratio: 16/9;
+`;
+
+const Masonry = styled.div`
+  column-count: 5;
+  gap: 15px;
+  text-align: center;
+  
+  div {
+    margin-bottom: 15px;
+  }
+`;
+
+const Test2 = styled.div`
+  background-color: ${colors['button-2-bg']};
+  display: inline-block;
+  margin: 0;
+  padding: 1em;
+  //width: 100%;
+  
+  min-width: 160px;
+  max-width: 230px;
 `;

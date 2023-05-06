@@ -11,9 +11,6 @@ if (!app.requestSingleInstanceLock()) {
     process.exit(0);
 }
 
-export const serverUrl: string = 'http://localhost:8080';
-// export const serverUrl: string = app.isPackaged ? 'http://changemyavatarparams.win' : 'http://localhost:8080'; TODO
-
 export let mainWindow: BrowserWindow | null;
 
 function createWindow(): BrowserWindow {
@@ -57,17 +54,11 @@ app.whenReady().then(() => {
     if (!applicationSettings || applicationSettings.startMinimized !== true) mainWindow = createWindow();
 
     // create tray icon
-    let tray = new Tray(nativeImage.createFromPath('public/logo192.png'));
+    let tray = new Tray('cmap-icon.png');
     const contextMenu = Menu.buildFromTemplate([
         {
             label: 'Open', type: 'normal', click: () => {
                 if (!mainWindow || mainWindow.isDestroyed()) mainWindow = createWindow();
-            }
-        }, {
-            label: 'Close', type: 'normal', click: () => {
-                if (mainWindow && !mainWindow.isDestroyed()) {
-                    mainWindow.close();
-                }
             }
         }, {
             label: 'Exit', type: 'normal', click: () => {
@@ -77,7 +68,7 @@ app.whenReady().then(() => {
         }
     ]);
     tray.setContextMenu(contextMenu);
-    tray.setToolTip('This is my application.');
+    tray.setToolTip('Cmap');
 
     app.on('window-all-closed', (event: any) => {
         // prevent terminating main process

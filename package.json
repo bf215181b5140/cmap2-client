@@ -45,7 +45,7 @@
   },
   "build": {
     "appId": "win.changemyavatarparams.app",
-    "productName": "cmap-client",
+    "productName": "cmap",
     "win": {
       "target": "portable"
     }

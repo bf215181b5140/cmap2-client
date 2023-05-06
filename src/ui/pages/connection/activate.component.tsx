@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { z } from 'zod';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { URL } from '../../../shared/const';
 import { FormTable } from '../../shared/components/form/formTable.component';
 import FormInput from '../../shared/components/form/formInput.component';
@@ -10,7 +10,8 @@ import { SocketConnection, SocketConnectionType } from '../../../shared/SocketCo
 import { activateSchema } from 'cmap2-shared/dist/validationSchemas';
 import { ReactProps } from '../../../shared/global';
 import { useNavigate } from 'react-router-dom';
-import useCustomFetch from '../../shared/hooks/customFetch.hook';
+import { ToastContext } from '../../app/mainWindow/mainWindow.componenet';
+import { ToastType } from '../../app/toast/toast.component';
 
 interface ActivateFormProps extends ReactProps {
     socketConnection: SocketConnection,
@@ -19,10 +20,10 @@ interface ActivateFormProps extends ReactProps {
 
 export default function ActivateForm({socketConnection, setConnectForm}: ActivateFormProps) {
 
-    const customFetch = useCustomFetch();
     const withUrlSchema = activateSchema.innerType().merge(z.object({serverUrl: z.string()}));
     const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(withUrlSchema)});
     const navigate = useNavigate();
+    const toastsDispatch = useContext(ToastContext);
 
     useEffect(() => {
         if (socketConnection.type === SocketConnectionType.SUCCESS) {
@@ -42,7 +43,18 @@ export default function ActivateForm({socketConnection, setConnectForm}: Activat
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'
         }}).then(res => {
-            if (res?.ok) setConnectForm(true);
+            if (res?.ok) {
+                toastsDispatch({
+                    type: 'add',
+                    toast: {message: 'Account activated!', type: ToastType.SUCCESS}
+                });
+                setConnectForm(true);
+            } else {
+                toastsDispatch({
+                    type: 'add',
+                    toast: {message: 'Activation failed', type: ToastType.ERROR}
+                });
+            }
         });
     }
 

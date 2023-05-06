@@ -1,14 +1,14 @@
 import { useReducer } from 'react';
 import { Toast } from './toast.component';
 
-type ToastReducerAction = {type: 'add', toast: Toast, dispatch: (action: ToastReducerAction) => void} | {type: 'remove', toast: Toast} | {type: 'clear'};
+export type ToastReducerAction = {type: 'add', toast: Toast, dispatch?: (action: ToastReducerAction) => void} | {type: 'remove', toast: Toast} | {type: 'clear'};
 
 function toastReducer(state: Toast[], action: ToastReducerAction): Toast[] {
     switch (action.type) {
         case 'add':
             const newToast = action.toast;
             setTimeout(() => {
-                action.dispatch({ type: "remove", toast: newToast });
+                if(action.dispatch) action.dispatch({ type: "remove", toast: newToast });
             }, 8000);
             return [...state, action.toast];
         case 'remove':
@@ -19,7 +19,7 @@ function toastReducer(state: Toast[], action: ToastReducerAction): Toast[] {
     }
 }
 
-export default function useToast() {
+export function useToast() {
     const [toasts, dispatch] = useReducer(toastReducer, []);
 
     const toastsDispatch = (action: ToastReducerAction) => {

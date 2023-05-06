@@ -9,7 +9,7 @@ interface ToastProps extends ReactProps {
 }
 
 export interface Toast {
-    id: string;
+    id?: string;
     message: string;
     type: ToastType;
 }

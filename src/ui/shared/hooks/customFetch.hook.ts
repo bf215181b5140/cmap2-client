@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import { ClientCredentialsContext, ToastContext } from '../../app/App';
+import { ClientCredentialsContext } from '../../app/App';
 import { ToastType } from '../../app/toast/toast.component';
+import { ToastContext } from '../../app/mainWindow/mainWindow.componenet';
 
 interface CustomFetchResponse<T> {
     code: number;
@@ -81,7 +82,7 @@ export default function useCustomFetch() {
                 headers: {'password': clientCredentials.password, 'Content-Type': 'application/json'},
             }).then(async res => {
                 if (res.ok || res.status === 200) {
-                    const token = await res.text()
+                    const token = await res.text();
                     setClientToken(token);
                     return token;
                 } else {
