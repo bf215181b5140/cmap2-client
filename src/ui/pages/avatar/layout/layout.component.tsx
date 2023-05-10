@@ -30,12 +30,14 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
-    const {register, formState: {errors, isDirty}, reset, handleSubmit} = useForm({defaultValues: {
+    const {register, formState: {errors, isDirty}, reset, handleSubmit} = useForm({
+        defaultValues: {
             id: layout.id,
             label: layout.label,
             order: order,
             parentId: avatar.id
-        }, resolver: zodResolver(layoutSchema)});
+        }, resolver: zodResolver(layoutSchema)
+    });
     const [inEdit, setEditing] = useState<boolean>(false);
 
     useEffect(() => {
@@ -77,7 +79,7 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
             <tr>
                 <td>{layout.id && <LayoutLabel>{layout.label}</LayoutLabel>}</td>
                 <td style={{textAlign: 'right'}}><FormInput type={InputType.Button} value={layout.id ? 'Edit' : 'Add new'}
-                                                            onClick={() => setEditing(true)}></FormInput></td>
+                                                            onClick={() => setEditing(true)} /></td>
             </tr>
         </FormTable>}
         {inEdit && <form onSubmit={handleSubmit(onSave)}>
@@ -89,7 +91,7 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
                     <td><FormInput type={InputType.Text} register={register} name={'label'} errors={errors} /></td>
                     <td style={{textAlign: 'right'}}>
                         <FormInput type={InputType.Submit} disabled={!isDirty} />
-                        {layout.id && <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(layout)}></FormInput>}
+                        {layout.id && <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(layout)} />}
                         <FormInput type={InputType.Button} value={'Cancel'} onClick={() => {
                             reset({
                                 id: layout.id,
