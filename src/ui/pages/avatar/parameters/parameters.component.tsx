@@ -1,12 +1,19 @@
-import { InputType, LayoutDto, ParameterDto, ReactProps } from "cmap2-shared";
+import { AvatarDto, InputType, LayoutDto, ParameterDto, ReactProps } from "cmap2-shared";
 import { ContentBox } from "cmap2-shared/src/components/contentBox.component";
 import { FormTable } from "../../../shared/components/form/formTable.component";
 import FormInput from "../../../shared/components/form/formInput.component";
-import React from "react";
+import React, { useEffect } from "react";
 import AddNewButton from "../layout/addNew.button";
 import useCustomFetch from "../../../shared/hooks/customFetch.hook";
 import { AvatarReducerAction } from "../avatar.reducer";
 import { useFieldArray, useForm } from "react-hook-form";
+import FileUpload from "../../../shared/components/fileUpload.component";
+import { VRChatOscAvatar } from "../../../../shared/interfaces";
+
+interface ParametersForm {
+    avatarId: string,
+    parameters: ParameterDto[]
+}
 
 interface ParametersProps extends ReactProps {
     parameters: ParameterDto[];
@@ -17,48 +24,35 @@ interface ParametersProps extends ReactProps {
 export default function Parameters({parameters, avatarId, avatarDataDispatch}: ParametersProps) {
 
     const customFetch = useCustomFetch();
-    const {register, control, handleSubmit, reset, formState: {errors, isDirty}} = useForm({defaultValues: {parameters: [...parameters]}});
-    const {
-        fields,
-        append,
-        prepend,
-        remove,
-        swap,
-        move,
-        insert,
-        replace
-    } = useFieldArray({
-        control,
-        name: 'parameters'
-    });
+    const {register, control, handleSubmit, reset, formState: {errors, isDirty}} = useForm<ParametersForm>({defaultValues: {parameters: [...parameters]}});
+    const {fields, append, remove} = useFieldArray({control, name: 'parameters'});
 
-    function onSave(formData: any) {
-        customFetch<ParameterDto[]>('parameter', {
-            method: 'PUT',
-            body: JSON.stringify(formData),
-            headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            // if (res?.code === 200) {
-            //     avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatar.id});
-            //     reset({
-            //         id: formData.id,
-            //         label: formData.label,
-            //         order: order,
-            //         parentId: formData.id
-            //     });
-            // }
-            // if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addLayout', layout: res.body, avatarId: avatar.id});
-        });
+    useEffect(() => {
+        reset({avatarId, parameters});
+    }, [])
+
+    function onSave(formData: ParametersForm) {
+        console.log(formData);
+
+        // customFetch<ParameterDto[]>('parameters', {
+        //     method: 'PUT',
+        //     body: JSON.stringify(formData),
+        //     headers: {'Content-Type': 'application/json'}
+        // }).then(res => {
+        // if (res?.code === 201 && res.body) avatarDataDispatch({type: 'saveParameters', parameters: res.body, avatarId: avatarId});
+        // });
     }
 
-    function onDelete(parameter: ParameterDto) {
-        customFetch('parameter', {
-            method: 'DELETE',
-            body: JSON.stringify(parameter),
-            headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            // if (res?.code === 200) avatarDataDispatch({type: 'removeLayout', layout: layout, avatarId: avatar.id});
-        });
+    function onReadOscAvatarFile(file: string) {
+        const oscAvatarData: VRChatOscAvatar = JSON.parse(file);
+        const newParameters = oscAvatarData.parameters.filter(p => p.out.path === p.in.path).map(p => {
+            const newParameter = new ParameterDto();
+            newParameter.label = p.name;
+            newParameter.path = p.out.path;
+            // newParameter.valueType = p.type; // todo type
+            return newParameter;
+        })
+        reset({avatarId, parameters: newParameters}); // todo set dirty?
     }
 
     return (<ContentBox title='Parameters'>
@@ -90,11 +84,15 @@ export default function Parameters({parameters, avatarId, avatarDataDispatch}: P
                 </tr>
                 <tr>
                     <td colSpan={3}>
+                        {/* TODO FILE UPLOAD */}
+                    </td>
+                </tr>
+                <tr>
+                    <td colSpan={3}>
                         <FormInput type={InputType.Submit} disabled={!isDirty} />
                     </td>
                 </tr>
             </FormTable>
-
         </form>
     </ContentBox>);
 }

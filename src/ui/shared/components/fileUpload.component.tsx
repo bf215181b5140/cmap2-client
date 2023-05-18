@@ -50,7 +50,6 @@ export default function FileUpload({parentType, parentId, uploadCallback}: FileU
     }
 
     const onClearFiles = () => {
-        console.log('onClearFiles')
         reset({file: null});
     }
 
@@ -59,8 +58,8 @@ export default function FileUpload({parentType, parentId, uploadCallback}: FileU
         <FileInputStyled>
             <FileName onClick={onBrowse}>{selectedFile?.[0]?.name ? selectedFile?.[0]?.name : <i className={'ri-image-add-line'} />}</FileName>
             {selectedFile?.[0]?.name && <>
-                <div onClick={onUpload}><i className={'ri-upload-2-line'}></i></div>
-                <div onClick={onClearFiles}><i className={'ri-close-line'}></i></div>
+                <div onClick={onUpload}><i className={'ri-upload-2-line'}/></div>
+                <div onClick={onClearFiles}><i className={'ri-close-line'}/></div>
             </>}
         </FileInputStyled>
         <FileInputHidden type='submit' ref={submitRef} />
