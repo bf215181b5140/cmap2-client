@@ -15,6 +15,7 @@ import ButtonComponent from './button/button.component';
 import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { FormControl, FormTable } from '../../shared/components/form/formTable.component';
 import Icon from 'cmap2-shared/dist/components/icon.component';
+import Parameters from './parameters/parameters.component';
 
 export default function AvatarPage() {
 
@@ -111,6 +112,7 @@ export default function AvatarPage() {
                     </FormControl>
                 </form>
             </ContentBox>}
+            {selectedAvatar && <Parameters parameters={selectedAvatar.parameters || []} avatarId={selectedAvatar.id} avatarDataDispatch={avatarDataDispatch}/>}
             {selectedAvatar?.id && <h1>Button groups</h1>}
             {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
                 <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}

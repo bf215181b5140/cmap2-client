@@ -80,9 +80,8 @@ const Test2 = styled.div`
   background-color: ${colors['button-2-bg']};
   display: inline-block;
   margin: 0;
-  padding: 1em;
-  //width: 100%;
-  
   min-width: 160px;
   max-width: 230px;
+  
+  padding: 1em;
 `;

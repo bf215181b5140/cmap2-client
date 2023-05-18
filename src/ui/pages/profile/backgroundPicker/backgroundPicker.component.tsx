@@ -1,7 +1,6 @@
 import ContentBox from '../../../shared/components/contentBox.component';
 import React from 'react';
-import { BackgroundDto, ClientDto } from 'cmap2-shared';
-import { ReactProps } from '../../../../shared/global';
+import { BackgroundDto, ClientDto, ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import useCustomFetch from '../../../shared/hooks/customFetch.hook';
 import Background from 'cmap2-shared/dist/components/background.component';
@@ -37,10 +36,10 @@ export default function BackgroundPicker({client, setFunction, backgrounds}: Bac
         <BackgroundFlex>
             {backgrounds?.map(background => (
                 <BackgroundPickerStyled color={background.tier.color} validPick={(client?.tier?.rank || 0) >= background.tier.rank}
-                                        onClick={() => saveSelected(background)} key={background?.id}>
+                                        onClick={() => saveSelected(background)} key={background?.className}>
                     <Background background={background} />
                     <PickerOverlayTier tier={background.tier} />
-                    <PickerOverlayCheck selected={client?.background?.id === background?.id} />
+                    <PickerOverlayCheck selected={client?.background?.className === background?.className} />
                 </BackgroundPickerStyled>
             ))}
         </BackgroundFlex>

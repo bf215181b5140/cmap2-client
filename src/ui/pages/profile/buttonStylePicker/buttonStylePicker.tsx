@@ -1,7 +1,6 @@
 import React from 'react';
 import ContentBox from '../../../shared/components/contentBox.component';
-import { ReactProps } from '../../../../shared/global';
-import { ButtonDto, ButtonStyleDto, ClientDto } from 'cmap2-shared';
+import { ButtonDto, ButtonStyleDto, ClientDto, ReactProps } from 'cmap2-shared';
 import ParameterButton from 'cmap2-shared/src/components/parameter.button';
 import useCustomFetch from '../../../shared/hooks/customFetch.hook';
 import styled from 'styled-components';
@@ -43,10 +42,10 @@ export default function ButtonStylePicker({client, setFunction, buttonStyles}: B
         <ButtonStyleFlex>
             {buttonStyles?.map(buttonStyle => (
                 <ButtonStylePickerStyled color={buttonStyle.tier.color} validPick={(client?.tier?.rank || 0) >= buttonStyle.tier.rank}
-                                         onClick={() => saveSelected(buttonStyle)} key={buttonStyle?.id}>
+                                         onClick={() => saveSelected(buttonStyle)} key={buttonStyle?.className}>
                     <ParameterButton buttonStyle={buttonStyle} button={exampleButton()} />
                     <PickerOverlayTier tier={buttonStyle.tier} />
-                    <PickerOverlayCheck selected={client?.buttonStyle?.id === buttonStyle?.id} />
+                    <PickerOverlayCheck selected={client?.buttonStyle?.className === buttonStyle?.className} />
                 </ButtonStylePickerStyled>
             ))}
         </ButtonStyleFlex>

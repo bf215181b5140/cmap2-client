@@ -5,9 +5,8 @@ import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { URL } from '../../../shared/const';
 import { FormTable } from '../../shared/components/form/formTable.component';
 import FormInput from '../../shared/components/form/formInput.component';
-import { InputType } from 'cmap2-shared';
+import { InputType, ReactProps } from 'cmap2-shared';
 import { SocketConnection, SocketConnectionType } from '../../../shared/SocketConnection';
-import { ReactProps } from '../../../shared/global';
 import { ClientCredentialsContext } from '../../app/App';
 import useConnectionIcon from '../../shared/hooks/connectionIcon.hook';
 
@@ -23,7 +22,6 @@ export default function ConnectForm({socketConnection, setConnectForm}: ConnectF
 
     const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm({
         resolver: zodResolver(z.object({
-            serverUrl: z.string().url(),
             username: z.string(),
             password: z.string()
         }))
@@ -43,10 +41,6 @@ export default function ConnectForm({socketConnection, setConnectForm}: ConnectF
         window.electronAPI.disconnectSocket();
     }
 
-    function onUrlReset() {
-        setValue('serverUrl', URL);
-    }
-
     return (<><h1>{socketConnection.message}</h1>
     <h3>{socketConnection.description}</h3>
     <i className={connectionIcon.type} style={{
@@ -56,14 +50,6 @@ export default function ConnectForm({socketConnection, setConnectForm}: ConnectF
     }} />
     <form onSubmit={handleSubmit(onSubmit)}>
         <FormTable>
-            <tr>
-                <th>Server URL</th>
-                <td>
-                    <FormInput type={InputType.Url} register={register} name={'serverUrl'}
-                               disabled={socketConnection.type === SocketConnectionType.SUCCESS} errors={errors} />
-                    <FormInput type={InputType.Button} onClick={() => onUrlReset()} value={'Default'} />
-                </td>
-            </tr>
             <tr>
                 <th>Username</th>
                 <td><FormInput type={InputType.Text} register={register} name={'username'}
@@ -79,7 +65,7 @@ export default function ConnectForm({socketConnection, setConnectForm}: ConnectF
                     (<FormInput type={InputType.Button} onClick={() => onDisconnect()} value={'Disconnect'} />) :
                     (<>
                         <FormInput type={InputType.Submit} value={'Connect'} />
-                        <FormInput type={InputType.Button} onClick={() => setConnectForm(false)} value={'Activate account'} />
+                        <FormInput type={InputType.Button} onClick={() => setConnectForm(false)} value={'Register'} />
                     </>)
                 }
                 </td>

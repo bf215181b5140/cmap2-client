@@ -1,5 +1,5 @@
-import { ReactProps } from '../../../../shared/global';
 import styled from 'styled-components';
+import { ReactProps } from 'cmap2-shared';
 
 interface FormTableProps extends ReactProps {
     width?: string;

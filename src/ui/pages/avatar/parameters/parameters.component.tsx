@@ -1,14 +1,13 @@
-import { AvatarDto, InputType, LayoutDto, ParameterDto, ReactProps } from "cmap2-shared";
-import { ContentBox } from "cmap2-shared/src/components/contentBox.component";
-import { FormTable } from "../../../shared/components/form/formTable.component";
-import FormInput from "../../../shared/components/form/formInput.component";
-import React, { useEffect } from "react";
-import AddNewButton from "../layout/addNew.button";
-import useCustomFetch from "../../../shared/hooks/customFetch.hook";
-import { AvatarReducerAction } from "../avatar.reducer";
-import { useFieldArray, useForm } from "react-hook-form";
-import FileUpload from "../../../shared/components/fileUpload.component";
-import { VRChatOscAvatar } from "../../../../shared/interfaces";
+import { InputType, ParameterDto, ReactProps, ValueType } from 'cmap2-shared';
+import { ContentBox } from 'cmap2-shared/src/components/contentBox.component';
+import { FormTable } from '../../../shared/components/form/formTable.component';
+import FormInput from '../../../shared/components/form/formInput.component';
+import React, { useEffect } from 'react';
+import AddNewButton from '../layout/addNew.button';
+import useCustomFetch from '../../../shared/hooks/customFetch.hook';
+import { AvatarReducerAction } from '../avatar.reducer';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { VRChatOscAvatar } from '../../../../shared/interfaces';
 
 interface ParametersForm {
     avatarId: string,
@@ -45,18 +44,18 @@ export default function Parameters({parameters, avatarId, avatarDataDispatch}: P
 
     function onReadOscAvatarFile(file: string) {
         const oscAvatarData: VRChatOscAvatar = JSON.parse(file);
-        const newParameters = oscAvatarData.parameters.filter(p => p.out.path === p.in.path).map(p => {
+        const newParameters = oscAvatarData.parameters.filter(p => p.output && p.input && p.output?.address === p.input?.address).map(p => {
             const newParameter = new ParameterDto();
             newParameter.label = p.name;
-            newParameter.path = p.out.path;
-            // newParameter.valueType = p.type; // todo type
+            newParameter.path = p.output!.address;
+            newParameter.valueType = p.output!.type;
             return newParameter;
         })
         reset({avatarId, parameters: newParameters}); // todo set dirty?
     }
 
     return (<ContentBox title='Parameters'>
-        <p><span>Optional</span> list of parameters this avatar supports. Makes it easier to build button by letting you pick parameters from a list</p>
+        <p>Optional list of parameters that this avatar supports. Makes it easier to build button by letting you pick parameters from this list.</p>
         <form onSubmit={handleSubmit(onSave)}>
             <FormInput type={InputType.Hidden} register={register} name={'avatarId'} />
             <FormTable width="100%">

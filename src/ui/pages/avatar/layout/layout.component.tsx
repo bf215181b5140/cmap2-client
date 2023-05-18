@@ -124,10 +124,23 @@ const LayoutLabel = styled.h2`
 `;
 
 const ButtonsBox = styled.div`
+  column-width: 160px;
+  column-fill: balance;
+  gap: 15px;
+
+  text-align: center;
+
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 15px;
+  
+  > div {
+    margin-bottom: 15px;
+    //display: inline-flex;
+    //flex-direction: column;
+    //width: 100%;
+    //min-width: 160px;
+    //max-width: 230px;
+    //margin: 0;
+    //padding: 0;
+  }
 `;

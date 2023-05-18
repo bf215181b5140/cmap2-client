@@ -1,4 +1,4 @@
-import { ReactProps } from '../../../shared/global';
+import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 
 interface ContentProps extends ReactProps {

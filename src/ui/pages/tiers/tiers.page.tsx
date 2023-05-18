@@ -26,8 +26,8 @@ export default function TiersPage() {
         <ContentBox loading={!tiers || !clientTier}>
         <TiersPageStyled>
             {(tiers && clientTier) && tiers.map(tier => (
-                <Tier current={tier.id === clientTier.id}>
-                    {tier.id === clientTier.id && <h3>current</h3>}
+                <Tier current={tier.tier === clientTier.tier}>
+                    {tier.tier === clientTier.tier && <h3>current</h3>}
                     <h2>
                         <Icon icon='ri-medal-fill' color={tier.color} />
                         {tier.tier}
@@ -57,7 +57,7 @@ const TiersPageStyled = styled.div`
 const Tier = styled.div<{ current: boolean }>`
   padding: ${props => props.current ? '25px' : '15px'};
   margin: ${props => props.current ? '15px 10px' : '40px 0'};
-  flex-basis: ${props => props.current ? '35%' : '25%'};
+  flex-basis: 28%;
   border: 2px solid ${props => props.current ? colors['button-hover-border'] : colors['button-border']};
   border-radius: 1em;
   

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
-import { ReactProps } from '../../../shared/global';
+import { ReactProps } from 'cmap2-shared';
 
 interface SidePanelProps extends ReactProps {
     title?: string;

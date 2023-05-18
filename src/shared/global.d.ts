@@ -21,7 +21,3 @@ declare global {
         electronAPI: IElectronAPI;
     }
 }
-
-export interface ReactProps {
-    children?: any;
-}

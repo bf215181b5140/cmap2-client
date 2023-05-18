@@ -2,7 +2,7 @@ import { globalInputStyle } from './form/formInput.component';
 import React, { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import useCustomFetch from '../hooks/customFetch.hook';
-import { ReactProps } from '../../../shared/global';
+import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 

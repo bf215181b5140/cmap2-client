@@ -1,5 +1,4 @@
 export class ClientCredentials {
-    serverUrl: string = '';
     username: string = '';
     password: string = '';
     apiToken: string | undefined | null;

@@ -15,6 +15,7 @@ import colors from 'cmap2-shared/src/colors.json';
 import TierBadge from './components/tierBadge.component';
 import ButtonStylePicker from './buttonStylePicker/buttonStylePicker';
 import BackgroundPicker from './backgroundPicker/backgroundPicker.component';
+import { URL } from '../../../shared/const';
 
 export default function ProfilePage() {
 
@@ -34,7 +35,7 @@ export default function ProfilePage() {
         <Content>
             <ContentBox flex={1} loading={!client}>
                 {client && <>
-                    <ProfilePictureStyled src={clientCredentials.serverUrl + '/' + client.picture} alt="Profile picture" />
+                    <ProfilePictureStyled src={URL + '/' + client.image} alt="Profile picture" />
                     <br />
                     <FileUpload parentType="profile" parentId={client.id} uploadCallback={setClientPicture} />
                     <br />

@@ -1,17 +1,18 @@
+import { ValueType } from 'cmap2-shared';
 
-export interface VRChatOscParameterProperties {
-    path: string;
+export interface VRChatOscAvatarParameterProperties {
+    address: string;
+    type: ValueType;
 }
 
-export interface VRChatOscParameter {
+export interface VRChatOscAvatarParameter {
     name: string;
-    type: string;
-    in: VRChatOscParameterProperties;
-    out: VRChatOscParameterProperties;
+    input?: VRChatOscAvatarParameterProperties;
+    output?: VRChatOscAvatarParameterProperties;
 }
 
 export interface VRChatOscAvatar {
-    name: string;
     id: string;
-    parameters: VRChatOscParameter[];
+    name: string;
+    parameters: VRChatOscAvatarParameter[];
 }

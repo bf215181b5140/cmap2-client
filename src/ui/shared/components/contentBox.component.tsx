@@ -1,6 +1,6 @@
-import { ReactProps } from '../../../shared/global';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
+import { ReactProps } from 'cmap2-shared';
 
 interface ContentBoxProps extends ReactProps {
     flex?: number;

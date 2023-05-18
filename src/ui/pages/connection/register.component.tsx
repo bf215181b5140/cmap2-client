@@ -5,10 +5,9 @@ import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { URL } from '../../../shared/const';
 import { FormTable } from '../../shared/components/form/formTable.component';
 import FormInput from '../../shared/components/form/formInput.component';
-import { ButtonDto, InputType } from 'cmap2-shared';
+import { ButtonDto, InputType, ReactProps, RegistrationFormDto } from 'cmap2-shared';
 import { SocketConnection, SocketConnectionType } from '../../../shared/SocketConnection';
-import { activateSchema } from 'cmap2-shared/dist/validationSchemas';
-import { ReactProps } from '../../../shared/global';
+import { registrationSchema } from 'cmap2-shared/dist/validationSchemas';
 import { useNavigate } from 'react-router-dom';
 import { ToastContext } from '../../app/mainWindow/mainWindow.componenet';
 import { ToastType } from '../../app/toast/toast.component';
@@ -18,10 +17,9 @@ interface ActivateFormProps extends ReactProps {
     setConnectForm: Dispatch<SetStateAction<boolean>>
 }
 
-export default function ActivateForm({socketConnection, setConnectForm}: ActivateFormProps) {
+export default function RegistrationForm({socketConnection, setConnectForm}: ActivateFormProps) {
 
-    const withUrlSchema = activateSchema.innerType().merge(z.object({serverUrl: z.string()}));
-    const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm({resolver: zodResolver(withUrlSchema)});
+    const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm<RegistrationFormDto>({resolver: zodResolver(registrationSchema)});
     const navigate = useNavigate();
     const toastsDispatch = useContext(ToastContext);
 
@@ -31,14 +29,8 @@ export default function ActivateForm({socketConnection, setConnectForm}: Activat
         }
     }, [socketConnection])
 
-    useEffect(() => {
-        reset({serverUrl: URL});
-    }, [])
-
-    function onSubmit(formData: any) {
-        console.log(formData)
-        const url = formData.serverUrl + '/api/activate';
-        fetch(url, {
+    function onSubmit(formData: RegistrationFormDto) {
+        fetch(URL + '/api/register', {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'
@@ -46,31 +38,20 @@ export default function ActivateForm({socketConnection, setConnectForm}: Activat
             if (res?.ok) {
                 toastsDispatch({
                     type: 'add',
-                    toast: {message: 'Account activated!', type: ToastType.SUCCESS}
+                    toast: {message: 'Account registered!', type: ToastType.SUCCESS}
                 });
                 setConnectForm(true);
             } else {
                 toastsDispatch({
                     type: 'add',
-                    toast: {message: 'Activation failed', type: ToastType.ERROR}
+                    toast: {message: 'Registration failed', type: ToastType.ERROR}
                 });
             }
         });
     }
 
-    function onUrlReset() {
-        setValue('serverUrl', URL);
-    }
-
     return (<form onSubmit={handleSubmit(onSubmit)}>
         <FormTable>
-            <tr>
-                <th>Server URL</th>
-                <td>
-                    <FormInput type={InputType.Url} register={register} name={'serverUrl'} errors={errors} />
-                    <FormInput type={InputType.Button} onClick={() => onUrlReset()} value={'Default'} />
-                </td>
-            </tr>
             <tr>
                 <th>Username</th>
                 <td><FormInput type={InputType.Text} register={register} name={'username'} errors={errors} /></td>
@@ -83,12 +64,12 @@ export default function ActivateForm({socketConnection, setConnectForm}: Activat
                 <td><FormInput type={InputType.Password} register={register} name={'passwordTwo'} errors={errors} /></td>
             </tr>
             <tr>
-                <th>Activation key</th>
-                <td><FormInput type={InputType.Text} register={register} name={'activationKey'} errors={errors} /></td>
+                <th>Registration key</th>
+                <td><FormInput type={InputType.Text} register={register} name={'registrationKey'} errors={errors} /></td>
             </tr>
             <tr>
                 <td colSpan={2} style={{textAlign: 'center'}}>
-                    <FormInput type={InputType.Submit} value={'Activate'} />
+                    <FormInput type={InputType.Submit} value={'Register'} />
                     <FormInput type={InputType.Button} onClick={() => setConnectForm(true)} value={'Back to connect'} />
                 </td>
             </tr>

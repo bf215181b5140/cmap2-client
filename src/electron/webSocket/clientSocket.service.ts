@@ -6,6 +6,7 @@ import { OscMessage } from 'cmap2-shared';
 import { ClientCredentials } from '../../shared/classes';
 import { ClientStoreService } from '../util/clientStore.service';
 import { mainWindow } from '../electron';
+import { URL } from '../../shared/const';
 
 export class ClientSocketService {
 
@@ -17,7 +18,7 @@ export class ClientSocketService {
         if (!clientCredentials) return;
 
         if (this.socket) this.socket.close();
-        this.socket = io(clientCredentials.serverUrl + '/clientSocket', {
+        this.socket = io(URL + '/clientSocket', {
             query: {
                 username: clientCredentials.username,
                 password: clientCredentials.password

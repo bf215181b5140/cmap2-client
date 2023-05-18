@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { ClientCredentialsContext } from '../../app/App';
 import { ToastType } from '../../app/toast/toast.component';
 import { ToastContext } from '../../app/mainWindow/mainWindow.componenet';
+import { URL } from '../../../shared/const';
 
 interface CustomFetchResponse<T> {
     code: number;
@@ -30,7 +31,7 @@ export default function useCustomFetch() {
                 init = {...init, headers: {'Authorization': '' + token}};
             }
 
-            const url = clientCredentials.serverUrl + '/api/' + urlSuffix;
+            const url = URL + '/api/' + urlSuffix;
 
             return await fetch(url, init)
                 .then(async res => {
@@ -76,7 +77,7 @@ export default function useCustomFetch() {
 
     const authenticate = async (): Promise<string> => {
         if (clientCredentials?.username && clientCredentials?.password) {
-            const url = clientCredentials.serverUrl + '/api/jwt/' + clientCredentials.username;
+            const url = URL + '/api/jwt/' + clientCredentials.username;
             return await fetch(url, {
                 method: 'GET',
                 headers: {'password': clientCredentials.password, 'Content-Type': 'application/json'},

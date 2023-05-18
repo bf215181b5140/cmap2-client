@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactProps } from '../../../shared/global';
+import { ReactProps } from 'cmap2-shared';
 import styled, { css } from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 

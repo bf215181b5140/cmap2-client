@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ReactProps } from '../../../shared/global';
+import { ReactProps } from 'cmap2-shared';
 import { SocketConnection } from '../../../shared/SocketConnection';
 
 interface TitleBarStatusProps extends ReactProps {
