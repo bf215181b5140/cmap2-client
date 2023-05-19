@@ -23,9 +23,6 @@ export default function SettingsPage() {
         )
     });
 
-    const test = watch('startMinimized')
-    console.log('watcg', test)
-
     useEffect(() => {
         window.electronAPI.getApplicationSettings().then(applicationSettings => {
             if (applicationSettings) {

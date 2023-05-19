@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
-import { ReactProps } from '../../../../shared/global';
-import { InputType } from 'cmap2-shared';
+import { InputType, ReactProps } from 'cmap2-shared';
 import { FieldOption } from 'cmap2-shared';
 import Icon from 'cmap2-shared/dist/components/icon.component';
 
@@ -32,7 +31,6 @@ export default function FormInput(props: FormInputProps) {
     }
 
     function booleanClick(id: string) {
-        console.log('clocking', id)
         const input = document.getElementById(id);
         if (input) input.click();
     }

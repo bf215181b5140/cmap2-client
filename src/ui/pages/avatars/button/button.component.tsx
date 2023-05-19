@@ -1,21 +1,21 @@
 import ContentBox from '../../../shared/components/contentBox.component';
-import { ReactProps } from '../../../../shared/global';
-import { AvatarDto, ButtonDto, ButtonStyleDto, ButtonType, FieldOption, InputType, LayoutDto, ValueType } from 'cmap2-shared';
+import { AvatarDto, ButtonDto, ButtonStyleDto, ButtonType, FieldOption, InputType, LayoutDto, ReactProps, ValueType } from 'cmap2-shared';
 import Content from '../../../shared/components/content.component';
 import { useNavigate } from 'react-router-dom';
 import ParameterButton from 'cmap2-shared/src/components/parameter.button';
 import React, { useEffect } from 'react';
-import { AvatarReducerAction } from '../avatar.reducer';
+import { AvatarReducerAction } from '../avatars.reducer';
 import useCustomFetch from '../../../shared/hooks/customFetch.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { buttonSchema } from 'cmap2-shared/dist/validationSchemas';
 import FormInput from '../../../shared/components/form/formInput.component';
-import { FormTable, FormControl } from '../../../shared/components/form/formTable.component';
 import FileUpload from '../../../shared/components/fileUpload.component';
 import { z } from 'zod';
 import Icon from 'cmap2-shared/dist/components/icon.component';
 import ListenForParameter from './listenForParameter.component';
+import FormTable from "../../../shared/components/form/formTable.component";
+import FormControlBar from "../../../shared/components/form/formControlBar.component";
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;
@@ -123,11 +123,11 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                         </td>
                     </tr>
                 </FormTable>
-                <FormControl>
+                <FormControlBar>
                     <FormInput type={InputType.Submit} disabled={!isDirty} />
                     <FormInput type={InputType.Button} value="Delete" onClick={() => onDelete(button)} />
                     <FormInput type={InputType.Button} value="Cancel" onClick={() => navigate(-1)} />
-                </FormControl>
+                </FormControlBar>
             </form>
         </ContentBox>
         <ListenForParameter applyMessage={setFormDataFromOsc} />

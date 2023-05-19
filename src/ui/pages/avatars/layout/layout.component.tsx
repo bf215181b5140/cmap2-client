@@ -1,6 +1,5 @@
 import ContentBox from '../../../shared/components/contentBox.component';
-import { ReactProps } from '../../../../shared/global';
-import { AvatarDto, ButtonDto, LayoutDto, TierDto } from 'cmap2-shared';
+import { AvatarDto, ButtonDto, LayoutDto, ReactProps, TierDto } from 'cmap2-shared';
 import ParameterButton from 'cmap2-shared/src/components/parameter.button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
@@ -11,8 +10,8 @@ import React, { useEffect, useState } from 'react';
 import { layoutSchema } from 'cmap2-shared/dist/validationSchemas';
 import styled from 'styled-components';
 import useCustomFetch from '../../../shared/hooks/customFetch.hook';
-import { AvatarReducerAction } from '../avatar.reducer';
-import { FormTable } from '../../../shared/components/form/formTable.component';
+import { AvatarReducerAction } from '../avatars.reducer';
+import FormTable from '../../../shared/components/form/formTable.component';
 import { ButtonStyleDto } from 'cmap2-shared/src';
 import addNewButton from './addNew.button';
 import AddNewButton from './addNew.button';
@@ -109,10 +108,10 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
         {layout.id && <ButtonsBox>
             {layout.buttons?.map((button: ButtonDto) => (
                 <ParameterButton button={button} key={button.id} flexBasis="calc(25% - (3 * 15px / 4))" buttonStyle={buttonStyle}
-                                 onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/' + button.id)} />
+                                 onClick={() => navigate('/avatars/' + avatar.id + '/' + layout.id + '/' + button.id)} />
             ))}
             {(clientTier.buttons && (!layout.buttons || layout.buttons.length < clientTier.buttons)) &&
-                <AddNewButton onClick={() => navigate('/avatar/' + avatar.id + '/' + layout.id + '/new')} />}
+                <AddNewButton onClick={() => navigate('/avatars/' + avatar.id + '/' + layout.id + '/new')} />}
         </ButtonsBox>}
     </ContentBox>);
 }

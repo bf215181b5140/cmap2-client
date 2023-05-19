@@ -1,13 +1,13 @@
 import { InputType, ParameterDto, ReactProps, ValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/src/components/contentBox.component';
-import { FormTable } from '../../../shared/components/form/formTable.component';
-import FormInput from '../../../shared/components/form/formInput.component';
+import FormTable from '../../../../shared/components/form/formTable.component';
+import FormInput from '../../../../shared/components/form/formInput.component';
 import React, { useEffect } from 'react';
-import AddNewButton from '../layout/addNew.button';
-import useCustomFetch from '../../../shared/hooks/customFetch.hook';
-import { AvatarReducerAction } from '../avatar.reducer';
+import AddNewButton from '../../layout/addNew.button';
+import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
+import { AvatarReducerAction } from '../../avatars.reducer';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { VRChatOscAvatar } from '../../../../shared/interfaces';
+import { VRChatOscAvatar } from '../../../../../shared/interfaces';
 
 interface ParametersForm {
     avatarId: string,

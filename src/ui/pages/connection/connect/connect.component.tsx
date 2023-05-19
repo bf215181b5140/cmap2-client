@@ -2,13 +2,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { z } from 'zod';
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
-import { URL } from '../../../shared/const';
-import { FormTable } from '../../shared/components/form/formTable.component';
-import FormInput from '../../shared/components/form/formInput.component';
+import { FormTable } from '../../../shared/components/form/formTable.component';
+import FormInput from '../../../shared/components/form/formInput.component';
 import { InputType, ReactProps } from 'cmap2-shared';
-import { SocketConnection, SocketConnectionType } from '../../../shared/SocketConnection';
-import { ClientCredentialsContext } from '../../app/App';
-import useConnectionIcon from '../../shared/hooks/connectionIcon.hook';
+import { SocketConnection, SocketConnectionType } from '../../../../shared/SocketConnection';
+import { ClientCredentialsContext } from '../../../app/App';
+import useConnectionIcon from '../../../shared/hooks/connectionIcon.hook';
 
 interface ConnectFormProps extends ReactProps {
     socketConnection: SocketConnection,

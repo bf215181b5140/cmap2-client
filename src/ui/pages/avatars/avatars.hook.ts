@@ -2,14 +2,14 @@ import { useEffect, useReducer, useState } from 'react';
 import { AvatarDto, Avatars, ButtonDto, ButtonStyleDto, LayoutDto, TierDto } from 'cmap2-shared';
 import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { useNavigate, useParams } from 'react-router-dom';
-import avatarReducer from './avatar.reducer';
+import avatarsReducer from './avatars.reducer';
 
 export default function useAvatarPage() {
 
     const navigate = useNavigate();
     const routeParams = useParams();
     const customFetch = useCustomFetch();
-    const [avatars, avatarDataDispatch] = useReducer(avatarReducer, []);
+    const [avatars, avatarDataDispatch] = useReducer(avatarsReducer, []);
     const [clientTier, setClientTier] = useState<TierDto>(new TierDto());
     const [clientButtonStyle, setClientButtonStyle] = useState<ButtonStyleDto>(new ButtonStyleDto());
     const [selectedAvatar, setAvatar] = useState<AvatarDto | undefined>(undefined);
@@ -32,9 +32,9 @@ export default function useAvatarPage() {
         if (tempList) {
             const tempAvatar = tempList.find((avatar: AvatarDto) => avatar.default);
             if (tempAvatar) {
-                navigate('/avatar/' + tempAvatar.id);
+                navigate('/avatars/' + tempAvatar.id);
             } else if (tempList[0]?.id) {
-                navigate('/avatar/' + tempList[0].id);
+                navigate('/avatars/' + tempList[0].id);
             }
         }
     }

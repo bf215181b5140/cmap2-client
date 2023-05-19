@@ -13,7 +13,7 @@ export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDto[] } |
     { type: 'removeButton', button: ButtonDto, layoutId: string, avatarId: string } |
     { type: 'changeButtonPicture', picture: string, buttonId: string, layoutId: string, avatarId: string };
 
-export default function avatarReducer(state: AvatarDto[], action: AvatarReducerAction) {
+export default function avatarsReducer(state: AvatarDto[], action: AvatarReducerAction) {
     switch (action.type) {
         case 'setAvatars':
             return action.avatars;

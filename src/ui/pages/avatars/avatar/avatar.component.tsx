@@ -1,28 +1,32 @@
-import ContentBox from '../../shared/components/contentBox.component';
-import { useEffect } from 'react';
-import Content from '../../shared/components/content.component';
-import { AvatarDto, LayoutDto } from 'cmap2-shared';
-import FormInput from '../../shared/components/form/formInput.component';
+import React, { useEffect } from 'react';
+import { AvatarDto, ButtonStyleDto, LayoutDto, ReactProps, TierDto } from 'cmap2-shared';
 import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { avatarSchema } from 'cmap2-shared/src/validationSchemas';
-import LayoutComponent from './layout/layout.component';
-import useAvatarPage from './avatar.hook';
 import { useNavigate } from 'react-router-dom';
-import { SidePanel, SidePanelButton } from '../../shared/components/sidePanel.component';
-import ButtonComponent from './button/button.component';
-import useCustomFetch from '../../shared/hooks/customFetch.hook';
-import { FormControl, FormTable } from '../../shared/components/form/formTable.component';
-import Icon from 'cmap2-shared/dist/components/icon.component';
+import { AvatarReducerAction } from "../avatars.reducer";
+import useCustomFetch from "../../../shared/hooks/customFetch.hook";
+import FormControl from '../../../shared/components/form/formControlBar.component';
+import FormInput from "../../../shared/components/form/formInput.component";
+import FormTable from '../../../shared/components/form/formTable.component';
+import { Content, ContentBox } from 'cmap2-shared/src/components/contentBox.component';
+import UploadAvatar from "./uploadAvatar/uploadAvatar.component";
 import Parameters from './parameters/parameters.component';
+import LayoutComponent from "../layout/layout.component";
 
-export default function AvatarPage() {
+interface AvatarProps extends ReactProps {
+    selectedAvatar: AvatarDto;
+    clientTier: TierDto;
+    buttonStyle: ButtonStyleDto;
+    avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
+}
+
+export default function Avatar({selectedAvatar, clientTier, buttonStyle, avatarDataDispatch}: AvatarProps) {
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
-    const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle} = useAvatarPage();
-    const {register, setValue, reset, formState: {errors, isDirty}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
+    const {register, reset, formState: {errors, isDirty}, handleSubmit} = useForm({resolver: zodResolver(avatarSchema)});
 
     useEffect(() => {
         reset({
@@ -32,11 +36,6 @@ export default function AvatarPage() {
             default: selectedAvatar?.default ? selectedAvatar?.default : false,
         });
     }, [selectedAvatar]);
-
-    if (selectedAvatar && selectedLayout && selectedButton) {
-        return (<ButtonComponent button={selectedButton} avatar={selectedAvatar} layout={selectedLayout} buttonStyle={clientButtonStyle}
-                                 avatarDataDispatch={avatarDataDispatch} />);
-    }
 
     function onSave(formData: any) {
         customFetch<AvatarDto>('avatar', {
@@ -55,7 +54,7 @@ export default function AvatarPage() {
             }
             if (res?.code === 201 && res.body) {
                 avatarDataDispatch({type: 'addAvatar', avatar: res.body});
-                navigate('/avatar/' + res.body.id)
+                navigate('/avatars/' + res.body.id)
             }
         });
     }
@@ -68,27 +67,14 @@ export default function AvatarPage() {
         }).then(res => {
             if (res?.code === 200) {
                 avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
-                navigate('/avatar');
+                navigate('/avatars');
             }
         });
     }
 
-    console.log(selectedAvatar)
-
     return (<>
-        <SidePanel title={'Avatars'} icon={'ri-contacts-book-fill'}>
-            {avatars && avatars.map((avatar: AvatarDto) => (
-                <SidePanelButton active={selectedAvatar && selectedAvatar.id === avatar.id} onClick={() => navigate('/avatar/' + avatar.id)}
-                                 key={avatar.id}>{avatar.label}</SidePanelButton>
-            ))}
-            {(clientTier?.avatars && avatars.length < clientTier.avatars) &&
-                <SidePanelButton className={'addButton'} onClick={() => navigate('/avatar/new')}
-                                 active={selectedAvatar && selectedAvatar.id === null}>
-                    <Icon icon='ri-add-fill' />
-                </SidePanelButton>}
-        </SidePanel>
-        <h1>Avatar</h1>
         <Content flexDirection={'column'}>
+            <UploadAvatar />
             {selectedAvatar && <ContentBox>
                 <form onSubmit={handleSubmit(onSave)}>
                     <FormInput type={InputType.Hidden} register={register} name={'id'} />
@@ -113,15 +99,14 @@ export default function AvatarPage() {
                 </form>
             </ContentBox>}
             {selectedAvatar && <Parameters parameters={selectedAvatar.parameters || []} avatarId={selectedAvatar.id} avatarDataDispatch={avatarDataDispatch}/>}
-            {selectedAvatar?.id && <h1>Button groups</h1>}
-            {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
-                <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}
-                                 avatarDataDispatch={avatarDataDispatch} buttonStyle={clientButtonStyle} />))
-            }
-            {clientTier?.layouts && selectedAvatar?.id && (!selectedAvatar.layouts || selectedAvatar.layouts.length < clientTier.layouts) &&
-                <LayoutComponent layout={new LayoutDto()} avatar={selectedAvatar} order={(selectedAvatar.layouts?.length || 0) + 1}
-                                 clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} buttonStyle={clientButtonStyle} />
-            }
         </Content>
+        {selectedAvatar && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
+            <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}
+                             avatarDataDispatch={avatarDataDispatch} buttonStyle={buttonStyle} />))
+        }
+        {clientTier?.layouts && selectedAvatar?.id && (!selectedAvatar.layouts || selectedAvatar.layouts.length < clientTier.layouts) &&
+            <LayoutComponent layout={new LayoutDto()} avatar={selectedAvatar} order={(selectedAvatar.layouts?.length || 0) + 1}
+                             clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} buttonStyle={buttonStyle} />
+        }
     </>);
 }

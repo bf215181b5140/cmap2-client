@@ -10,7 +10,7 @@ import 'remixicon/fonts/remixicon.css';
 import useSocketConnection from '../shared/hooks/socketConnection.hook';
 import useClientCredentials, { ClientCredentialsHook } from '../shared/hooks/clientCredentials.hook';
 import ProfilePage from '../pages/profile/profile.page';
-import AvatarPage from '../pages/avatar/avatar.page';
+import AvatarsPage from '../pages/avatars/avatars.page';
 import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from '../pages/settings/settings.page';
 import TiersPage from '../pages/tiers/tiers.page';
@@ -36,7 +36,7 @@ export default function App() {
                     <MainWindow>
                             <Routes>
                                 <Route path="/profile" element={<ProfilePage />} />
-                                <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarPage />} />
+                                <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
                                 <Route path="/tiers" element={<TiersPage />} />
                                 <Route path="/settings" element={<SettingsPage />} />
                                 <Route path="/about" element={<AboutPage />} />
