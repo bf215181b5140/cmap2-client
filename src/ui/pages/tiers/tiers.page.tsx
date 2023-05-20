@@ -1,10 +1,9 @@
 import useCustomFetch from '../../shared/hooks/customFetch.hook';
 import { useEffect, useState } from 'react';
 import { Tiers, TierDto, ClientTier } from 'cmap2-shared';
-import ContentBox from '../../shared/components/contentBox.component';
+import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import styled from 'styled-components';
-import Content from '../../shared/components/content.component';
-import Icon from 'cmap2-shared/dist/components/icon.component';
+import Icon from 'cmap2-shared/src/react/components/icon.component';
 import colors from 'cmap2-shared/src/colors.json';
 
 export default function TiersPage() {

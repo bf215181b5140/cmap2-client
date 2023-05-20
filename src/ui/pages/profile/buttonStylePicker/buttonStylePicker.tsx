@@ -1,7 +1,7 @@
 import React from 'react';
-import ContentBox from '../../../shared/components/contentBox.component';
+import { ContentBox } from 'cmap2-shared/dist/react';
 import { ButtonDto, ButtonStyleDto, ClientDto, ReactProps } from 'cmap2-shared';
-import ParameterButton from 'cmap2-shared/src/components/parameter.button';
+import { ParameterButton } from 'cmap2-shared/dist/react';
 import useCustomFetch from '../../../shared/hooks/customFetch.hook';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';

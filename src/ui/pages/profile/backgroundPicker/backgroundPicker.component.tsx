@@ -1,9 +1,9 @@
-import ContentBox from '../../../shared/components/contentBox.component';
+import { ContentBox } from 'cmap2-shared/dist/react';
 import React from 'react';
 import { BackgroundDto, ClientDto, ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import useCustomFetch from '../../../shared/hooks/customFetch.hook';
-import Background from 'cmap2-shared/dist/components/background.component';
+import Background from 'cmap2-shared/src/react/components/background.component';
 import PickerOverlayCheck from '../../../shared/components/pickerOverlay/PickerOverlayCheck.component';
 import colors from 'cmap2-shared/src/colors.json';
 import PickerOverlayTier from '../../../shared/components/pickerOverlay/PickerOverlayTier.component';

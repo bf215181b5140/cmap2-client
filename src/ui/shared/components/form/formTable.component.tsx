@@ -13,11 +13,16 @@ export default function FormTable({children, width}: FormTableProps) {
     </FormTableStyled>);
 }
 
-const FormTableStyled = styled.table<{width?: string}>`
+export const FormTableStyled = styled.table<{width?: string}>`
   border-collapse: collapse;
   width: ${props => props.width ? props.width : 'auto'};
   
-  th {
+  thead th {
+    padding-left: 10px;
+    text-align: left;
+  }
+  
+  tbody th {
     text-align: left;
   }
 `;

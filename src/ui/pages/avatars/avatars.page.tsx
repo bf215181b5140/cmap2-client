@@ -1,8 +1,8 @@
-import { AvatarDto } from 'cmap2-shared';
+import { Content } from 'cmap2-shared/dist/react';
 import useAvatarPage from './avatars.hook';
 import ButtonComponent from './button/button.component';
-import AvatarsMenu from "./avatarsMenu/avatarsMenu.component";
-import Avatar from "./avatar/avatar.component";
+import AvatarsMenu from './avatarsMenu/avatarsMenu.component';
+import AvatarComponent from './avatar/avatar.component';
 
 export default function AvatarsPage() {
 
@@ -11,10 +11,11 @@ export default function AvatarsPage() {
     if (selectedAvatar && selectedLayout && selectedButton) {
         return (<ButtonComponent button={selectedButton} layout={selectedLayout} avatar={selectedAvatar} buttonStyle={clientButtonStyle}
                                  avatarDataDispatch={avatarDataDispatch} />);
+    } else {
+        return (<Content flexDirection={'row'}>
+            <AvatarsMenu avatars={avatars} selectedAvatar={selectedAvatar} clientTier={clientTier} />
+            {selectedAvatar && <AvatarComponent selectedAvatar={selectedAvatar} clientTier={clientTier} buttonStyle={clientButtonStyle}
+                              avatarDataDispatch={avatarDataDispatch} />}
+        </Content>);
     }
-
-    return (<>
-        <AvatarsMenu avatars={avatars} selectedAvatar={selectedAvatar} clientTier={clientTier} />
-        <Avatar selectedAvatar={selectedAvatar || new AvatarDto()} clientTier={clientTier} buttonStyle={clientButtonStyle} avatarDataDispatch={avatarDataDispatch} />
-    </>);
 }

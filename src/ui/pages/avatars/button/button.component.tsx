@@ -1,21 +1,21 @@
-import ContentBox from '../../../shared/components/contentBox.component';
+import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import { AvatarDto, ButtonDto, ButtonStyleDto, ButtonType, FieldOption, InputType, LayoutDto, ReactProps, ValueType } from 'cmap2-shared';
-import Content from '../../../shared/components/content.component';
 import { useNavigate } from 'react-router-dom';
-import ParameterButton from 'cmap2-shared/src/components/parameter.button';
+import { ParameterButton } from 'cmap2-shared/dist/react';
 import React, { useEffect } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
 import useCustomFetch from '../../../shared/hooks/customFetch.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { buttonSchema } from 'cmap2-shared/dist/validationSchemas';
+import { buttonSchema } from 'cmap2-shared/src/zodSchemas';
 import FormInput from '../../../shared/components/form/formInput.component';
 import FileUpload from '../../../shared/components/fileUpload.component';
 import { z } from 'zod';
-import Icon from 'cmap2-shared/dist/components/icon.component';
+import Icon from 'cmap2-shared/src/react/components/icon.component';
 import ListenForParameter from './listenForParameter.component';
 import FormTable from "../../../shared/components/form/formTable.component";
 import FormControlBar from "../../../shared/components/form/formControlBar.component";
+import enumToInputOptions from '../../../shared/util/enumToInputOptions.function';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;
@@ -35,10 +35,6 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         resolver: zodResolver(buttonSchema)
     });
     const formWatch = watch();
-
-    function getInputOptions(enumType: any): FieldOption[] {
-        return Object.keys(enumType).map((key: string) => ({key: enumType[key], value: key}));
-    }
 
     function onSave(formData: ButtonDto) {
         customFetch<ButtonDto>('button', {
@@ -82,7 +78,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
             <Icon icon='ri-arrow-right-s-line' />&nbsp;{layout.label}&nbsp;
             <Icon icon='ri-arrow-right-s-line' />&nbsp;{button.id ? button.label : 'new button'}
         </ContentBox>
-        <ContentBox flex={1}>
+        <ContentBox flexGrow={1}>
             <h2>Preview</h2>
             <ParameterButton button={formWatch} buttonStyle={buttonStyle} />
             <br />
@@ -114,12 +110,12 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                     </tr>
                     <tr>
                         <th>Value type</th>
-                        <td><FormInput type={InputType.Select} options={getInputOptions(ValueType)} register={register} name={'valueType'} errors={errors} />
+                        <td><FormInput type={InputType.Select} options={enumToInputOptions(ValueType)} register={register} name={'valueType'} errors={errors} />
                         </td>
                     </tr>
                     <tr>
                         <th>Button type</th>
-                        <td><FormInput type={InputType.Select} options={getInputOptions(ButtonType)} register={register} name={'buttonType'} errors={errors} />
+                        <td><FormInput type={InputType.Select} options={enumToInputOptions(ButtonType)} register={register} name={'buttonType'} errors={errors} />
                         </td>
                     </tr>
                 </FormTable>

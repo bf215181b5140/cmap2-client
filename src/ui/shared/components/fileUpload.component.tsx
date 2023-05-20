@@ -9,10 +9,11 @@ import colors from 'cmap2-shared/src/colors.json';
 interface FileUploadProps extends ReactProps {
     parentType: string,
     parentId: string,
+    handleUpload?: (data: any) => void;
     uploadCallback?: (picture: string) => void
 }
 
-export default function FileUpload({parentType, parentId, uploadCallback}: FileUploadProps) {
+export default function FileUpload({parentType, parentId, handleUpload, uploadCallback}: FileUploadProps) {
 
     const customFetch = useCustomFetch();
     const {register, watch, reset, formState: {errors}, handleSubmit} = useForm();
@@ -20,21 +21,26 @@ export default function FileUpload({parentType, parentId, uploadCallback}: FileU
     const selectedFile = watch('file');
 
     const onSubmit = (formData: any) => {
-        if (formData.file[0]) {
-            let data = new FormData();
-            data.append('parentType', parentType);
-            data.append('parentId', parentId);
-            data.append('file', formData.file[0]);
+        if (handleUpload) {
+            handleUpload(formData.file);
+            onClearFiles();
+        } else {
+            if (formData.file[0]) {
+                let data = new FormData();
+                data.append('parentType', parentType);
+                data.append('parentId', parentId);
+                data.append('file', formData.file[0]);
 
-            customFetch<string>('file', {
-                method: 'POST',
-                body: data
-            }).then(res => {
-                if (res?.body) {
-                    if (uploadCallback) uploadCallback(res.body);
-                    onClearFiles();
-                }
-            });
+                customFetch<string>('file', {
+                    method: 'POST',
+                    body: data
+                }).then(res => {
+                    if (res?.body) {
+                        if (uploadCallback) uploadCallback(res.body);
+                        onClearFiles();
+                    }
+                });
+            }
         }
     };
 

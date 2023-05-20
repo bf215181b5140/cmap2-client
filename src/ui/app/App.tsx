@@ -36,7 +36,7 @@ export default function App() {
                     <MainWindow>
                             <Routes>
                                 <Route path="/profile" element={<ProfilePage />} />
-                                <Route path="/avatar/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
+                                <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
                                 <Route path="/tiers" element={<TiersPage />} />
                                 <Route path="/settings" element={<SettingsPage />} />
                                 <Route path="/about" element={<AboutPage />} />

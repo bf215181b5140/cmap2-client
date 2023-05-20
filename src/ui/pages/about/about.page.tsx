@@ -1,8 +1,10 @@
 import colors from 'cmap2-shared/src/colors.json';
 import React from 'react';
-import { Content, ContentBox } from 'cmap2-shared/src/components/contentBox.component';
 import styled from 'styled-components';
 import { ContentBoxWidth } from 'cmap2-shared/src';
+import { Content, ContentBox } from 'cmap2-shared/dist/react';
+// import ContentBox from 'cmap2-shared/src/react/components/content/contentBox.component';
+// import Content from 'cmap2-shared/src/react/components/content/content.component';
 
 export default function AboutPage() {
 

@@ -1,13 +1,12 @@
-import ContentBox from '../../shared/components/contentBox.component';
+import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import FormInput from '../../shared/components/form/formInput.component';
 import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
-import Content from '../../shared/components/content.component';
-import { FormTable, FormControl } from '../../shared/components/form/formTable.component';
-import { ApplicationSettings } from '../../../shared/classes';
+import FormTable from '../../shared/components/form/formTable.component';
+import FormControlBar from '../../shared/components/form/formControlBar.component';
 
 export default function SettingsPage() {
 
@@ -65,9 +64,9 @@ export default function SettingsPage() {
                         <td><FormInput type={InputType.Number} register={register} name={'oscOutPort'} placeholder={'9001'} errors={errors} /></td>
                     </tr>
                 </FormTable>
-                <FormControl>
+                <FormControlBar>
                     <FormInput type={InputType.Submit} />
-                </FormControl>
+                </FormControlBar>
             </form>
         </ContentBox>
     </Content>);

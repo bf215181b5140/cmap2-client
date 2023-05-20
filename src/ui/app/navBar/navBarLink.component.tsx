@@ -8,17 +8,13 @@ interface NavBarLinkProps {
     children?: any
 }
 
-export default function NavBarLink({
-                                       to,
-                                       icon,
-                                       children
-                                   }: NavBarLinkProps) {
+export default function NavBarLink({to, icon, children}: NavBarLinkProps) {
 
     const pathname = useLocation().pathname;
     if ((pathname.indexOf(to) === 0 && to !== '/') || (pathname === to)) {
         return (<NavBarLinkSelectedStyled to={to}>
             {icon && <i className={icon}></i>} {children}
-        </NavBarLinkSelectedStyled>)
+        </NavBarLinkSelectedStyled>);
     }
 
     return (<NavBarLinkStyled to={to}>

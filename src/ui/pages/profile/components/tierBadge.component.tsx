@@ -1,7 +1,6 @@
-import { ReactProps } from '../../../../shared/global';
-import { TierDto } from 'cmap2-shared';
+import { ReactProps, TierDto } from 'cmap2-shared';
 import styled from 'styled-components';
-import Icon from 'cmap2-shared/dist/components/icon.component';
+import Icon from 'cmap2-shared/src/react/components/icon.component';
 
 interface TierBadgeProps extends ReactProps {
     tier: TierDto;

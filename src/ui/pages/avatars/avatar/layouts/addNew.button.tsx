@@ -1,7 +1,7 @@
-import { ReactProps } from '../../../../shared/global';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
-import Icon from 'cmap2-shared/dist/components/icon.component';
+import Icon from 'cmap2-shared/src/react/components/icon.component';
+import { ReactProps } from 'cmap2-shared';
 
 interface AddNewButtonProps extends ReactProps {
     onClick?: () => void;

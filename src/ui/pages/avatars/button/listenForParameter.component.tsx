@@ -1,13 +1,9 @@
-import ContentBox from '../../../shared/components/contentBox.component';
+import { ContentBox } from 'cmap2-shared/dist/react';
 import React, { useEffect, useState } from 'react';
-import { ButtonDto, ButtonType, InputType, OscMessage, ValueType } from 'cmap2-shared';
+import { ButtonDto, InputType, OscMessage, ReactProps } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { z } from 'zod';
-import { ReactProps } from '../../../../shared/global';
 import FormInput from '../../../shared/components/form/formInput.component';
-import { FormTable } from '../../../shared/components/form/formTable.component';
-import { SocketConnection } from '../../../../shared/SocketConnection';
+import FormTable from '../../../shared/components/form/formTable.component';
 
 interface ListenForParameterProps extends ReactProps {
     applyMessage: (data: ButtonDto) => void;

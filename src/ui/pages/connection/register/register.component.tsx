@@ -1,16 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { z } from 'zod';
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { URL } from '../../../../shared/const';
-import { FormTable } from '../../../shared/components/form/formTable.component';
 import FormInput from '../../../shared/components/form/formInput.component';
-import { ButtonDto, InputType, ReactProps, RegistrationFormDto } from 'cmap2-shared';
+import { InputType, ReactProps, RegistrationFormDto } from 'cmap2-shared';
 import { SocketConnection, SocketConnectionType } from '../../../../shared/SocketConnection';
-import { registrationSchema } from 'cmap2-shared/dist/validationSchemas';
+import { registrationSchema } from 'cmap2-shared/src/zodSchemas';
 import { useNavigate } from 'react-router-dom';
 import { ToastContext } from '../../../app/mainWindow/mainWindow.componenet';
 import { ToastType } from '../../../app/toast/toast.component';
+import FormTable from '../../../shared/components/form/formTable.component';
 
 interface ActivateFormProps extends ReactProps {
     socketConnection: SocketConnection,

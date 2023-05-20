@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import { InputType, ReactProps } from 'cmap2-shared';
 import { FieldOption } from 'cmap2-shared';
-import Icon from 'cmap2-shared/dist/components/icon.component';
+import Icon from 'cmap2-shared/src/react/components/icon.component';
 
 interface FormInputProps extends ReactProps {
     type: InputType;
@@ -14,18 +14,40 @@ interface FormInputProps extends ReactProps {
     disabled?: boolean;
     readOnly?: boolean;
     placeholder?: string;
+    width?: string;
     onClick?: () => void;
 }
 
 export default function FormInput(props: FormInputProps) {
 
+    function inputError(): string | undefined {
+        if(props.errors && props.name) {
+            if (props.name.indexOf('.') > -1) {
+                const keys = props.name.split('.');
+                let value = props.errors;
+                for (let key of keys) {
+                    if (value && value.hasOwnProperty(key)) {
+                        value = value[key];
+                    } else {
+                        return undefined;
+                    }
+                }
+                return value?.message?.toString();
+            } else {
+                return props.errors[props.name]?.message?.toString();
+            }
+        }
+        return undefined;
+    }
+
     function hasErrors(): boolean {
-        return props.name && props.errors && props.errors[props.name!];
+        return !!inputError();
     }
 
     function ErrorMessage() {
-        if (hasErrors()) {
-            return <ErrorStyled>{props.errors[props.name!].message?.toString()}</ErrorStyled>;
+        const error = inputError();
+        if (!!error) {
+            return <ErrorStyled>{error}</ErrorStyled>;
         }
         return null;
     }
@@ -41,19 +63,19 @@ export default function FormInput(props: FormInputProps) {
         case InputType.Url:
             return (<>
                 <InputStyled type={props.type} {...props.register(props.name)} readOnly={props.readOnly === true} placeholder={props.placeholder}
-                             errors={hasErrors()} />
+                             errors={hasErrors()} width={props.width} />
                 <ErrorMessage />
             </>);
         case InputType.Number:
             return (<>
                 <InputStyled type={props.type} {...props.register(props.name, {
                     setValueAs: (v: string) => v === '' ? undefined : parseInt(v),
-                })} readOnly={props.readOnly === true} placeholder={props.placeholder} errors={hasErrors()} />
+                })} readOnly={props.readOnly === true} placeholder={props.placeholder} errors={hasErrors()} width={props.width} />
                 <ErrorMessage />
             </>);
         case InputType.Textarea:
             return (<>
-                <TextareaStyled {...props.register(props.name)} errors={hasErrors()}>
+                <TextareaStyled {...props.register(props.name)} errors={hasErrors()} width={props.width}>
                     {props.children}
                 </TextareaStyled>
                 <ErrorMessage />
@@ -70,8 +92,8 @@ export default function FormInput(props: FormInputProps) {
             </>);
         case InputType.Select:
             return (<>
-                <SelectStyled {...props.register(props.name)} errors={hasErrors()}>
-                    {props.options && props.options.map((option) => (<option value={option.key}>{option.value}</option>))}
+                <SelectStyled {...props.register(props.name)} errors={hasErrors()} width={props.width}>
+                    {props.options && props.options.map((option) => (<option value={option.key} key={option.key}>{option.value}</option>))}
                 </SelectStyled>
                 <ErrorMessage />
             </>);
@@ -86,7 +108,7 @@ export default function FormInput(props: FormInputProps) {
     }
 }
 
-export const globalInputStyle = css<{ errors?: boolean }>`
+export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   font-family: Dosis-Bold, sans-serif;
   font-size: 1em;
   margin: 7px;
@@ -97,7 +119,7 @@ export const globalInputStyle = css<{ errors?: boolean }>`
   border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-2']};
   border-radius: 7px;
   transition: 0.1s linear;
-  width: 350px;
+  width: ${props => props.width ? props.width : '250px'};
 
   :hover {
     background: ${colors['ui-primary-3']};
@@ -117,7 +139,7 @@ export const globalInputStyle = css<{ errors?: boolean }>`
   }
 `;
 
-const InputStyled = styled.input<{ button?: boolean, errors?: boolean }>`
+const InputStyled = styled.input<{ button?: boolean, errors?: boolean, width?: string }>`
   ${globalInputStyle};
   ${props => props.button ? 'width: auto;' : null};
 
@@ -135,13 +157,12 @@ const InputStyled = styled.input<{ button?: boolean, errors?: boolean }>`
   }
 `;
 
-const TextareaStyled = styled.textarea<{ errors?: boolean }>`
+const TextareaStyled = styled.textarea<{ errors?: boolean, width?: string }>`
   ${globalInputStyle};
 `;
 
-const SelectStyled = styled.select<{ errors?: boolean }>`
+const SelectStyled = styled.select<{ errors?: boolean, width?: string }>`
   ${globalInputStyle};
-
   cursor: pointer;
 `;
 

@@ -1,13 +1,11 @@
-import ContentBox from '../../shared/components/contentBox.component';
+import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { profileSchema } from 'cmap2-shared/dist/validationSchemas';
+import { profileSchema } from 'cmap2-shared/src/zodSchemas';
 import FormInput from '../../shared/components/form/formInput.component';
 import { ClientTier, InputType } from 'cmap2-shared';
-import Content from '../../shared/components/content.component';
 import useProlfilePage from './profile.hook';
-import { FormTable, FormControl } from '../../shared/components/form/formTable.component';
 import FileUpload from '../../shared/components/fileUpload.component';
 import { ClientCredentialsContext } from '../../app/App';
 import styled from 'styled-components';
@@ -16,10 +14,11 @@ import TierBadge from './components/tierBadge.component';
 import ButtonStylePicker from './buttonStylePicker/buttonStylePicker';
 import BackgroundPicker from './backgroundPicker/backgroundPicker.component';
 import { URL } from '../../../shared/const';
+import FormTable from '../../shared/components/form/formTable.component';
+import FormControlBar from '../../shared/components/form/formControlBar.component';
 
 export default function ProfilePage() {
 
-    const {clientCredentials} = useContext(ClientCredentialsContext);
     const {client, backgrounds, buttonStyles, onSubmit, setClientPicture, setClientBackground, setClientButtonStyle} = useProlfilePage();
     const {register, reset, formState: {errors, isDirty}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
 
@@ -33,7 +32,7 @@ export default function ProfilePage() {
 
     return (
         <Content>
-            <ContentBox flex={1} loading={!client}>
+            <ContentBox flexGrow={1} loading={!client}>
                 {client && <>
                     <ProfilePictureStyled src={URL + '/' + client.image} alt="Profile picture" />
                     <br />
@@ -61,7 +60,7 @@ export default function ProfilePage() {
                             <td><FormInput type={InputType.Boolean} register={register} name={'hidden'} errors={errors} /></td>
                         </tr>
                     </FormTable>
-                    <FormControl><FormInput type={InputType.Submit} disabled={!isDirty} /></FormControl>
+                    <FormControlBar><FormInput type={InputType.Submit} disabled={!isDirty} /></FormControlBar>
                 </form>
             </ContentBox>
             <BackgroundPicker client={client} setFunction={setClientBackground} backgrounds={backgrounds} />

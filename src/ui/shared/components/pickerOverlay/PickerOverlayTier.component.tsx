@@ -2,7 +2,7 @@ import { ReactProps } from "../../../../shared/global";
 import styled from "styled-components";
 import React from "react";
 import colors from 'cmap2-shared/src/colors.json';
-import Icon from 'cmap2-shared/dist/components/icon.component';
+import Icon from 'cmap2-shared/src/react/components/icon.component';
 import { TierDto } from 'cmap2-shared';
 
 interface PickerOverlayTierProps extends ReactProps {
