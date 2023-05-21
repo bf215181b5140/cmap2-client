@@ -42,7 +42,8 @@ export default function UploadAvatar({eventBus}: UploadAvatarProps) {
     }
 
     return (<ContentBox flexGrow={1}>
-        <p>Set up avatar by uploading the VRChat osc avatar file located in C:/Users/[USERNAME]/AppData/LocalLow/Vrchat/OSC/Avatars</p>
+        <p>Set up avatar by uploading the VRChat osc avatar file located in: C:/Users/[USER]/AppData/LocalLow/Vrchat/OSC/Avatars</p>
+        <p>This will override existing settings</p>
         <FileUpload parentType={''} parentId={''} handleUpload={onReadOscAvatarFile} />
     </ContentBox>);
 }

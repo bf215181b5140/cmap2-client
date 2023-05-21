@@ -3,6 +3,7 @@ import colors from 'cmap2-shared/src/colors.json';
 import { InputType, ReactProps } from 'cmap2-shared';
 import { FieldOption } from 'cmap2-shared';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
+import { UseFormRegister } from 'react-hook-form/dist/types/form';
 
 interface FormInputProps extends ReactProps {
     type: InputType;
@@ -92,7 +93,7 @@ export default function FormInput(props: FormInputProps) {
             </>);
         case InputType.Select:
             return (<>
-                <SelectStyled {...props.register(props.name)} errors={hasErrors()} width={props.width}>
+                <SelectStyled {...props.register(props.name)} errors={hasErrors()} width={props.width} className={props.readOnly ? 'readOnly' : null}>
                     {props.options && props.options.map((option) => (<option value={option.key} key={option.key}>{option.value}</option>))}
                 </SelectStyled>
                 <ErrorMessage />
@@ -161,9 +162,14 @@ const TextareaStyled = styled.textarea<{ errors?: boolean, width?: string }>`
   ${globalInputStyle};
 `;
 
-const SelectStyled = styled.select<{ errors?: boolean, width?: string }>`
+export const SelectStyled = styled.select<{ errors?: boolean, width?: string }>`
   ${globalInputStyle};
   cursor: pointer;
+  
+  &.readOnly {
+    pointer-events: none;
+    filter: saturate(0.5%);
+  }
 `;
 
 const CheckboxStyled = styled.span<{ errors?: boolean }>`

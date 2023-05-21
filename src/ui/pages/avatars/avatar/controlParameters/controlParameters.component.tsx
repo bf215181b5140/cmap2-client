@@ -30,7 +30,6 @@ export default function ControlParameters({controlParameters, avatarId, clientTi
     const watchParameters = watch('controlParameters');
 
     function onSave(formData: ControlParametersForm) {
-        console.log('saving: ', formData)
         customFetch<ControlParameterDto[]>('controlParameters', {
             method: 'POST',
             body: JSON.stringify(formData),
@@ -40,10 +39,12 @@ export default function ControlParameters({controlParameters, avatarId, clientTi
         });
     }
 
-    function parameterRoleOptions(): FieldOption[] {
-        return Object.keys(ParameterRole).filter(key => {
-            if (key === ParameterRole.Exp) return clientTier.exp;
-            if (key === ParameterRole.HP) return clientTier.hp;
+    function parameterRoleOptions(index: number): FieldOption[] {
+        return Object.keys(ParameterRole)
+            // filter out Exp and HP if clientTier doesn't support it OR there is already one selected
+            .filter(key => {
+            if (key === ParameterRole.Exp) return clientTier.exp && !watchParameters.find((p, i) => p.role === ParameterRole.Exp && i !== index);
+            if (key === ParameterRole.HP) return clientTier.hp && !watchParameters.find((p, i) => p.role === ParameterRole.HP && i !== index);
             return true;
         }).map((key: string) => ({key: key, value: key}));
     }
@@ -90,7 +91,7 @@ export default function ControlParameters({controlParameters, avatarId, clientTi
                         <th>Label</th>
                         <th>Parameter role</th>
                         <th>Path</th>
-                        <th colSpan={2}>Value</th>
+                        <th colSpan={2}>Values</th>
                         <th>Value type</th>
                         <td></td>
                     </tr>
@@ -101,17 +102,17 @@ export default function ControlParameters({controlParameters, avatarId, clientTi
                     <tr>
                         <td>
                             <FormInput type={InputType.Hidden} register={register} name={`controlParameters.${index}.id`} />
-                            <FormInput type={InputType.Text} register={register} name={`controlParameters.${index}.label`} width="200px" errors={errors} />
+                            <FormInput type={InputType.Text} register={register} name={`controlParameters.${index}.label`} width="180px" errors={errors} />
                         </td>
                         <td>
                             <FormInput type={InputType.Select} register={register} name={`controlParameters.${index}.role`} width="auto" errors={errors}
-                                       options={parameterRoleOptions()} />
+                                       options={parameterRoleOptions(index)} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Text} register={register} name={`controlParameters.${index}.path`} width="250px" errors={errors} />
+                            <FormInput type={InputType.Text} register={register} name={`controlParameters.${index}.path`} errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Text} register={register} name={`controlParameters.${index}.valuePrimary`} width="100px" errors={errors}
+                            <FormInput type={InputType.Text} register={register} name={`controlParameters.${index}.valuePrimary`} width="75px" errors={errors}
                                        placeholder={valuePrimaryPlaceholder(watchParameters[index].role)} />
                         </td>
                         <td>

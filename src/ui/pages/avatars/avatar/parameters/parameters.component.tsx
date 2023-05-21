@@ -44,7 +44,7 @@ export default function Parameters({parameters, avatarId, avatarDataDispatch, ev
             param.path = p.output?.address || '';
             param.valueType = p.output?.type || ValueType.Int;
             return param;
-        })
+        });
         remove();
         replace(parameters);
     }
@@ -55,7 +55,7 @@ export default function Parameters({parameters, avatarId, avatarDataDispatch, ev
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
-        if (res?.body) avatarDataDispatch({type: 'saveParameters', parameters: res.body, avatarId: avatarId});
+            if (res?.body) avatarDataDispatch({type: 'saveParameters', parameters: res.body, avatarId: avatarId});
         });
     }
 
@@ -79,7 +79,7 @@ export default function Parameters({parameters, avatarId, avatarDataDispatch, ev
                     <tr>
                         <td>
                             <FormInput type={InputType.Hidden} register={register} name={`parameters.${index}.id`} />
-                            <FormInput type={InputType.Text} register={register} name={`parameters.${index}.label`} errors={errors} />
+                            <FormInput type={InputType.Text} register={register} name={`parameters.${index}.label`} width="180px" errors={errors} />
                         </td>
                         <td>
                             <FormInput type={InputType.Text} register={register} name={`parameters.${index}.path`} errors={errors} />

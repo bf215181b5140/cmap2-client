@@ -10,7 +10,7 @@ export default function AvatarsPage() {
 
     if (selectedAvatar && selectedLayout && selectedButton) {
         return (<ButtonComponent button={selectedButton} layout={selectedLayout} avatar={selectedAvatar} buttonStyle={clientButtonStyle}
-                                 avatarDataDispatch={avatarDataDispatch} />);
+                                 avatarDataDispatch={avatarDataDispatch} clientTier={clientTier} />);
     } else {
         return (<Content flexDirection={'row'}>
             <AvatarsMenu avatars={avatars} selectedAvatar={selectedAvatar} clientTier={clientTier} />

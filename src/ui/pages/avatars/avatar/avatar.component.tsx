@@ -3,7 +3,7 @@ import { AvatarDto, ButtonStyleDto, LayoutDto, ReactProps, TierDto } from 'cmap2
 import { AvatarReducerAction } from '../avatars.reducer';
 import UploadAvatar from './uploadAvatar/uploadAvatar.component';
 import Parameters from './parameters/parameters.component';
-import LayoutComponent from './layouts/layout.component';
+import LayoutComponent from './layout/layout.component';
 import AvatarSettings from './avatarSettings/avatarSettings.component';
 import ControlParameters from './controlParameters/controlParameters.component';
 import { EventBus } from '../../../shared/util/eventBus';
