@@ -1,7 +1,7 @@
-import { ControlParameterDto, ControlParametersForm, FieldOption, InputType, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
+import { AvatarDto, ControlParameterDto, ControlParametersForm, FieldOption, InputType, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
 import { FormTableStyled } from '../../../../shared/components/form/formTable.component';
 import FormInput from '../../../../shared/components/form/formInput.component';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
 import { AvatarReducerAction } from '../../avatars.reducer';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -12,22 +12,25 @@ import { controlParametersSchema } from 'cmap2-shared/src/zodSchemas';
 import { ContentBox } from 'cmap2-shared/dist/react/';
 
 interface ControlParametersProps extends ReactProps {
-    controlParameters: ControlParameterDto[];
-    avatarId: string;
+    selectedAvatar: AvatarDto;
     clientTier: TierDto;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function ControlParameters({controlParameters, avatarId, clientTier, avatarDataDispatch}: ControlParametersProps) {
+export default function ControlParameters({selectedAvatar, clientTier, avatarDataDispatch}: ControlParametersProps) {
 
     const customFetch = useCustomFetch();
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ControlParametersForm>({
         defaultValues: {
-            avatarId: avatarId, controlParameters: [...controlParameters]
+            avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []]
         }, resolver: zodResolver(controlParametersSchema)
     });
     const {fields, append, remove} = useFieldArray({control, name: 'controlParameters'});
     const watchParameters = watch('controlParameters');
+
+    useEffect(() => {
+        reset({avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []]});
+    }, [selectedAvatar, selectedAvatar.controlParameters]);
 
     function onSave(formData: ControlParametersForm) {
         customFetch<ControlParameterDto[]>('controlParameters', {
@@ -35,7 +38,18 @@ export default function ControlParameters({controlParameters, avatarId, clientTi
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
-            if (res?.body) avatarDataDispatch({type: 'saveControlParameters', controlParameters: res.body, avatarId: avatarId});
+            if (res?.body) avatarDataDispatch({type: 'saveControlParameters', controlParameters: res.body, avatarId: selectedAvatar.id});
+        });
+    }
+
+    function onDelete(index: number) {
+        const param = watchParameters[index];
+        customFetch('controlParameters', {
+            method: 'DELETE',
+            body: JSON.stringify(param),
+            headers: {'Content-Type': 'application/json'}
+        }).then(res => {
+            if (res?.code === 200) avatarDataDispatch({type: 'removeControlParameter', controlParameter: param, avatarId: selectedAvatar.id});
         });
     }
 
@@ -124,7 +138,7 @@ export default function ControlParameters({controlParameters, avatarId, clientTi
                                        options={valueTypeOptions(watchParameters[index].role)} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => remove(index)} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(index)} />
                         </td>
                     </tr>
                 ))}

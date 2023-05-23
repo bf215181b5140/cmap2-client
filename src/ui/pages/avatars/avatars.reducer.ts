@@ -5,7 +5,9 @@ export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDto[] } |
     { type: 'editAvatar', avatar: AvatarDto } |
     { type: 'removeAvatar', avatar: AvatarDto } |
     { type: 'saveParameters', parameters: ParameterDto[], avatarId: string } |
+    { type: 'removeParameter', parameter: ParameterDto, avatarId: string } |
     { type: 'saveControlParameters', controlParameters: ControlParameterDto[], avatarId: string } |
+    { type: 'removeControlParameter', controlParameter: ControlParameterDto, avatarId: string } |
     { type: 'addLayout', layout: LayoutDto, avatarId: string } |
     { type: 'editLayout', layout: LayoutDto, avatarId: string } |
     { type: 'removeLayout', layout: LayoutDto, avatarId: string } |
@@ -29,16 +31,22 @@ export default function avatarsReducer(state: AvatarDto[], action: AvatarReducer
             return state.filter(avatar => avatar.id !== action.avatar.id);
         case 'saveParameters':
             return state.map(avatar => {
-                if (avatar.id === action.avatarId) {
-                    avatar.parameters = action.parameters;
-                }
+                if (avatar.id === action.avatarId) avatar.parameters = action.parameters;
+                return avatar;
+            });
+        case 'removeParameter':
+            return state.map(avatar => {
+                if (avatar.id === action.avatarId) avatar.parameters = avatar.parameters?.filter(cp => cp.id !== action.parameter.id);
                 return avatar;
             });
         case 'saveControlParameters':
             return state.map(avatar => {
-                if (avatar.id === action.avatarId) {
-                    avatar.controlParameters = action.controlParameters;
-                }
+                if (avatar.id === action.avatarId) avatar.controlParameters = action.controlParameters;
+                return avatar;
+            });
+        case 'removeControlParameter':
+            return state.map(avatar => {
+                if (avatar.id === action.avatarId) avatar.controlParameters = avatar.controlParameters?.filter(cp => cp.id !== action.controlParameter.id);
                 return avatar;
             });
         case 'addLayout':

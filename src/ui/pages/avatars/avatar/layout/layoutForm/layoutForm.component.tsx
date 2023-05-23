@@ -27,7 +27,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
             parentId: avatarId
         }, resolver: zodResolver(layoutSchema)
     });
-    const [inEdit, setEditing] = useState<boolean>(false);
+    const [inEdit, setEditing] = useState<boolean>(!layout.id);
     const customFetch = useCustomFetch();
 
     useEffect(() => {
@@ -91,12 +91,16 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
                 </FormTable>
                 <FormControlBar>
                     <FormInput type={InputType.Submit} value={layout.id ? 'Save' : 'Add new'} disabled={!isDirty} />
-                    <FormInput type={InputType.Button} value={'Reset'} disabled={!isDirty} onClick={() => reset()} />
-                    {layout.id && <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(layout)} />}
-                    <FormInput type={InputType.Button} value={'Cancel'} onClick={() => {
-                        reset();
-                        setEditing(false);
-                    }} />
+                    {layout.id &&
+                        <>
+                            <FormInput type={InputType.Button} value={'Reset'} disabled={!isDirty} onClick={() => reset()} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(layout)} />
+                            <FormInput type={InputType.Button} value={'Cancel'} onClick={() => {
+                                reset();
+                                setEditing(false);
+                            }} />
+                        </>
+                    }
                 </FormControlBar>
             </form>}
         {layout.id && <hr />}

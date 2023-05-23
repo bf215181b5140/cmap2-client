@@ -24,8 +24,8 @@ export default function AvatarComponent({selectedAvatar, clientTier, buttonStyle
         <h1 style={{flexBasis: '100%'}}>Avatar settings</h1>
         <UploadAvatar eventBus={eventBus} />
         <AvatarSettings selectedAvatar={selectedAvatar} avatarDataDispatch={avatarDataDispatch} eventBus={eventBus} />
-        {selectedAvatar.id && <Parameters parameters={selectedAvatar.parameters || []} avatarId={selectedAvatar.id} avatarDataDispatch={avatarDataDispatch} eventBus={eventBus} />}
-        {selectedAvatar.id && <ControlParameters controlParameters={selectedAvatar.controlParameters || []} avatarId={selectedAvatar.id} clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} />}
+        {selectedAvatar.id && <Parameters selectedAvatar={selectedAvatar} avatarDataDispatch={avatarDataDispatch} eventBus={eventBus} />}
+        {selectedAvatar.id && <ControlParameters selectedAvatar={selectedAvatar} clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} />}
         <h1 style={{flexBasis: '100%'}}>Website toggles</h1>
         {selectedAvatar.id && selectedAvatar.layouts?.map((layout: LayoutDto, index: number) => (
             <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}

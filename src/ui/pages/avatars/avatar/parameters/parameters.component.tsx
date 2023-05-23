@@ -1,4 +1,4 @@
-import { ControlParameterDto, InputType, ParameterDto, ParametersForm, ReactProps, ValueType } from 'cmap2-shared';
+import { AvatarDto, ControlParameterDto, InputType, ParameterDto, ParametersForm, ReactProps, ValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../../shared/components/form/formTable.component';
 import FormInput from '../../../../shared/components/form/formInput.component';
@@ -15,18 +15,17 @@ import { EventBus } from '../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../shared/interfaces';
 
 interface ParametersProps extends ReactProps {
-    parameters: ParameterDto[];
-    avatarId: string;
+    selectedAvatar: AvatarDto;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
     eventBus: EventBus<VRChatOscAvatar>;
 }
 
-export default function Parameters({parameters, avatarId, avatarDataDispatch, eventBus}: ParametersProps) {
+export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus}: ParametersProps) {
 
     const customFetch = useCustomFetch();
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ParametersForm>({
         defaultValues: {
-            avatarId: avatarId, parameters: [...parameters]
+            avatarId: selectedAvatar.id, parameters: [...selectedAvatar.parameters || []]
         }, resolver: zodResolver(parametersSchema)
     });
     const {fields, append, remove, replace} = useFieldArray({control, name: 'parameters'});
@@ -36,6 +35,10 @@ export default function Parameters({parameters, avatarId, avatarDataDispatch, ev
         eventBus.on('vrcAvatarData', fillFormFromFile);
         return () => eventBus.off('vrcAvatarData', fillFormFromFile);
     }, []);
+
+    useEffect(() => {
+        reset({avatarId: selectedAvatar.id, parameters: [...selectedAvatar.parameters || []]});
+    }, [selectedAvatar, selectedAvatar.parameters]);
 
     function fillFormFromFile(data: VRChatOscAvatar) {
         const parameters = data.parameters.filter(p => p.output?.address === p.input?.address).map(p => {
@@ -55,7 +58,18 @@ export default function Parameters({parameters, avatarId, avatarDataDispatch, ev
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }).then(res => {
-            if (res?.body) avatarDataDispatch({type: 'saveParameters', parameters: res.body, avatarId: avatarId});
+            if (res?.body) avatarDataDispatch({type: 'saveParameters', parameters: res.body, avatarId: selectedAvatar.id});
+        });
+    }
+
+    function onDelete(index: number) {
+        const param = watchParameters[index];
+        customFetch('parameters', {
+            method: 'DELETE',
+            body: JSON.stringify(param),
+            headers: {'Content-Type': 'application/json'}
+        }).then(res => {
+            if (res?.code === 200) avatarDataDispatch({type: 'removeParameter', parameter: param, avatarId: selectedAvatar.id});
         });
     }
 
@@ -89,7 +103,7 @@ export default function Parameters({parameters, avatarId, avatarDataDispatch, ev
                                        name={`parameters.${index}.valueType`} width="auto" errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => remove(index)} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(index)} />
                         </td>
                     </tr>
                 ))}
