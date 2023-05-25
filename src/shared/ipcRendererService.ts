@@ -4,7 +4,7 @@ import { ClientStoreService } from '../electron/util/clientStore.service';
 import { mainWindow } from '../electron/electron';
 import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
-import { OscService } from '../electron/osc/osc.service';
+import { OscController } from '../electron/osc/osc.controller';
 
 export class IpcRendererService {
 
@@ -30,7 +30,7 @@ export class IpcRendererService {
                 if (oldSettings.oscIp !== appSettings.oscIp ||
                     oldSettings.oscInPort !== appSettings.oscInPort ||
                     oldSettings.oscOutPort !== appSettings.oscOutPort) {
-                    OscService.start();
+                    OscController.start();
                 }
             }
         });
@@ -60,7 +60,7 @@ export class IpcRendererService {
         });
 
         ipcMain.on('forwardOscToRenderer', (event: IpcMainEvent, forward: boolean) => {
-            OscService.forwardOscToRenderer = forward;
+            OscController.forwardOscToRenderer = forward;
         });
 
     }

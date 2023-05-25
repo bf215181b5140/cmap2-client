@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Tray, nativeImage, Menu } from 'electron';
 import * as path from 'path';
-import { OscService } from './osc/osc.service';
+import { OscController } from './osc/osc.controller';
 import { ClientSocketService } from './webSocket/clientSocket.service';
 import { IpcRendererService } from '../shared/ipcRendererService';
 import { testing } from './testing/testing.service';
@@ -44,7 +44,7 @@ function createWindow(): BrowserWindow {
 app.whenReady().then(() => {
 
     IpcRendererService.init();
-    OscService.start();
+    OscController.start();
 
     // testing service
     // testing();

@@ -1,11 +1,11 @@
-import { ArgumentType, Client, Message, MessageLike, Server } from 'node-osc';
+import { Argument, ArgumentType, Client, Message, MessageLike, Server } from 'node-osc';
 import { ClientSocketService } from '../webSocket/clientSocket.service';
 import { ClientStoreService } from '../util/clientStore.service';
 import { OscSettings } from '../../shared/classes';
-import { OscMessage } from 'cmap2-shared';
+import { VrcParameter } from 'cmap2-shared';
 import { mainWindow } from '../electron';
 
-export class OscService {
+export class OscController {
 
     static oscServer: Server;
     static oscClient: Client;
@@ -44,41 +44,58 @@ export class OscService {
         if (!this.activityInterval) this.activityInterval = setInterval(this.activityChecker, 60000);
 
         this.oscServer.on('message', (message: [string, ...ArgumentType[]]) => {
+
+            // set activity
             this.lastActivity = Date.now();
             if (!this.isActive) {
                 this.isActive = true;
                 ClientSocketService.sendData('activity', true);
             }
+
+            // filter parameters
             if (!this.ignoredParams.has(message[0])) {
-                if (message[0].indexOf('/avatar/change') !== -1) {
-                    ClientSocketService.sendParameter('avatar', new Message(message[0].slice(message[0].lastIndexOf('/') + 1), message[1]));
+
+                const path = message[0];
+                const value = this.valueFromArgumentType(message[1]);
+
+                const vrcParameter: VrcParameter = {path, value};
+
+                if (path.indexOf('/avatar/change') !== -1) {
+                    ClientSocketService.sendParameter('avatar', {path: vrcParameter.path, value: vrcParameter.value});
                 } else {
-                    ClientSocketService.sendParameter('parameter', new Message(message[0], message[1]));
-                    if (this.forwardOscToRenderer && mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('oscMessage', {
-                        address: message[0],
-                        args: [message[1]]
-                    } as OscMessage);
+                    ClientSocketService.sendParameter('parameter', vrcParameter);
+                    if (this.forwardOscToRenderer && mainWindow && !mainWindow.isDestroyed()) {
+                        mainWindow.webContents.send('vrcParameter', vrcParameter);
+                    }
 
                 }
             }
         });
     }
 
-    static send(message: OscMessage) {
+    static send(message: VrcParameter) {
         if (this.oscClient) {
             console.log('Sending OSC message to VRChat:', message);
-            this.oscClient.send(new Message(message.address, ...message.args));
+            this.oscClient.send(new Message(message.path, message.value));
         }
     }
 
     static activityChecker = () => {
         if (this.oscClient) {
-            this.oscClient.send(new Message('/avatar/parameters/VRMode', ...[10]));
+            this.oscClient.send(new Message('/avatar/parameters/VRMode', 10));
         }
         const recentActivity = this.lastActivity > (Date.now() - ((this.activityIntervalMs * 3) + 2000));
         if (recentActivity !== this.isActive) {
             this.isActive = recentActivity;
             ClientSocketService.sendData('activity', this.isActive);
+        }
+    };
+
+    static valueFromArgumentType(arg: ArgumentType): boolean | number | string {
+        if (typeof arg === 'boolean' || typeof arg === 'number' || typeof arg === 'string') {
+            return arg;
+        } else {
+            return arg.value
         }
     }
 }

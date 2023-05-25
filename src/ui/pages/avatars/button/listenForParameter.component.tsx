@@ -1,6 +1,6 @@
 import { ContentBox } from 'cmap2-shared/dist/react';
 import React, { useEffect, useState } from 'react';
-import { ButtonDto, InputType, OscMessage, ReactProps } from 'cmap2-shared';
+import { ButtonDto, InputType, VrcParameter, ReactProps } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import FormInput from '../../../shared/components/form/formInput.component';
 import FormTable from '../../../shared/components/form/formTable.component';
@@ -15,8 +15,8 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
     const [listening, setListening] = useState<boolean>(false);
 
     useEffect(() => {
-        window.electronAPI.oscMessage((event: any, message: OscMessage) => {
-            let value = message.args[0];
+        window.electronAPI.vrcParameter((event: any, message: VrcParameter) => {
+            let value = message.value;
             if (typeof value === 'number') {
                 if (Number.isInteger(value)) {
                     value = value.toString();
@@ -26,7 +26,7 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
             } else {
                 value = value.toString();
             }
-            setValue('path', message.address, {shouldDirty: true});
+            setValue('path', message.path, {shouldDirty: true});
             setValue('value', value, {shouldDirty: true});
             window.electronAPI.forwardOscToRenderer(false);
             setListening(false);

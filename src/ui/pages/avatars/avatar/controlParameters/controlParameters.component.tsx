@@ -10,6 +10,7 @@ import FormControlBar from '../../../../shared/components/form/formControlBar.co
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { controlParametersSchema } from 'cmap2-shared/src/zodSchemas';
 import { ContentBox } from 'cmap2-shared/dist/react/';
+import { z } from 'zod';
 
 interface ControlParametersProps extends ReactProps {
     selectedAvatar: AvatarDto;
@@ -44,13 +45,17 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
 
     function onDelete(index: number) {
         const param = watchParameters[index];
-        customFetch('controlParameters', {
-            method: 'DELETE',
-            body: JSON.stringify(param),
-            headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) avatarDataDispatch({type: 'removeControlParameter', controlParameter: param, avatarId: selectedAvatar.id});
-        });
+        if (param.id) {
+            customFetch('controlParameters', {
+                method: 'DELETE',
+                body: JSON.stringify(param),
+                headers: {'Content-Type': 'application/json'}
+            }).then(res => {
+                if (res?.code === 200) avatarDataDispatch({type: 'removeControlParameter', controlParameter: param, avatarId: selectedAvatar.id});
+            });
+        } else {
+            remove(index);
+        }
     }
 
     function parameterRoleOptions(index: number): FieldOption[] {
@@ -146,7 +151,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <FormInput type={InputType.Button} value="Add new" onClick={() => append(new ControlParameterDto())} />
+                <FormInput type={InputType.Button} value="Add new" disabled={watchParameters.length >= Math.min(8, clientTier.controlParameters)} onClick={() => append(new ControlParameterDto())} />
                 <FormInput type={InputType.Submit} disabled={!isDirty} />
                 <FormInput type={InputType.Button} value="Reset" disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>

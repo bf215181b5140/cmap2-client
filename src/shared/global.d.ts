@@ -1,7 +1,7 @@
 import { WindowState } from './enums';
 import { SocketConnection } from './SocketConnection';
 import { ApplicationSettings, ClientCredentials } from './classes';
-import { OscMessage } from 'cmap2-shared';
+import { VrcParameter } from 'cmap2-shared';
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
@@ -13,7 +13,7 @@ export interface IElectronAPI {
     getApplicationSettings: () => Promise<ApplicationSettings | null>,
     setApplicationSettings: (applicationSettings: ApplicationSettings) => void,
     forwardOscToRenderer: (forward: boolean) => void,
-    oscMessage: (callback: (event: any, message: OscMessage) => void) => void,
+    vrcParameter: (callback: (event: any, message: VrcParameter) => void) => void,
 }
 
 declare global {

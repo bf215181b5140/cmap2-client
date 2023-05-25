@@ -1,4 +1,4 @@
-import { AvatarDto, ControlParameterDto, InputType, ParameterDto, ParametersForm, ReactProps, ValueType } from 'cmap2-shared';
+import { AvatarDto, ControlParameterDto, InputType, ParameterDto, ParametersForm, ReactProps, TierDto, ValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../../shared/components/form/formTable.component';
 import FormInput from '../../../../shared/components/form/formInput.component';
@@ -13,6 +13,8 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { parametersSchema } from 'cmap2-shared/src/zodSchemas';
 import { EventBus } from '../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../shared/interfaces';
+import { inspect } from 'util';
+import colors from 'cmap2-shared/src/colors.json';
 
 interface ParametersProps extends ReactProps {
     selectedAvatar: AvatarDto;
@@ -64,17 +66,25 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
 
     function onDelete(index: number) {
         const param = watchParameters[index];
-        customFetch('parameters', {
-            method: 'DELETE',
-            body: JSON.stringify(param),
-            headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) avatarDataDispatch({type: 'removeParameter', parameter: param, avatarId: selectedAvatar.id});
-        });
+        if (param.id) {
+            customFetch('parameters', {
+                method: 'DELETE',
+                body: JSON.stringify(param),
+                headers: {'Content-Type': 'application/json'}
+            }).then(res => {
+                if (res?.code === 200) avatarDataDispatch({type: 'removeParameter', parameter: param, avatarId: selectedAvatar.id});
+            });
+        } else {
+            remove(index);
+        }
     }
 
     return (<ContentBox title="Parameters" flexBasis={ContentBoxWidth.Full}>
-        <p>Optional list of parameters that this avatar supports. Makes it easier to build button by letting you pick parameters from this list.</p>
+        <p>
+            Optional list of parameters that this avatar supports. Makes it easier to build buttons by letting you pick parameters from this list.
+            <br />
+            <span style={watchParameters.length > 16 ? {color: colors['error']} : undefined}>You can save up to 16 parameters.</span>
+        </p>
         <form onSubmit={handleSubmit(onSave)}>
             <FormInput type={InputType.Hidden} register={register} name={'avatarId'} />
             <FormTableStyled>
@@ -111,8 +121,8 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <FormInput type={InputType.Button} value="Add new" onClick={() => append(new ControlParameterDto())} />
-                <FormInput type={InputType.Submit} disabled={!isDirty} />
+                <FormInput type={InputType.Button} value="Add new" disabled={watchParameters.length >= 16} onClick={() => append(new ControlParameterDto())} />
+                <FormInput type={InputType.Submit} disabled={!isDirty || watchParameters.length > 16} />
                 <FormInput type={InputType.Button} value="Reset" disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>

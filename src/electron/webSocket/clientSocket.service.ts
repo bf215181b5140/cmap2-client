@@ -1,8 +1,8 @@
 import { io, Socket } from 'socket.io-client';
-import { OscService } from '../osc/osc.service';
+import { OscController } from '../osc/osc.controller';
 import { Message } from 'node-osc';
 import { SocketConnection, SocketConnectionType } from '../../shared/SocketConnection';
-import { OscMessage } from 'cmap2-shared';
+import { VrcParameter } from 'cmap2-shared';
 import { ClientCredentials } from '../../shared/classes';
 import { ClientStoreService } from '../util/clientStore.service';
 import { mainWindow } from '../electron';
@@ -31,7 +31,7 @@ export class ClientSocketService {
         this.socket.on('joined', () => {
             this.connectionStatus.setConnection(SocketConnectionType.SUCCESS, 'Connected', '');
             this.updateConnectionStatus()
-            this.sendData('activity', OscService.isActive);
+            this.sendData('activity', OscController.isActive);
         });
 
         this.socket.on('error', (message: string) => {
@@ -49,8 +49,8 @@ export class ClientSocketService {
             this.updateConnectionStatus()
         });
 
-        this.socket.on('parameter', (parameter: OscMessage) => {
-            OscService.send(parameter);
+        this.socket.on('parameter', (parameter: VrcParameter) => {
+            OscController.send(parameter);
         });
     }
 
@@ -60,7 +60,7 @@ export class ClientSocketService {
         this.updateConnectionStatus()
     }
 
-    static sendParameter(event: string, parameter: Message) {
+    static sendParameter(event: string, parameter: VrcParameter) {
         if (this.socket) {
             this.socket.emit(event, parameter);
         }
