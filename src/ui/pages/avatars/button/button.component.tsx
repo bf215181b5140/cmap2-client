@@ -46,10 +46,12 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         }).then(res => {
             if (res?.code === 200) {
                 avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
-                reset({...formData, order: 0, parentId: layout.id});
+                reset({...button, ...formData});
             }
-            if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addButton', button: res.body, avatarId: avatar.id, layoutId: layout.id});
-            navigate(-1);
+            if (res?.code === 201 && res.body) {
+                avatarDataDispatch({type: 'addButton', button: res.body, avatarId: avatar.id, layoutId: layout.id});
+                navigate(-1);
+            }
         });
     }
 
@@ -109,6 +111,8 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                 return 'Maximum value';
         }
     }
+
+    console.log(formWatch);
 
     return (<Content flexDirection="row">
         <ContentBox flexBasis="100%">
@@ -182,10 +186,10 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                         </td>
                     </tr>
                     <tr>
-                        <th>Exp cost</th>
+                        <th>Button use cost</th>
                         <td>
-                            <FormInput type={InputType.Number} register={register} name={'expCost'}
-                                       errors={errors} readOnly={!clientTier.exp} />
+                            <FormInput type={InputType.Number} register={register} name={'useCost'}
+                                       errors={errors} readOnly={!clientTier.useCost} />
                         </td>
                     </tr>
                 </FormTable>

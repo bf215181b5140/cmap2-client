@@ -60,17 +60,17 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
 
     function parameterRoleOptions(index: number): FieldOption[] {
         return Object.keys(ParameterRole)
-            // filter out Exp and HP if clientTier doesn't support it OR there is already one selected
+            // filter out useCost and HP if clientTier doesn't support it OR there is already one selected
             .filter(key => {
-            if (key === ParameterRole.Exp) return clientTier.exp && !watchParameters.find((p, i) => p.role === ParameterRole.Exp && i !== index);
+            if (key === ParameterRole.UseCost) return clientTier.useCost && !watchParameters.find((p, i) => p.role === ParameterRole.UseCost && i !== index);
             if (key === ParameterRole.HP) return clientTier.hp && !watchParameters.find((p, i) => p.role === ParameterRole.HP && i !== index);
             return true;
-        }).map((key: string) => ({key: key, value: key}));
+        }).map((key: string) => ({key: ParameterRole[key as keyof typeof ParameterRole] , value: ParameterRole[key as keyof typeof ParameterRole]}));
     }
 
     function valueTypeOptions(role: ParameterRole): FieldOption[] {
         return Object.keys(ValueType).filter(key => {
-            if (role === ParameterRole.Exp) return key === ValueType.Int;
+            if (role === ParameterRole.UseCost) return key === ValueType.Int;
             if (role === ParameterRole.HP) return key === ValueType.Int;
             return true;
         }).map((key: string) => ({key: key, value: key}));
@@ -80,8 +80,8 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
         switch (role) {
             case ParameterRole.Callback:
                 return 'Value';
-            case ParameterRole.Exp:
-                return 'Min exp';
+            case ParameterRole.UseCost:
+                return 'Min cost';
             case ParameterRole.HP:
                 return 'Min HP';
         }
@@ -91,8 +91,8 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
         switch (role) {
             case ParameterRole.Callback:
                 return 'Seconds';
-            case ParameterRole.Exp:
-                return 'Max exp';
+            case ParameterRole.UseCost:
+                return 'Max cost';
             case ParameterRole.HP:
                 return 'Max HP';
         }
