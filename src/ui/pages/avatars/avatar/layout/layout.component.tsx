@@ -21,7 +21,7 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
 
     const navigate = useNavigate();
 
-    return (<ContentBox title={layout.label} flexBasis={layout.width}>
+    return (<ContentBox key={layout.id} title={layout.label} flexBasis={layout.width}>
         <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id} avatarDataDispatch={avatarDataDispatch} />
         {layout.id &&
             <ButtonsWrapper>
@@ -36,7 +36,7 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
 }
 
 const ButtonsWrapper = styled.div`
-  column-width: 160px;
+  column-width: 180px;
   column-fill: balance;
   gap: 15px;
 
@@ -47,12 +47,5 @@ const ButtonsWrapper = styled.div`
 
   > div {
     margin-bottom: 15px;
-    //display: inline-flex;
-    //flex-direction: column;
-    //width: 100%;
-    //min-width: 160px;
-    //max-width: 230px;
-    //margin: 0;
-    //padding: 0;
   }
 `;

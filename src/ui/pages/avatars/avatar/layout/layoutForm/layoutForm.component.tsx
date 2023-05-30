@@ -24,6 +24,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
             id: layout.id,
             label: layout.label,
             order: order,
+            width: layout.width,
             parentId: avatarId
         }, resolver: zodResolver(layoutSchema)
     });
@@ -63,6 +64,8 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
             if (res?.code === 200) avatarDataDispatch({type: 'removeLayout', layout: layout, avatarId: avatarId});
         });
     }
+
+    console.log()
 
     return (<>
         {!inEdit &&
