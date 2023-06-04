@@ -1,1 +1,1 @@
-export const URL = process.env.NODE_ENV === 'production' ? 'https://changemyavatarparams.com' : 'http://localhost:8080';
+export const URL = import.meta.env.PROD ? 'https://changemyavatarparams.com' : 'http://localhost:8080';

@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import ConnectionPage from '../pages/connection/connection.page';
-import AboutPage from '../pages/about/about.page';
 import React from 'react';
 import styled from 'styled-components';
 import TitleBar from './titleBar/titleBar.component';
@@ -39,7 +38,6 @@ export default function App() {
                                 <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
                                 <Route path="/tiers" element={<TiersPage />} />
                                 <Route path="/settings" element={<SettingsPage />} />
-                                <Route path="/about" element={<AboutPage />} />
                                 <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
                             </Routes>
                     </MainWindow>
