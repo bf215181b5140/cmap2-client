@@ -8,7 +8,7 @@ export class SocketConnection {
     public setConnection(type: SocketConnectionType, message: string, description?: string) {
         this.type = type;
         this.message = message;
-        if (description) this.description = description;
+        if (description !== undefined) this.description = description;
     }
 }
 
