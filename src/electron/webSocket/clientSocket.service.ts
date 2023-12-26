@@ -1,4 +1,4 @@
-import { io, Socket } from 'socket.io-client';
+import io from 'socket.io-client';
 import { OscController } from '../osc/osc.controller';
 import { Message } from 'node-osc';
 import { SocketConnection, SocketConnectionType } from '../../shared/SocketConnection';
@@ -10,7 +10,7 @@ import { URL } from '../../shared/const';
 
 export class ClientSocketService {
 
-    static socket: Socket;
+    static socket: SocketIOClient.Socket;
     static connectionStatus: SocketConnection = new SocketConnection();
 
     static connect() {

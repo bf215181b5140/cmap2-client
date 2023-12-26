@@ -5,6 +5,7 @@ import { ClientSocketService } from './webSocket/clientSocket.service';
 import { IpcRendererService } from '../shared/ipcRendererService';
 import { testing } from './testing/testing.service';
 import { ClientStoreService } from './util/clientStore.service';
+import { LovenseController } from './lovense/lovense.controller';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -29,7 +30,7 @@ function createWindow(): BrowserWindow {
 
     // and load the index.html of the app.
     if (!app.isPackaged) {
-        mainWindow.loadURL('http://127.0.0.1:5173/');
+        mainWindow.loadURL('http://localhost:5173/');
         mainWindow.webContents.openDevTools();
     } else {
         mainWindow.loadFile(path.join(__dirname, '../ui/index.html'));
@@ -45,6 +46,7 @@ app.whenReady().then(() => {
 
     IpcRendererService.init();
     OscController.start();
+    LovenseController.init()
 
     // testing service
     // testing();

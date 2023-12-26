@@ -14,6 +14,7 @@ import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from '../pages/settings/settings.page';
 import TiersPage from '../pages/tiers/tiers.page';
 import MainWindow from './mainWindow/mainWindow.componenet';
+import { LovensePage } from '../pages/lovense/lovense.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
@@ -38,6 +39,7 @@ export default function App() {
                                 <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
                                 <Route path="/tiers" element={<TiersPage />} />
                                 <Route path="/settings" element={<SettingsPage />} />
+                                <Route path="/lovense" element={<LovensePage />} />
                                 <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
                             </Routes>
                     </MainWindow>

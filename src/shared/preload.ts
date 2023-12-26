@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
+import { LovenseStatus, ToyCommand } from 'lovense';
 
 contextBridge.exposeInMainWorld('electronAPI', {
     getClientCredentials: () => ipcRenderer.invoke('getClientCredentials').then(result => result),
@@ -14,4 +15,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     setApplicationSettings: (applicationSettings: ApplicationSettings) => ipcRenderer.send('setApplicationSettings', applicationSettings),
     forwardOscToRenderer: (forward: boolean) => ipcRenderer.send('forwardOscToRenderer', forward),
     vrcParameter: (callback: (event: Electron.IpcRendererEvent, message: VrcParameter) => void) => ipcRenderer.on('vrcParameter', callback),
+    // Lovense
+    getLovenseStatus: () => ipcRenderer.invoke('getLovenseStatus').then((lovenseStatus: LovenseStatus) => lovenseStatus),
+    lovenseStatus: (callback: (event: Electron.IpcRendererEvent, lovenseStatus: LovenseStatus) => void) => ipcRenderer.on('lovenseStatus', callback),
+    lovenseQRUrl: (callback: (event: Electron.IpcRendererEvent, message: string) => void) => ipcRenderer.on('lovenseQRUrl', callback),
+    lovenseConnect: () => ipcRenderer.send('lovenseConnect'),
+    lovenseDisconnect: () => ipcRenderer.send('lovenseDisconnect'),
+    sendLovenseToyCommand: (toyCommand: ToyCommand) => ipcRenderer.send('sendLovenseToyCommand', toyCommand),
 });

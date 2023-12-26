@@ -4,6 +4,7 @@ import { ClientStoreService } from '../util/clientStore.service';
 import { OscSettings } from '../../shared/classes';
 import { VrcParameter } from 'cmap2-shared';
 import { mainWindow } from '../electron';
+import { LovenseController } from '../lovense/lovense.controller';
 
 export class OscController {
 
@@ -64,6 +65,7 @@ export class OscController {
                     ClientSocketService.sendParameter('avatar', {path: vrcParameter.path, value: vrcParameter.value});
                 } else {
                     ClientSocketService.sendParameter('parameter', vrcParameter);
+                    LovenseController.checkParameter(vrcParameter);
                     if (this.forwardOscToRenderer && mainWindow && !mainWindow.isDestroyed()) {
                         mainWindow.webContents.send('vrcParameter', vrcParameter);
                     }
