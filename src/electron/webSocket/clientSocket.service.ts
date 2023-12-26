@@ -22,7 +22,8 @@ export class ClientSocketService {
             query: {
                 username: clientCredentials.username,
                 password: clientCredentials.password
-            }
+            },
+            transports: ["websocket"]
         });
 
         this.connectionStatus.setConnection(SocketConnectionType.MESSAGE, 'Connecting...', '');
