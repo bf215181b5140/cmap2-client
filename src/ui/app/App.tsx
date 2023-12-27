@@ -14,7 +14,7 @@ import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from '../pages/settings/settings.page';
 import TiersPage from '../pages/tiers/tiers.page';
 import MainWindow from './mainWindow/mainWindow.componenet';
-import { LovensePage } from '../pages/lovense/lovense.page';
+import LovensePage from '../pages/lovense/lovense.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
