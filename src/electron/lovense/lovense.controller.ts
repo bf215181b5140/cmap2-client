@@ -2,18 +2,19 @@ import { URL } from '../../shared/const';
 import { ipcMain, IpcMainEvent } from 'electron';
 import { mainWindow } from '../electron';
 import io from 'socket.io-client';
-import { DeviceInformation, LovenseStatus, QRCodeResponse, SocketIoData, SocketIoResponse, ToyCommand } from 'lovense';
+import { ConnectionStatus, DeviceInformation, QRCodeResponse, SocketIoData, SocketIoResponse, ToyCommand } from 'lovense';
 import { VrcParameter } from 'cmap2-shared';
+import { LovenseStatus } from '../../shared/lovense/lovenseStatus';
 
 export class LovenseController {
 
     static authToken: string | null;
     static socketInfo: SocketIoData | null;
     static lovenseSocket: SocketIOClient.Socket | null;
-    static qrCodeUrl: string | null = null;
-    static deviceInformation: DeviceInformation | null = null;
 
     static lastCommand: number = 0;
+
+    static lovenseStatus: LovenseStatus = new LovenseStatus();
 
     static touchParameters: string[] = ['/avatar/parameters/LovenseContact',
                                         '/avatar/parameters/OGB/Pen/Penis/TouchOthers',
@@ -24,7 +25,6 @@ export class LovenseController {
 
     static sendToyCommand(toyCommand: ToyCommand) {
         if (!this.lovenseSocket) return;
-
         this.lovenseSocket.emit('basicapi_send_toy_command_ts', toyCommand);
     }
 
@@ -38,44 +38,24 @@ export class LovenseController {
                 action: 'Vibrate:' + (Math.ceil(vrcParameter.value * 10)),
                 timeSec: 1,
                 apiVer: 1
-            }
+            };
             this.sendToyCommand(toyCommand);
             this.lastCommand = Date.now();
         }
     }
 
     static updateLovenseStatus() {
+        this.lovenseStatus.socketConnection = !!this.lovenseSocket?.connected;
         if (mainWindow && !mainWindow.isDestroyed()) {
-            mainWindow.webContents.send('lovenseStatus', {
-                connected: this.lovenseSocket?.connected || false,
-                online: this.deviceInformation?.online || false,
-                qrcodeUrl: this.qrCodeUrl,
-                toyList: this.deviceInformation?.toyList || [],
-            });
+            mainWindow.webContents.send('lovenseStatus', this.lovenseStatus);
         }
     }
 
     static init() {
-        ipcMain.handle('getLovenseStatus', () => {
-            return {
-                connected: this.lovenseSocket?.connected || false,
-                online: this.deviceInformation?.online || false,
-                qrcodeUrl: this.qrCodeUrl,
-                toyList: this.deviceInformation?.toyList || [],
-            };
-        });
-
-        ipcMain.on('sendLovenseToyCommand', (event: IpcMainEvent, toyCommand: ToyCommand) => {
-            this.sendToyCommand(toyCommand);
-        });
-
-        ipcMain.on('lovenseConnect', (event: IpcMainEvent) => {
-            this.connect();
-        });
-
-        ipcMain.on('lovenseDisconnect', (event: IpcMainEvent) => {
-            this.lovenseSocket?.close();
-        });
+        ipcMain.on('getLovenseStatus', () => this.updateLovenseStatus());
+        ipcMain.on('sendLovenseToyCommand', (event: IpcMainEvent, toyCommand: ToyCommand) => this.sendToyCommand(toyCommand));
+        ipcMain.on('lovenseConnect', () => this.connect());
+        ipcMain.on('lovenseDisconnect', () => this.disconnect());
     }
 
     static async connect(): Promise<void> {
@@ -100,18 +80,6 @@ export class LovenseController {
             path: this.socketInfo.socketIoPath
         });
 
-        this.lovenseSocket.on('error', (data: any) => {
-            console.log('Lovense socket error', data);
-        });
-
-        this.lovenseSocket.on('connect_error', (data: any) => {
-            console.log('Lovense socket connect_error', data);
-        });
-
-        this.lovenseSocket.on('disconnect', (data: any) => {
-            console.log('Lovense socket disconnected');
-        });
-
         const ackId = '24fsf2536fs7324hj647f5';
         this.lovenseSocket.emit('basicapi_get_qrcode_ts', {
             ackId: ackId
@@ -120,22 +88,18 @@ export class LovenseController {
         // Trigger: when 'basicapi_get_qrcode_ts' event is sent
         this.lovenseSocket.on('basicapi_get_qrcode_tc', (data: string) => {
             let QRCodeResponse: QRCodeResponse = data ? JSON.parse(data) : {};
-            console.log('Lovense QR code information: ', QRCodeResponse);
-            if (QRCodeResponse?.data && QRCodeResponse?.data?.ackId === ackId && QRCodeResponse?.data?.qrcodeUrl) {
-                this.qrCodeUrl = QRCodeResponse.data.qrcodeUrl;
-                if (mainWindow && !mainWindow.isDestroyed()) {
-                    mainWindow.webContents.send('lovenseQRUrl', this.qrCodeUrl);
-                }
+            console.log('Lovense basicapi_get_qrcode_tc');
+            if (QRCodeResponse?.data && QRCodeResponse?.data?.ackId === ackId) {
+                this.lovenseStatus.qrCodeData = QRCodeResponse.data;
+                this.updateLovenseStatus();
             }
         });
 
         // Trigger: user scans the code to establish a connection
         this.lovenseSocket.on('basicapi_update_app_status_tc', (data: any) => {
-            let resData = data ? JSON.parse(data) : {};
-            // Returns the app connection status
-            // { status: 0 }
-            console.log('Lovense app connection status: ', resData);
-            this.qrCodeUrl = null;
+            let resData: ConnectionStatus = data ? JSON.parse(data) : {};
+            console.log('Lovense basicapi_update_app_status_tc: ', resData);
+            this.lovenseStatus.status = resData.status;
             this.updateLovenseStatus();
         });
 
@@ -143,16 +107,39 @@ export class LovenseController {
         this.lovenseSocket.on('basicapi_update_app_online_tc', (data: any) => {
             let resData = data ? JSON.parse(data) : {};
             // Returns the app network status
-            console.log('Lovense app network status: ', resData);
+            console.log('Lovense basicapi_update_app_online_tc: ', resData);
+            this.lovenseStatus.status = resData.status;
+            this.updateLovenseStatus();
         });
 
         // Trigger: device information update
         this.lovenseSocket.on('basicapi_update_device_info_tc', (data: string) => {
             let deviceInformation: DeviceInformation = data ? JSON.parse(data) : {};
-            this.deviceInformation = deviceInformation;
+            console.log('Lovense basicapi_update_device_info_tc: ', deviceInformation);
+            this.lovenseStatus.deviceInformation = deviceInformation;
             this.updateLovenseStatus();
-            console.log('Lovense device information: ', deviceInformation);
         });
+
+        this.lovenseSocket.on('error', (data: any) => {
+            console.log('Lovense socket error', data);
+            this.disconnect();
+        });
+
+        this.lovenseSocket.on('connect_error', (data: any) => {
+            console.log('Lovense socket connect_error', data);
+            this.disconnect();
+        });
+
+        this.lovenseSocket.on('disconnect', (data: any) => {
+            console.log('Lovense socket disconnected');
+            this.disconnect();
+        });
+    }
+
+    static disconnect() {
+        if (this.lovenseSocket) this.lovenseSocket.close();
+        this.lovenseStatus = new LovenseStatus();
+        this.updateLovenseStatus();
     }
 
     private static async getAuthToken(): Promise<string | undefined> {

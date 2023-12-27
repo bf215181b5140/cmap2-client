@@ -1,12 +1,5 @@
 declare module 'lovense' {
 
-    interface LovenseStatus {
-        connected: boolean,
-        online: boolean,
-        qrcodeUrl: string | null,
-        toyList: Toy[],
-    }
-
     interface SocketIoResponse {
         code: number,
         message: string,
@@ -30,6 +23,10 @@ declare module 'lovense' {
         ackId?: string,
     }
 
+    interface ConnectionStatus {
+        status: number,
+    }
+
     interface DeviceInformation {
         deviceCode: string,
         online: boolean,
@@ -47,7 +44,7 @@ declare module 'lovense' {
         name: string,
         toyType: string,
         nickname: string,
-        hVersion: number,
+        hVersion: string,
         fVersion: number,
         battery: number,
         connected: boolean,

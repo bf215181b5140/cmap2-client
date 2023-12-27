@@ -27,6 +27,7 @@ const ActionButtonStyled = styled.div`
     border-radius: 7px;
     font-size: 16px;
     transition: 0.15s linear;
+    cursor: pointer;
 
     :hover {
       transform: scale(1.05) perspective(1px);

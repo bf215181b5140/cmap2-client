@@ -1,12 +1,8 @@
 import { Toy, ToyCommand } from 'lovense';
-import ActionButton from '../../../shared/components/actionButton.component';
-import FormTable from '../../../shared/components/form/formTable.component';
-import FormInput from '../../../shared/components/form/formInput.component';
-import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { z } from 'zod';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import gushImage from '../icons/lovenseToyGush.png';
 import otherToyImage from '../icons/lovenseToyOther.png';
@@ -31,6 +27,7 @@ export function LovenseToy({toy}: LovenseToyProps) {
     }
 
     function sendTestCommand() {
+        if (!toy.connected) return;
         const toyCommand: ToyCommand = {
             command: 'Function',
             action: 'Vibrate:' + Math.floor(Math.random() * 10) + 2,
@@ -39,6 +36,12 @@ export function LovenseToy({toy}: LovenseToyProps) {
             apiVer: 1
         };
         window.electronAPI.sendLovenseToyCommand(toyCommand);
+    }
+
+    function toyName() {
+        if (toy.nickname) return toy.nickname;
+        if (toy.name) return toy.name;
+        return toy.toyType;
     }
 
     function toyImage() {
@@ -50,38 +53,52 @@ export function LovenseToy({toy}: LovenseToyProps) {
         }
     }
 
-    function batteryImage() {
+    function statusIcon() {
+        // Toy not connected
+        if (!toy.connected) return <Icon icon="ri-wifi-off-fill" color="red" />;
+        // Show battery level
         if (toy.battery >= 50) {
-            return <Icon icon='ri-battery-fill' color='green' />;
-        } else if (toy.battery < 50 && toy.battery >= 0) {
-            return <Icon icon='ri-battery-low-line' color='red' />;
+            return <Icon icon="ri-battery-fill" color="green" />;
+        } else if (toy.battery < 50 && toy.battery >= 25) {
+            return <Icon icon="ri-battery-low-line" color="orange" />;
+        } else if (toy.battery < 25 && toy.battery >= 0) {
+            return <Icon icon="ri-battery-low-line" color="red" />;
         } else {
-            return <Icon icon='ri-battery-line' color='grey' />;
+            return <Icon icon="ri-battery-line" color="grey" />;
         }
     }
 
     return (
-        <LovenseToyStyled onClick={() => sendTestCommand()}>
+        <LovenseToyStyled onClick={() => sendTestCommand()} connected={toy.connected}>
             <LovenseToyImageStyled src={toyImage()} />
             <LovenseToyInfoStyled>
-                <h2>{toy.nickname} {batteryImage()}</h2>
+                <h2>{toyName()} {statusIcon()}</h2>
                 <p>{toy.name} - {toy.id}</p>
-                <span style={{color: 'grey'}}>Click to send a quick vibration</span>
+                {toy.connected && <span>Click to send a quick vibration</span>}
+                {!toy.connected && <span style={{color: 'grey'}}>Toy not connected</span>}
             </LovenseToyInfoStyled>
         </LovenseToyStyled>
     );
 }
 
-const LovenseToyStyled = styled.div`
+const LovenseToyStyled = styled.div<{ connected: boolean }>`
+  flex-grow: 0;
+  flex-basis: calc(50% - 10px);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   background-color: ${colors['content-bg']};
-  border: 2px solid ${colors['content-bg']};
-  border-radius: 1em;
-  cursor: pointer;
+  border: 2px solid darkred;
+  border-radius: 8px;
   transition: 0.15s linear;
 
+  ${props => props.connected ? LovenseToyConnectedStyled : null};
+`;
+
+const LovenseToyConnectedStyled = css`
+  border: 2px solid ${colors['button-hover-border']};
+  cursor: pointer;
+  
   :hover {
     background-color: ${colors['button-hover-bg']};
     border: 2px solid ${colors['button-hover-border']};
@@ -90,12 +107,20 @@ const LovenseToyStyled = styled.div`
 
 const LovenseToyImageStyled = styled.div<{ src: string }>`
   background: url(${props => props.src}) no-repeat center;
-  background-size: cover;
-  height: 100%;
-  aspect-ratio: 16/9;
+  width: 100px;
   border-radius: 1em;
 `;
 
 const LovenseToyInfoStyled = styled.div`
   margin: 10px;
+  
+  p, span {
+    display: block;
+    margin: 5px 0;
+    padding: 0;
+  }
+  
+  h2 {
+    margin: 5px 0 8px 0;
+  }
 `;
