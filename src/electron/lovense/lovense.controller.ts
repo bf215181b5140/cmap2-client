@@ -4,7 +4,7 @@ import { mainWindow } from '../electron';
 import io from 'socket.io-client';
 import { ConnectionStatus, DeviceInformation, QRCodeResponse, SocketIoData, SocketIoResponse, ToyCommand } from 'lovense';
 import { VrcParameter } from 'cmap2-shared';
-import { LovenseStatus } from '../../shared/lovense/lovenseStatus';
+import { LovenseStatus } from '../../shared/lovense';
 
 export class LovenseController {
 

@@ -4,9 +4,10 @@ import { Toy } from 'lovense';
 import { LovenseToy } from './components/toy.component';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { LovenseStatus } from '../../../shared/lovense/lovenseStatus';
+import { LovenseStatus } from '../../../shared/lovense';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import colors from 'cmap2-shared/src/colors.json';
+import ToyControl from './components/toyControl.component';
 
 export default function LovensePage() {
 
@@ -61,9 +62,7 @@ export default function LovensePage() {
                 {lovenseStatus.deviceInformation.toyList.map((toy: Toy) => (<LovenseToy toy={toy} key={toy.id} />))}
             </ToysStyled>}
         </ContentBox>
-        <ContentBox title="Toy control">
-
-        </ContentBox>
+        <ToyControl toyList={lovenseStatus.deviceInformation?.toyList} />
         <ContentBox title="Osc control">
 
         </ContentBox>

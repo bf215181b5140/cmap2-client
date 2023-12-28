@@ -3,7 +3,7 @@ import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
-import { LovenseStatus } from './lovense/lovenseStatus';
+import { LovenseStatus } from './lovense';
 
 contextBridge.exposeInMainWorld('electronAPI', {
     getClientCredentials: () => ipcRenderer.invoke('getClientCredentials').then(result => result),

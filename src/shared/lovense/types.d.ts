@@ -1,59 +1,58 @@
 declare module 'lovense' {
 
     interface SocketIoResponse {
-        code: number,
-        message: string,
-        data: SocketIoData,
+        code: number;
+        message: string;
+        data: SocketIoData;
     }
 
     interface SocketIoData {
-        'socketIoPath': string,
+        'socketIoPath': string;
         'socketIoUrl': string
     }
 
     interface QRCodeResponse {
-        code: number,
-        message: string,
-        data: QRCodeData,
+        code: number;
+        message: string;
+        data: QRCodeData;
     }
 
     interface QRCodeData {
-        qrcodeUrl: string,
-        qrcode: string,
-        ackId?: string,
+        qrcodeUrl: string;
+        qrcode: string;
+        ackId?: string;
     }
 
     interface ConnectionStatus {
-        status: number,
+        status: number;
     }
 
     interface DeviceInformation {
-        deviceCode: string,
-        online: boolean,
-        domain: string,
-        httpsPort: number,
-        wssPort: number,
-        appVersion: string,
-        platform: string,
-        appType: string,
-        toyList: Toy[],
+        deviceCode: string;
+        online: boolean;
+        domain: string;
+        httpsPort: number;
+        wssPort: number;
+        appVersion: string;
+        platform: string;
+        appType: string;
+        toyList: Toy[];
     }
 
     interface Toy {
-        id: string,
-        name: string,
-        toyType: string,
-        nickname: string,
-        hVersion: string,
-        fVersion: number,
-        battery: number,
-        connected: boolean,
+        id: string;
+        name: string;
+        toyType: string;
+        nickname: string;
+        hVersion: string;
+        fVersion: number;
+        battery: number;
+        connected: boolean;
     }
 
     interface ToyCommand {
-        command: 'Function',
-        action: string,
-        // Actions can be: Vibrate, Rotate, Pump, Thrusting, Fingering, Suction, Depth or Stop.
+        command: 'Function';
+        // Actions can be: Vibrate; Rotate; Pump; Thrusting; Fingering; Suction; Depth or Stop.
         // Use All to make all functions respond.
         // Use Stop to stop the toy’s response.
         // Range:
@@ -66,22 +65,23 @@ declare module 'lovense' {
         // Depth:0~3
         // All:0~20
         // Stop
-        timeSec: number,
+        action: string;
         // Total running time
         // 0 = indefinite length
-        // Otherwise, running time should be greater than 1.
-        loopRunningSec?: number,
+        // Otherwise; running time should be greater than 1.
+        timeSec: number;
         // Running time
         // Should be greater than 1
-        loopPauseSec?: number,
+        loopRunningSec?: number;
         // Suspend time
         // Should be greater than 1
-        toy?: string,
+        loopPauseSec?: number;
         // Toy ID
-        // If you don’t include this, it will be applied to all toys
-        stopPrevious?: boolean,
+        // If you don’t include this; it will be applied to all toys
+        toy?: string;
         // Stop all previous commands and execute current commands
-        // Default: 1, If set to 0 , it will not stop the previous command.
-        apiVer: 1,
+        // Default: 1; If set to 0 ; it will not stop the previous command.
+        stopPrevious?: boolean;
+        apiVer: 1;
     }
 }
