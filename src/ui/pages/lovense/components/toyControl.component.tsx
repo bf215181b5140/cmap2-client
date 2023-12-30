@@ -48,6 +48,7 @@ export default function ToyControl({ toyList }: ToyControlProps) {
     }
 
     return (<ContentBox title="Toy control">
+        <p>Control Lovense toys based on your avatar parameters VRChat sends.</p>
         <form onSubmit={handleSubmit(onsubmit)}>
             <FormTableStyled>
                 <thead>
@@ -55,8 +56,8 @@ export default function ToyControl({ toyList }: ToyControlProps) {
                     <tr>
                         <th>VRChar parameter</th>
                         <th>Lovense toy action</th>
-                        <td>Time (seconds)</td>
-                        <td>Toy id</td>
+                        <th>Time (seconds)</th>
+                        <th>Toy id</th>
                     </tr>
                 }
                 </thead>
@@ -74,6 +75,7 @@ export default function ToyControl({ toyList }: ToyControlProps) {
                             <FormInput type={InputType.Number} name={`toyCommandParameters.${index}.timeSec`} width='120px' register={register} errors={errors} />
                         </td>
                         <td>
+                            {/* todo add text + select input with toyList */}
                             <FormInput type={InputType.Text} name={`toyCommandParameters.${index}.toy`} register={register} errors={errors} />
                         </td>
                         <td>

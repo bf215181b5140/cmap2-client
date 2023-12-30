@@ -1,6 +1,6 @@
 import Store from 'electron-store';
 import { ApplicationSettings, ClientCredentials } from '../../shared/classes';
-import { ToyCommandParameter } from '../../shared/lovense';
+import { ToyCommandOscMessage, ToyCommandParameter } from '../../shared/lovense';
 
 export class StoreService {
     private static clientStore = new Store({encryptionKey: "client-settings"});
@@ -28,5 +28,13 @@ export class StoreService {
 
     static setToyCommandParameters(toyCommandParameters: ToyCommandParameter[]) {
         this.clientStore.set('toyCommandParameters', toyCommandParameters);
+    }
+
+    static getToyCommandOscMessages(): ToyCommandOscMessage[] {
+        return this.clientStore.get('toyCommandOscMessages') as ToyCommandOscMessage[] ?? [];
+    }
+
+    static setToyCommandOscMessages(toyCommandOscMessages: ToyCommandOscMessage[]) {
+        this.clientStore.set('toyCommandOscMessages', toyCommandOscMessages);
     }
 }

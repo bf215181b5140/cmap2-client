@@ -8,6 +8,7 @@ import { LovenseStatus } from '../../../shared/lovense';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import colors from 'cmap2-shared/src/colors.json';
 import ToyControl from './components/toyControl.component';
+import OscControl from './components/oscControl.component';
 
 export default function LovensePage() {
 
@@ -63,9 +64,7 @@ export default function LovensePage() {
             </ToysStyled>}
         </ContentBox>
         <ToyControl toyList={lovenseStatus.deviceInformation?.toyList} />
-        <ContentBox title="Osc control">
-
-        </ContentBox>
+        <OscControl toyList={lovenseStatus.deviceInformation?.toyList} />
     </Content>);
 }
 

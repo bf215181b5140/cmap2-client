@@ -3,7 +3,7 @@ import { SocketConnection } from './SocketConnection';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
-import { LovenseStatus, ToyCommandParameter } from './lovense';
+import { LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
@@ -24,6 +24,8 @@ export interface IElectronAPI {
     sendLovenseToyCommand: (toyCommand: ToyCommand) => void,
     setToyCommandParameters: (toyCommandParameters: ToyCommandParameter[]) => void,
     getToyCommandParameters: () => Promise<ToyCommandParameter[]>,
+    setToyCommandOscMessages: (toyCommandParameters: ToyCommandOscMessage[]) => void,
+    getToyCommandOscMessages: () => Promise<ToyCommandOscMessage[]>,
 }
 
 declare global {

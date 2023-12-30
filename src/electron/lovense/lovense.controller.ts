@@ -2,7 +2,7 @@ import { ipcMain, IpcMainEvent } from 'electron';
 import { mainWindow } from '../electron';
 import { DeviceInformation, QRCodeData, ToyCommand } from 'lovense';
 import { VrcParameter } from 'cmap2-shared';
-import { LovenseStatus, ToyCommandParameter } from '../../shared/lovense';
+import { LovenseStatus, ToyActionType, ToyCommandParameter } from '../../shared/lovense';
 import { BridgeService } from '../bridge/bridge.service';
 import LovenseService from './lovense.service';
 import { StoreService } from '../store/store.service';
@@ -16,8 +16,8 @@ import { StoreService } from '../store/store.service';
 
 export default class LovenseController extends LovenseService {
     private lovenseStatus: LovenseStatus = new LovenseStatus();
-    private lastCommand: number = 0;
     private toyCommandParameters: Map<string, ToyCommandParameter> = new Map<string, ToyCommandParameter>();
+    private toyCommandHistory: Map<string, number> = new Map<string, number>();
 
     constructor() {
         super();
@@ -57,18 +57,32 @@ export default class LovenseController extends LovenseService {
     };
 
     private checkOscParameters(vrcParameter: VrcParameter) {
-        if (Date.now() - this.lastCommand < 300) return;
+        if (!this.canSendToyCommand()) return;
 
         const toyCommandParameter: ToyCommandParameter | undefined = this.toyCommandParameters.get(vrcParameter.path);
         if (toyCommandParameter) {
 
-            let actionValue = 0;
-            if (typeof vrcParameter.value === 'number') actionValue = Math.ceil(vrcParameter.value * 10);
-            if (typeof vrcParameter.value === 'boolean') actionValue = vrcParameter.value ? 20 : 0;
+            let actionMaxValue: number = 20;
+            if (toyCommandParameter.action === ToyActionType.Pump || toyCommandParameter.action === ToyActionType.Depth) actionMaxValue = 3;
+
+            let actionValue: number = 0;
+            if (typeof vrcParameter.value === 'number') {
+                if (vrcParameter.value > 1) {
+                    // integer
+                    actionValue = Math.min(vrcParameter.value, actionMaxValue);
+                } else {
+                    // float (unless 1)
+                    actionValue = Math.ceil(vrcParameter.value * actionMaxValue);
+                }
+            }
+            if (typeof vrcParameter.value === 'boolean') actionValue = vrcParameter.value ? actionMaxValue : 0;
+
+            let action: string = `${toyCommandParameter.action}:${actionValue}`;
+            if (toyCommandParameter.action === ToyActionType.Stop) action = ToyActionType.Stop;
 
             const toyCommand: ToyCommand = {
                 command: 'Function',
-                action: `${toyCommandParameter.action}:${actionValue}`,
+                action: action,
                 timeSec: toyCommandParameter.timeSec,
                 toy: toyCommandParameter.toy,
                 apiVer: 1
@@ -76,8 +90,23 @@ export default class LovenseController extends LovenseService {
 
             this.sendToyCommand(toyCommand);
             BridgeService.emit('toyCommand', toyCommand);
-            this.lastCommand = Date.now();
+
+            // if this isn't a stop command and command time isn't infinite
+            if (toyCommand.action !== ToyActionType.Stop || toyCommand.timeSec !== 0) this.createToyCommandCallback(toyCommand);
         }
+    }
+
+    private createToyCommandCallback(toyCommand: ToyCommand) {
+        // save toy command unix time
+        this.toyCommandHistory.set(toyCommand.toy ?? '', Date.now());
+        // create callback with timeout (with extra 50ms leeway)
+        setTimeout((toyCommand: ToyCommand) => {
+            // if last saved command for this toy is older than how long the command lasted
+            if ((this.toyCommandHistory.get(toyCommand.toy ?? '') ?? 0) + (toyCommand.timeSec * 1000) < Date.now()) {
+                // emmit a false stop command
+                BridgeService.emit('toyCommand', {...toyCommand, action: 'Stop'});
+            }
+        }, (toyCommand.timeSec * 1000) + 50, toyCommand);
     }
 
     private updateLovenseStatus() {

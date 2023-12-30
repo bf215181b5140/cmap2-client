@@ -3,7 +3,7 @@ import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
-import { LovenseStatus, ToyCommandParameter } from './lovense';
+import { LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 
 contextBridge.exposeInMainWorld('electronAPI', {
     getClientCredentials: () => ipcRenderer.invoke('getClientCredentials').then(result => result),
@@ -24,4 +24,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     sendLovenseToyCommand: (toyCommand: ToyCommand) => ipcRenderer.send('sendLovenseToyCommand', toyCommand),
     setToyCommandParameters: (toyCommandParameters: ToyCommandParameter[]) => ipcRenderer.send('setToyCommandParameters', toyCommandParameters),
     getToyCommandParameters: () => ipcRenderer.invoke('getToyCommandParameters').then((toyCommandParameters: ToyCommandParameter[]) => toyCommandParameters),
+    setToyCommandOscMessages: (toyCommandOscMessages: ToyCommandOscMessage[]) => ipcRenderer.send('setToyCommandOscMessages', toyCommandOscMessages),
+    getToyCommandOscMessages: () => ipcRenderer.invoke('getToyCommandOscMessages').then((toyCommandOscMessages: ToyCommandOscMessage[]) => toyCommandOscMessages),
 });

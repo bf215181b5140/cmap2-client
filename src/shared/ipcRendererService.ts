@@ -5,7 +5,7 @@ import { mainWindow } from '../electron/electron';
 import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { OscController } from '../electron/osc/osc.controller';
-import { ToyCommandParameter } from './lovense';
+import { ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 
 export class IpcRendererService {
 
@@ -69,9 +69,19 @@ export class IpcRendererService {
             return StoreService.getToyCommandParameters();
         });
 
-        ipcMain.on('setToyCommandParameters', (event: IpcMainEvent, toyCommandParameters: ToyCommandParameter[]) => {
-            StoreService.setToyCommandParameters(toyCommandParameters);
+        ipcMain.on('setToyCommandParameters', (_: IpcMainEvent, toyCommandParameters: ToyCommandParameter[]) => {
             console.log('IpcRendererService recieved toyCommandParameters');
+            StoreService.setToyCommandParameters(toyCommandParameters);
+        });
+
+        ipcMain.handle('getToyCommandOscMessages', async () => {
+            console.log('IpcRendererService recieved request for toyCommandOscMessages');
+            return StoreService.getToyCommandOscMessages();
+        });
+
+        ipcMain.on('setToyCommandOscMessages', (_: IpcMainEvent, toyCommandOscMessages: ToyCommandOscMessage[]) => {
+            console.log('IpcRendererService recieved toyCommandOscMessages');
+            StoreService.setToyCommandOscMessages(toyCommandOscMessages);
         });
     }
 }

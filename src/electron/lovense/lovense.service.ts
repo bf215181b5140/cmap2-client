@@ -6,6 +6,8 @@ export default abstract class LovenseService {
     private authToken: string | null = null;
     private socketInfo: SocketIoData | null = null;
     private lovenseSocket: SocketIOClient.Socket | null = null;
+    private lastToyCommand: number = 0; // unix timestamp
+    protected toyCommandFrequency: number = 300; // milliseconds
 
     protected abstract setQrCodeData(data: QRCodeData): void;
     protected abstract setConnectionStatus(status: number): void;
@@ -19,9 +21,14 @@ export default abstract class LovenseService {
         return !!this.lovenseSocket?.connected;
     }
 
+    protected canSendToyCommand(): boolean {
+        return (Date.now() - this.lastToyCommand > this.toyCommandFrequency) && this.isSocketConnected();
+    }
+
     protected sendToyCommand(toyCommand: ToyCommand) {
         if (!this.lovenseSocket) return;
         this.lovenseSocket.emit('basicapi_send_toy_command_ts', toyCommand);
+        this.lastToyCommand = Date.now();
     }
 
     protected async connect(): Promise<void> {
