@@ -29,7 +29,7 @@ function createWindow(): BrowserWindow {
 
     // and load the index.html of the app.
     if (!app.isPackaged) {
-        mainWindow.loadURL('http://127.0.0.1:5173/');
+        mainWindow.loadURL('http://localhost:5173/');
         mainWindow.webContents.openDevTools();
     } else {
         mainWindow.loadFile(path.join(__dirname, '../ui/index.html'));
@@ -54,7 +54,7 @@ app.whenReady().then(() => {
     if (!applicationSettings || applicationSettings.startMinimized !== true) mainWindow = createWindow();
 
     // create tray icon
-    let tray = new Tray('cmap-icon.png');
+    let tray = new Tray('resources/icon.png');
     const contextMenu = Menu.buildFromTemplate([
         {
             label: 'Open', type: 'normal', click: () => {

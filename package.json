@@ -1,14 +1,15 @@
 {
-  "name": "cmap2-client",
-  "version": "0.1.0",
+  "name": "cmap",
+  "description": "VRChat utility application for OSC interactions and access to Cmap website features.",
+  "version": "1.1.0",
+  "author": "cmap",
   "private": true,
   "main": "./build/electron/electron.js",
   "scripts": {
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
     "build": "electron-vite build",
-    "package": "npx electron-packager ./ --platform win32 --overwrite",
-    "electron-build": "electron-builder",
+    "package": "electron-builder",
     "postinstall": "npm update cmap2-shared"
   },
   "dependencies": {
@@ -29,7 +30,6 @@
     "cmap2-shared": "git://github.com/bf215181b5140/cmap2-shared.git",
     "electron": "^22.0.0",
     "electron-builder": "^24.1.1",
-    "electron-packager": "^17.1.1",
     "electron-store": "^8.1.0",
     "electron-vite": "^1.0.16",
     "react": "^18.2.0",
@@ -42,9 +42,15 @@
   },
   "build": {
     "appId": "com.changemyavatarparams.app",
-    "productName": "cmap",
+    "productName": "Change my avatar params",
+    "directories": {
+      "output": "./packaged"
+    },
+    "files": ["./build/**/*"],
+    "extraFiles": ["./resources/**"],
     "win": {
-      "target": "portable"
+      "target": ["nsis"],
+      "icon": "resources/icon.png"
     }
   }
 }
