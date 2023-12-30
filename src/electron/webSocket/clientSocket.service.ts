@@ -4,7 +4,7 @@ import { Message } from 'node-osc';
 import { SocketConnection, SocketConnectionType } from '../../shared/SocketConnection';
 import { VrcParameter } from 'cmap2-shared';
 import { ClientCredentials } from '../../shared/classes';
-import { ClientStoreService } from '../util/clientStore.service';
+import { StoreService } from '../store/store.service';
 import { mainWindow } from '../electron';
 import { URL } from '../../shared/const';
 
@@ -14,7 +14,7 @@ export class ClientSocketService {
     static connectionStatus: SocketConnection = new SocketConnection();
 
     static connect() {
-        const clientCredentials = ClientStoreService.getClientCredentials();
+        const clientCredentials = StoreService.getClientCredentials();
         if (!clientCredentials) return;
 
         if (this.socket) this.socket.close();

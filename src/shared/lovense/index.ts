@@ -20,13 +20,15 @@ export enum ToyActionType {
     Stop = 'Stop',
 }
 
-export const ToyCommandParametersSchema = z.object({
-    toyCommandParameters: z.array(z.object({
-        parameterPath: z.string(),
-        action: z.nativeEnum(ToyActionType),
-        timeSec: z.number().min(0),
-        toy: z.string(),
-    })),
+export const ToyCommandParameterSchema = z.object({
+    parameterPath: z.string(),
+    action: z.nativeEnum(ToyActionType),
+    timeSec: z.number().min(0),
+    toy: z.string(),
 });
+export type ToyCommandParameter = z.infer<typeof ToyCommandParameterSchema>;
 
-export type ToyCommandParameters = z.infer<typeof ToyCommandParametersSchema>;
+export const ToyCommandParameterFormSchema = z.object({
+    toyCommandParameters: z.array(ToyCommandParameterSchema),
+});
+export type ToyCommandParameterForm = z.infer<typeof ToyCommandParameterFormSchema>;

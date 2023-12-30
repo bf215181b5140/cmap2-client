@@ -1,10 +1,11 @@
 import { Argument, ArgumentType, Client, Message, MessageLike, Server } from 'node-osc';
 import { ClientSocketService } from '../webSocket/clientSocket.service';
-import { ClientStoreService } from '../util/clientStore.service';
+import { StoreService } from '../store/store.service';
 import { OscSettings } from '../../shared/classes';
 import { VrcParameter } from 'cmap2-shared';
 import { mainWindow } from '../electron';
 import { LovenseController } from '../lovense/lovense.controller';
+import { BridgeService } from '../bridge/bridge.service';
 
 export class OscController {
 
@@ -30,7 +31,7 @@ export class OscController {
         if (this.oscServer) this.oscServer.close();
         if (this.oscClient) this.oscClient.close();
 
-        const storeSettings = ClientStoreService.getApplicationSettings();
+        const storeSettings = StoreService.getApplicationSettings();
         const oscSettings = new OscSettings();
 
         if (storeSettings) {
@@ -65,7 +66,7 @@ export class OscController {
                     ClientSocketService.sendParameter('avatar', {path: vrcParameter.path, value: vrcParameter.value});
                 } else {
                     ClientSocketService.sendParameter('parameter', vrcParameter);
-                    LovenseController.checkParameter(vrcParameter);
+                    BridgeService.emit('vrcParameter', vrcParameter);
                     if (this.forwardOscToRenderer && mainWindow && !mainWindow.isDestroyed()) {
                         mainWindow.webContents.send('vrcParameter', vrcParameter);
                     }

@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import FormInput from '../../../shared/components/form/formInput.component';
 import { FormTableStyled } from '../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
-import React from 'react';
-import { ToyActionType, ToyCommandParameters, ToyCommandParametersSchema } from '../../../../shared/lovense';
+import React, { useEffect } from 'react';
+import { ToyActionType, ToyCommandParameterForm, ToyCommandParameterFormSchema } from '../../../../shared/lovense';
 import { Toy } from 'lovense';
 
 interface ToyControlProps {
@@ -15,13 +15,20 @@ interface ToyControlProps {
 
 export default function ToyControl({ toyList }: ToyControlProps) {
 
-    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ToyCommandParameters>({
-        defaultValues: { toyCommandParameters: [] }, resolver: zodResolver(ToyCommandParametersSchema)
+    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ToyCommandParameterForm>({
+        defaultValues: { toyCommandParameters: [] }, resolver: zodResolver(ToyCommandParameterFormSchema)
     });
 
     const {fields, append, remove} = useFieldArray({control, name: 'toyCommandParameters'});
 
     const watchParameters = watch('toyCommandParameters');
+
+    useEffect(() => {
+      window.electronAPI.getToyCommandParameters().then(toyCommandParameters => {
+          console.log('getToyCommandParameters', toyCommandParameters);
+          reset({ toyCommandParameters }, {keepDirty: false});
+      })
+    }, [])
 
     function onAdd() {
         append({
@@ -32,16 +39,8 @@ export default function ToyControl({ toyList }: ToyControlProps) {
         });
     }
 
-    function onDelete(index: number) {
-        const param = watchParameters[index];
-        if (param) {
-            // save to store
-            remove(index);
-        }
-    }
-
-    function onsubmit(formData: ToyCommandParameters) {
-        console.log(formData)
+    function onsubmit(formData: ToyCommandParameterForm) {
+        window.electronAPI.setToyCommandParameters(formData.toyCommandParameters);
     }
 
     function ToyActionTypeOptions(): FieldOption[] {
@@ -78,7 +77,7 @@ export default function ToyControl({ toyList }: ToyControlProps) {
                             <FormInput type={InputType.Text} name={`toyCommandParameters.${index}.toy`} register={register} errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(index)} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => remove(index)} />
                         </td>
                     </tr>
                 ))}
