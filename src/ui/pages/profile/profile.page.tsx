@@ -1,13 +1,12 @@
 import { ContentBox, Content } from 'cmap2-shared/dist/react';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { profileSchema } from 'cmap2-shared/src/zodSchemas';
 import FormInput from '../../shared/components/form/formInput.component';
-import { ClientTier, InputType } from 'cmap2-shared';
+import { InputType } from 'cmap2-shared';
 import useProlfilePage from './profile.hook';
 import FileUpload from '../../shared/components/fileUpload.component';
-import { ClientCredentialsContext } from '../../app/App';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import TierBadge from './components/tierBadge.component';

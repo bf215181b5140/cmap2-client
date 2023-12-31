@@ -31,7 +31,7 @@ export default function ConnectForm({socketConnection, setConnectForm}: ConnectF
     }, [clientCredentials]);
 
     function onSubmit(formData: any) {
-        const newCredentials = {...clientCredentials, ...formData, apiToken: undefined};
+        const newCredentials = {...clientCredentials, ...formData};
         setClientCredentials(newCredentials);
         window.electronAPI.setClientCredentials(newCredentials);
     }
