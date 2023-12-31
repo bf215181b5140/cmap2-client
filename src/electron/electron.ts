@@ -25,10 +25,13 @@ function createWindow(): BrowserWindow {
         transparent: true,
         resizable: false,
         skipTaskbar: false,
+        show: false,
         webPreferences: {
             preload: path.join(__dirname, '../shared/preload.js')
         }
     });
+
+    mainWindow.on('ready-to-show', () => mainWindow.show());
 
     // and load the index.html of the app.
     if (!app.isPackaged) {
@@ -37,6 +40,14 @@ function createWindow(): BrowserWindow {
     } else {
         mainWindow.loadFile(path.join(__dirname, '../ui/index.html'));
     }
+
+    // bugfix: https://github.com/electron/electron/issues/39959#issuecomment-1758736966
+    mainWindow.on('blur', () => {
+        mainWindow.setBackgroundColor('#00000000')
+    })
+    mainWindow.on('focus', () => {
+        mainWindow.setBackgroundColor('#00000000')
+    })
 
     return mainWindow;
 }
