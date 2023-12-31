@@ -14,4 +14,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     setApplicationSettings: (applicationSettings: ApplicationSettings) => ipcRenderer.send('setApplicationSettings', applicationSettings),
     forwardOscToRenderer: (forward: boolean) => ipcRenderer.send('forwardOscToRenderer', forward),
     vrcParameter: (callback: (event: Electron.IpcRendererEvent, message: VrcParameter) => void) => ipcRenderer.on('vrcParameter', callback),
+    // Util
+    getFingerprint: () => ipcRenderer.invoke('getFingerprint').then((fingerprint: string) => fingerprint),
 });

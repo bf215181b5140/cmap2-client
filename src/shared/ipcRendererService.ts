@@ -5,6 +5,7 @@ import { mainWindow } from '../electron/electron';
 import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { OscController } from '../electron/osc/osc.controller';
+import { getFingerprint } from '../electron/util/fingerprint';
 
 export class IpcRendererService {
 
@@ -62,6 +63,9 @@ export class IpcRendererService {
         ipcMain.on('forwardOscToRenderer', (event: IpcMainEvent, forward: boolean) => {
             OscController.forwardOscToRenderer = forward;
         });
+
+        // Util
+        ipcMain.handle('getFingerprint', async () => await getFingerprint());
 
     }
 }

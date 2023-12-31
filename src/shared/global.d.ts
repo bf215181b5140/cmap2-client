@@ -14,6 +14,8 @@ export interface IElectronAPI {
     setApplicationSettings: (applicationSettings: ApplicationSettings) => void,
     forwardOscToRenderer: (forward: boolean) => void,
     vrcParameter: (callback: (event: any, message: VrcParameter) => void) => void,
+    // Util
+    getFingerprint: () => Promise<string>,
 }
 
 declare global {

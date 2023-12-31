@@ -16,6 +16,7 @@
     "node-osc": "^8.0.6",
     "remixicon": "^2.5.0",
     "socket.io-client": "^4.5.4",
+    "systeminformation": "^5.18.6",
     "zod": "^3.21.4"
   },
   "devDependencies": {
