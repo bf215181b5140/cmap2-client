@@ -1,7 +1,7 @@
 import { AvatarDto, ControlParameterDto, ControlParametersForm, FieldOption, InputType, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
 import { FormTableStyled } from '../../../../shared/components/form/formTable.component';
 import FormInput from '../../../../shared/components/form/formInput.component';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
 import { AvatarReducerAction } from '../../avatars.reducer';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { controlParametersSchema } from 'cmap2-shared/src/zodSchemas';
 import { ContentBox } from 'cmap2-shared/dist/react/';
 import { z } from 'zod';
+import { ModalContext } from '../../../../app/mainWindow/mainWindow.componenet';
 
 interface ControlParametersProps extends ReactProps {
     selectedAvatar: AvatarDto;
@@ -21,6 +22,7 @@ interface ControlParametersProps extends ReactProps {
 export default function ControlParameters({selectedAvatar, clientTier, avatarDataDispatch}: ControlParametersProps) {
 
     const customFetch = useCustomFetch();
+    const { deleteModal } = useContext(ModalContext);
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ControlParametersForm>({
         defaultValues: {
             avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []]
@@ -98,7 +100,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
         }
     }
 
-    return (<ContentBox title="Control parameters" flexBasis={ContentBoxWidth.Full}>
+    return (<ContentBox title="Control parameters" flexBasis={ContentBoxWidth.Full} show={false}>
         <p>Utility parameters that can be used to control avatar. These aren't displayed or interactable, instead they can be used to bind to other actions
             which trigger them.</p>
         <form onSubmit={handleSubmit(onSave)}>
@@ -143,7 +145,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                                        options={valueTypeOptions(watchParameters[index].role)} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(index)} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => deleteModal('control parameter', () => onDelete(index))} />
                         </td>
                     </tr>
                 ))}

@@ -1,5 +1,5 @@
 import { ContentBoxWidth, InputType, LayoutDto, ReactProps } from 'cmap2-shared';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AvatarReducerAction } from '../../../avatars.reducer';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
@@ -9,6 +9,7 @@ import FormTable from '../../../../../shared/components/form/formTable.component
 import FormInput from '../../../../../shared/components/form/formInput.component';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
 import enumToInputOptions from '../../../../../shared/util/enumToInputOptions.function';
+import { ModalContext } from '../../../../../app/mainWindow/mainWindow.componenet';
 
 interface LayoutFormComponentProps extends ReactProps {
     layout: LayoutDto;
@@ -19,6 +20,7 @@ interface LayoutFormComponentProps extends ReactProps {
 
 export default function LayoutFormComponent({layout, order, avatarId, avatarDataDispatch}: LayoutFormComponentProps) {
 
+    const { deleteModal } = useContext(ModalContext);
     const {register, formState: {errors, isDirty}, reset, handleSubmit} = useForm({
         defaultValues: {
             id: layout.id,
@@ -97,7 +99,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
                     {layout.id &&
                         <>
                             <FormInput type={InputType.Button} value={'Reset'} disabled={!isDirty} onClick={() => reset()} />
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(layout)} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => deleteModal('layout', () => onDelete(layout))} />
                             <FormInput type={InputType.Button} value={'Cancel'} onClick={() => {
                                 reset();
                                 setEditing(false);

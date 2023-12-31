@@ -26,24 +26,24 @@ export const ClientCredentialsContext = React.createContext<ClientCredentialsHoo
 
 export default function App() {
 
-    const ClientCredentialsHook = useClientCredentials();
+    const clientCredentialsHook = useClientCredentials();
     const socketConnection = useSocketConnection();
 
     return (
         <AppStyled>
-            <ClientCredentialsContext.Provider value={ClientCredentialsHook}>
-                    <TitleBar socketConnection={socketConnection} />
-                    <MainWindow>
-                            <Routes>
-                                <Route path="/profile" element={<ProfilePage />} />
-                                <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
-                                <Route path="/tiers" element={<TiersPage />} />
-                                <Route path="/settings" element={<SettingsPage />} />
-                                <Route path="/lovense" element={<LovensePage />} />
-                                <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
-                            </Routes>
-                    </MainWindow>
-                    <NavBar />
+            <ClientCredentialsContext.Provider value={clientCredentialsHook}>
+                <TitleBar socketConnection={socketConnection} />
+                <MainWindow>
+                    <Routes>
+                        <Route path="/profile" element={<ProfilePage />} />
+                        <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
+                        <Route path="/tiers" element={<TiersPage />} />
+                        <Route path="/settings" element={<SettingsPage />} />
+                        <Route path="/lovense" element={<LovensePage />} />
+                        <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
+                    </Routes>
+                </MainWindow>
+                <NavBar />
             </ClientCredentialsContext.Provider>
         </AppStyled>);
 }

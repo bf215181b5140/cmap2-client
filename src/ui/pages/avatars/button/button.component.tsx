@@ -1,8 +1,8 @@
 import { Content, ContentBox } from 'cmap2-shared/dist/react';
-import { AvatarDto, ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonType, ClientTier, FieldOption, InputType, LayoutDto, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
+import { AvatarDto, ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonType, InputType, LayoutDto, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import { ParameterButton } from 'cmap2-shared/dist/react';
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
 import useCustomFetch from '../../../shared/hooks/customFetch.hook';
 import { useForm } from 'react-hook-form';
@@ -10,13 +10,12 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { buttonSchema } from 'cmap2-shared/src/zodSchemas';
 import FormInput, { SelectStyled } from '../../../shared/components/form/formInput.component';
 import FileUpload from '../../../shared/components/fileUpload.component';
-import { z } from 'zod';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import ListenForParameter from './listenForParameter.component';
 import FormTable from '../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
 import enumToInputOptions from '../../../shared/util/enumToInputOptions.function';
-import TestParameterButton from './testParameterButton';
+import { ModalContext } from '../../../app/mainWindow/mainWindow.componenet';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;
@@ -32,6 +31,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
+    const { deleteModal } = useContext(ModalContext);
     const {register, setValue, reset, formState: {errors, isDirty}, watch, handleSubmit} = useForm<ButtonDto>({
         defaultValues: {...button, order: 0, parentId: layout.id},
         resolver: zodResolver(buttonSchema)
@@ -143,7 +143,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                         </td>
                         <td>
                             <SelectStyled onChange={e => setParameterFromOptions(e.target.value)}>
-                                <option value="" key=""></option>
+                                <option value="" key="" />
                                 {avatar.parameters?.map(p => (<option value={p.id} key={p.id}>{p.label}</option>))}
                             </SelectStyled>
                         </td>
@@ -196,8 +196,8 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                 <FormControlBar>
                     <FormInput type={InputType.Submit} disabled={!isDirty} />
                     <FormInput type={InputType.Button} value="Reset" disabled={!isDirty} onClick={() => reset()} />
-                    <FormInput type={InputType.Button} value="Delete" onClick={() => onDelete(button)} />
-                    <FormInput type={InputType.Button} value="Cancel" onClick={() => navigate(-1)} />
+                    <FormInput type={InputType.Button} value="Delete" onClick={() => deleteModal('button', () => onDelete(button))} />
+                    <FormInput type={InputType.Button} value={isDirty ? "Cancel" : "Back"} onClick={() => navigate(-1)} />
                 </FormControlBar>
             </form>
         </ContentBox>

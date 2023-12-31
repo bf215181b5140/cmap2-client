@@ -2,7 +2,7 @@ import { AvatarDto, ControlParameterDto, InputType, ParameterDto, ParametersForm
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../../shared/components/form/formTable.component';
 import FormInput from '../../../../shared/components/form/formInput.component';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
 import { AvatarReducerAction } from '../../avatars.reducer';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -13,8 +13,8 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { parametersSchema } from 'cmap2-shared/src/zodSchemas';
 import { EventBus } from '../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../shared/interfaces';
-import { inspect } from 'util';
 import colors from 'cmap2-shared/src/colors.json';
+import { ModalContext } from '../../../../app/mainWindow/mainWindow.componenet';
 
 interface ParametersProps extends ReactProps {
     selectedAvatar: AvatarDto;
@@ -25,6 +25,7 @@ interface ParametersProps extends ReactProps {
 export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus}: ParametersProps) {
 
     const customFetch = useCustomFetch();
+    const { deleteModal } = useContext(ModalContext);
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ParametersForm>({
         defaultValues: {
             avatarId: selectedAvatar.id, parameters: [...selectedAvatar.parameters || []]
@@ -79,7 +80,7 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
         }
     }
 
-    return (<ContentBox title="Parameters" flexBasis={ContentBoxWidth.Full}>
+    return (<ContentBox title="Parameters" flexBasis={ContentBoxWidth.Full} show={false}>
         <p>
             Optional list of parameters that this avatar supports. Makes it easier to build buttons by letting you pick parameters from this list.
             <br />
@@ -113,7 +114,7 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
                                        name={`parameters.${index}.valueType`} width="auto" errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => onDelete(index)} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => deleteModal('parameter', () => onDelete(index))} />
                         </td>
                     </tr>
                 ))}

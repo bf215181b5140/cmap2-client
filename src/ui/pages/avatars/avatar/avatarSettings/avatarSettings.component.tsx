@@ -3,7 +3,7 @@ import { AvatarDto, ButtonStyleDto, InputType, ReactProps, TierDto } from 'cmap2
 import FormTable from '../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
 import { ContentBox } from 'cmap2-shared/dist/react';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
@@ -12,6 +12,7 @@ import { AvatarReducerAction } from '../../avatars.reducer';
 import { avatarSchema } from 'cmap2-shared/dist/zodSchemas';
 import { EventBus } from '../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../shared/interfaces';
+import { ModalContext } from '../../../../app/mainWindow/mainWindow.componenet';
 
 interface AvatarSettingsProps extends ReactProps {
     selectedAvatar: AvatarDto;
@@ -22,6 +23,7 @@ interface AvatarSettingsProps extends ReactProps {
 export default function AvatarSettings({selectedAvatar, avatarDataDispatch, eventBus}: AvatarSettingsProps) {
 
     const customFetch = useCustomFetch();
+    const { deleteModal } = useContext(ModalContext);
     const {register, reset, formState: {errors, isDirty}, handleSubmit, setValue} = useForm({resolver: zodResolver(avatarSchema)});
     const navigate = useNavigate();
 
@@ -99,7 +101,7 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
             <FormControlBar>
                 <FormInput type={InputType.Submit} disabled={!isDirty} />
                 <FormInput type={InputType.Button} value="Reset" disabled={!isDirty} onClick={() => reset()} />
-                <FormInput type={InputType.Button} value="Delete" onClick={() => onDelete(selectedAvatar)} />
+                <FormInput type={InputType.Button} value="Delete" onClick={() => deleteModal('avatar', () => onDelete(selectedAvatar))} />
             </FormControlBar>
         </form>
     </ContentBox>);

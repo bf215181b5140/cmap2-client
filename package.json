@@ -22,7 +22,6 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/electron": "^1.6.10",
     "@types/node": "^20.10.5",
     "@types/node-osc": "^6.0.0",
     "@types/react": "^18.0.26",
