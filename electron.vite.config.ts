@@ -28,7 +28,7 @@ export default defineConfig({
     renderer: {
         root: 'src/ui',
         build: {
-            outDir: '../../build/ui',
+            outDir: './build/ui',
             rollupOptions: {
                 input: 'src/ui/index.html'
             },
