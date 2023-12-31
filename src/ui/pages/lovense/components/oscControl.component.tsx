@@ -2,12 +2,13 @@ import { Toy } from 'lovense';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { ToyCommandOscMessageForm, ToyCommandOscMessageFormSchema } from '../../../../shared/lovense';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { FieldOption, InputType, ValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../shared/components/form/formTable.component';
 import FormInput from '../../../shared/components/form/formInput.component';
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
+import { ModalContext } from '../../../app/mainWindow/mainWindow.componenet';
 
 interface ToyControlProps {
     toyList: Toy[] | undefined;
@@ -15,6 +16,7 @@ interface ToyControlProps {
 
 export default function OscControl({ toyList }: ToyControlProps) {
 
+    const { deleteModal } = useContext(ModalContext);
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ToyCommandOscMessageForm>({
         defaultValues: { toyCommandOscMessages: [] }, resolver: zodResolver(ToyCommandOscMessageFormSchema)
     });
@@ -74,7 +76,7 @@ export default function OscControl({ toyList }: ToyControlProps) {
                                        options={valueTypeOptions()} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => remove(index)} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => deleteModal('setting', () => remove(index))} />
                         </td>
                     </tr>
                 ))}

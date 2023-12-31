@@ -5,9 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import FormInput from '../../../shared/components/form/formInput.component';
 import { FormTableStyled } from '../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ToyActionType, ToyCommandParameterForm, ToyCommandParameterFormSchema } from '../../../../shared/lovense';
 import { Toy } from 'lovense';
+import { ModalContext } from '../../../app/mainWindow/mainWindow.componenet';
 
 interface ToyControlProps {
     toyList: Toy[] | undefined;
@@ -15,6 +16,7 @@ interface ToyControlProps {
 
 export default function ToyControl({ toyList }: ToyControlProps) {
 
+    const { deleteModal } = useContext(ModalContext);
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ToyCommandParameterForm>({
         defaultValues: { toyCommandParameters: [] }, resolver: zodResolver(ToyCommandParameterFormSchema)
     });
@@ -79,7 +81,7 @@ export default function ToyControl({ toyList }: ToyControlProps) {
                             <FormInput type={InputType.Text} name={`toyCommandParameters.${index}.toy`} register={register} errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => remove(index)} />
+                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => deleteModal('setting', () => remove(index))} />
                         </td>
                     </tr>
                 ))}
