@@ -26,4 +26,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     getToyCommandParameters: () => ipcRenderer.invoke('getToyCommandParameters').then((toyCommandParameters: ToyCommandParameter[]) => toyCommandParameters),
     setToyCommandOscMessages: (toyCommandOscMessages: ToyCommandOscMessage[]) => ipcRenderer.send('setToyCommandOscMessages', toyCommandOscMessages),
     getToyCommandOscMessages: () => ipcRenderer.invoke('getToyCommandOscMessages').then((toyCommandOscMessages: ToyCommandOscMessage[]) => toyCommandOscMessages),
+    // Util
+    getFingerprint: () => ipcRenderer.invoke('getFingerprint').then((fingerprint: string) => fingerprint),
 });

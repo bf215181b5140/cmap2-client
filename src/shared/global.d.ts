@@ -26,6 +26,8 @@ export interface IElectronAPI {
     getToyCommandParameters: () => Promise<ToyCommandParameter[]>,
     setToyCommandOscMessages: (toyCommandParameters: ToyCommandOscMessage[]) => void,
     getToyCommandOscMessages: () => Promise<ToyCommandOscMessage[]>,
+    // Util
+    getFingerprint: () => Promise<string>,
 }
 
 declare global {

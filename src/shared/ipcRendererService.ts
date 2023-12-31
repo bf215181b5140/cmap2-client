@@ -6,6 +6,7 @@ import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { OscController } from '../electron/osc/osc.controller';
 import { ToyCommandOscMessage, ToyCommandParameter } from './lovense';
+import { getFingerprint } from '../electron/util/fingerprint';
 
 export class IpcRendererService {
 
@@ -83,5 +84,9 @@ export class IpcRendererService {
             console.log('IpcRendererService recieved toyCommandOscMessages');
             StoreService.setToyCommandOscMessages(toyCommandOscMessages);
         });
+
+        // Util
+        ipcMain.handle('getFingerprint', async () => await getFingerprint());
+
     }
 }
