@@ -1,20 +1,20 @@
-import { io, Socket } from 'socket.io-client';
+import io from 'socket.io-client';
 import { OscController } from '../osc/osc.controller';
 import { Message } from 'node-osc';
 import { SocketConnection, SocketConnectionType } from '../../shared/SocketConnection';
 import { VrcParameter } from 'cmap2-shared';
 import { ClientCredentials } from '../../shared/classes';
-import { ClientStoreService } from '../util/clientStore.service';
+import { StoreService } from '../store/store.service';
 import { mainWindow } from '../electron';
 import { URL } from '../../shared/const';
 
 export class ClientSocketService {
 
-    static socket: Socket;
+    static socket: SocketIOClient.Socket;
     static connectionStatus: SocketConnection = new SocketConnection();
 
     static connect() {
-        const clientCredentials = ClientStoreService.getClientCredentials();
+        const clientCredentials = StoreService.getClientCredentials();
         if (!clientCredentials) return;
 
         if (this.socket) this.socket.close();
@@ -22,7 +22,8 @@ export class ClientSocketService {
             query: {
                 username: clientCredentials.username,
                 password: clientCredentials.password
-            }
+            },
+            transports: ["websocket"]
         });
 
         this.connectionStatus.setConnection(SocketConnectionType.MESSAGE, 'Connecting...', '');

@@ -4,13 +4,16 @@ import { OscController } from './osc/osc.controller';
 import { ClientSocketService } from './webSocket/clientSocket.service';
 import { IpcRendererService } from '../shared/ipcRendererService';
 import { testing } from './testing/testing.service';
-import { ClientStoreService } from './util/clientStore.service';
+import { StoreService } from './store/store.service';
+import LovenseController from './lovense/lovense.controller';
+import LovenseService from './lovense/lovense.service';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
     process.exit(0);
 }
 
+// todo make a service for this
 export let mainWindow: BrowserWindow | null;
 
 function createWindow(): BrowserWindow {
@@ -45,11 +48,12 @@ app.whenReady().then(() => {
 
     IpcRendererService.init();
     OscController.start();
+    new LovenseController();
 
     // testing service
     // testing();
 
-    const applicationSettings = ClientStoreService.getApplicationSettings();
+    const applicationSettings = StoreService.getApplicationSettings();
     if (applicationSettings && applicationSettings.autoLogin === true) ClientSocketService.connect();
     if (!applicationSettings || applicationSettings.startMinimized !== true) mainWindow = createWindow();
 

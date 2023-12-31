@@ -1,9 +1,13 @@
-import { Argument, ArgumentType, Client, Message, MessageLike, Server } from 'node-osc';
+import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { ClientSocketService } from '../webSocket/clientSocket.service';
-import { ClientStoreService } from '../util/clientStore.service';
+import { StoreService } from '../store/store.service';
 import { OscSettings } from '../../shared/classes';
-import { VrcParameter } from 'cmap2-shared';
+import { ValueType, VrcParameter } from 'cmap2-shared';
 import { mainWindow } from '../electron';
+import { BridgeService } from '../bridge/bridge.service';
+import { ToyCommand } from 'lovense';
+import { ToyActionType, ToyCommandOscMessage } from '../../shared/lovense';
+import { ipcMain, IpcMainEvent } from 'electron';
 
 export class OscController {
 
@@ -24,12 +28,14 @@ export class OscController {
                                                  '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
                                                  '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude']);
 
+    static toyCommandOscMessages: Map<string, ToyCommandOscMessage[]> = new Map<string, ToyCommandOscMessage[]>();
+
     static start() {
 
         if (this.oscServer) this.oscServer.close();
         if (this.oscClient) this.oscClient.close();
 
-        const storeSettings = ClientStoreService.getApplicationSettings();
+        const storeSettings = StoreService.getApplicationSettings();
         const oscSettings = new OscSettings();
 
         if (storeSettings) {
@@ -64,12 +70,67 @@ export class OscController {
                     ClientSocketService.sendParameter('avatar', {path: vrcParameter.path, value: vrcParameter.value});
                 } else {
                     ClientSocketService.sendParameter('parameter', vrcParameter);
+                    BridgeService.emit('vrcParameter', vrcParameter);
                     if (this.forwardOscToRenderer && mainWindow && !mainWindow.isDestroyed()) {
                         mainWindow.webContents.send('vrcParameter', vrcParameter);
                     }
 
                 }
             }
+        });
+
+        this.setToyCommandOscMessages(StoreService.getToyCommandOscMessages());
+
+        ipcMain.on('setToyCommandOscMessages', (_: IpcMainEvent, toyCommandOscMessages: ToyCommandOscMessage[]) => {
+            this.setToyCommandOscMessages(toyCommandOscMessages);
+        });
+
+        BridgeService.on('toyCommand', (toyCommand: ToyCommand) => this.checkToyCommand(toyCommand));
+    }
+
+    private static setToyCommandOscMessages(toyCommandOscMessages: ToyCommandOscMessage[]): void {
+        this.toyCommandOscMessages = new Map<string, ToyCommandOscMessage[]>();
+        toyCommandOscMessages.forEach(toyCommandOscMessage => {
+            if (this.toyCommandOscMessages.has(toyCommandOscMessage.toy)) {
+                this.toyCommandOscMessages.get(toyCommandOscMessage.toy)?.push(toyCommandOscMessage);
+            } else {
+                this.toyCommandOscMessages.set(toyCommandOscMessage.toy, [toyCommandOscMessage]);
+            }
+        });
+    }
+
+    static checkToyCommand(toyCommand: ToyCommand) {
+        const toyCommandOscMessages = this.toyCommandOscMessages.get(toyCommand.toy ?? '');
+        toyCommandOscMessages?.forEach(toyCommandOscMessage => {
+
+            const actionValue = Number.parseInt(toyCommand.action.split(':').at(1) ?? '0');
+
+            let value: number | boolean;
+            switch (toyCommandOscMessage.valueType) {
+                case ValueType.Int:
+                    value = actionValue;
+                    break;
+                case ValueType.Float:
+                    const action = toyCommand.action.split(':').at(0);
+                    switch (action) {
+                        case ToyActionType.Stop:
+                            value = 0;
+                            break;
+                        case ToyActionType.Pump:
+                        case ToyActionType.Depth:
+                            value = actionValue / 3;
+                            break;
+                        default:
+                            value = actionValue / 20;
+                            break;
+                    }
+                    break;
+                case ValueType.Bool:
+                default:
+                    value = actionValue !== 0;
+                    break;
+            }
+            this.send({path: toyCommandOscMessage.parameterPath, value: value});
         });
     }
 
@@ -95,7 +156,7 @@ export class OscController {
         if (typeof arg === 'boolean' || typeof arg === 'number' || typeof arg === 'string') {
             return arg;
         } else {
-            return arg.value
+            return arg.value;
         }
     }
 }

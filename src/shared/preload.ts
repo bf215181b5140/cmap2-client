@@ -2,6 +2,8 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
+import { ToyCommand } from 'lovense';
+import { LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 
 contextBridge.exposeInMainWorld('electronAPI', {
     getClientCredentials: () => ipcRenderer.invoke('getClientCredentials').then(result => result),
@@ -14,4 +16,14 @@ contextBridge.exposeInMainWorld('electronAPI', {
     setApplicationSettings: (applicationSettings: ApplicationSettings) => ipcRenderer.send('setApplicationSettings', applicationSettings),
     forwardOscToRenderer: (forward: boolean) => ipcRenderer.send('forwardOscToRenderer', forward),
     vrcParameter: (callback: (event: Electron.IpcRendererEvent, message: VrcParameter) => void) => ipcRenderer.on('vrcParameter', callback),
+    // Lovense
+    getLovenseStatus: () => ipcRenderer.send('getLovenseStatus'),
+    lovenseStatus: (callback: (event: Electron.IpcRendererEvent, lovenseStatus: LovenseStatus) => void) => ipcRenderer.on('lovenseStatus', callback),
+    lovenseConnect: () => ipcRenderer.send('lovenseConnect'),
+    lovenseDisconnect: () => ipcRenderer.send('lovenseDisconnect'),
+    sendLovenseToyCommand: (toyCommand: ToyCommand) => ipcRenderer.send('sendLovenseToyCommand', toyCommand),
+    setToyCommandParameters: (toyCommandParameters: ToyCommandParameter[]) => ipcRenderer.send('setToyCommandParameters', toyCommandParameters),
+    getToyCommandParameters: () => ipcRenderer.invoke('getToyCommandParameters').then((toyCommandParameters: ToyCommandParameter[]) => toyCommandParameters),
+    setToyCommandOscMessages: (toyCommandOscMessages: ToyCommandOscMessage[]) => ipcRenderer.send('setToyCommandOscMessages', toyCommandOscMessages),
+    getToyCommandOscMessages: () => ipcRenderer.invoke('getToyCommandOscMessages').then((toyCommandOscMessages: ToyCommandOscMessage[]) => toyCommandOscMessages),
 });

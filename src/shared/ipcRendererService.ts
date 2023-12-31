@@ -1,31 +1,32 @@
 import { app, ipcMain, IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 import { ClientSocketService } from '../electron/webSocket/clientSocket.service';
-import { ClientStoreService } from '../electron/util/clientStore.service';
+import { StoreService } from '../electron/store/store.service';
 import { mainWindow } from '../electron/electron';
 import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { OscController } from '../electron/osc/osc.controller';
+import { ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 
 export class IpcRendererService {
 
     static init() {
 
         ipcMain.handle('getClientCredentials', async () => {
-            return ClientStoreService.getClientCredentials();
+            return StoreService.getClientCredentials();
         });
 
         ipcMain.on('setClientCredentials', (event: IpcMainEvent, clientCredentials: ClientCredentials) => {
-            ClientStoreService.setClientCredentials(clientCredentials);
+            StoreService.setClientCredentials(clientCredentials);
             ClientSocketService.connect();
         });
 
         ipcMain.handle('getApplicationSettings', async () => {
-            return ClientStoreService.getApplicationSettings();
+            return StoreService.getApplicationSettings();
         });
 
         ipcMain.on('setApplicationSettings', (event: IpcMainEvent, appSettings: ApplicationSettings) => {
-            const oldSettings = ClientStoreService.getApplicationSettings();
-            ClientStoreService.setApplicationSettings(appSettings);
+            const oldSettings = StoreService.getApplicationSettings();
+            StoreService.setApplicationSettings(appSettings);
             if (oldSettings) {
                 if (oldSettings.oscIp !== appSettings.oscIp ||
                     oldSettings.oscInPort !== appSettings.oscInPort ||
@@ -63,5 +64,24 @@ export class IpcRendererService {
             OscController.forwardOscToRenderer = forward;
         });
 
+        ipcMain.handle('getToyCommandParameters', async () => {
+            console.log('IpcRendererService recieved request for toyCommandParameters');
+            return StoreService.getToyCommandParameters();
+        });
+
+        ipcMain.on('setToyCommandParameters', (_: IpcMainEvent, toyCommandParameters: ToyCommandParameter[]) => {
+            console.log('IpcRendererService recieved toyCommandParameters');
+            StoreService.setToyCommandParameters(toyCommandParameters);
+        });
+
+        ipcMain.handle('getToyCommandOscMessages', async () => {
+            console.log('IpcRendererService recieved request for toyCommandOscMessages');
+            return StoreService.getToyCommandOscMessages();
+        });
+
+        ipcMain.on('setToyCommandOscMessages', (_: IpcMainEvent, toyCommandOscMessages: ToyCommandOscMessage[]) => {
+            console.log('IpcRendererService recieved toyCommandOscMessages');
+            StoreService.setToyCommandOscMessages(toyCommandOscMessages);
+        });
     }
 }
