@@ -2,6 +2,11 @@ import { DeviceInformation, QRCodeData } from 'lovense';
 import { z } from 'zod';
 import { ValueType } from 'cmap2-shared';
 
+export class LovenseSettings {
+    sendConnectionOscMessage: boolean = false;
+    connectionOscMessagePath: string = '';
+}
+
 export class LovenseStatus {
     socketConnection: boolean = false;
     status: number | null = null;
@@ -20,6 +25,11 @@ export enum ToyActionType {
     Depth = 'Depth',
     Stop = 'Stop',
 }
+
+export const LovenseSettingsSchema = z.object({
+    sendConnectionOscMessage: z.boolean(),
+    connectionOscMessagePath: z.string(),
+});
 
 export const ToyCommandParameterSchema = z.object({
     parameterPath: z.string(),

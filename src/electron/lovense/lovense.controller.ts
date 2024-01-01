@@ -2,7 +2,7 @@ import { ipcMain, IpcMainEvent } from 'electron';
 import { mainWindow } from '../electron';
 import { DeviceInformation, QRCodeData, ToyCommand } from 'lovense';
 import { VrcParameter } from 'cmap2-shared';
-import { LovenseStatus, ToyActionType, ToyCommandParameter } from '../../shared/lovense';
+import { LovenseSettings, LovenseStatus, ToyActionType, ToyCommandParameter } from '../../shared/lovense';
 import { BridgeService } from '../bridge/bridge.service';
 import LovenseService from './lovense.service';
 import { StoreService } from '../store/store.service';
@@ -15,6 +15,7 @@ import { StoreService } from '../store/store.service';
 //                                     '/avatar/parameters/OGB/Pen/Penis/FrotOthers'
 
 export default class LovenseController extends LovenseService {
+    private lovenseSettings: LovenseSettings = StoreService.getLovenseSettings();
     private lovenseStatus: LovenseStatus = new LovenseStatus();
     private toyCommandParameters: Map<string, ToyCommandParameter> = new Map<string, ToyCommandParameter>();
     private toyCommandHistory: Map<string, number> = new Map<string, number>();
@@ -24,6 +25,7 @@ export default class LovenseController extends LovenseService {
 
         this.setToyCommandParameters(StoreService.getToyCommandParameters());
 
+        ipcMain.on('setLovenseSettings', (_: IpcMainEvent, lovenseSettings: LovenseSettings) => this.lovenseSettings = lovenseSettings);
         ipcMain.on('getLovenseStatus', () => this.updateLovenseStatus());
         ipcMain.on('sendLovenseToyCommand', (_: IpcMainEvent, toyCommand: ToyCommand) => this.sendToyCommand(toyCommand));
         ipcMain.on('lovenseConnect', () => this.connect());
@@ -115,6 +117,14 @@ export default class LovenseController extends LovenseService {
         // todo this is ugly, fix
         if (mainWindow && !mainWindow.isDestroyed()) {
             mainWindow.webContents.send('lovenseStatus', this.lovenseStatus);
+        }
+
+        if (this.lovenseSettings.sendConnectionOscMessage) {
+            const vrcParameter: VrcParameter = {
+                path: this.lovenseSettings.connectionOscMessagePath,
+                value: this.lovenseStatus.status === 1
+            }
+            BridgeService.emit('sendOscMessage', vrcParameter);
         }
     }
 

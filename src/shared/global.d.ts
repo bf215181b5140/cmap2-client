@@ -3,7 +3,7 @@ import { SocketConnection } from './SocketConnection';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
-import { LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
+import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 
 export interface IElectronAPI {
     getClientCredentials: () => Promise<ClientCredentials>,
@@ -17,6 +17,8 @@ export interface IElectronAPI {
     forwardOscToRenderer: (forward: boolean) => void,
     vrcParameter: (callback: (event: Electron.IpcRendererEvent, message: VrcParameter) => void) => void,
     // Lovense
+    getLovenseSettings: () => Promise<LovenseSettings>,
+    setLovenseSettings: (lovenseSettings: LovenseSettings) => void,
     getLovenseStatus: () => void,
     lovenseStatus: (callback: (event: Electron.IpcRendererEvent, lovenseStatus: LovenseStatus) => void) => void,
     lovenseConnect: () => void,

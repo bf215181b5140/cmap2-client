@@ -5,7 +5,7 @@ import { mainWindow } from '../electron/electron';
 import { WindowState } from './enums';
 import { ApplicationSettings, ClientCredentials } from './classes';
 import { OscController } from '../electron/osc/osc.controller';
-import { ToyCommandOscMessage, ToyCommandParameter } from './lovense';
+import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 import { getFingerprint } from '../electron/util/fingerprint';
 
 export class IpcRendererService {
@@ -65,23 +65,28 @@ export class IpcRendererService {
             OscController.forwardOscToRenderer = forward;
         });
 
+        // Lovense
+        ipcMain.handle('getLovenseSettings', async () => {
+            return StoreService.getLovenseSettings();
+        });
+
+        ipcMain.on('setLovenseSettings', (_: IpcMainEvent, lovenseSettings: LovenseSettings) => {
+            StoreService.setLovenseSettings(lovenseSettings);
+        });
+
         ipcMain.handle('getToyCommandParameters', async () => {
-            console.log('IpcRendererService recieved request for toyCommandParameters');
             return StoreService.getToyCommandParameters();
         });
 
         ipcMain.on('setToyCommandParameters', (_: IpcMainEvent, toyCommandParameters: ToyCommandParameter[]) => {
-            console.log('IpcRendererService recieved toyCommandParameters');
             StoreService.setToyCommandParameters(toyCommandParameters);
         });
 
         ipcMain.handle('getToyCommandOscMessages', async () => {
-            console.log('IpcRendererService recieved request for toyCommandOscMessages');
             return StoreService.getToyCommandOscMessages();
         });
 
         ipcMain.on('setToyCommandOscMessages', (_: IpcMainEvent, toyCommandOscMessages: ToyCommandOscMessage[]) => {
-            console.log('IpcRendererService recieved toyCommandOscMessages');
             StoreService.setToyCommandOscMessages(toyCommandOscMessages);
         });
 

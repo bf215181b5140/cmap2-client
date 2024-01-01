@@ -82,8 +82,6 @@ export function LovenseToy({toy}: LovenseToyProps) {
 }
 
 const LovenseToyStyled = styled.div<{ connected: boolean }>`
-  flex-grow: 0;
-  flex-basis: calc(50% - 10px);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

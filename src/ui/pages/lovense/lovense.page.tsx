@@ -9,6 +9,7 @@ import Icon from 'cmap2-shared/src/react/components/icon.component';
 import colors from 'cmap2-shared/src/colors.json';
 import ToyControl from './components/toyControl.component';
 import OscControl from './components/oscControl.component';
+import Settings from './components/lovenseSettings.component';
 
 export default function LovensePage() {
 
@@ -30,12 +31,14 @@ export default function LovensePage() {
         window.electronAPI.lovenseDisconnect();
     }
 
-    function statusIcon(status: boolean) {
-        if (status) {
-            return <span style={{fontSize: '1.5em'}}><Icon icon="ri-check-fill" /></span>;
-        } else {
-            return <span style={{fontSize: '1.5em'}}><Icon icon="ri-close-fill" color="red" /></span>;
+    function connectionMessage() {
+        if (lovenseStatus.socketConnection) {
+            if (lovenseStatus.status === 1) {
+                return <p><Icon icon="ri-wifi-fill" /> Connected</p>;
+            }
+            return <p><Icon icon="ri-wifi-fill" color="orange" /> Connecting...</p>;
         }
+        return <p><Icon icon="ri-wifi-off-fill" color="red" /> Not connected</p>;
     }
 
     return (<Content flexDirection="column">
@@ -43,9 +46,7 @@ export default function LovensePage() {
             <ConnectionFlexbox>
                 <Connection>
                     <h2>Lovense connection</h2>
-                    <p>Socket connection: {statusIcon(lovenseStatus.socketConnection)}</p>
-                    <p>Connection to lovense: {statusIcon(!!lovenseStatus.status)}</p>
-                    <p>Connection to device: {statusIcon(!!lovenseStatus.deviceInformation?.online)}</p>
+                    {connectionMessage()}
                     {!lovenseStatus.socketConnection && <ActionButton action={connect}>Connect</ActionButton>}
                     {lovenseStatus.socketConnection && <ActionButton action={disconnect}>Disconnect</ActionButton>}
                 </Connection>
@@ -58,11 +59,14 @@ export default function LovensePage() {
                     </>}
                 </QRCode>
             </ConnectionFlexbox>
-
-            {lovenseStatus.deviceInformation?.toyList && <ToysStyled>
-                {lovenseStatus.deviceInformation.toyList.map((toy: Toy) => (<LovenseToy toy={toy} key={toy.id} />))}
-            </ToysStyled>}
         </ContentBox>
+        {lovenseStatus.deviceInformation?.toyList &&
+            <ContentBox title='Toys'>
+                <ToysStyled>
+                    {lovenseStatus.deviceInformation.toyList.map((toy: Toy) => (<LovenseToy toy={toy} key={toy.id} />))}
+                </ToysStyled>
+            </ContentBox>}
+        <Settings />
         <ToyControl toyList={lovenseStatus.deviceInformation?.toyList} />
         <OscControl toyList={lovenseStatus.deviceInformation?.toyList} />
     </Content>);
@@ -76,6 +80,10 @@ const ConnectionFlexbox = styled.div`
 
 const Connection = styled.div`
   flex-basis: 100%;
+  
+  i {
+    font-size: 20px;
+  }
 `;
 
 const QRCode = styled.div`
@@ -104,10 +112,11 @@ const QRCodeImageOverlay = styled.div`
     left: 10%;
     right: 10%;
   }
-  
+
   :hover > p {
     display: block;
   }
+
   :hover > img {
     transition: 0.1s linear;
     filter: opacity(0.15);
@@ -115,8 +124,7 @@ const QRCodeImageOverlay = styled.div`
 `;
 
 const ToysStyled = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  gap: 15px;
-  margin: 15px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* ADJUSTMENT */
+  grid-gap: 10px;
 `;

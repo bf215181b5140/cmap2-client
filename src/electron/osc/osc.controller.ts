@@ -86,6 +86,7 @@ export class OscController {
         });
 
         BridgeService.on('toyCommand', (toyCommand: ToyCommand) => this.checkToyCommand(toyCommand));
+        BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
     }
 
     private static setToyCommandOscMessages(toyCommandOscMessages: ToyCommandOscMessage[]): void {

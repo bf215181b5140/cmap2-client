@@ -27,7 +27,6 @@ export default function OscControl({ toyList }: ToyControlProps) {
 
     useEffect(() => {
         window.electronAPI.getToyCommandOscMessages().then(toyCommandOscMessages => {
-            console.log('getToyCommandOscMessages', toyCommandOscMessages);
             reset({ toyCommandOscMessages }, {keepDirty: false});
         })
     }, [])
@@ -42,13 +41,14 @@ export default function OscControl({ toyList }: ToyControlProps) {
 
     function onsubmit(formData: ToyCommandOscMessageForm) {
         window.electronAPI.setToyCommandOscMessages(formData.toyCommandOscMessages);
+        reset(formData, {keepDirty: false});
     }
 
     function valueTypeOptions(): FieldOption[] {
         return Object.keys(ValueType).map((key: string) => ({key: ValueType[key as keyof typeof ValueType], value: ValueType[key as keyof typeof ValueType]}));
     }
 
-    return (<ContentBox title="Osc control">
+    return (<ContentBox title="Osc control" show={false}>
         <p>Send osc messages to VRChat based on what toy is being used.</p>
         <form onSubmit={handleSubmit(onsubmit)}>
             <FormTableStyled>

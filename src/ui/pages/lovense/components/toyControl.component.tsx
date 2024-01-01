@@ -27,7 +27,6 @@ export default function ToyControl({ toyList }: ToyControlProps) {
 
     useEffect(() => {
       window.electronAPI.getToyCommandParameters().then(toyCommandParameters => {
-          console.log('getToyCommandParameters', toyCommandParameters);
           reset({ toyCommandParameters }, {keepDirty: false});
       })
     }, [])
@@ -43,13 +42,14 @@ export default function ToyControl({ toyList }: ToyControlProps) {
 
     function onsubmit(formData: ToyCommandParameterForm) {
         window.electronAPI.setToyCommandParameters(formData.toyCommandParameters);
+        reset(formData, {keepDirty: false});
     }
 
     function ToyActionTypeOptions(): FieldOption[] {
         return Object.keys(ToyActionType).map((key: string) => ({key: ToyActionType[key as keyof typeof ToyActionType], value: ToyActionType[key as keyof typeof ToyActionType]}));
     }
 
-    return (<ContentBox title="Toy control">
+    return (<ContentBox title="Toy control" show={false}>
         <p>Control Lovense toys based on your avatar parameters VRChat sends.</p>
         <form onSubmit={handleSubmit(onsubmit)}>
             <FormTableStyled>
