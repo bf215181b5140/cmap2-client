@@ -33,11 +33,11 @@ export default function ConnectForm({socketConnection, setConnectForm}: ConnectF
     function onSubmit(formData: any) {
         const newCredentials = {...clientCredentials, ...formData};
         setClientCredentials(newCredentials);
-        window.electronAPI.setClientCredentials(newCredentials);
+        window.electronAPI.send('setClientCredentials', newCredentials);
     }
 
     function onDisconnect() {
-        window.electronAPI.disconnectSocket();
+        window.electronAPI.send('disconnectSocket');
     }
 
     return (<><h1>{socketConnection.message}</h1>

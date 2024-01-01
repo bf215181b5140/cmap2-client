@@ -6,13 +6,15 @@ export default function useSocketConnection() {
     const [socketConnectionStatus, setSocketConnectionStatus] = useState<SocketConnection>(new SocketConnection());
 
     useEffect(() => {
-        window.electronAPI.getConnectionStatus().then(result => {
+        window.electronAPI.get('getConnectionStatus').then(result => {
             setSocketConnectionStatus(result);
         })
 
-        window.electronAPI.updateConnectionStatus((event: any, connectionStatus: SocketConnection) => {
-            setSocketConnectionStatus(connectionStatus);
-        });
+        const removeListener = window.electronAPI.receive('updateConnectionStatus', (connectionStatus: SocketConnection) => setSocketConnectionStatus(connectionStatus));
+
+        return () => {
+            if (removeListener) removeListener();
+        }
     }, []);
 
     return socketConnectionStatus;

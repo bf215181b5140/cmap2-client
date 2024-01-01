@@ -26,7 +26,7 @@ export default function ToyControl({ toyList }: ToyControlProps) {
     const watchParameters = watch('toyCommandParameters');
 
     useEffect(() => {
-      window.electronAPI.getToyCommandParameters().then(toyCommandParameters => {
+      window.electronAPI.get('getToyCommandParameters').then(toyCommandParameters => {
           reset({ toyCommandParameters }, {keepDirty: false});
       })
     }, [])
@@ -41,7 +41,7 @@ export default function ToyControl({ toyList }: ToyControlProps) {
     }
 
     function onsubmit(formData: ToyCommandParameterForm) {
-        window.electronAPI.setToyCommandParameters(formData.toyCommandParameters);
+        window.electronAPI.send('setToyCommandParameters', formData.toyCommandParameters);
         reset(formData, {keepDirty: false});
     }
 

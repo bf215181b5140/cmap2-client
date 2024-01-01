@@ -13,11 +13,11 @@ export default function Settings() {
     const formWatch = watch();
 
     useEffect(() => {
-        window.electronAPI.getLovenseSettings().then(lovenseSettings => reset(lovenseSettings, {keepDirty: false}));
+        window.electronAPI.get('getLovenseSettings').then(lovenseSettings => reset(lovenseSettings, {keepDirty: false}));
     }, []);
 
     function onSubmit(formData: LovenseSettings) {
-        window.electronAPI.setLovenseSettings(formData);
+        window.electronAPI.send('setLovenseSettings', formData);
         reset(formData, {keepDirty: false});
     }
 

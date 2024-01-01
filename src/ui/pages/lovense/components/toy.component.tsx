@@ -1,7 +1,4 @@
 import { Toy, ToyCommand } from 'lovense';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { z } from 'zod';
 import styled, { css } from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import gushImage from '../icons/lovenseToyGush.png';
@@ -14,18 +11,6 @@ interface LovenseToyProps {
 
 export function LovenseToy({toy}: LovenseToyProps) {
 
-    const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm({
-        resolver: zodResolver(z.object({
-            action: z.string(),
-            timeSec: z.number()
-        }))
-    });
-
-    function onSubmit(formData: any) {
-        const toyCommand: ToyCommand = {...formData, command: 'Function', toy: toy.id, apiVer: 1};
-        window.electronAPI.sendLovenseToyCommand(toyCommand);
-    }
-
     function sendTestCommand() {
         if (!toy.connected) return;
         const toyCommand: ToyCommand = {
@@ -35,7 +20,7 @@ export function LovenseToy({toy}: LovenseToyProps) {
             toy: toy.id,
             apiVer: 1
         };
-        window.electronAPI.sendLovenseToyCommand(toyCommand);
+        window.electronAPI.send('sendLovenseToyCommand', toyCommand);
     }
 
     function toyName() {

@@ -12,7 +12,7 @@ export default function useClientCredentials() {
     const [clientCredentials, setClientCredentials] = useState<ClientCredentials>(new ClientCredentials());
 
     useEffect(() => {
-        window.electronAPI.getClientCredentials()
+        window.electronAPI.get('getClientCredentials')
             .then(result => {
                 if (result != null) {
                     console.log('useClientCredentials hook recieved credentials: ', result);
@@ -23,7 +23,7 @@ export default function useClientCredentials() {
 
     const setClientToken = (token: string) => {
         setClientCredentials({...clientCredentials, apiToken: token});
-        window.electronAPI.setClientCredentials({...clientCredentials, apiToken: token});
+        window.electronAPI.send('setClientCredentials', {...clientCredentials, apiToken: token});
     };
 
     return {clientCredentials, setClientToken, setClientCredentials};

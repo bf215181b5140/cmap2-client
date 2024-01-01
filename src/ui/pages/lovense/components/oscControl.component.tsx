@@ -26,7 +26,7 @@ export default function OscControl({ toyList }: ToyControlProps) {
     const watchParameters = watch('toyCommandOscMessages');
 
     useEffect(() => {
-        window.electronAPI.getToyCommandOscMessages().then(toyCommandOscMessages => {
+        window.electronAPI.get('getToyCommandOscMessages').then(toyCommandOscMessages => {
             reset({ toyCommandOscMessages }, {keepDirty: false});
         })
     }, [])
@@ -40,7 +40,7 @@ export default function OscControl({ toyList }: ToyControlProps) {
     }
 
     function onsubmit(formData: ToyCommandOscMessageForm) {
-        window.electronAPI.setToyCommandOscMessages(formData.toyCommandOscMessages);
+        window.electronAPI.send('setToyCommandOscMessages', formData.toyCommandOscMessages);
         reset(formData, {keepDirty: false});
     }
 

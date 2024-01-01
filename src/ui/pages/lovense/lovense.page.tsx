@@ -16,19 +16,21 @@ export default function LovensePage() {
     const [lovenseStatus, setLovenseStatus] = useState<LovenseStatus>(new LovenseStatus());
 
     useEffect(() => {
-        window.electronAPI.getLovenseStatus();
+        window.electronAPI.send('getLovenseStatus');
 
-        window.electronAPI.lovenseStatus((event: Electron.IpcRendererEvent, lovenseStatus: LovenseStatus) => {
-            setLovenseStatus(lovenseStatus);
-        });
+        const removeListener = window.electronAPI.receive('lovenseStatus', (lovenseStatus: LovenseStatus) => setLovenseStatus(lovenseStatus));
+
+        return () => {
+            if (removeListener) removeListener();
+        }
     }, []);
 
     function connect() {
-        window.electronAPI.lovenseConnect();
+        window.electronAPI.send('lovenseConnect');
     }
 
     function disconnect() {
-        window.electronAPI.lovenseDisconnect();
+        window.electronAPI.send('lovenseDisconnect');
     }
 
     function connectionMessage() {

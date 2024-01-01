@@ -23,7 +23,7 @@ export default function SettingsPage() {
     });
 
     useEffect(() => {
-        window.electronAPI.getApplicationSettings().then(applicationSettings => {
+        window.electronAPI.get('getApplicationSettings').then(applicationSettings => {
             if (applicationSettings) {
                 reset(applicationSettings);
             }
@@ -32,7 +32,7 @@ export default function SettingsPage() {
 
     function onSubmit(formData: any) {
         if (formData.oscIp === '') formData.oscIp = undefined;
-        window.electronAPI.setApplicationSettings(formData);
+        window.electronAPI.send('setApplicationSettings', formData);
     }
 
     return (<Content>

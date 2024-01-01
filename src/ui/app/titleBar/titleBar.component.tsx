@@ -7,7 +7,7 @@ import colors from 'cmap2-shared/src/colors.json';
 export default function TitleBar(props: any) {
 
     function setWindowState(state: WindowState) {
-        window.electronAPI.setWindowState(state);
+        window.electronAPI.send('setWindowState', state);
     }
 
     return (<TitleBarStyled>
