@@ -6,6 +6,7 @@ import { LovenseSettings, LovenseStatus, ToyActionType, ToyCommandParameter } fr
 import { BridgeService } from '../bridge/bridge.service';
 import LovenseService from './lovense.service';
 import { StoreService } from '../store/store.service';
+import TypedIpcMain from '../ipc/typedIpcMain';
 
 // '/avatar/parameters/LovenseContact',
 //                                     '/avatar/parameters/OGB/Pen/Penis/TouchOthers',
@@ -25,14 +26,12 @@ export default class LovenseController extends LovenseService {
 
         this.setToyCommandParameters(StoreService.getToyCommandParameters());
 
-        ipcMain.on('setLovenseSettings', (_: IpcMainEvent, lovenseSettings: LovenseSettings) => this.lovenseSettings = lovenseSettings);
-        ipcMain.on('getLovenseStatus', () => this.updateLovenseStatus());
-        ipcMain.on('sendLovenseToyCommand', (_: IpcMainEvent, toyCommand: ToyCommand) => this.sendToyCommand(toyCommand));
-        ipcMain.on('lovenseConnect', () => this.connect());
-        ipcMain.on('lovenseDisconnect', () => this.disconnect());
-        ipcMain.on('setToyCommandParameters', (_: IpcMainEvent, toyCommandParameters: ToyCommandParameter[]) => {
-            this.setToyCommandParameters(toyCommandParameters);
-        });
+        TypedIpcMain.on('setLovenseSettings', (lovenseSettings: LovenseSettings) => this.lovenseSettings = lovenseSettings);
+        TypedIpcMain.on('getLovenseStatus', () => this.updateLovenseStatus());
+        TypedIpcMain.on('sendLovenseToyCommand', (toyCommand: ToyCommand) => this.sendToyCommand(toyCommand));
+        TypedIpcMain.on('lovenseConnect', () => this.connect());
+        TypedIpcMain.on('lovenseDisconnect', () => this.disconnect());
+        TypedIpcMain.on('setToyCommandParameters', (toyCommandParameters: ToyCommandParameter[]) => this.setToyCommandParameters(toyCommandParameters));
 
         BridgeService.on('vrcParameter', (vrcParameter: VrcParameter) => this.checkOscParameters(vrcParameter));
     }

@@ -8,6 +8,7 @@ import { BridgeService } from '../bridge/bridge.service';
 import { ToyCommand } from 'lovense';
 import { ToyActionType, ToyCommandOscMessage } from '../../shared/lovense';
 import { ipcMain, IpcMainEvent } from 'electron';
+import TypedIpcMain from '../ipc/typedIpcMain';
 
 export class OscController {
 
@@ -81,9 +82,7 @@ export class OscController {
 
         this.setToyCommandOscMessages(StoreService.getToyCommandOscMessages());
 
-        ipcMain.on('setToyCommandOscMessages', (_: IpcMainEvent, toyCommandOscMessages: ToyCommandOscMessage[]) => {
-            this.setToyCommandOscMessages(toyCommandOscMessages);
-        });
+        TypedIpcMain.on('setToyCommandOscMessages', (toyCommandOscMessages: ToyCommandOscMessage[]) => this.setToyCommandOscMessages(toyCommandOscMessages));
 
         BridgeService.on('toyCommand', (toyCommand: ToyCommand) => this.checkToyCommand(toyCommand));
         BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));

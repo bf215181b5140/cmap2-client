@@ -7,6 +7,7 @@ import { ClientCredentials } from '../../shared/classes';
 import { StoreService } from '../store/store.service';
 import { mainWindow } from '../electron';
 import { URL } from '../../shared/const';
+import TypedIpcMain from '../ipc/typedIpcMain';
 
 export class ClientSocketService {
 
@@ -74,6 +75,7 @@ export class ClientSocketService {
     }
 
     static updateConnectionStatus() {
-        if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
+        // if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
+        TypedIpcMain.emit('updateConnectionStatus', this.connectionStatus);
     }
 }

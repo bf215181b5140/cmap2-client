@@ -2,11 +2,10 @@ import { app, BrowserWindow, Tray, nativeImage, Menu } from 'electron';
 import * as path from 'path';
 import { OscController } from './osc/osc.controller';
 import { ClientSocketService } from './webSocket/clientSocket.service';
-import { IpcRendererService } from '../shared/ipcRendererService';
+import { IpcMainService } from './ipc/ipcMain.service';
 import { testing } from './testing/testing.service';
 import { StoreService } from './store/store.service';
 import LovenseController from './lovense/lovense.controller';
-import LovenseService from './lovense/lovense.service';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -57,7 +56,7 @@ function createWindow(): BrowserWindow {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
-    IpcRendererService.init();
+    IpcMainService.init();
     OscController.start();
     new LovenseController();
 

@@ -6,7 +6,7 @@ import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 
 type IpcGetOptions = {
-    getClientCredentials: ClientCredentials;
+    getClientCredentials: ClientCredentials | null;
     getConnectionStatus: SocketConnection;
     getApplicationSettings: ApplicationSettings | null;
     getLovenseSettings: LovenseSettings;
@@ -30,7 +30,7 @@ type IpcSendOptions = {
     setToyCommandOscMessages: ToyCommandOscMessage[];
 };
 
-type IpcRecieveOptions = {
+type IpcReceiveOptions = {
     updateConnectionStatus: SocketConnection;
     vrcParameter: VrcParameter;
     lovenseStatus: LovenseStatus;
@@ -39,9 +39,9 @@ type IpcRecieveOptions = {
 export interface IElectronAPI {
     get: <K extends keyof IpcGetOptions>(channel: K) => Promise<IpcGetOptions[K]>,
     send: <K extends keyof IpcSendOptions>(channel: K, data?: IpcSendOptions[K]) => void,
-    receive: <K extends keyof IpcRecieveOptions>(channel: K, func: (data: IpcRecieveOptions[K]) => void) => () => void,
-    receiveOnce: <K extends keyof IpcRecieveOptions>(channel: K, func: (data: IpcRecieveOptions[K]) => void) => () => void,
-    removeAllListeners: (channel: keyof IpcRecieveOptions) => void,
+    receive: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => () => void,
+    receiveOnce: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => () => void,
+    removeAllListeners: (channel: keyof IpcReceiveOptions) => void,
 }
 
 declare global {

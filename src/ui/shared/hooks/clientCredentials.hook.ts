@@ -15,7 +15,7 @@ export default function useClientCredentials() {
         window.electronAPI.get('getClientCredentials')
             .then(result => {
                 if (result != null) {
-                    console.log('useClientCredentials hook recieved credentials: ', result);
+                    console.log('useClientCredentials hook received credentials: ', result);
                     setClientCredentials(result);
                 }
             });
