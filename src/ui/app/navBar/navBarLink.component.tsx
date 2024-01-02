@@ -24,7 +24,7 @@ export default function NavBarLink({to, icon, children}: NavBarLinkProps) {
 
 const NavBarLinkStyled = styled(Link)`
   display: block;
-  background-color: ${colors['ui-navBar-7']};
+  background-color: ${colors['nav-bg']};
   margin-bottom: 7px;
   transition: 0.1s linear;
   text-decoration: none;
@@ -34,15 +34,15 @@ const NavBarLinkStyled = styled(Link)`
   :hover {
     padding: 15px 16px 12px 16px;
     margin-bottom: 0;
-    background-color: ${colors['ui-navBar-8']};
+    background-color: ${colors['nav-hover-bg']};
 
     i {
-      color: ${colors['ui-navBar-11']};
+      color: ${colors['nav-hover-icon']};
     }
   }
 
   i {
-    color: ${colors['ui-navBar-10']};
+    color: ${colors['nav-icon']};
     //float: left;
     font-size: 2em;
     //margin: -0.2em 0 -0.2em -0.2em;
@@ -53,13 +53,13 @@ const NavBarLinkSelectedStyled = styled(Link)`
   display: block;
   padding: 15px 16px 12px 16px;
   margin-bottom: 0;
-  background-color: ${colors['ui-navBar-12']};
+  background-color: ${colors['nav-active-bg']};
   transition: 0.1s linear;
   text-decoration: none;
   border-radius: 0 0 7px 7px;
 
   i {
-    color: ${colors['ui-navBar-13']};
+    color: ${colors['nav-active-icon']};
     font-size: 2em;
   }
 `;
