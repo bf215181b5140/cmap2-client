@@ -63,6 +63,10 @@ export default function SettingsPage() {
                         <th>VRChat osc sending port</th>
                         <td><FormInput type={InputType.Number} register={register} name={'oscOutPort'} placeholder={'9001'} errors={errors} /></td>
                     </tr>
+                    <tr>
+                        <th>Test</th>
+                        <td><FormInput type={InputType.Range} /></td>
+                    </tr>
                 </FormTable>
                 <FormControlBar>
                     <FormInput type={InputType.Submit} />

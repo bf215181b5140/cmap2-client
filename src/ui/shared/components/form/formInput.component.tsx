@@ -3,7 +3,7 @@ import colors from 'cmap2-shared/src/colors.json';
 import { InputType, ReactProps } from 'cmap2-shared';
 import { FieldOption } from 'cmap2-shared';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
-import { UseFormRegister } from 'react-hook-form/dist/types/form';
+import RangeInput from './inputs/range.input.component';
 
 interface FormInputProps extends ReactProps {
     type: InputType;
@@ -96,6 +96,11 @@ export default function FormInput(props: FormInputProps) {
                 <SelectStyled {...props.register(props.name)} errors={hasErrors()} width={props.width} className={props.readOnly ? 'readOnly' : null}>
                     {props.options && props.options.map((option) => (<option value={option.key} key={option.key}>{option.value}</option>))}
                 </SelectStyled>
+                <ErrorMessage />
+            </>);
+        case InputType.Range:
+            return (<>
+                <RangeInput />
                 <ErrorMessage />
             </>);
         case InputType.Submit:
