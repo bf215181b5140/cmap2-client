@@ -10,7 +10,7 @@ import FormControlBar from '../../shared/components/form/formControlBar.componen
 
 export default function SettingsPage() {
 
-    const {register, reset, watch, formState: {errors}, handleSubmit} = useForm({
+    const {register, reset, formState: {errors}, handleSubmit} = useForm({
         resolver: zodResolver(
             z.object({
                 startMinimized: z.boolean(),
@@ -62,10 +62,6 @@ export default function SettingsPage() {
                     <tr>
                         <th>VRChat osc sending port</th>
                         <td><FormInput type={InputType.Number} register={register} name={'oscOutPort'} placeholder={'9001'} errors={errors} /></td>
-                    </tr>
-                    <tr>
-                        <th>Test</th>
-                        <td><FormInput type={InputType.Range} /></td>
                     </tr>
                 </FormTable>
                 <FormControlBar>
