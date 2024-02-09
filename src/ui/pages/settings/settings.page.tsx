@@ -35,7 +35,7 @@ export default function SettingsPage() {
         window.electronAPI.setApplicationSettings(formData);
     }
 
-    return (<Content>
+    return (<Content flexDirection='column'>
         <ContentBox>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h2>Settings</h2>

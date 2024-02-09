@@ -28,6 +28,11 @@ export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   :disabled {
     pointer-events: none;
     color: ${colors['font-text-disabled']};
-    filter: saturate(0.5%);
+    filter: saturate(0%);
+  }
+
+  &[readonly] {
+    pointer-events: none;
+    filter: saturate(0%);
   }
 `;

@@ -1,28 +1,29 @@
-import React, { useState, useRef, useEffect, useCallback, PropsWithChildren } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
-import { globalInputStyle } from '../formInput.style';
+import { globalInputStyle } from '../input.style';
 import { ReactProps } from 'cmap2-shared';
 import { UseFormWatch } from 'react-hook-form';
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form/dist/types/form';
+import InputErrorMessage from '../inputErrorMessage.component';
+import useInputError from '../hooks/inputError.hook';
+import { FieldErrors } from 'react-hook-form/dist/types/errors';
 
 interface RangeInputProps extends ReactProps {
     name: string;
     register: UseFormRegister<any>;
     setValue: UseFormSetValue<any>;
     watch: UseFormWatch<any>;
-    min?: number;
-    max?: number;
-    defaultValue?: number;
-    errors?: boolean;
+    errors?: FieldErrors;
     readOnly?: boolean;
     width?: string;
 }
 
-export default function RangeInput({name, register, setValue, watch, defaultValue, errors, readOnly, width, min = 0, max = 100}: RangeInputProps) {
+export default function RangeInput({name, register, setValue, watch, errors, readOnly, width}: RangeInputProps) {
     const sliderValue = watch(name);
     const inputRef = useRef<any>(null);
     const [dragging, setDragging] = useState(false);
+    const [hasError, errorMessage] = useInputError(name, errors);
 
     useEffect(() => {
         if (dragging) {
@@ -61,9 +62,10 @@ export default function RangeInput({name, register, setValue, watch, defaultValu
 
     return (<div>
         <input {...register(name)} type="range" min="0" max="100" step="1" defaultValue={sliderValue} style={{display: 'none'}} />
-        <RangeInputStyled onMouseDown={handleMouseDown} ref={inputRef} errors={errors} width={width}>
+        <RangeInputStyled onMouseDown={handleMouseDown} ref={inputRef} errors={hasError} width={width} className={readOnly === true ? 'readOnly' : undefined}>
             <RangeInputProgressStyled style={{width: `${sliderValue}%`}}></RangeInputProgressStyled>
         </RangeInputStyled>
+        <InputErrorMessage errorMessage={errorMessage} />
     </div>);
 };
 
@@ -81,6 +83,11 @@ const RangeInputStyled = styled.div`
     div {
       background: ${colors['ui-primary-4']};
     }
+  }
+
+  &.readOnly {
+    pointer-events: none;
+    filter: saturate(0%);
   }
 `;
 

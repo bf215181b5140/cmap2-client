@@ -3,7 +3,9 @@ import colors from 'cmap2-shared/src/colors.json';
 import { InputType, ReactProps } from 'cmap2-shared';
 import { FieldOption } from 'cmap2-shared';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
-import { globalInputStyle } from './formInput.style';
+import { globalInputStyle } from './input.style';
+import useInputError from './hooks/inputError.hook';
+import InputErrorMessage from './inputErrorMessage.component';
 
 interface FormInputProps extends ReactProps {
     type: InputType;
@@ -20,38 +22,7 @@ interface FormInputProps extends ReactProps {
 }
 
 export default function FormInput(props: FormInputProps) {
-
-    function inputError(): string | undefined {
-        if(props.errors && props.name) {
-            if (props.name.indexOf('.') > -1) {
-                const keys = props.name.split('.');
-                let value = props.errors;
-                for (let key of keys) {
-                    if (value && value.hasOwnProperty(key)) {
-                        value = value[key];
-                    } else {
-                        return undefined;
-                    }
-                }
-                return value?.message?.toString();
-            } else {
-                return props.errors[props.name]?.message?.toString();
-            }
-        }
-        return undefined;
-    }
-
-    function hasErrors(): boolean {
-        return !!inputError();
-    }
-
-    function ErrorMessage() {
-        const error = inputError();
-        if (!!error) {
-            return <ErrorStyled>{error}</ErrorStyled>;
-        }
-        return null;
-    }
+    const [hasError, errorMessage] = useInputError(props.name, props.errors);
 
     function booleanClick(id: string) {
         const input = document.getElementById(id);
@@ -64,46 +35,46 @@ export default function FormInput(props: FormInputProps) {
         case InputType.Url:
             return (<>
                 <InputStyled type={props.type} {...props.register(props.name)} readOnly={props.readOnly === true} placeholder={props.placeholder}
-                             errors={hasErrors()} width={props.width} />
-                <ErrorMessage />
+                             errors={hasError} width={props.width} />
+                <InputErrorMessage errorMessage={errorMessage}/>
             </>);
         case InputType.Number:
             return (<>
                 <InputStyled type={props.type} {...props.register(props.name, {
                     setValueAs: (v: string) => v === '' ? undefined : parseInt(v),
-                })} readOnly={props.readOnly === true} placeholder={props.placeholder} errors={hasErrors()} width={props.width} />
-                <ErrorMessage />
+                })} readOnly={props.readOnly === true} placeholder={props.placeholder} errors={hasError} width={props.width} />
+                <InputErrorMessage errorMessage={errorMessage}/>
             </>);
         case InputType.Textarea:
             return (<>
-                <TextareaStyled {...props.register(props.name)} errors={hasErrors()} width={props.width}>
+                <TextareaStyled {...props.register(props.name)} errors={hasError} width={props.width}>
                     {props.children}
                 </TextareaStyled>
-                <ErrorMessage />
+                <InputErrorMessage errorMessage={errorMessage}/>
             </>);
         case InputType.Boolean:
             return (<>
-                <CheckboxStyled errors={hasErrors()}>
+                <CheckboxStyled errors={hasError}>
                     <input type={InputType.Checkbox} {...props.register(props.name)} id={props.name + '-booleanInput'} />
                     <div onClick={() => booleanClick(props.name + '-booleanInput')}>
                         <Icon icon="ri-check-fill" />
                     </div>
                 </CheckboxStyled>
-                <ErrorMessage />
+                <InputErrorMessage errorMessage={errorMessage}/>
             </>);
         case InputType.Select:
             return (<>
-                <SelectStyled {...props.register(props.name)} errors={hasErrors()} width={props.width} className={props.readOnly ? 'readOnly' : null}>
+                <SelectStyled {...props.register(props.name)} errors={hasError} width={props.width} className={props.readOnly ? 'readOnly' : undefined}>
                     {props.options && props.options.map((option) => (<option value={option.key} key={option.key}>{option.value}</option>))}
                 </SelectStyled>
-                <ErrorMessage />
+                <InputErrorMessage errorMessage={errorMessage}/>
             </>);
         case InputType.Submit:
             return (<InputStyled type={InputType.Submit} button={true} value={props.value ? props.value : 'Save'} disabled={props.disabled} />);
         case InputType.Button:
             return (<InputStyled type={InputType.Button} button={true} value={props.value} onClick={props.onClick} disabled={props.disabled} />);
         case InputType.Hidden:
-            return (<><InputStyled type={props.type} /><ErrorMessage /></>);
+            return (<><InputStyled type={props.type} /><InputErrorMessage errorMessage={errorMessage}/></>);
         default:
             return (<></>);
     }
@@ -119,7 +90,7 @@ const InputStyled = styled.input<{ button?: boolean, errors?: boolean, width?: s
 
   &[type=text]:read-only, &[type=number]:read-only {
     pointer-events: none;
-    filter: saturate(0.5%);
+    filter: saturate(0%);
   }
   
   &[type=button], &[type=submit] {
@@ -137,7 +108,7 @@ export const SelectStyled = styled.select<{ errors?: boolean, width?: string }>`
   
   &.readOnly {
     pointer-events: none;
-    filter: saturate(0.5%);
+    filter: saturate(0%);
   }
 `;
 
@@ -161,12 +132,5 @@ const CheckboxStyled = styled.span<{ errors?: boolean }>`
   input[type=checkbox]:checked ~ div i {
     visibility: visible;
   }
-`;
-
-const ErrorStyled = styled.div`
-  margin: -6px 10px 0 10px;
-  font-size: 12px;
-  text-align: center;
-  color: ${colors['error']};
 `;
 

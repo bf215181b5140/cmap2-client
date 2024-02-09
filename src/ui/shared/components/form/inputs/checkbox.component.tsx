@@ -1,0 +1,63 @@
+import React from 'react';
+import styled from 'styled-components';
+import { globalInputStyle } from '../input.style';
+import { ReactProps } from 'cmap2-shared';
+import { UseFormRegister } from 'react-hook-form/dist/types/form';
+import InputErrorMessage from '../inputErrorMessage.component';
+import useInputError from '../hooks/inputError.hook';
+import { FieldErrors } from 'react-hook-form/dist/types/errors';
+import Icon from 'cmap2-shared/src/react/components/icon.component';
+
+interface CheckboxInputProps extends ReactProps {
+    name: string;
+    register: UseFormRegister<any>;
+    errors?: FieldErrors;
+    readOnly?: boolean;
+}
+
+export default function CheckboxInput({name, register, errors, readOnly}: CheckboxInputProps) {
+    const [hasError, errorMessage] = useInputError(name, errors);
+
+    function booleanClick(id: string) {
+        if (readOnly) return;
+        const input = document.getElementById(id);
+        if (input) input.click();
+    }
+
+    return (<div>
+        <CheckboxInputStyled errors={hasError}>
+            <input type='checkbox' {...register(name)} id={name + '-CheckboxInput'} readOnly={readOnly} />
+            <div onClick={() => booleanClick(name + '-CheckboxInput')} className={readOnly ? 'readOnly' : undefined}>
+                <Icon icon="ri-check-fill" />
+            </div>
+        </CheckboxInputStyled>
+        <InputErrorMessage errorMessage={errorMessage} />
+    </div>);
+};
+
+const CheckboxInputStyled = styled.span<{ errors?: boolean }>`
+  input[type=checkbox] {
+    display: none;
+  }
+
+  div {
+    ${globalInputStyle};
+    width: fit-content;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  div i {
+    font-size: 2em;
+    visibility: hidden;
+  }
+
+  input[type=checkbox]:checked ~ div i {
+    visibility: visible;
+  }
+
+  div.readOnly {
+    pointer-events: none;
+    filter: saturate(0%);
+  }
+`;
