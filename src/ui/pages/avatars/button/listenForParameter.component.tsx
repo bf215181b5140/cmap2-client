@@ -1,9 +1,11 @@
 import { ContentBox } from 'cmap2-shared/dist/react';
 import React, { useEffect, useState } from 'react';
-import { ButtonDto, InputType, VrcParameter, ReactProps } from 'cmap2-shared';
+import { ButtonDto, VrcParameter, ReactProps } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
-import FormInput from '../../../shared/components/form/formInput.component';
 import FormTable from '../../../shared/components/form/formTable.component';
+import SubmitInput from '../../../shared/components/form/inputs/submit.component';
+import ButtonInput from '../../../shared/components/form/inputs/button.component';
+import Input from '../../../shared/components/form/inputs/input.component';
 
 interface ListenForParameterProps extends ReactProps {
     applyMessage: (data: ButtonDto) => void;
@@ -49,10 +51,10 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
         <form onSubmit={handleSubmit(onApply)}>
             <FormTable>
                 <tr>
-                    <td><FormInput type={InputType.Button} value="Listen" onClick={forwardOscToRenderer} disabled={listening} /></td>
-                    <td><FormInput type={InputType.Text} register={register} name={'path'} errors={errors} placeholder="Parameter" readOnly={true} /></td>
-                    <td><FormInput type={InputType.Text} register={register} name={'value'} errors={errors} placeholder="Parameter value" readOnly={true} /></td>
-                    <td><FormInput type={InputType.Submit} disabled={!isDirty} value="Apply" /></td>
+                    <td><ButtonInput text="Listen" onClick={forwardOscToRenderer} disabled={listening} /></td>
+                    <td><Input register={register} name={'path'} errors={errors} placeholder="Parameter" readOnly={true} /></td>
+                    <td><Input register={register} name={'value'} errors={errors} placeholder="Parameter value" readOnly={true} /></td>
+                    <td><SubmitInput disabled={!isDirty} text="Apply" /></td>
                 </tr>
             </FormTable>
         </form>

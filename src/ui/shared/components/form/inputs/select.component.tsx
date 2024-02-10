@@ -20,7 +20,7 @@ export default function SelectInput({name, register, options, errors, readOnly, 
     const [hasError, errorMessage] = useInputError(name, errors);
 
     return (<div>
-        <SelectInputStyled {...register(name)} errors={hasError} className={readOnly ? 'readOnly' : undefined} width={width} >
+        <SelectInputStyled {...register(name)} errors={hasError} className={readOnly ? 'readOnly' : undefined} width={width}>
             {options && options.map((option) => (<option value={option.key} key={option.key}>{option.value}</option>))}
         </SelectInputStyled>
         <InputErrorMessage errorMessage={errorMessage} />

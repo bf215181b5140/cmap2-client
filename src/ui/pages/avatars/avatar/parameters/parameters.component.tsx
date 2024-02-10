@@ -1,7 +1,6 @@
-import { AvatarDto, ControlParameterDto, InputType, ParameterDto, ParametersForm, ReactProps, TierDto, ValueType } from 'cmap2-shared';
+import { AvatarDto, ControlParameterDto, ParameterDto, ParametersForm, ReactProps, ValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../../shared/components/form/formTable.component';
-import FormInput from '../../../../shared/components/form/formInput.component';
 import React, { useContext, useEffect } from 'react';
 import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
 import { AvatarReducerAction } from '../../avatars.reducer';
@@ -15,6 +14,11 @@ import { EventBus } from '../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../shared/interfaces';
 import colors from 'cmap2-shared/src/colors.json';
 import { ModalContext } from '../../../../app/mainWindow/mainWindow.componenet';
+import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
+import ButtonInput from '../../../../shared/components/form/inputs/button.component';
+import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
+import Input from '../../../../shared/components/form/inputs/input.component';
+import SelectInput from '../../../../shared/components/form/inputs/select.component';
 
 interface ParametersProps extends ReactProps {
     selectedAvatar: AvatarDto;
@@ -25,7 +29,7 @@ interface ParametersProps extends ReactProps {
 export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus}: ParametersProps) {
 
     const customFetch = useCustomFetch();
-    const { deleteModal } = useContext(ModalContext);
+    const {deleteModal} = useContext(ModalContext);
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ParametersForm>({
         defaultValues: {
             avatarId: selectedAvatar.id, parameters: [...selectedAvatar.parameters || []]
@@ -87,7 +91,7 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
             <span style={watchParameters.length > 16 ? {color: colors['error']} : undefined}>You can save up to 16 parameters.</span>
         </p>
         <form onSubmit={handleSubmit(onSave)}>
-            <FormInput type={InputType.Hidden} register={register} name={'avatarId'} />
+            <HiddenInput name={'avatarId'} />
             <FormTableStyled>
                 <thead>
                 {watchParameters.length > 0 &&
@@ -103,18 +107,18 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
                 {fields.map((item, index) => (
                     <tr>
                         <td>
-                            <FormInput type={InputType.Hidden} register={register} name={`parameters.${index}.id`} />
-                            <FormInput type={InputType.Text} register={register} name={`parameters.${index}.label`} width="180px" errors={errors} />
+                            <HiddenInput name={`parameters.${index}.id`} />
+                            <Input register={register} name={`parameters.${index}.label`} width="180px" errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Text} register={register} name={`parameters.${index}.path`} errors={errors} />
+                            <Input register={register} name={`parameters.${index}.path`} errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Select} options={enumToInputOptions(ValueType)} register={register}
+                            <SelectInput options={enumToInputOptions(ValueType)} register={register}
                                        name={`parameters.${index}.valueType`} width="auto" errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => deleteModal('parameter', () => onDelete(index))} />
+                            <ButtonInput text="Delete" onClick={() => deleteModal('parameter', () => onDelete(index))} />
                         </td>
                     </tr>
                 ))}
@@ -122,9 +126,9 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <FormInput type={InputType.Button} value="Add new" disabled={watchParameters.length >= 16} onClick={() => append(new ControlParameterDto())} />
-                <FormInput type={InputType.Submit} disabled={!isDirty || watchParameters.length > 16} />
-                <FormInput type={InputType.Button} value="Reset" disabled={!isDirty} onClick={() => reset()} />
+                <ButtonInput text="Add new" disabled={watchParameters.length >= 16} onClick={() => append(new ControlParameterDto())} />
+                <SubmitInput disabled={!isDirty || watchParameters.length > 16} />
+                <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);

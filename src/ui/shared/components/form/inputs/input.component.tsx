@@ -8,7 +8,7 @@ import useInputError from '../hooks/inputError.hook';
 import { FieldErrors } from 'react-hook-form/dist/types/errors';
 
 interface InputProps extends ReactProps {
-    type: 'text' | 'password' | 'url';
+    type?: 'text' | 'password' | 'url';
     name: string;
     register: UseFormRegister<any>;
     placeholder?: string;
@@ -17,7 +17,7 @@ interface InputProps extends ReactProps {
     width?: string;
 }
 
-export default function Input({type, name, register, placeholder, errors, readOnly, width}: InputProps) {
+export default function Input({type = 'text', name, register, placeholder, errors, readOnly, width}: InputProps) {
     const [hasError, errorMessage] = useInputError(name, errors);
 
     return (<div>

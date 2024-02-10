@@ -8,7 +8,6 @@ import useCustomFetch from '../../../shared/hooks/customFetch.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { buttonSchema } from 'cmap2-shared/src/zodSchemas';
-import FormInput, { SelectStyled } from '../../../shared/components/form/formInput.component';
 import FileUpload from '../../../shared/components/fileUpload.component';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import ListenForParameter from './listenForParameter.component';
@@ -16,6 +15,12 @@ import FormTable from '../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
 import enumToInputOptions from '../../../shared/util/enumToInputOptions.function';
 import { ModalContext } from '../../../app/mainWindow/mainWindow.componenet';
+import SubmitInput from '../../../shared/components/form/inputs/submit.component';
+import ButtonInput from '../../../shared/components/form/inputs/button.component';
+import HiddenInput from '../../../shared/components/form/inputs/hidden.component';
+import Input from '../../../shared/components/form/inputs/input.component';
+import SelectInput, { SelectInputStyled } from '../../../shared/components/form/inputs/select.component';
+import NumberInput from '../../../shared/components/form/inputs/number.component';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;
@@ -31,7 +36,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
 
     const navigate = useNavigate();
     const customFetch = useCustomFetch();
-    const { deleteModal } = useContext(ModalContext);
+    const {deleteModal} = useContext(ModalContext);
     const {register, setValue, reset, formState: {errors, isDirty}, watch, handleSubmit} = useForm<ButtonDto>({
         defaultValues: {...button, order: 0, parentId: layout.id},
         resolver: zodResolver(buttonSchema)
@@ -124,56 +129,57 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
             <h2>Preview</h2>
             <ParameterButton button={formWatch} buttonStyle={buttonStyle} />
             <br />
-            {button.id && formWatch.buttonType !== ButtonType.Slider && <FileUpload parentType="button" parentId={button?.id} uploadCallback={setButtonPicture} />}
+            {button.id && formWatch.buttonType !== ButtonType.Slider &&
+                <FileUpload parentType="button" parentId={button?.id} uploadCallback={setButtonPicture} />}
         </ContentBox>
         <ContentBox>
             <form onSubmit={handleSubmit(onSave)}>
-                <FormInput type={InputType.Hidden} register={register} name={'id'} />
-                <FormInput type={InputType.Hidden} register={register} name={'parentId'} />
-                <FormInput type={InputType.Hidden} register={register} name={'order'} />
+                <HiddenInput name={'id'} />
+                <HiddenInput name={'parentId'} />
+                <HiddenInput name={'order'} />
                 <FormTable>
                     <tr>
                         <th>Label</th>
-                        <td><FormInput type={InputType.Text} register={register} name={'label'} errors={errors} /></td>
+                        <td><Input register={register} name={'label'} errors={errors} /></td>
                     </tr>
                     <tr>
                         <th>Parameter</th>
                         <td>
-                            <FormInput type={InputType.Text} register={register} name={'path'} errors={errors} />
+                            <Input register={register} name={'path'} errors={errors} />
                         </td>
                         <td>
-                            <SelectStyled onChange={e => setParameterFromOptions(e.target.value)}>
+                            <SelectInputStyled onChange={e => setParameterFromOptions(e.target.value)} errors={false}>
                                 <option value="" key="" />
                                 {avatar.parameters?.map(p => (<option value={p.id} key={p.id}>{p.label}</option>))}
-                            </SelectStyled>
+                            </SelectInputStyled>
                         </td>
                     </tr>
                     <tr>
                         <th>Parameter values</th>
                         <td>
-                            <FormInput type={InputType.Text} register={register} name={'value'} placeholder={valuePrimaryPlaceholder()} width="130px"
+                            <Input register={register} name={'value'} placeholder={valuePrimaryPlaceholder()} width="130px"
                                        errors={errors} />
-                            <FormInput type={InputType.Text} register={register} name={'valueAlt'} placeholder={valueSecondaryPlaceholder()} width="130px"
+                            <Input register={register} name={'valueAlt'} placeholder={valueSecondaryPlaceholder()} width="130px"
                                        errors={errors} readOnly={formWatch.buttonType !== ButtonType.Slider && formWatch.buttonType !== ButtonType.Toggle} />
                         </td>
                     </tr>
                     <tr>
                         <th>Value type</th>
                         <td>
-                            <FormInput type={InputType.Select} options={enumToInputOptions(ValueType)} register={register} name={'valueType'} errors={errors} />
+                            <SelectInput options={enumToInputOptions(ValueType)} register={register} name={'valueType'} errors={errors} />
                         </td>
                     </tr>
                     <tr>
                         <th>Button type</th>
                         <td>
-                            <FormInput type={InputType.Select} options={enumToInputOptions(ButtonType)} register={register} name={'buttonType'}
+                            <SelectInput options={enumToInputOptions(ButtonType)} register={register} name={'buttonType'}
                                        errors={errors} />
                         </td>
                     </tr>
                     <tr>
                         <th>Image orientation</th>
                         <td>
-                            <FormInput type={InputType.Select} options={enumToInputOptions(ButtonImageOrientation)} register={register}
+                            <SelectInput options={enumToInputOptions(ButtonImageOrientation)} register={register}
                                        name={'imageOrientation'}
                                        errors={errors} readOnly={!button.image} />
                         </td>
@@ -181,23 +187,22 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                     <tr>
                         <th>Control parameter</th>
                         <td>
-                            <FormInput type={InputType.Select} options={controlParameterOptions()} register={register} name={'controlParameterId'}
+                            <SelectInput options={controlParameterOptions()} register={register} name={'controlParameterId'}
                                        errors={errors} />
                         </td>
                     </tr>
                     <tr>
                         <th>Button use cost</th>
                         <td>
-                            <FormInput type={InputType.Number} register={register} name={'useCost'}
-                                       errors={errors} readOnly={!clientTier.useCost} />
+                            <NumberInput register={register} name={'useCost'} errors={errors} readOnly={!clientTier.useCost} />
                         </td>
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <FormInput type={InputType.Submit} disabled={!isDirty} />
-                    <FormInput type={InputType.Button} value="Reset" disabled={!isDirty} onClick={() => reset()} />
-                    <FormInput type={InputType.Button} value="Delete" onClick={() => deleteModal('button', () => onDelete(button))} />
-                    <FormInput type={InputType.Button} value={isDirty ? "Cancel" : "Back"} onClick={() => navigate(-1)} />
+                    <SubmitInput disabled={!isDirty} />
+                    <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
+                    <ButtonInput text="Delete" onClick={() => deleteModal('button', () => onDelete(button))} />
+                    <ButtonInput text={isDirty ? 'Cancel' : 'Back'} onClick={() => navigate(-1)} />
                 </FormControlBar>
             </form>
         </ContentBox>

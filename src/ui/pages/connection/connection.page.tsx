@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { SocketConnection, SocketConnectionType } from '../../../shared/SocketConnection';
+import { SocketConnection } from '../../../shared/SocketConnection';
 import { ReactProps } from 'cmap2-shared';
 import ConnectForm from './connect/connect.component';
 import RegistrationForm from './register/register.component';

@@ -3,8 +3,6 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { profileSchema } from 'cmap2-shared/src/zodSchemas';
-import FormInput from '../../shared/components/form/formInput.component';
-import { InputType } from 'cmap2-shared';
 import useProlfilePage from './profile.hook';
 import FileUpload from '../../shared/components/fileUpload.component';
 import styled from 'styled-components';
@@ -15,6 +13,10 @@ import BackgroundPicker from './backgroundPicker/backgroundPicker.component';
 import { URL } from '../../../shared/const';
 import FormTable from '../../shared/components/form/formTable.component';
 import FormControlBar from '../../shared/components/form/formControlBar.component';
+import SubmitInput from '../../shared/components/form/inputs/submit.component';
+import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
+import Input from '../../shared/components/form/inputs/input.component';
+import TextareaInput from '../../shared/components/form/inputs/textarea.component';
 
 export default function ProfilePage() {
 
@@ -48,18 +50,18 @@ export default function ProfilePage() {
                     <FormTable>
                         <tr>
                             <th>Display name</th>
-                            <td><FormInput type={InputType.Text} register={register} name={'displayName'} errors={errors} /></td>
+                            <td><Input register={register} name={'displayName'} errors={errors} /></td>
                         </tr>
                         <tr>
                             <th>Bio</th>
-                            <td><FormInput type={InputType.Textarea} register={register} name={'bio'} errors={errors} /></td>
+                            <td><TextareaInput register={register} name={'bio'} errors={errors} /></td>
                         </tr>
                         <tr>
                             <th>Hide profile</th>
-                            <td><FormInput type={InputType.Boolean} register={register} name={'hidden'} errors={errors} /></td>
+                            <td><CheckboxInput register={register} name={'hidden'} errors={errors} /></td>
                         </tr>
                     </FormTable>
-                    <FormControlBar><FormInput type={InputType.Submit} disabled={!isDirty} /></FormControlBar>
+                    <FormControlBar><SubmitInput disabled={!isDirty} /></FormControlBar>
                 </form>
             </ContentBox>
             <BackgroundPicker client={client} setFunction={setClientBackground} backgrounds={backgrounds} />
