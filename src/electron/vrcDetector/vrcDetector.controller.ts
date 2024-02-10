@@ -6,7 +6,7 @@ import { BridgeService } from '../bridge/bridge.service';
 export default class VrcDetectorController {
     private intervalId: NodeJS.Timeout | null = null;
     private defaultFrequency: number = 10;
-    private processName = 'vrchat.exe';
+    private processName: string = 'vrchat.exe';
 
     constructor(applicationSettings: ApplicationSettings | null) {
         if (applicationSettings) this.resetInterval(applicationSettings);
