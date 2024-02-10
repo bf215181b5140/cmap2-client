@@ -1,5 +1,4 @@
-import FormInput from '../../../../shared/components/form/formInput.component';
-import { AvatarDto, ButtonStyleDto, InputType, ReactProps, TierDto } from 'cmap2-shared';
+import { AvatarDto, ReactProps } from 'cmap2-shared';
 import FormTable from '../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
 import { ContentBox } from 'cmap2-shared/dist/react';
@@ -13,6 +12,11 @@ import { avatarSchema } from 'cmap2-shared/dist/zodSchemas';
 import { EventBus } from '../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../shared/interfaces';
 import { ModalContext } from '../../../../app/mainWindow/mainWindow.componenet';
+import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
+import CheckboxInput from '../../../../shared/components/form/inputs/checkbox.component';
+import Input from '../../../../shared/components/form/inputs/input.component';
+import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
+import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 
 interface AvatarSettingsProps extends ReactProps {
     selectedAvatar: AvatarDto;
@@ -83,25 +87,25 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
 
     return (<ContentBox>
         <form onSubmit={handleSubmit(onSave)}>
-            <FormInput type={InputType.Hidden} register={register} name={'id'} />
+            <HiddenInput name={'id'} />
             <FormTable>
                 <tr>
                     <th>Label</th>
-                    <td><FormInput type={InputType.Text} register={register} name={'label'} errors={errors} /></td>
+                    <td><Input register={register} name={'label'} errors={errors} /></td>
                 </tr>
                 <tr>
                     <th>VRChat avatar ID</th>
-                    <td><FormInput type={InputType.Text} register={register} name={'vrcId'} errors={errors} /></td>
+                    <td><Input register={register} name={'vrcId'} errors={errors} /></td>
                 </tr>
                 <tr>
                     <th>Default avatar</th>
-                    <td><FormInput type={InputType.Boolean} register={register} name={'default'} errors={errors} /></td>
+                    <td><CheckboxInput register={register} name={'default'} errors={errors} /></td>
                 </tr>
             </FormTable>
             <FormControlBar>
-                <FormInput type={InputType.Submit} disabled={!isDirty} />
-                <FormInput type={InputType.Button} value="Reset" disabled={!isDirty} onClick={() => reset()} />
-                <FormInput type={InputType.Button} value="Delete" onClick={() => deleteModal('avatar', () => onDelete(selectedAvatar))} />
+                <SubmitInput disabled={!isDirty} />
+                <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
+                <ButtonInput text="Delete" onClick={() => deleteModal('avatar', () => onDelete(selectedAvatar))} />
             </FormControlBar>
         </form>
     </ContentBox>);

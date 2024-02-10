@@ -1,4 +1,4 @@
-import { globalInputStyle } from './form/formInput.component';
+import { globalInputStyle } from './form/input.style';
 import React, { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import useCustomFetch from '../hooks/customFetch.hook';

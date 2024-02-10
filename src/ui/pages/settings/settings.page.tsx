@@ -1,16 +1,18 @@
 import { ContentBox, Content } from 'cmap2-shared/dist/react';
-import FormInput from '../../shared/components/form/formInput.component';
-import { InputType } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useEffect } from 'react';
 import FormTable from '../../shared/components/form/formTable.component';
 import FormControlBar from '../../shared/components/form/formControlBar.component';
+import SubmitInput from '../../shared/components/form/inputs/submit.component';
+import NumberInput from '../../shared/components/form/inputs/number.component';
+import Input from '../../shared/components/form/inputs/input.component';
+import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
 
 export default function SettingsPage() {
 
-    const {register, reset, watch, formState: {errors}, handleSubmit} = useForm({
+    const {register, reset, formState: {errors}, handleSubmit} = useForm({
         resolver: zodResolver(
             z.object({
                 startMinimized: z.boolean(),
@@ -35,37 +37,37 @@ export default function SettingsPage() {
         window.electronAPI.send('setApplicationSettings', formData);
     }
 
-    return (<Content>
+    return (<Content flexDirection="column">
         <ContentBox>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h2>Settings</h2>
                 <FormTable>
                     <tr>
                         <th>Start minimized to tray</th>
-                        <td><FormInput type={InputType.Boolean} register={register} name={'startMinimized'} errors={errors} /></td>
+                        <td><CheckboxInput register={register} name={'startMinimized'} errors={errors} /></td>
                     </tr>
                     <tr>
                         <th>Connect automatically</th>
-                        <td><FormInput type={InputType.Boolean} register={register} name={'autoLogin'} errors={errors} /></td>
+                        <td><CheckboxInput register={register} name={'autoLogin'} errors={errors} /></td>
                     </tr>
                 </FormTable>
                 <h2>OSC settings</h2>
                 <FormTable>
                     <tr>
                         <th>VRChat lan IP</th>
-                        <td><FormInput type={InputType.Text} register={register} name={'oscIp'} placeholder={'127.0.0.1'} errors={errors} /></td>
+                        <td><Input register={register} name={'oscIp'} placeholder={'127.0.0.1'} errors={errors} /></td>
                     </tr>
                     <tr>
                         <th>VRChat osc receiving port</th>
-                        <td><FormInput type={InputType.Number} register={register} name={'oscInPort'} placeholder={'9000'} errors={errors} /></td>
+                        <td><NumberInput register={register} name={'oscInPort'} placeholder={'9000'} errors={errors} /></td>
                     </tr>
                     <tr>
                         <th>VRChat osc sending port</th>
-                        <td><FormInput type={InputType.Number} register={register} name={'oscOutPort'} placeholder={'9001'} errors={errors} /></td>
+                        <td><NumberInput register={register} name={'oscOutPort'} placeholder={'9001'} errors={errors} /></td>
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <FormInput type={InputType.Submit} />
+                    <SubmitInput />
                 </FormControlBar>
             </form>
         </ContentBox>

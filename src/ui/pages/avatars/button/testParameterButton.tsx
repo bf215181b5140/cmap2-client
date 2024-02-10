@@ -86,7 +86,7 @@ const ParameterButtonStyled = styled.div<{ flexBasis?: string, active: boolean }
 const activeParamStyle = css`
   pointer-events: none;
   cursor: initial;
-  filter: saturate(0.5%);
+  filter: saturate(0%);
 `;
 
 const ParameterButtonLabel = styled.div`

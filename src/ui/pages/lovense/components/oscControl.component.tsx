@@ -3,22 +3,25 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { ToyCommandOscMessageForm, ToyCommandOscMessageFormSchema } from '../../../../shared/lovense';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import React, { useContext, useEffect } from 'react';
-import { FieldOption, InputType, ValueType } from 'cmap2-shared';
+import { FieldOption, ValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../shared/components/form/formTable.component';
-import FormInput from '../../../shared/components/form/formInput.component';
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
 import { ModalContext } from '../../../app/mainWindow/mainWindow.componenet';
+import SubmitInput from '../../../shared/components/form/inputs/submit.component';
+import ButtonInput from '../../../shared/components/form/inputs/button.component';
+import Input from '../../../shared/components/form/inputs/input.component';
+import SelectInput from '../../../shared/components/form/inputs/select.component';
 
 interface ToyControlProps {
     toyList: Toy[] | undefined;
 }
 
-export default function OscControl({ toyList }: ToyControlProps) {
+export default function OscControl({toyList}: ToyControlProps) {
 
-    const { deleteModal } = useContext(ModalContext);
+    const {deleteModal} = useContext(ModalContext);
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ToyCommandOscMessageForm>({
-        defaultValues: { toyCommandOscMessages: [] }, resolver: zodResolver(ToyCommandOscMessageFormSchema)
+        defaultValues: {toyCommandOscMessages: []}, resolver: zodResolver(ToyCommandOscMessageFormSchema)
     });
 
     const {fields, append, remove} = useFieldArray({control, name: 'toyCommandOscMessages'});
@@ -28,8 +31,8 @@ export default function OscControl({ toyList }: ToyControlProps) {
     useEffect(() => {
         window.electronAPI.get('getToyCommandOscMessages').then(toyCommandOscMessages => {
             reset({ toyCommandOscMessages }, {keepDirty: false});
-        })
-    }, [])
+        });
+    }, []);
 
     function onAdd() {
         append({
@@ -66,17 +69,18 @@ export default function OscControl({ toyList }: ToyControlProps) {
                     <tr key={index}>
                         <td>
                             {/* todo add text + select input with toyList */}
-                            <FormInput type={InputType.Text} name={`toyCommandOscMessages.${index}.toy`} register={register} errors={errors} />
+                            <Input name={`toyCommandOscMessages.${index}.toy`} register={register} errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Text} name={`toyCommandOscMessages.${index}.parameterPath`} register={register} errors={errors} />
+                            <Input name={`toyCommandOscMessages.${index}.parameterPath`} register={register} errors={errors} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Select} name={`toyCommandOscMessages.${index}.valueType`} width='160px' register={register} errors={errors}
+                            <SelectInput name={`toyCommandOscMessages.${index}.valueType`} width="160px" register={register}
+                                       errors={errors}
                                        options={valueTypeOptions()} />
                         </td>
                         <td>
-                            <FormInput type={InputType.Button} value={'Delete'} onClick={() => deleteModal('setting', () => remove(index))} />
+                            <ButtonInput text="Delete" onClick={() => deleteModal('setting', () => remove(index))} />
                         </td>
                     </tr>
                 ))}
@@ -84,9 +88,9 @@ export default function OscControl({ toyList }: ToyControlProps) {
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <FormInput type={InputType.Button} value="Add new" onClick={onAdd} />
-                <FormInput type={InputType.Submit} disabled={!isDirty} />
-                <FormInput type={InputType.Button} value="Reset" disabled={!isDirty} onClick={() => reset()} />
+                <ButtonInput text="Add new" onClick={onAdd} />
+                <SubmitInput disabled={!isDirty} />
+                <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);

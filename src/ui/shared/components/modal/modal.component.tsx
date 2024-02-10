@@ -1,17 +1,17 @@
 import React from 'react';
-import { InputType, ReactProps } from 'cmap2-shared';
+import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import { Icon } from 'cmap2-shared/dist/react';
-import FormInput from '../form/formInput.component';
 import { Modal } from './modal.hook';
+import ButtonInput from '../form/inputs/button.component';
 
 export interface ModalComponentProps extends ReactProps {
     modal: Modal | null;
     clearModal: () => void;
 }
 
-export default function ModalComponent({ modal, clearModal }: ModalComponentProps) {
+export default function ModalComponent({modal, clearModal}: ModalComponentProps) {
 
     function onClose() {
         clearModal();
@@ -19,7 +19,7 @@ export default function ModalComponent({ modal, clearModal }: ModalComponentProp
 
     function onConfirm() {
         modal?.confirmFunction.apply(null);
-        clearModal()
+        clearModal();
     }
 
     if (!modal) {
@@ -34,8 +34,8 @@ export default function ModalComponent({ modal, clearModal }: ModalComponentProp
             </ModalTitle>
             <ModalContent>
                 {modal.message || 'Confirm your action'}
-                <div id='confirmation'>
-                    <FormInput type={InputType.Button} value={modal.confirmValue || 'Confirm'} onClick={onConfirm} />
+                <div id="confirmation">
+                    <ButtonInput text={modal.confirmValue || 'Confirm'} onClick={onConfirm} />
                 </div>
             </ModalContent>
         </ModalStyled>
@@ -81,7 +81,7 @@ const ModalTitle = styled.div`
     margin: 0;
     padding: 0;
   }
-  
+
   span {
     padding: 0 5px;
     font-size: 20px;
@@ -92,7 +92,7 @@ const ModalTitle = styled.div`
 
 const ModalContent = styled.div`
   padding: 10px;
-  
+
   #confirmation {
     margin-top: 10px;
     text-align: end;
