@@ -1,17 +1,17 @@
 import { exec } from 'child_process';
 import TypedIpcMain from '../ipc/typedIpcMain';
-import { ApplicationSettings } from '../../shared/classes';
 import { BridgeService } from '../bridge/bridge.service';
+import { Settings } from '../../shared/types/settings';
 
 export default class VrcDetectorController {
     private intervalId: NodeJS.Timeout | null = null;
     private defaultFrequency: number = 10;
     private processName: string = 'vrchat.exe';
 
-    constructor(applicationSettings: ApplicationSettings | null) {
-        if (applicationSettings) this.resetInterval(applicationSettings);
+    constructor(settings: Settings) {
+        if (settings) this.resetInterval(settings);
 
-        BridgeService.on('applicationSettings', (applicationSettings: ApplicationSettings) => this.resetInterval(applicationSettings));
+        BridgeService.on('settings', (settings) => this.resetInterval(settings));
 
         TypedIpcMain.on('getIsVrchatRunning', () => this.isVrchatRunning());
     }
@@ -30,15 +30,15 @@ export default class VrcDetectorController {
         });
     }
 
-    resetInterval(applicationSettings: ApplicationSettings) {
-        if (applicationSettings?.enableVrcDetector === true) {
+    resetInterval(settings: Settings) {
+        if (settings.enableVrcDetector) {
             // clear old interval if exists
             if (this.intervalId !== null) clearInterval(this.intervalId);
             // set new interval
-            const frequency = applicationSettings.vrcDetectorFrequency ?? this.defaultFrequency; // in seconds
+            const frequency = settings.vrcDetectorFrequency ?? this.defaultFrequency; // in seconds
             this.intervalId = setInterval(() => this.isVrchatRunning(), frequency * 1000);
 
-        } else if (applicationSettings?.enableVrcDetector === false) {
+        } else {
             // clear old interval if exists
             if (this.intervalId !== null) clearInterval(this.intervalId);
         }

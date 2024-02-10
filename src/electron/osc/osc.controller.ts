@@ -7,7 +7,6 @@ import { mainWindow } from '../electron';
 import { BridgeService } from '../bridge/bridge.service';
 import { ToyCommand } from 'lovense';
 import { ToyActionType, ToyCommandOscMessage } from '../../shared/lovense';
-import { ipcMain, IpcMainEvent } from 'electron';
 import TypedIpcMain from '../ipc/typedIpcMain';
 
 export class OscController {
@@ -36,17 +35,10 @@ export class OscController {
         if (this.oscServer) this.oscServer.close();
         if (this.oscClient) this.oscClient.close();
 
-        const storeSettings = StoreService.getApplicationSettings();
-        const oscSettings = new OscSettings();
+        const settings = StoreService.getSettings();
 
-        if (storeSettings) {
-            if (storeSettings.oscIp) oscSettings.oscIp = storeSettings.oscIp;
-            if (storeSettings.oscInPort) oscSettings.oscInPort = storeSettings.oscInPort;
-            if (storeSettings.oscOutPort) oscSettings.oscOutPort = storeSettings.oscOutPort;
-        }
-
-        this.oscClient = new Client(oscSettings.oscIp!, oscSettings.oscInPort!);
-        this.oscServer = new Server(oscSettings.oscOutPort!, oscSettings.oscIp!);
+        this.oscClient = new Client(settings.oscIp, settings.oscInPort);
+        this.oscServer = new Server(settings.oscOutPort, settings.oscIp);
 
         if (!this.activityInterval) this.activityInterval = setInterval(this.activityChecker, 60000);
 

@@ -1,10 +1,26 @@
 import Store from 'electron-store';
-import { ApplicationSettings, ClientCredentials } from '../../shared/classes';
+import { ClientCredentials } from '../../shared/classes';
 import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from '../../shared/lovense';
 import { BridgeService } from '../bridge/bridge.service';
+import { Settings } from '../../shared/types/settings';
+
+const defaultSettings: Settings = {
+  startMinimized: false,
+  autoLogin: true,
+  enableVrcDetector: true,
+  vrcDetectorFrequency: 10,
+  oscIp: '127.0.0.1',
+  oscInPort: 9000,
+  oscOutPort: 9001
+}
 
 export class StoreService {
-    private static clientStore = new Store({encryptionKey: "client-settings"});
+    private static clientStore = new Store({
+        encryptionKey: 'client-settings',
+        defaults: {
+            settings: defaultSettings
+        }
+    });
 
     static getClientCredentials(): ClientCredentials | null {
         return this.clientStore.get('clientCredentials') as ClientCredentials;
@@ -14,13 +30,13 @@ export class StoreService {
         this.clientStore.set('clientCredentials', clientCredentials);
     }
 
-    static getApplicationSettings(): ApplicationSettings | null {
-        return this.clientStore.get('settings') as ApplicationSettings;
+    static getSettings(): Settings {
+        return this.clientStore.get('settings');
     }
 
-    static setApplicationSettings(applicationSettings: ApplicationSettings) {
-        this.clientStore.set('settings', applicationSettings);
-        BridgeService.emit('applicationSettings', applicationSettings);
+    static setSettings(settings: Settings) {
+        this.clientStore.set('settings', settings);
+        BridgeService.emit('settings', settings);
     }
 
     static getToyCommandParameters(): ToyCommandParameter[] {

@@ -15,7 +15,6 @@ export default abstract class LovenseService {
     protected abstract setDeviceInformation(deviceInformation: DeviceInformation): void;
 
     protected constructor() {
-        console.log('LovenseService constructor');
     }
 
     protected isSocketConnected(): boolean {

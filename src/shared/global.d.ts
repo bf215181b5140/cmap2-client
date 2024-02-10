@@ -1,14 +1,15 @@
 import { WindowState } from './enums';
 import { SocketConnection } from './SocketConnection';
-import { ApplicationSettings, ClientCredentials } from './classes';
+import { ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
+import { Settings } from './types/settings';
 
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
     getConnectionStatus: SocketConnection;
-    getApplicationSettings: ApplicationSettings | null;
+    getSettings: Settings;
     getLovenseSettings: LovenseSettings;
     getToyCommandParameters: ToyCommandParameter[];
     getToyCommandOscMessages: ToyCommandOscMessage[];
@@ -19,7 +20,7 @@ type IpcSendOptions = {
     setClientCredentials: ClientCredentials;
     setWindowState: WindowState;
     disconnectSocket: undefined;
-    setApplicationSettings: ApplicationSettings;
+    setSettings: Settings;
     forwardOscToRenderer: boolean;
     setLovenseSettings: LovenseSettings;
     getLovenseStatus: undefined;

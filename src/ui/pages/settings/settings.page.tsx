@@ -1,7 +1,6 @@
 import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { useEffect } from 'react';
 import FormTable from '../../shared/components/form/formTable.component';
 import FormControlBar from '../../shared/components/form/formControlBar.component';
@@ -9,34 +8,22 @@ import SubmitInput from '../../shared/components/form/inputs/submit.component';
 import NumberInput from '../../shared/components/form/inputs/number.component';
 import Input from '../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
+import { Settings, settingsSchema } from '../../../shared/types/settings';
 
 export default function SettingsPage() {
 
-    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm({
-        resolver: zodResolver(
-            z.object({
-                startMinimized: z.boolean(),
-                autoLogin: z.boolean(),
-                enableVrcDetector: z.boolean(),
-                vrcDetectorFrequency: z.number().min(1).max(3600),
-                oscIp: z.string().optional(),
-                oscInPort: z.number().optional(),
-                oscOutPort: z.number().optional(),
-            })
-        )
-    });
+    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm<Settings>({ resolver: zodResolver(settingsSchema) });
 
     useEffect(() => {
-        window.electronAPI.get('getApplicationSettings').then(applicationSettings => {
-            if (applicationSettings) {
-                reset(applicationSettings);
+        window.electronAPI.get('getSettings').then(settings => {
+            if (settings) {
+                reset(settings as Settings);
             }
         });
     }, []);
 
-    function onSubmit(formData: any) {
-        if (formData.oscIp === '') formData.oscIp = undefined;
-        window.electronAPI.send('setApplicationSettings', formData);
+    function onSubmit(formData: Settings) {
+        window.electronAPI.send('setSettings', formData);
     }
 
     return (<Content flexDirection="column">
