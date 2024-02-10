@@ -28,12 +28,14 @@ type IpcSendOptions = {
     sendLovenseToyCommand: ToyCommand;
     setToyCommandParameters: ToyCommandParameter[];
     setToyCommandOscMessages: ToyCommandOscMessage[];
+    getIsVrchatRunning: undefined;
 };
 
 type IpcReceiveOptions = {
     updateConnectionStatus: SocketConnection;
     vrcParameter: VrcParameter;
     lovenseStatus: LovenseStatus;
+    isVrchatRunning: boolean;
 };
 
 export interface IElectronAPI {

@@ -1,6 +1,7 @@
 import Store from 'electron-store';
 import { ApplicationSettings, ClientCredentials } from '../../shared/classes';
 import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from '../../shared/lovense';
+import { BridgeService } from '../bridge/bridge.service';
 
 export class StoreService {
     private static clientStore = new Store({encryptionKey: "client-settings"});
@@ -19,6 +20,7 @@ export class StoreService {
 
     static setApplicationSettings(applicationSettings: ApplicationSettings) {
         this.clientStore.set('settings', applicationSettings);
+        BridgeService.emit('applicationSettings', applicationSettings);
     }
 
     static getToyCommandParameters(): ToyCommandParameter[] {

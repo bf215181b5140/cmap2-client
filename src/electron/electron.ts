@@ -6,6 +6,7 @@ import { IpcMainService } from './ipc/ipcMain.service';
 import { testing } from './testing/testing.service';
 import { StoreService } from './store/store.service';
 import LovenseController from './lovense/lovense.controller';
+import VrcDetectorController from './vrcDetector/vrcDetector.controller';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -56,14 +57,16 @@ function createWindow(): BrowserWindow {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
+    const applicationSettings = StoreService.getApplicationSettings();
+
     IpcMainService.init();
     OscController.start();
     new LovenseController();
+    new VrcDetectorController(applicationSettings);
 
     // testing service
     // testing();
 
-    const applicationSettings = StoreService.getApplicationSettings();
     if (applicationSettings && applicationSettings.autoLogin === true) ClientSocketService.connect();
     if (!applicationSettings || applicationSettings.startMinimized !== true) mainWindow = createWindow();
 

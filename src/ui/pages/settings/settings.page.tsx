@@ -12,11 +12,13 @@ import CheckboxInput from '../../shared/components/form/inputs/checkbox.componen
 
 export default function SettingsPage() {
 
-    const {register, reset, formState: {errors}, handleSubmit} = useForm({
+    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm({
         resolver: zodResolver(
             z.object({
                 startMinimized: z.boolean(),
                 autoLogin: z.boolean(),
+                enableVrcDetector: z.boolean(),
+                vrcDetectorFrequency: z.number().min(1).max(3600),
                 oscIp: z.string().optional(),
                 oscInPort: z.number().optional(),
                 oscOutPort: z.number().optional(),
@@ -49,6 +51,13 @@ export default function SettingsPage() {
                     <tr>
                         <th>Connect automatically</th>
                         <td><CheckboxInput register={register} name={'autoLogin'} errors={errors} /></td>
+                    </tr>
+                    <tr>
+                        <th>Check if Vrchat is running</th>
+                        <td><CheckboxInput name={'enableVrcDetector'} register={register} errors={errors} /></td>
+                        <th>every</th>
+                        <td><NumberInput name={'vrcDetectorFrequency'} register={register} errors={errors} width={'60px'} readOnly={!watch('enableVrcDetector')}/></td>
+                        <th>seconds</th>
                     </tr>
                 </FormTable>
                 <h2>OSC settings</h2>

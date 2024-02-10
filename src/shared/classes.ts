@@ -19,4 +19,6 @@ export class OscSettings {
 export class ApplicationSettings extends OscSettings {
     startMinimized: boolean | undefined | null;
     autoLogin: boolean | undefined | null;
+    enableVrcDetector: boolean | undefined | null;
+    vrcDetectorFrequency: number | undefined | null;
 }

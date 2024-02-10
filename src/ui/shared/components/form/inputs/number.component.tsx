@@ -22,7 +22,12 @@ export default function NumberInput({name, register, decimals = 0, placeholder, 
 
     function setValue(value: string) {
         if (value === '') return undefined;
-        if (decimals >= 0 && decimals <= 100) parseFloat(value).toFixed(decimals);
+        if (decimals === 0) return parseInt(value);
+        if (decimals >= 0 && decimals <= 100) {
+            const factor = Math.pow(10, decimals);
+            const number = parseFloat(value);
+            return Math.round(number * factor) / factor;
+        }
         return undefined;
     }
 
