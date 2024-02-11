@@ -36,10 +36,6 @@ export default function SettingsPage() {
                         <td><CheckboxInput register={register} name={'startMinimized'} errors={errors} /></td>
                     </tr>
                     <tr>
-                        <th>Connect automatically</th>
-                        <td><CheckboxInput register={register} name={'autoLogin'} errors={errors} /></td>
-                    </tr>
-                    <tr>
                         <th>Check if Vrchat is running</th>
                         <td><CheckboxInput name={'enableVrcDetector'} register={register} errors={errors} /></td>
                         <th>every</th>
@@ -47,19 +43,29 @@ export default function SettingsPage() {
                         <th>seconds</th>
                     </tr>
                 </FormTable>
-                <h2>OSC settings</h2>
+                <h2>Website</h2>
+                <FormTable>
+                    <tr>
+                        <th>Connect to website automatically</th>
+                        <td><CheckboxInput register={register} name={'autoLogin'} errors={errors} /></td>
+                    </tr>
+                </FormTable>
+                <h2>OSC</h2>
                 <FormTable>
                     <tr>
                         <th>VRChat lan IP</th>
                         <td><Input register={register} name={'oscIp'} placeholder={'127.0.0.1'} errors={errors} /></td>
+                        <td>Default: 127.0.0.1</td>
                     </tr>
                     <tr>
                         <th>VRChat osc receiving port</th>
                         <td><NumberInput register={register} name={'oscInPort'} placeholder={'9000'} errors={errors} /></td>
+                        <td>Default: 9000</td>
                     </tr>
                     <tr>
                         <th>VRChat osc sending port</th>
                         <td><NumberInput register={register} name={'oscOutPort'} placeholder={'9001'} errors={errors} /></td>
+                        <td>Default: 9001</td>
                     </tr>
                 </FormTable>
                 <FormControlBar>

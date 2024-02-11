@@ -9,7 +9,7 @@ import TypedIpcMain from '../ipc/typedIpcMain';
 import { OscSettings } from '../../shared/types/osc';
 import { Settings } from '../../shared/types/settings';
 
-export class OscController {
+export class OscService {
     private oscServer: Server | undefined;
     private oscClient: Client | undefined;
     private oscSettings: OscSettings | undefined;

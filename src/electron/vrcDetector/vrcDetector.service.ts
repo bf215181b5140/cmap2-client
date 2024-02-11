@@ -4,7 +4,7 @@ import { BridgeService } from '../bridge/bridge.service';
 import { Settings } from '../../shared/types/settings';
 import { StoreService } from '../store/store.service';
 
-export default class VrcDetectorController {
+export default class VrcDetectorService {
     private intervalId: NodeJS.Timeout | null = null;
     private defaultFrequency: number = 10;
     private processName: string = 'vrchat.exe';

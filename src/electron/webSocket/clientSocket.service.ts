@@ -5,6 +5,8 @@ import { StoreService } from '../store/store.service';
 import { URL } from '../../shared/const';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
+import { ClientCredentials } from '../../shared/classes';
+import { Settings } from '../../shared/types/settings';
 
 export class ClientSocketService {
     private socket: SocketIOClient.Socket | undefined;
@@ -13,8 +15,8 @@ export class ClientSocketService {
     /**
      * Sets listeners for events and starts socket connection to server
      */
-    constructor() {
-        TypedIpcMain.on('setClientCredentials', () => this.connect());
+    constructor(settings: Settings) {
+        TypedIpcMain.on('setClientCredentials', (clientCredentials) => this.connect(clientCredentials));
         TypedIpcMain.handle('getConnectionStatus', async () => this.connectionStatus);
         TypedIpcMain.on('disconnectSocket', () => this.disconnect());
 
@@ -22,7 +24,7 @@ export class ClientSocketService {
         BridgeService.on('vrcParameter', (vrcParameter: VrcParameter) => this.sendParameter('parameter', vrcParameter));
         BridgeService.on('vrcAvatar', (vrcParameter: VrcParameter) => this.sendParameter('avatar', vrcParameter));
 
-        this.connect()
+        if (settings.autoLogin) this.connect(StoreService.getClientCredentials());
     }
 
     /**
@@ -30,10 +32,7 @@ export class ClientSocketService {
      * Handles socket events.
      * @private
      */
-    private connect() {
-        const clientCredentials = StoreService.getClientCredentials();
-        if (!clientCredentials) return;
-
+    private connect(clientCredentials: ClientCredentials) {
         if (this.socket) this.socket.close();
         this.socket = io(URL + '/clientSocket', {
             query: {

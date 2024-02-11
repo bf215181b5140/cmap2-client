@@ -1,12 +1,12 @@
 import { app, BrowserWindow, Tray, Menu } from 'electron';
 import * as path from 'path';
-import { OscController } from './osc/osc.controller';
+import { OscService } from './osc/osc.service';
 import { ClientSocketService } from './webSocket/clientSocket.service';
 import { IpcMainService } from './ipc/ipcMain.service';
 import { testing } from './testing/testing.service';
 import { StoreService } from './store/store.service';
 import LovenseController from './lovense/lovense.controller';
-import VrcDetectorController from './vrcDetector/vrcDetector.controller';
+import VrcDetectorService from './vrcDetector/vrcDetector.service';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -57,20 +57,20 @@ function createWindow(): BrowserWindow {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
+    // grab settings
+    const settings = StoreService.getSettings();
 
     // initiate services
     new StoreService();
     new IpcMainService();
-    new OscController();
-    new ClientSocketService();
+    new OscService();
+    new ClientSocketService(settings);
     new LovenseController();
-    new VrcDetectorController();
+    new VrcDetectorService();
 
     // testing service
     // testing();
 
-    // grab settings
-    const settings = StoreService.getSettings();
     if (!settings.startMinimized) mainWindow = createWindow();
 
     // create tray icon
