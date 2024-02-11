@@ -1,7 +1,7 @@
 import { getFingerprint } from '../util/fingerprint';
 import TypedIpcMain from './typedIpcMain';
 
-export class IpcMainService {
+export class IpcMainController {
 
     constructor() {
         // Util
