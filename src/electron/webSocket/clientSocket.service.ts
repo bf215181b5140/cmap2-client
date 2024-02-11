@@ -15,6 +15,9 @@ export class ClientSocketService {
     static connectionStatus: SocketConnection = new SocketConnection();
 
     static connect() {
+        // todo this stacks on restart
+        TypedIpcMain.on('setClientCredentials', (clientCredentials: ClientCredentials) => ClientSocketService.connect());
+
         const clientCredentials = StoreService.getClientCredentials();
         if (!clientCredentials) return;
 

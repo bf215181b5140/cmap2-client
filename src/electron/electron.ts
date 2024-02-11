@@ -57,17 +57,20 @@ function createWindow(): BrowserWindow {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
+    // grab settings
     const settings = StoreService.getSettings();
 
+    // initiate services
+    new StoreService();
     IpcMainService.init();
     OscController.start();
     new LovenseController();
-    new VrcDetectorController(settings);
+    new VrcDetectorController();
+    if (settings.autoLogin) ClientSocketService.connect();
 
     // testing service
     // testing();
 
-    if (settings.autoLogin) ClientSocketService.connect();
     if (!settings.startMinimized) mainWindow = createWindow();
 
     // create tray icon

@@ -32,8 +32,6 @@ export default abstract class LovenseService {
     }
 
     protected async connect(): Promise<void> {
-        console.log('Connecting to Lovense...');
-
         if (this.lovenseSocket) this.lovenseSocket.close();
 
         if (!this.authToken) {
@@ -125,7 +123,7 @@ export default abstract class LovenseService {
     private async getAuthToken(): Promise<string | void> {
         const url = URL + '/api/lovense';
 
-        const apiToken = StoreService.getClientCredentials()?.apiToken;
+        const apiToken = StoreService.getClientCredentials().apiToken;
         if (!apiToken) {
             console.log('apiToken is undefined');
             return;

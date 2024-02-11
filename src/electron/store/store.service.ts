@@ -3,27 +3,35 @@ import { ClientCredentials } from '../../shared/classes';
 import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from '../../shared/lovense';
 import { BridgeService } from '../bridge/bridge.service';
 import { Settings } from '../../shared/types/settings';
-
-const defaultSettings: Settings = {
-  startMinimized: false,
-  autoLogin: true,
-  enableVrcDetector: true,
-  vrcDetectorFrequency: 10,
-  oscIp: '127.0.0.1',
-  oscInPort: 9000,
-  oscOutPort: 9001
-}
+import storeDefaults from './storeDefaults';
+import TypedIpcMain from '../ipc/typedIpcMain';
 
 export class StoreService {
     private static clientStore = new Store({
         encryptionKey: 'client-settings',
-        defaults: {
-            settings: defaultSettings
-        }
+        defaults: storeDefaults
     });
 
-    static getClientCredentials(): ClientCredentials | null {
-        return this.clientStore.get('clientCredentials') as ClientCredentials;
+    constructor() {
+        // Client credentials
+        TypedIpcMain.handle('getClientCredentials', async () => StoreService.getClientCredentials());
+        TypedIpcMain.on('setClientCredentials', (clientCredentials: ClientCredentials) => StoreService.setClientCredentials(clientCredentials));
+
+        // Settings
+        TypedIpcMain.handle('getSettings', async () => StoreService.getSettings());
+        TypedIpcMain.on('setSettings', (settings) => StoreService.setSettings(settings));
+
+        // Lovense
+        TypedIpcMain.handle('getLovenseSettings', async () => StoreService.getLovenseSettings());
+        TypedIpcMain.on('setLovenseSettings', (lovenseSettings: LovenseSettings) => StoreService.setLovenseSettings(lovenseSettings));
+        TypedIpcMain.handle('getToyCommandParameters', async () => StoreService.getToyCommandParameters());
+        TypedIpcMain.on('setToyCommandParameters', (toyCommandParameters: ToyCommandParameter[]) => StoreService.setToyCommandParameters(toyCommandParameters));
+        TypedIpcMain.handle('getToyCommandOscMessages', async () => StoreService.getToyCommandOscMessages());
+        TypedIpcMain.on('setToyCommandOscMessages', (toyCommandOscMessages: ToyCommandOscMessage[]) => StoreService.setToyCommandOscMessages(toyCommandOscMessages));
+    }
+
+    static getClientCredentials(): ClientCredentials {
+        return this.clientStore.get('clientCredentials');
     }
 
     static setClientCredentials(clientCredentials: ClientCredentials) {
@@ -40,7 +48,7 @@ export class StoreService {
     }
 
     static getToyCommandParameters(): ToyCommandParameter[] {
-        return this.clientStore.get('toyCommandParameters') as ToyCommandParameter[] ?? [];
+        return this.clientStore.get('toyCommandParameters');
     }
 
     static setToyCommandParameters(toyCommandParameters: ToyCommandParameter[]) {
@@ -48,7 +56,7 @@ export class StoreService {
     }
 
     static getToyCommandOscMessages(): ToyCommandOscMessage[] {
-        return this.clientStore.get('toyCommandOscMessages') as ToyCommandOscMessage[] ?? [];
+        return this.clientStore.get('toyCommandOscMessages');
     }
 
     static setToyCommandOscMessages(toyCommandOscMessages: ToyCommandOscMessage[]) {
@@ -56,7 +64,7 @@ export class StoreService {
     }
 
     static getLovenseSettings(): LovenseSettings {
-        return this.clientStore.get('lovenseSettings') as LovenseSettings ?? new LovenseSettings();
+        return this.clientStore.get('lovenseSettings');
     }
 
     static setLovenseSettings(lovenseSettings: LovenseSettings) {

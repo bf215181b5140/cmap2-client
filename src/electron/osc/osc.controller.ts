@@ -74,6 +74,15 @@ export class OscController {
 
         this.setToyCommandOscMessages(StoreService.getToyCommandOscMessages());
 
+        // todo all these stack on restart
+        TypedIpcMain.on('setSettings', (settings) => {
+            const oldSettings = StoreService.getSettings();
+            if (oldSettings.oscIp !== settings.oscIp ||
+                oldSettings.oscInPort !== settings.oscInPort ||
+                oldSettings.oscOutPort !== settings.oscOutPort) {
+                this.start();
+            }
+        });
         TypedIpcMain.on('setToyCommandOscMessages', (toyCommandOscMessages: ToyCommandOscMessage[]) => this.setToyCommandOscMessages(toyCommandOscMessages));
 
         BridgeService.on('toyCommand', (toyCommand: ToyCommand) => this.checkToyCommand(toyCommand));

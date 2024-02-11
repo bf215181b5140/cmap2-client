@@ -2,14 +2,15 @@ import { exec } from 'child_process';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { Settings } from '../../shared/types/settings';
+import { StoreService } from '../store/store.service';
 
 export default class VrcDetectorController {
     private intervalId: NodeJS.Timeout | null = null;
     private defaultFrequency: number = 10;
     private processName: string = 'vrchat.exe';
 
-    constructor(settings: Settings) {
-        if (settings) this.resetInterval(settings);
+    constructor() {
+        this.resetInterval(StoreService.getSettings());
 
         BridgeService.on('settings', (settings) => this.resetInterval(settings));
 

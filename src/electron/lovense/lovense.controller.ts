@@ -16,7 +16,7 @@ import TypedIpcMain from '../ipc/typedIpcMain';
 //                                     '/avatar/parameters/OGB/Pen/Penis/FrotOthers'
 
 export default class LovenseController extends LovenseService {
-    private lovenseSettings: LovenseSettings = StoreService.getLovenseSettings();
+    private lovenseSettings: LovenseSettings;
     private lovenseStatus: LovenseStatus = new LovenseStatus();
     private toyCommandParameters: Map<string, ToyCommandParameter> = new Map<string, ToyCommandParameter>();
     private toyCommandHistory: Map<string, number> = new Map<string, number>();
@@ -24,6 +24,7 @@ export default class LovenseController extends LovenseService {
     constructor() {
         super();
 
+        this.lovenseSettings = StoreService.getLovenseSettings();
         this.setToyCommandParameters(StoreService.getToyCommandParameters());
 
         TypedIpcMain.on('setLovenseSettings', (lovenseSettings: LovenseSettings) => this.lovenseSettings = lovenseSettings);
