@@ -102,7 +102,6 @@ export class ClientSocketService {
     }
 
     private updateConnectionStatus() {
-        // if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
         TypedIpcMain.emit('updateConnectionStatus', this.connectionStatus);
     }
 }

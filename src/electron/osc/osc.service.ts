@@ -1,7 +1,6 @@
 import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { StoreService } from '../store/store.service';
 import { ValueType, VrcParameter } from 'cmap2-shared';
-import { mainWindow } from '../electron';
 import { BridgeService } from '../bridge/bridge.service';
 import { ToyCommand } from 'lovense';
 import { ToyActionType, ToyCommandOscMessage } from '../../shared/lovense';
@@ -89,8 +88,8 @@ export class OscService {
                     BridgeService.emit('vrcAvatar', vrcParameter);
                 } else {
                     BridgeService.emit('vrcParameter', vrcParameter);
-                    if (this.forwardOscToRenderer && mainWindow && !mainWindow.isDestroyed()) {
-                        mainWindow.webContents.send('vrcParameter', vrcParameter);
+                    if (this.forwardOscToRenderer) {
+                        TypedIpcMain.emit('vrcParameter', vrcParameter);
                     }
                 }
             }

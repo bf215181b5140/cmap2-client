@@ -1,5 +1,3 @@
-import { ipcMain, IpcMainEvent } from 'electron';
-import { mainWindow } from '../electron';
 import { DeviceInformation, QRCodeData, ToyCommand } from 'lovense';
 import { VrcParameter } from 'cmap2-shared';
 import { LovenseSettings, LovenseStatus, ToyActionType, ToyCommandParameter } from '../../shared/lovense';
@@ -114,10 +112,7 @@ export default class LovenseController extends LovenseService {
     private updateLovenseStatus() {
         this.lovenseStatus.socketConnection = this.isSocketConnected();
 
-        // todo this is ugly, fix
-        if (mainWindow && !mainWindow.isDestroyed()) {
-            mainWindow.webContents.send('lovenseStatus', this.lovenseStatus);
-        }
+        TypedIpcMain.emit('lovenseStatus', this.lovenseStatus);
 
         if (this.lovenseSettings.sendConnectionOscMessage) {
             const vrcParameter: VrcParameter = {

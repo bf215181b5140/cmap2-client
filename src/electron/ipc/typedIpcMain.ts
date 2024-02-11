@@ -1,6 +1,6 @@
 import { ipcMain, IpcMainEvent } from 'electron';
-import { mainWindow } from '../electron';
 import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from '../../shared/global';
+import mainWindow from '../mainWindow/mainWindow';
 
 export default class TypedIpcMain {
     static on<K extends keyof IpcSendOptions>(channel: K, func: (data: IpcSendOptions[K]) => void): void {
@@ -12,6 +12,6 @@ export default class TypedIpcMain {
     }
 
     static emit<K extends keyof IpcReceiveOptions>(channel: K, data: IpcReceiveOptions[K]): void {
-        if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send(channel, data);
+        mainWindow.send(channel, data);
     }
 }

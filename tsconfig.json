@@ -1,39 +1,4 @@
 {
-//  "compilerOptions": {
-//    "baseUrl": "./",
-//    "outDir": "./build",
-//    "forceConsistentCasingInFileNames": true,
-//    "strict": true,
-//    "noImplicitOverride": true,
-//    "noPropertyAccessFromIndexSignature": true,
-//    "noImplicitReturns": true,
-//    "noFallthroughCasesInSwitch": true,
-//    "sourceMap": true,
-//    "declaration": false,
-//    "downlevelIteration": true,
-//    "experimentalDecorators": true,
-//    "moduleResolution": "node",
-//    "importHelpers": true,
-//    "allowSyntheticDefaultImports": true,
-//    "preserveConstEnums": true,
-//    "resolveJsonModule": true,
-//    "target": "es2020",
-//    "module": "commonjs",
-//    "jsx": "react-jsx",
-//    "lib": [
-//      "es2020",
-//      "dom"
-//    ]
-//  },
-//  "include": [
-//    "./src/**/*",
-//  ],
-//  "exclude": [
-//    "./src/ui/**/*"
-//  ],
-//  "files": [
-//    "./src/electron/electron.ts"
-//  ]
   "compilerOptions": {
     "baseUrl": ".",
     "target": "ESNext",
@@ -54,7 +19,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-//    "composite": true,
   },
   "include": ["src", "package.json"],
 }
