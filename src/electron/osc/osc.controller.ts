@@ -2,7 +2,7 @@ import { OscService } from './osc.service';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { VrcParameter } from 'cmap2-shared';
-import { StoreService } from '../store/store.service';
+import { Settings } from '../../shared/types/settings';
 
 export class OscController extends OscService {
     private isActive: boolean = false;
@@ -15,8 +15,8 @@ export class OscController extends OscService {
     /**
      * Sets listeners for events and starts OSC server and client
      */
-    constructor() {
-        super();
+    constructor(settings: Settings) {
+        super(settings);
 
         TypedIpcMain.on('setSettings', (settings) => {
             if (!this.oscSettings) {
@@ -32,7 +32,6 @@ export class OscController extends OscService {
         BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
         BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
 
-        this.start(StoreService.getSettings());
         if (!this.activityInterval) this.activityInterval = setInterval(() => this.activityChecker(), this.activityIntervalMs);
     }
 

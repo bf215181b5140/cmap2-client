@@ -24,7 +24,7 @@ app.whenReady().then(() => {
     // initiate services
     new StoreService();
     new IpcMainController();
-    new OscController();
+    new OscController(settings);
     new ClientSocketService(settings);
     new LovenseController();
     new VrcDetectorService();

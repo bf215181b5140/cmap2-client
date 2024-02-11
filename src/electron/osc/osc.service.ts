@@ -1,12 +1,11 @@
 import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { VrcParameter } from 'cmap2-shared';
-import { OscSettings } from '../../shared/types/osc';
 import { Settings } from '../../shared/types/settings';
 
 export abstract class OscService {
     private oscServer: Server | undefined;
     private oscClient: Client | undefined;
-    protected oscSettings: OscSettings | undefined;
+    protected oscSettings: Settings | undefined;
 
     private ignoredParams: Set<string> = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
                                                   '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
@@ -14,6 +13,10 @@ export abstract class OscService {
                                                   '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureRight',
                                                   '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
                                                   '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude']);
+
+    protected constructor(settings: Settings) {
+        this.start(settings);
+    }
 
     protected abstract recieved(vrcParameter: VrcParameter): void;
     protected abstract activity(): void;
@@ -26,6 +29,8 @@ export abstract class OscService {
     protected start(settings: Settings) {
         if (this.oscServer) this.oscServer.close();
         if (this.oscClient) this.oscClient.close();
+
+        this.oscSettings = {...settings};
 
         this.oscClient = new Client(settings.oscIp, settings.oscInPort);
         this.oscServer = new Server(settings.oscOutPort, settings.oscIp);
