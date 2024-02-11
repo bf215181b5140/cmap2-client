@@ -10,5 +10,4 @@ export const settingsSchema = z.object({
     oscOutPort: z.number(),
 });
 
-// after form validation
 export type Settings = z.infer<typeof settingsSchema>;

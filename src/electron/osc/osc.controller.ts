@@ -1,54 +1,80 @@
 import { ArgumentType, Client, Message, Server } from 'node-osc';
-import { ClientSocketService } from '../webSocket/clientSocket.service';
 import { StoreService } from '../store/store.service';
-import { OscSettings } from '../../shared/classes';
 import { ValueType, VrcParameter } from 'cmap2-shared';
 import { mainWindow } from '../electron';
 import { BridgeService } from '../bridge/bridge.service';
 import { ToyCommand } from 'lovense';
 import { ToyActionType, ToyCommandOscMessage } from '../../shared/lovense';
 import TypedIpcMain from '../ipc/typedIpcMain';
+import { OscSettings } from '../../shared/types/osc';
+import { Settings } from '../../shared/types/settings';
 
 export class OscController {
+    private oscServer: Server | undefined;
+    private oscClient: Client | undefined;
+    private oscSettings: OscSettings | undefined;
 
-    static oscServer: Server;
-    static oscClient: Client;
+    private activityInterval: NodeJS.Timer | undefined;
+    private lastActivity: number = 0;
+    private isActive: boolean = false;
+    private activityIntervalMs: number = 60000;
 
-    static activityInterval: NodeJS.Timer;
-    static lastActivity: number = 0;
-    static isActive: boolean = false;
-    static activityIntervalMs: number = 60000;
+    private forwardOscToRenderer: boolean = false;
 
-    static forwardOscToRenderer: boolean = false;
+    private ignoredParams: Set<string> = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
+                                                  '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
+                                                  '/avatar/parameters/AngularY', '/avatar/parameters/Grounded', '/avatar/parameters/Face',
+                                                  '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureRight',
+                                                  '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
+                                                  '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude']);
 
-    static ignoredParams: Set<string> = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
-                                                 '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
-                                                 '/avatar/parameters/AngularY', '/avatar/parameters/Grounded', '/avatar/parameters/Face',
-                                                 '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureRight',
-                                                 '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
-                                                 '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude']);
+    private toyCommandOscMessages: Map<string, ToyCommandOscMessage[]> = new Map<string, ToyCommandOscMessage[]>();
 
-    static toyCommandOscMessages: Map<string, ToyCommandOscMessage[]> = new Map<string, ToyCommandOscMessage[]>();
+    /**
+     * Sets listeners for events and starts OSC server and client
+     */
+    constructor() {
+        TypedIpcMain.on('setSettings', (settings) => {
+            if (!this.oscSettings) {
+                this.start(settings);
+            } else if (this.oscSettings.oscIp !== settings.oscIp ||
+                this.oscSettings.oscInPort !== settings.oscInPort ||
+                this.oscSettings.oscOutPort !== settings.oscOutPort) {
+                this.start(settings);
+            }
+        });
+        TypedIpcMain.on('setToyCommandOscMessages', (toyCommandOscMessages: ToyCommandOscMessage[]) => this.setToyCommandOscMessages(toyCommandOscMessages));
+        TypedIpcMain.on('forwardOscToRenderer', (forward: boolean) => this.forwardOscToRenderer = forward);
 
-    static start() {
+        BridgeService.on('toyCommand', (toyCommand: ToyCommand) => this.checkToyCommand(toyCommand));
+        BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
+        BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
 
+
+        this.setToyCommandOscMessages(StoreService.getToyCommandOscMessages());
+        this.start(StoreService.getSettings());
+    }
+
+    /**
+     * Starts or restarts OSC server and client along with handling new OSC messages
+     * @param settings
+     * @private
+     */
+    private start(settings: Settings) {
         if (this.oscServer) this.oscServer.close();
         if (this.oscClient) this.oscClient.close();
-
-        const settings = StoreService.getSettings();
 
         this.oscClient = new Client(settings.oscIp, settings.oscInPort);
         this.oscServer = new Server(settings.oscOutPort, settings.oscIp);
 
-        if (!this.activityInterval) this.activityInterval = setInterval(this.activityChecker, 60000);
+        if (!this.activityInterval) this.activityInterval = setInterval(() => this.activityChecker(), this.activityIntervalMs);
 
         this.oscServer.on('message', (message: [string, ...ArgumentType[]]) => {
-
             // set activity
             this.lastActivity = Date.now();
             if (!this.isActive) {
                 this.isActive = true;
-                ClientSocketService.sendData('activity', true);
+                BridgeService.emit('oscActivity', this.isActive);
             }
 
             // filter parameters
@@ -59,37 +85,24 @@ export class OscController {
 
                 const vrcParameter: VrcParameter = {path, value};
 
-                if (path.indexOf('/avatar/change') !== -1) {
-                    ClientSocketService.sendParameter('avatar', {path: vrcParameter.path, value: vrcParameter.value});
+                if (vrcParameter.path.indexOf('/avatar/change') !== -1) {
+                    BridgeService.emit('vrcAvatar', vrcParameter);
                 } else {
-                    ClientSocketService.sendParameter('parameter', vrcParameter);
                     BridgeService.emit('vrcParameter', vrcParameter);
                     if (this.forwardOscToRenderer && mainWindow && !mainWindow.isDestroyed()) {
                         mainWindow.webContents.send('vrcParameter', vrcParameter);
                     }
-
                 }
             }
         });
-
-        this.setToyCommandOscMessages(StoreService.getToyCommandOscMessages());
-
-        // todo all these stack on restart
-        TypedIpcMain.on('setSettings', (settings) => {
-            const oldSettings = StoreService.getSettings();
-            if (oldSettings.oscIp !== settings.oscIp ||
-                oldSettings.oscInPort !== settings.oscInPort ||
-                oldSettings.oscOutPort !== settings.oscOutPort) {
-                this.start();
-            }
-        });
-        TypedIpcMain.on('setToyCommandOscMessages', (toyCommandOscMessages: ToyCommandOscMessage[]) => this.setToyCommandOscMessages(toyCommandOscMessages));
-
-        BridgeService.on('toyCommand', (toyCommand: ToyCommand) => this.checkToyCommand(toyCommand));
-        BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
     }
 
-    private static setToyCommandOscMessages(toyCommandOscMessages: ToyCommandOscMessage[]): void {
+    /**
+     * Creates a map of toy commands instead of using arrays
+     * @param toyCommandOscMessages
+     * @private
+     */
+    private setToyCommandOscMessages(toyCommandOscMessages: ToyCommandOscMessage[]): void {
         this.toyCommandOscMessages = new Map<string, ToyCommandOscMessage[]>();
         toyCommandOscMessages.forEach(toyCommandOscMessage => {
             if (this.toyCommandOscMessages.has(toyCommandOscMessage.toy)) {
@@ -100,7 +113,12 @@ export class OscController {
         });
     }
 
-    static checkToyCommand(toyCommand: ToyCommand) {
+    /**
+     * If toy command is in the map, send OSC message that describes toy command/activity
+     * @param toyCommand
+     * @private
+     */
+    private checkToyCommand(toyCommand: ToyCommand) {
         const toyCommandOscMessages = this.toyCommandOscMessages.get(toyCommand.toy ?? '');
         toyCommandOscMessages?.forEach(toyCommandOscMessage => {
 
@@ -135,25 +153,39 @@ export class OscController {
         });
     }
 
-    static send(message: VrcParameter) {
+    /**
+     * Sends new OSC message to VRChat
+     * @param message
+     * @private
+     */
+    private send(message: VrcParameter) {
         if (this.oscClient) {
-            console.log('Sending OSC message to VRChat:', message);
             this.oscClient.send(new Message(message.path, message.value));
         }
     }
 
-    static activityChecker = () => {
+    /**
+     * Periodically sends OSC message to VRChat (every this.activityIntervalMs).<br>
+     * Checks if last activity was more than 3x this.activityIntervalMs ago.<br>
+     * Emits on activity change.
+     */
+    private activityChecker() {
         if (this.oscClient) {
             this.oscClient.send(new Message('/avatar/parameters/VRMode', 10));
         }
         const recentActivity = this.lastActivity > (Date.now() - ((this.activityIntervalMs * 3) + 2000));
         if (recentActivity !== this.isActive) {
             this.isActive = recentActivity;
-            ClientSocketService.sendData('activity', this.isActive);
+            BridgeService.emit('oscActivity', this.isActive);
         }
     };
 
-    static valueFromArgumentType(arg: ArgumentType): boolean | number | string {
+    /**
+     * Gets value from OSC message argument
+     * @param arg
+     * @private
+     */
+    private valueFromArgumentType(arg: ArgumentType): boolean | number | string {
         if (typeof arg === 'boolean' || typeof arg === 'number' || typeof arg === 'string') {
             return arg;
         } else {

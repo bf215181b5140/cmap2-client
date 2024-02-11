@@ -1,5 +1,3 @@
-import { mainWindow } from '../electron/electron';
-
 export class SocketConnection {
     type: SocketConnectionType = SocketConnectionType.MESSAGE;
     message: string = 'Not connected';

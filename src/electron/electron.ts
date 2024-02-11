@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Tray, nativeImage, Menu } from 'electron';
+import { app, BrowserWindow, Tray, Menu } from 'electron';
 import * as path from 'path';
 import { OscController } from './osc/osc.controller';
 import { ClientSocketService } from './webSocket/clientSocket.service';
@@ -57,20 +57,20 @@ function createWindow(): BrowserWindow {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
-    // grab settings
-    const settings = StoreService.getSettings();
 
     // initiate services
     new StoreService();
-    IpcMainService.init();
-    OscController.start();
+    new IpcMainService();
+    new OscController();
+    new ClientSocketService();
     new LovenseController();
     new VrcDetectorController();
-    if (settings.autoLogin) ClientSocketService.connect();
 
     // testing service
     // testing();
 
+    // grab settings
+    const settings = StoreService.getSettings();
     if (!settings.startMinimized) mainWindow = createWindow();
 
     // create tray icon

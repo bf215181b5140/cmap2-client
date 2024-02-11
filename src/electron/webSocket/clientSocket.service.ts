@@ -1,23 +1,36 @@
 import io from 'socket.io-client';
-import { OscController } from '../osc/osc.controller';
-import { Message } from 'node-osc';
 import { SocketConnection, SocketConnectionType } from '../../shared/SocketConnection';
 import { VrcParameter } from 'cmap2-shared';
-import { ClientCredentials } from '../../shared/classes';
 import { StoreService } from '../store/store.service';
-import { mainWindow } from '../electron';
 import { URL } from '../../shared/const';
 import TypedIpcMain from '../ipc/typedIpcMain';
+import { BridgeService } from '../bridge/bridge.service';
 
 export class ClientSocketService {
+    private socket: SocketIOClient.Socket | undefined;
+    private connectionStatus: SocketConnection = new SocketConnection();
 
-    static socket: SocketIOClient.Socket;
-    static connectionStatus: SocketConnection = new SocketConnection();
+    /**
+     * Sets listeners for events and starts socket connection to server
+     */
+    constructor() {
+        TypedIpcMain.on('setClientCredentials', () => this.connect());
+        TypedIpcMain.handle('getConnectionStatus', async () => this.connectionStatus);
+        TypedIpcMain.on('disconnectSocket', () => this.disconnect());
 
-    static connect() {
-        // todo this stacks on restart
-        TypedIpcMain.on('setClientCredentials', (clientCredentials: ClientCredentials) => ClientSocketService.connect());
+        BridgeService.on('oscActivity', (isActive) => this.sendData('activity', isActive));
+        BridgeService.on('vrcParameter', (vrcParameter: VrcParameter) => this.sendParameter('parameter', vrcParameter));
+        BridgeService.on('vrcAvatar', (vrcParameter: VrcParameter) => this.sendParameter('avatar', vrcParameter));
 
+        this.connect()
+    }
+
+    /**
+     * Starts socket connection with server and client credentials from electron-store.
+     * Handles socket events.
+     * @private
+     */
+    private connect() {
         const clientCredentials = StoreService.getClientCredentials();
         if (!clientCredentials) return;
 
@@ -27,57 +40,69 @@ export class ClientSocketService {
                 username: clientCredentials.username,
                 password: clientCredentials.password
             },
-            transports: ["websocket"]
+            transports: ['websocket']
         });
 
         this.connectionStatus.setConnection(SocketConnectionType.MESSAGE, 'Connecting...', '');
-        this.updateConnectionStatus()
+        this.updateConnectionStatus();
 
         this.socket.on('joined', () => {
             this.connectionStatus.setConnection(SocketConnectionType.SUCCESS, 'Connected', '');
-            this.updateConnectionStatus()
-            this.sendData('activity', OscController.isActive);
+            this.updateConnectionStatus();
+            BridgeService.emit('getOscActivity');
         });
 
         this.socket.on('error', (message: string) => {
             this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Error', message);
-            this.updateConnectionStatus()
+            this.updateConnectionStatus();
         });
 
         this.socket.on('connect_error', (err: Error) => {
             this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Error', err.message);
-            this.updateConnectionStatus()
+            this.updateConnectionStatus();
         });
 
         this.socket.on('disconnect', () => {
             this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Disconnected');
-            this.updateConnectionStatus()
+            this.updateConnectionStatus();
         });
 
         this.socket.on('parameter', (parameter: VrcParameter) => {
-            OscController.send(parameter);
+            BridgeService.emit('sendOscMessage', parameter);
         });
     }
 
-    static disconnect() {
+    private disconnect() {
         if (this.socket) this.socket.close();
         this.connectionStatus.setConnection(SocketConnectionType.MESSAGE, 'Not connected', '');
-        this.updateConnectionStatus()
+        this.updateConnectionStatus();
     }
 
-    static sendParameter(event: string, parameter: VrcParameter) {
+    /**
+     * Sends vrc parameter to server, forwarded from OSC controller
+     * @param event
+     * @param parameter
+     * @private
+     */
+    private sendParameter(event: 'parameter' | 'avatar', parameter: VrcParameter) {
         if (this.socket) {
             this.socket.emit(event, parameter);
         }
     }
 
-    static sendData(event: string, data: any) {
+    /**
+     * Sends other data to server, that isn't vrc parameter from OSC controller
+     * @param event
+     * @param data
+     * @private
+     */
+    private sendData(event: string, data: any) {
         if (this.socket) {
             this.socket.emit(event, data);
         }
     }
 
-    static updateConnectionStatus() {
+    private updateConnectionStatus() {
         // if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('updateConnectionStatus', this.connectionStatus);
         TypedIpcMain.emit('updateConnectionStatus', this.connectionStatus);
     }
