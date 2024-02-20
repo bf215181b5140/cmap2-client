@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import LovenseConnection from './components/lovenseConnection.component';
 import VrcConnection from './components/vrcConnection.component';
+import WebsiteConnection from './components/websiteConnection.component';
 
 export default function ConnectionPage() {
 
@@ -9,6 +10,7 @@ export default function ConnectionPage() {
         <ContentBox>
             <ConnectionPageStyled>
                 <VrcConnection />
+                <WebsiteConnection />
                 <LovenseConnection />
             </ConnectionPageStyled>
         </ContentBox>
