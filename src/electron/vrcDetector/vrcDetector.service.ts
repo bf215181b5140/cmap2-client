@@ -19,7 +19,10 @@ export default class VrcDetectorService {
     }
 
     isVrchatRunning() {
-        if (!this.enableVrcDetector) TypedIpcMain.emit('isVrchatRunning', null);
+        if (!this.enableVrcDetector) {
+            TypedIpcMain.emit('isVrchatRunning', null);
+            return;
+        }
 
         exec('tasklist', (err, stdout, stderr) => {
             if (err) {
@@ -43,7 +46,6 @@ export default class VrcDetectorService {
             // set new interval
             const frequency = settings.vrcDetectorFrequency ?? this.defaultFrequency; // in seconds
             this.intervalId = setInterval(() => this.isVrchatRunning(), frequency * 1000);
-
         } else {
             // clear old interval if exists
             if (this.intervalId !== null) clearInterval(this.intervalId);

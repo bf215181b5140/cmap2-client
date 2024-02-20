@@ -26,9 +26,9 @@ export default function LovenseConnection() {
 function Header({ lovenseStatus }: { lovenseStatus: LovenseStatus }) {
     if (lovenseStatus.socketConnection) {
         if (lovenseStatus.status === 1) {
-            return (<h2 style={{color: 'green'}}>Connected</h2>);
+            return (<h2 style={{color: 'seagreen'}}>Connected</h2>);
         }
         return (<h2 style={{color: 'orange'}}>Connecting...</h2>);
     }
-    return (<h2 style={{color: 'grey'}}>Not connected</h2>);
+    return (<h2 style={{color: 'indianred'}}>Not connected</h2>);
 }

@@ -24,9 +24,10 @@ export default function VrcConnection() {
         if (lastOscActivity === null || lastOscActivity === 0) return 'No OSC activity detected';
         const diff = (Date.now() - lastOscActivity) / 1000;
         if (diff < 5) return 'just now';
-        if (diff < 60) return `${Math.round(diff)} seconds ago`;
-        if (diff < 3600) return `${Math.round(diff / 60)} minutes ago`;
-        return `${Math.round(diff / 3600)} hours ago`;
+        if (diff < 60) return `${Math.floor(diff)} seconds ago`;
+        if (diff < 120) return `${Math.floor(diff / 60)} minute ago`;
+        if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
+        return `${Math.floor(diff / 3600)} hours ago`;
     }
 
     return (<ConnectionBox icon={'ri-gamepad-line'} connected={isVrchatRunning === true} redirectPath={'/settings'}>
@@ -41,9 +42,9 @@ function Header({ isVrchatRunning }: { isVrchatRunning: boolean | null }) {
         return (<h2 style={{color: 'grey'}}>Not tracking if Vrchar is running</h2>);
     }
     if (isVrchatRunning) {
-        return (<h2 style={{color: 'green'}}>Vrchar is running</h2>);
+        return (<h2 style={{color: 'seagreen'}}>Vrchar is running</h2>);
     } else {
-        return (<h2 style={{color: 'darkred'}}>Vrchar is not running</h2>);
+        return (<h2 style={{color: 'indianred'}}>Vrchar is not running</h2>);
     }
 }
 

@@ -18,8 +18,9 @@ export default function ConnectionPage() {
 }
 
 const ConnectionPageStyled = styled.div`
-  margin: 15px;
+  margin: 25px auto;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  width: 550px;
 `;
