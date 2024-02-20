@@ -30,6 +30,7 @@ export default function VrcConnection() {
     }
 
     return (<ConnectionBox icon={'ri-gamepad-line'} connected={isVrchatRunning === true} redirectPath={'/settings'}>
+        <h1>Vrchat</h1>
         <Header isVrchatRunning={isVrchatRunning}/>
         <p>Last OSC activity: {lastOscActivityText()}</p>
     </ConnectionBox>);
@@ -37,12 +38,12 @@ export default function VrcConnection() {
 
 function Header({ isVrchatRunning }: { isVrchatRunning: boolean | null }) {
     if (isVrchatRunning === null) {
-        return (<h1 style={{color: 'grey'}}>Not tracking if Vrchar is running</h1>);
+        return (<h2 style={{color: 'grey'}}>Not tracking if Vrchar is running</h2>);
     }
     if (isVrchatRunning) {
-        return (<h1 style={{color: 'green'}}>Vrchar is running</h1>);
+        return (<h2 style={{color: 'green'}}>Vrchar is running</h2>);
     } else {
-        return (<h1 style={{color: 'darkred'}}>Vrchar is not running</h1>);
+        return (<h2 style={{color: 'darkred'}}>Vrchar is not running</h2>);
     }
 }
 

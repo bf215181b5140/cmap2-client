@@ -16,7 +16,8 @@ export default function WebsiteConnection() {
         }
     }, []);
 
-    return (<ConnectionBox icon={'ri-gamepad-line'} connected={socketConnection?.type === SocketConnectionType.SUCCESS} redirectPath={'/profile'}>
+    return (<ConnectionBox icon={'ri-global-line'} connected={socketConnection?.type === SocketConnectionType.SUCCESS} redirectPath={'/profile'}>
+        <h1>Website</h1>
         <Header socketConnection={socketConnection} />
         {socketConnection?.message && <p>{socketConnection.message}</p>}
     </ConnectionBox>);
@@ -24,17 +25,17 @@ export default function WebsiteConnection() {
 
 function Header({ socketConnection }: { socketConnection: SocketConnection | null }) {
     if (socketConnection === null) {
-        return (<h1/>);
+        return (<h2/>);
     }
     if (socketConnection.type === SocketConnectionType.SUCCESS) {
-        return (<h1 style={{color: 'green'}}>Connected</h1>);
+        return (<h2 style={{color: 'green'}}>Connected</h2>);
     }
     if (socketConnection.type === SocketConnectionType.MESSAGE) {
-        return (<h1 style={{color: 'orange'}}>Connecting...</h1>);
+        return (<h2 style={{color: 'orange'}}>Connecting...</h2>);
     }
     if (socketConnection.type === SocketConnectionType.ERROR) {
-        return (<h1 style={{color: 'darkred'}}>Not connected</h1>);
+        return (<h2 style={{color: 'darkred'}}>Not connected</h2>);
     }
-    return (<h1/>);
+    return (<h2/>);
 }
 

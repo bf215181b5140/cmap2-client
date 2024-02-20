@@ -18,6 +18,7 @@ export default function LovenseConnection() {
 
     return (
         <ConnectionBox icon={'ri-wireless-charging-fill'} connected={lovenseStatus.socketConnection && lovenseStatus.status === 1} redirectPath={'/lovense'}>
+            <h1>Lovense</h1>
             <Header lovenseStatus={lovenseStatus} />
         </ConnectionBox>);
 }
@@ -25,9 +26,9 @@ export default function LovenseConnection() {
 function Header({ lovenseStatus }: { lovenseStatus: LovenseStatus }) {
     if (lovenseStatus.socketConnection) {
         if (lovenseStatus.status === 1) {
-            return (<h1 style={{color: 'green'}}>Connected</h1>);
+            return (<h2 style={{color: 'green'}}>Connected</h2>);
         }
-        return (<h1 style={{color: 'orange'}}>Connecting...</h1>);
+        return (<h2 style={{color: 'orange'}}>Connecting...</h2>);
     }
-    return (<h1 style={{color: 'grey'}}>Not connected</h1>);
+    return (<h2 style={{color: 'grey'}}>Not connected</h2>);
 }

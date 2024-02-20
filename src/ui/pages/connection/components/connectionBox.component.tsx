@@ -54,6 +54,10 @@ const ChildrenStyled = styled.div`
   }
 
   h1 {
+    font-size: 18px;
+  }
+
+  h2 {
     font-size: 16px;
   }
 `;
