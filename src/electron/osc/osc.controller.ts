@@ -28,6 +28,7 @@ export class OscController extends OscService {
             }
         });
         TypedIpcMain.on('forwardOscToRenderer', (forward: boolean) => this.forwardOscToRenderer = forward);
+        TypedIpcMain.handle('getLastOscActivity', async () => this.lastActivity);
 
         BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
         BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));

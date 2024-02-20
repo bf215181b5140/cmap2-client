@@ -14,6 +14,7 @@ type IpcGetOptions = {
     getToyCommandParameters: ToyCommandParameter[];
     getToyCommandOscMessages: ToyCommandOscMessage[];
     getFingerprint: string;
+    getLastOscActivity: number;
 };
 
 type IpcSendOptions = {
@@ -36,7 +37,7 @@ type IpcReceiveOptions = {
     updateConnectionStatus: SocketConnection;
     vrcParameter: VrcParameter;
     lovenseStatus: LovenseStatus;
-    isVrchatRunning: boolean;
+    isVrchatRunning: boolean | null;
 };
 
 export interface IElectronAPI {

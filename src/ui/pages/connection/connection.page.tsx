@@ -1,28 +1,23 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import { SocketConnection } from '../../../shared/SocketConnection';
-import { ReactProps } from 'cmap2-shared';
-import ConnectForm from './connect/connect.component';
-import RegistrationForm from './register/register.component';
+import { Content, ContentBox } from 'cmap2-shared/dist/react';
+import LovenseConnection from './components/lovenseConnection.component';
+import VrcConnection from './components/vrcConnection.component';
 
-interface ConnectionPageProps extends ReactProps {
-    socketConnection: SocketConnection;
+export default function ConnectionPage() {
+
+    return (<Content flexDirection="column">
+        <ContentBox>
+            <ConnectionPageStyled>
+                <VrcConnection />
+                <LovenseConnection />
+            </ConnectionPageStyled>
+        </ContentBox>
+    </Content>);
 }
 
-export default function ConnectionPage({socketConnection}: ConnectionPageProps) {
-
-    const [connectForm, setConnectForm] = useState<boolean>(true);
-
-    return (<HomePageStyled>
-        {connectForm ? <ConnectForm socketConnection={socketConnection} setConnectForm={setConnectForm} />
-            : <RegistrationForm socketConnection={socketConnection} setConnectForm={setConnectForm} />}
-    </HomePageStyled>);
-}
-
-const HomePageStyled = styled.div`
+const ConnectionPageStyled = styled.div`
+  margin: 15px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  gap: 15px;
 `;

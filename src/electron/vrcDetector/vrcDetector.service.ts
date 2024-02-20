@@ -8,6 +8,7 @@ export default class VrcDetectorService {
     private intervalId: NodeJS.Timeout | null = null;
     private defaultFrequency: number = 10;
     private processName: string = 'vrchat.exe';
+    private enableVrcDetector: boolean = false;
 
     constructor() {
         this.resetInterval(StoreService.getSettings());
@@ -18,6 +19,8 @@ export default class VrcDetectorService {
     }
 
     isVrchatRunning() {
+        if (!this.enableVrcDetector) TypedIpcMain.emit('isVrchatRunning', null);
+
         exec('tasklist', (err, stdout, stderr) => {
             if (err) {
                 return;
@@ -32,7 +35,9 @@ export default class VrcDetectorService {
     }
 
     resetInterval(settings: Settings) {
-        if (settings.enableVrcDetector) {
+        this.enableVrcDetector = settings.enableVrcDetector;
+
+        if (this.enableVrcDetector) {
             // clear old interval if exists
             if (this.intervalId !== null) clearInterval(this.intervalId);
             // set new interval
