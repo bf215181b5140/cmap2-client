@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import ConnectionPage from '../pages/connection/connection.page';
+import LaunchPadPage from '../pages/launchPad/launchPad.page';
 import React from 'react';
 import styled from 'styled-components';
 import TitleBar from './titleBar/titleBar.component';
@@ -8,13 +8,11 @@ import './App.css';
 import 'remixicon/fonts/remixicon.css';
 import useSocketConnection from '../shared/hooks/socketConnection.hook';
 import useClientCredentials, { ClientCredentialsHook } from '../shared/hooks/clientCredentials.hook';
-import ProfilePage from '../pages/profile/profile.page';
-import AvatarsPage from '../pages/avatars/avatars.page';
 import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from '../pages/settings/settings.page';
-import TiersPage from '../pages/tiers/tiers.page';
 import MainWindow from './mainWindow/mainWindow.componenet';
 import LovensePage from '../pages/lovense/lovense.page';
+import WebsitePage from '../pages/website/website.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
@@ -35,12 +33,10 @@ export default function App() {
                 <TitleBar socketConnection={socketConnection} />
                 <MainWindow>
                     <Routes>
-                        <Route path="/profile" element={<ProfilePage />} />
-                        <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
-                        <Route path="/tiers" element={<TiersPage />} />
+                        <Route path="/website/*" element={<WebsitePage />} />
                         <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/lovense" element={<LovensePage />} />
-                        <Route path="*" element={<ConnectionPage socketConnection={socketConnection} />} />
+                        <Route path="*" element={<LaunchPadPage />} />
                     </Routes>
                 </MainWindow>
                 <NavBar />
