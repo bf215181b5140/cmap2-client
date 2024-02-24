@@ -5,7 +5,7 @@ import { ToastReducerAction, useToast } from '../toast/toast.hook';
 import { ToastComponent } from '../toast/toast.component';
 import colors from 'cmap2-shared/src/colors.json';
 import ModalComponent from '../../shared/components/modal/modal.component';
-import ModalHook, { ModalFunction } from '../../shared/components/modal/modal.hook';
+import useModalHook, { ModalFunction } from '../../shared/components/modal/modal.hook';
 
 export const ToastContext = React.createContext<(action: ToastReducerAction) => void>(() => {
 });
@@ -19,7 +19,7 @@ export const ModalContext = React.createContext<ModalFunction>({
 export default function MainWindow({children}: ReactProps) {
 
     const {toasts, toastsDispatch} = useToast();
-    const {modal, setModal, clearModal, deleteModal} = ModalHook();
+    const {modal, setModal, clearModal, deleteModal} = useModalHook();
 
     return(<MainWindowStyled>
         <ToastContext.Provider value={toastsDispatch}>

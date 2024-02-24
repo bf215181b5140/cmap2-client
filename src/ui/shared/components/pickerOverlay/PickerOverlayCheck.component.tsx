@@ -1,8 +1,8 @@
-import { ReactProps } from "../../../../shared/global";
 import styled from "styled-components";
 import React from "react";
 import colors from 'cmap2-shared/src/colors.json';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
+import { ReactProps } from 'cmap2-shared';
 
 interface PickerOverlayCheckProps extends ReactProps {
     selected: boolean;

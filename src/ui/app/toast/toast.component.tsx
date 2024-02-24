@@ -40,28 +40,30 @@ const ToastComponentStyled = styled.div`
 
 const ToastStyled = styled.div<{type: ToastType}>`
   margin: 10px;
-  border: 1px #1c222a;
+  background-color: ${colors['ui-background-3']};
+  border: 1px solid;
   padding: 10px 20px;
   border-radius: 8px;
-  filter: opacity(0.8);
+  filter: opacity(0.9);
   pointer-events: none;
+  
   ${(props) => {
       switch (props.type) {
         case ToastType.ERROR:
             return css`
-              background-color: ${colors['error']};
+              border-color: indianred;
             `;
         case ToastType.INFO:
             return css`
-              background-color: ${colors['info']};
+              border-color: cornflowerblue;
             `;
         case ToastType.SUCCESS:
             return css`
-              background-color: ${colors['success']};
+              border-color: forestgreen;
             `;
         case ToastType.WARNING:
             return css`
-              background-color: ${colors['warning']};
+              border-color: orange;
             `;
       }
   }}

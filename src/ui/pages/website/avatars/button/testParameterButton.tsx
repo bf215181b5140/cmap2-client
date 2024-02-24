@@ -61,7 +61,7 @@ const ParameterButtonStyled = styled.div<{ flexBasis?: string, active: boolean }
     transition: 0.2s linear;
 
     :hover {
-      transform: scale(1.02) perspective(1px);
+      transform: scale(1.02);
       background: ${colors['button-hover-bg']};
       border: 2px solid ${colors['button-hover-border']};
     }
@@ -74,7 +74,7 @@ const ParameterButtonStyled = styled.div<{ flexBasis?: string, active: boolean }
     transition: 0.2s linear;
 
     :hover {
-      transform: scale(1.02) perspective(1px);
+      transform: scale(1.02);
       background: ${colors['button-2-hover-bg']};
       border: 2px solid ${colors['button-2-hover-border']};
     }

@@ -5,7 +5,7 @@ export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   font-family: Dosis-Bold, sans-serif;
   font-size: 1em;
   margin: 7px;
-  padding: 10px;
+  padding: 0 10px;
   color: ${colors['text-1']};
   background: ${colors['ui-primary-1']};
   border: 2px solid ${colors['ui-primary-2']};
@@ -13,6 +13,10 @@ export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   border-radius: 7px;
   transition: 0.1s linear;
   width: ${props => props.width ? props.width : '250px'};
+  height: 44px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 
   :hover {
     background: ${colors['ui-primary-3']};

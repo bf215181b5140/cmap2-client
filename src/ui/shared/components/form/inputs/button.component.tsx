@@ -22,6 +22,6 @@ const ButtonInputStyled = styled.input`
   cursor: pointer;
 
   :hover {
-    transform: scale(1.05) perspective(1px);
+    transform: scale(1.05);
   }
 `;

@@ -13,7 +13,7 @@ export interface ModalFunction {
     deleteModal: (keyword: string, confirmFunction: () => void) => void;
 }
 
-export default function ModalHook() {
+export default function useModalHook() {
     const [modal, setModal] = useState<Modal | null>(null);
 
     function clearModal() {

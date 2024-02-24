@@ -5,6 +5,7 @@ import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 import { Settings } from './types/settings';
+import { VrcOscAvatar, VrcOscAvatarParameter } from './types/osc';
 
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
@@ -15,6 +16,8 @@ type IpcGetOptions = {
     getToyCommandOscMessages: ToyCommandOscMessage[];
     getFingerprint: string;
     getLastOscActivity: number;
+    // VrcOscData
+    getVrcOscAvatars: VrcOscAvatar[];
 };
 
 type IpcSendOptions = {
@@ -31,6 +34,8 @@ type IpcSendOptions = {
     setToyCommandParameters: ToyCommandParameter[];
     setToyCommandOscMessages: ToyCommandOscMessage[];
     getIsVrchatRunning: undefined;
+    // VrcOscData
+    setVrcOscAvatars: VrcOscAvatar[];
 };
 
 type IpcReceiveOptions = {

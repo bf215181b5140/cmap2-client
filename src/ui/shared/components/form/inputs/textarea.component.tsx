@@ -28,4 +28,6 @@ export default function TextareaInput({name, register, rows, placeholder, errors
 
 const TextareaInputStyled = styled.textarea<{ errors: boolean, width?: string }>`
   ${globalInputStyle};
+  padding: 10px;
+  height: 120px;
 `;

@@ -54,7 +54,7 @@ export default function ProfilePage() {
                         </tr>
                         <tr>
                             <th>Bio</th>
-                            <td><TextareaInput register={register} name={'bio'} errors={errors} /></td>
+                            <td><TextareaInput register={register} name={'bio'} errors={errors} width={'500px'} /></td>
                         </tr>
                         <tr>
                             <th>Hide profile</th>
