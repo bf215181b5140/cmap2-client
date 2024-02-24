@@ -51,19 +51,19 @@ const ToastStyled = styled.div<{type: ToastType}>`
       switch (props.type) {
         case ToastType.ERROR:
             return css`
-              border-color: indianred;
+              border-color: ${props => props.theme.colors.error};
             `;
         case ToastType.INFO:
             return css`
-              border-color: cornflowerblue;
+              border-color: ${props => props.theme.colors.info};
             `;
         case ToastType.SUCCESS:
             return css`
-              border-color: forestgreen;
+              border-color: ${props => props.theme.colors.success};
             `;
         case ToastType.WARNING:
             return css`
-              border-color: orange;
+              border-color: ${props => props.theme.colors.warning};
             `;
       }
   }}
