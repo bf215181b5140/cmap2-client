@@ -67,7 +67,7 @@ export default class LovenseController extends LovenseService {
             const vrcParameter: VrcParameter = {
                 path: this.lovenseSettings.connectionOscMessagePath,
                 value: this.lovenseStatus.status === 1
-            }
+            };
             BridgeService.emit('sendOscMessage', vrcParameter);
         }
     }
@@ -134,17 +134,18 @@ export default class LovenseController extends LovenseService {
             this.checkToyCommandForOscMessage(toyCommand);
 
             // if this isn't a stop command and command time isn't infinite
-            if (toyCommand.action !== ToyActionType.Stop || toyCommand.timeSec !== 0) this.createToyCommandCallback(toyCommand);
+            if (toyCommand.action !== ToyActionType.Stop || toyCommand.timeSec !== 0) this.createToyCommandStopCallback(toyCommand);
         }
     }
 
     /**
-     * If toy command doesn't have specificed duration, then create a timeout to send another command after 1000ms and stop the toy.<br>
+     * If ToyCommand duration isn't infinite,
+     * then create a timeout to send another OSC message after timeSec (ToyCommand time length) and mimic a ToyCommand for stopping.<br>
      * Unless a new command was issued since the last one.
      * @param toyCommand
      * @private
      */
-    private createToyCommandCallback(toyCommand: ToyCommand) {
+    private createToyCommandStopCallback(toyCommand: ToyCommand) {
         // save toy command unix time
         this.toyCommandHistory.set(toyCommand.toy ?? '', Date.now());
         // create callback with timeout (with extra 50ms leeway)
@@ -152,7 +153,7 @@ export default class LovenseController extends LovenseService {
             // if last saved command for this toy is older than how long the command lasted
             if ((this.toyCommandHistory.get(toyCommand.toy ?? '') ?? 0) + (toyCommand.timeSec * 1000) < Date.now()) {
                 // emmit a false stop command
-                this.checkToyCommandForOscMessage(toyCommand);
+                this.checkToyCommandForOscMessage({...toyCommand, action: ToyActionType.Stop});
             }
         }, (toyCommand.timeSec * 1000) + 50, toyCommand);
     }
