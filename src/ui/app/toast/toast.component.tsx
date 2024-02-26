@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactProps } from 'cmap2-shared';
 import styled, { css } from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface ToastProps extends ReactProps {
     toasts: Toast[];
@@ -23,7 +24,9 @@ export enum ToastType {
 
 export function ToastComponent(props: ToastProps) {
 
-    return (<ToastComponentStyled>
+    const [parent] = useAutoAnimate();
+
+    return (<ToastComponentStyled ref={parent}>
         {props.toasts.map(toast => (
             <ToastStyled type={toast.type} key={toast.id}>{toast.message}</ToastStyled>
         ))}

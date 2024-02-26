@@ -7,14 +7,17 @@ import colors from 'cmap2-shared/src/colors.json';
 interface DeleteButtonProps {
     keyword: string;
     onClick: () => void;
-    disabled?: boolean
+    disabled?: boolean;
+    className?: string;
 }
 
-export default function DeleteButton({keyword, onClick, disabled}: DeleteButtonProps) {
+export default function DeleteButton({keyword, onClick, disabled, className}: DeleteButtonProps) {
 
     const {deleteModal} = useContext(ModalContext);
 
-    return (<DeleteButtonStyled onClick={() => deleteModal(keyword, onClick)} disabled={!!disabled}><i className={'ri-delete-bin-6-line'} /></DeleteButtonStyled>);
+    return (<DeleteButtonStyled onClick={() => deleteModal(keyword, onClick)} disabled={!!disabled} className={className}>
+        <i className={'ri-delete-bin-6-line'} />
+    </DeleteButtonStyled>);
 }
 
 const DeleteButtonStyled = styled.button`

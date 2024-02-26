@@ -4,6 +4,8 @@ import AvatarParameters from './avatarParameters.component';
 import styled from 'styled-components';
 import DeleteButton from '../../../shared/components/deleteButton.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
+import { useState } from 'react';
+import ActionButton from '../../../shared/components/actionButton.component';
 
 interface AvatarProps extends ReactProps {
     avatar: VrcOscAvatar;
@@ -11,6 +13,8 @@ interface AvatarProps extends ReactProps {
 }
 
 export default function Avatar({avatar, avatarsDispatch}: AvatarProps) {
+
+    const [inEdit, setInEdit] = useState<boolean>(false);
 
     function deleteAvatar() {
         avatarsDispatch({type: 'removeAvatar', avatar: avatar});
@@ -23,10 +27,11 @@ export default function Avatar({avatar, avatarsDispatch}: AvatarProps) {
                 {avatar.id}
             </div>
             <div>
-                <DeleteButton keyword={'avatar'} onClick={deleteAvatar} />
+                {inEdit && <DeleteButton keyword={'avatar'} onClick={deleteAvatar} />}
+                <ActionButton action={() => setInEdit((state) => !state)}>{inEdit ? 'Cancel' : 'Edit'}</ActionButton>
             </div>
         </AvatarInfo>
-        {avatar.parameters && <AvatarParameters parameters={avatar.parameters} />}
+        {avatar.parameters && <AvatarParameters avatarId={avatar.id} parameters={avatar.parameters} avatarsDispatch={avatarsDispatch} inEdit={inEdit}/>}
     </>);
 }
 
@@ -35,7 +40,7 @@ const AvatarInfo = styled.div`
   flex-direction: row;
   gap: 15px;
   justify-content: space-between;
-  
+
   h2 {
     margin-top: 0;
   }

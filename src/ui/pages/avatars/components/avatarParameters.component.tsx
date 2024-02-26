@@ -6,9 +6,14 @@ import React, { useState } from 'react';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import { globalInputStyle } from '../../../shared/components/form/input.style';
 import AvatarParameter from './avatarParameter.component';
+import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface AvatarParametersProps extends ReactProps {
+    avatarId: string;
     parameters: VrcOscAvatarParameter[];
+    avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
+    inEdit: boolean;
 }
 
 const sortOrder = [
@@ -17,11 +22,12 @@ const sortOrder = [
     {key: 'desc', value: 'Descending'}
 ];
 
-export default function AvatarParameters({parameters}: AvatarParametersProps) {
+export default function AvatarParameters({avatarId, parameters, avatarsDispatch, inEdit}: AvatarParametersProps) {
 
     const [filter, setFilter] = useState<string>('');
     const [sort, setSort] = useState<string>('none');
     const [showProperties, setShowProperties] = useState<boolean>(true);
+    const [parent] = useAutoAnimate();
 
     function filteredParameters(): VrcOscAvatarParameter[] {
         let filteredList;
@@ -42,22 +48,27 @@ export default function AvatarParameters({parameters}: AvatarParametersProps) {
     }
 
     return (<div>
+
         <FiltersStyled>
             <div>
                 <FilterInputStyled placeholder={'Search by name'} onChange={(event) => setFilter(event.target.value)} />
+                Sort
                 <SelectInputStyled errors={false} width={'125px'} onChange={(event) => setSort(event.target.value)}>
                     {sortOrder.map(option => (<option value={option.key} key={option.key}>{option.value}</option>))}
                 </SelectInputStyled>
             </div>
+
             <div>
+                Show parameter info
                 <CollapseCheckboxStyled onClick={() => setShowProperties((state) => !state)} checked={showProperties}>
                     <Icon icon="ri-check-fill" />
                 </CollapseCheckboxStyled>
             </div>
         </FiltersStyled>
 
-        <AvatarParametersStyled>
-            {filteredParameters().map(parameter => (<AvatarParameter parameter={parameter} forceShowProperties={showProperties} key={parameter.name} />))}
+        <AvatarParametersStyled ref={parent}>
+            {filteredParameters().map(parameter => (<AvatarParameter avatarId={avatarId} parameter={parameter} avatarsDispatch={avatarsDispatch} inEdit={inEdit}
+                                                                     forceShowProperties={showProperties} key={parameter.name} />))}
         </AvatarParametersStyled>
     </div>);
 }
