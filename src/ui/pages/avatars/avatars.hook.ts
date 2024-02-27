@@ -12,12 +12,13 @@ export default function useAvatarsPage() {
     }, []);
 
     useEffect(() => {
-        if (avatars.length === 0) {
-            setActiveAvatar(undefined);
+        if (activeAvatar === undefined) {
+            resetActiveAvatar();
         } else {
-            if (activeAvatar === undefined) {
-                resetActiveAvatar();
-            } else if (!avatars.find(avatar => avatar.id === activeAvatar.id)) {
+            const exists = avatars.find(avatar => avatar.id === activeAvatar.id);
+            if (exists) {
+                setActiveAvatar(exists);
+            } else {
                 resetActiveAvatar();
             }
         }
@@ -27,5 +28,5 @@ export default function useAvatarsPage() {
         setActiveAvatar(avatars[0]);
     }
 
-    return [avatars, avatarsDispatch, activeAvatar, setActiveAvatar, resetActiveAvatar] as const;
+    return [avatars, avatarsDispatch, activeAvatar, setActiveAvatar] as const;
 }

@@ -4,7 +4,7 @@ import AvatarParameters from './avatarParameters.component';
 import styled from 'styled-components';
 import DeleteButton from '../../../shared/components/deleteButton.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ActionButton from '../../../shared/components/actionButton.component';
 
 interface AvatarProps extends ReactProps {
@@ -15,6 +15,10 @@ interface AvatarProps extends ReactProps {
 export default function Avatar({avatar, avatarsDispatch}: AvatarProps) {
 
     const [inEdit, setInEdit] = useState<boolean>(false);
+
+    useEffect(() => {
+        setInEdit(false);
+    }, [avatar]);
 
     function deleteAvatar() {
         avatarsDispatch({type: 'removeAvatar', avatar: avatar});

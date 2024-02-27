@@ -1,4 +1,4 @@
-import { VrcOscAvatar } from '../../../../shared/types/osc';
+import { VrcOscAvatarSchema } from '../../../../shared/types/osc';
 import { ToastType } from '../../../app/toast/toast.component';
 import FileUpload from '../../../shared/components/fileUpload.component';
 import { useContext } from 'react';
@@ -20,11 +20,12 @@ export default function UploadAvatarFile({avatarsDispatch}: UploadAvatarFileProp
             reader.onloadend = () => {
                 if (reader.result && typeof reader.result === 'string') {
                     try {
-                        const oscAvatarData: VrcOscAvatar = JSON.parse(reader.result);
+                        const oscAvatarData = JSON.parse(reader.result);
+                        VrcOscAvatarSchema.parse(oscAvatarData);
                         avatarsDispatch({type: 'addAvatar', avatar: oscAvatarData});
                         toastsDispatch({
                             type: 'add',
-                            toast: {message: 'File loaded. Please review and save avatar info and parameters', type: ToastType.SUCCESS}
+                            toast: {message: 'Avatar added', type: ToastType.SUCCESS}
                         });
                     } catch (e) {
                         toastsDispatch({
@@ -38,13 +39,9 @@ export default function UploadAvatarFile({avatarsDispatch}: UploadAvatarFileProp
         }
     }
 
-    function addRandomAvatar() {
-        avatarsDispatch({type: 'addAvatar', avatar: {id: Math.random().toString(), name: Math.random().toString(), parameters: []}});
-    }
-
     return (<>
-        upload form
+        <h2>Upload</h2>
+        <p>Upload your avatar file found in: C:/Users/[USER]/AppData/LocalLow/Vrchat/OSC/Avatars</p>
         <FileUpload parentType={''} parentId={''} handleUpload={onReadOscAvatarFile} />
-        <ActionButton action={addRandomAvatar}>Add random avatar</ActionButton>
     </>);
 }
