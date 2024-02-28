@@ -23,11 +23,6 @@ export default function AvatarUploadForm({avatars, avatarsDispatch}: AvatarUploa
     const {register, reset, handleSubmit} = useForm<AvatarUploadForm>({defaultValues: {file: undefined}});
     const [fileAvatar, setFileAvatar] = useState<VrcOscAvatar | undefined>(undefined);
 
-    function onBrowse() {
-        const input = document.getElementById('fileInput');
-        if (input) input.click();
-    }
-
     function onFileChange(event: ChangeEvent<HTMLInputElement>) {
         if (event.target.files?.[0]) {
             const reader = new FileReader();
@@ -49,7 +44,7 @@ export default function AvatarUploadForm({avatars, avatarsDispatch}: AvatarUploa
         }
     }
 
-    function onSave() {
+    function onSubmit() {
         if (!fileAvatar) return;
 
         const existing = avatars.find(avatar => avatar.id === fileAvatar.id);
@@ -76,19 +71,30 @@ export default function AvatarUploadForm({avatars, avatarsDispatch}: AvatarUploa
         reset();
     }
 
-    return (<form onSubmit={handleSubmit(onSave)}>
+    function browse() {
+        const input = document.getElementById('fileInput');
+        if (input) input.click();
+    }
+
+    function save() {
+        const input = document.getElementById('fileSubmit');
+        if (input) input.click();
+    }
+
+    return (<form onSubmit={handleSubmit(onSubmit)}>
         <input type="file" id="fileInput" style={{display: 'none'}} {...register('file')} onChange={onFileChange} />
+        <input type="submit" id="fileSubmit" style={{display: 'none'}} />
 
         {fileAvatar ? (
             <>
                 {fileAvatar.name}
                 <br />
-                <SubmitInput text="Save" />
-                <ActionButton action={clearForm}>Clear</ActionButton>
+                <ActionButton action={save} icon={'ri-file-check-line'}>Save</ActionButton>
+                <ActionButton action={clearForm} icon={'ri-file-close-line'}>Clear</ActionButton>
             </>
         ) : (
             <>
-                <ActionButton action={onBrowse}>Browse</ActionButton>
+                <ActionButton action={browse} icon={'ri-file-search-line'}>Browse</ActionButton>
             </>
         )}
 
