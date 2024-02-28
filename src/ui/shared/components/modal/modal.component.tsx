@@ -34,7 +34,7 @@ export default function ModalComponent({modal, clearModal}: ModalComponentProps)
                 <span onClick={onClose}><Icon icon="ri-close-line" /></span>
             </ModalTitle>
             <ModalContent>
-                {modal.message || 'Confirm your action'}
+                <p>{modal.message || 'Confirm your action'}</p>
                 <div id="confirmation">
                     <ButtonInput text={modal.confirmValue || 'Confirm'} onClick={onConfirm} />
                 </div>

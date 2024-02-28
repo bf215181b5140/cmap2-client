@@ -20,7 +20,7 @@ export default function AvatarsPage() {
 
         <ContentBox flexBasis={ContentBoxWidth.Half}>
             <h2>Upload OSC file</h2>
-            <p>Upload your avatar file found in: C:/Users/[USER]/AppData/LocalLow/Vrchat/OSC/Avatars</p>
+            <p>Upload your avatar file found in: C:\ Users \ [USER] \ AppData \ LocalLow \ VRChat \ VRChat \ OSC \ [USER] \ Avatars</p>
             <AvatarUploadForm avatars={avatars} avatarsDispatch={avatarsDispatch} />
         </ContentBox>
 

@@ -1,10 +1,11 @@
 import { VrcOscAvatar, VrcOscAvatarSchema } from '../../../../shared/types/osc';
 import { ToastType } from '../../../app/toast/toast.component';
-import React, { RefObject, useContext, useRef } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, RefObject, useContext, useRef, useState } from 'react';
 import { ModalContext, ToastContext } from '../../../app/mainWindow/mainWindow.componenet';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import { useForm } from 'react-hook-form';
 import ActionButton from '../../../shared/components/actionButton.component';
+import SubmitInput from '../../../shared/components/form/inputs/submit.component';
 
 interface AvatarUploadFormProps {
     avatars: VrcOscAvatar[];
@@ -12,74 +13,78 @@ interface AvatarUploadFormProps {
 }
 
 interface AvatarUploadForm {
-    file: FileList
+    file: FileList | undefined;
 }
 
 export default function AvatarUploadForm({avatars, avatarsDispatch}: AvatarUploadFormProps) {
 
     const toastsDispatch = useContext(ToastContext);
     const {setModal} = useContext(ModalContext);
-    const {register, watch, reset, handleSubmit} = useForm<AvatarUploadForm>();
-    const fileRef: RefObject<HTMLInputElement> = useRef(null);
-    const submitRef: RefObject<HTMLInputElement> = useRef(null);
-    const selectedFile = watch('file')[0];
+    const {register, reset, handleSubmit} = useForm<AvatarUploadForm>({defaultValues: {file: undefined}});
+    const [fileAvatar, setFileAvatar] = useState<VrcOscAvatar | undefined>(undefined);
 
-    function onSubmit(formData: AvatarUploadForm) {
-        if (formData.file[0]) {
+    function onBrowse() {
+        const input = document.getElementById('fileInput');
+        if (input) input.click();
+    }
+
+    function onFileChange(event: ChangeEvent<HTMLInputElement>) {
+        if (event.target.files?.[0]) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 if (reader.result && typeof reader.result === 'string') {
                     try {
-                        const oscAvatarData = JSON.parse(reader.result) as VrcOscAvatar;
-                        VrcOscAvatarSchema.parse(oscAvatarData);
-
-                        if (!!avatars.find(avatar => avatar.id === oscAvatarData.id)) {
-                            setModal({
-                                title: `${oscAvatarData.name}`,
-                                message: `Avatar ${oscAvatarData.name} already exists, update avatar info and parameters?`,
-                                confirmValue: 'Update',
-                                confirmFunction: () => addAvatar(oscAvatarData),
-                                cancelFunction: () => reset()
-                            });
-                        } else {
-                            addAvatar(oscAvatarData);
-                        }
-
+                        const tempFileAvatar = JSON.parse(reader.result) as VrcOscAvatar;
+                        VrcOscAvatarSchema.parse(tempFileAvatar);
+                        setFileAvatar(tempFileAvatar);
                     } catch (e) {
                         toastsDispatch({type: 'add', toast: {message: 'Not recognized as a VRChat avatar file', type: ToastType.ERROR}});
+                        setFileAvatar(undefined);
                     }
                 }
             };
-            reader.readAsText(formData.file[0]);
+            reader.readAsText(event.target.files[0]);
+        } else {
+            setFileAvatar(undefined);
+        }
+    }
+
+    function onSave() {
+        if (!fileAvatar) return;
+
+        const existing = avatars.find(avatar => avatar.id === fileAvatar.id);
+        if (existing) {
+            setModal({
+                title: `Saving ${fileAvatar.name}`,
+                message: `Avatar with this ID already exists (${existing.name}), update avatar info and parameters?`,
+                confirmValue: 'Update',
+                confirmFunction: () => addAvatar(fileAvatar)
+            });
+        } else {
+            addAvatar(fileAvatar);
         }
     }
 
     function addAvatar(avatar: VrcOscAvatar) {
         avatarsDispatch({type: 'addAvatar', avatar: avatar});
-        toastsDispatch({type: 'add', toast: {message: 'Avatar added', type: ToastType.SUCCESS}});
+        toastsDispatch({type: 'add', toast: {message: 'Avatar saved', type: ToastType.SUCCESS}});
+        clearForm();
     }
 
-    function onBrowse() {
-        if (fileRef?.current) fileRef.current.click();
+    function clearForm() {
+        setFileAvatar(undefined);
+        reset();
     }
 
-    function onUpload() {
-        if (submitRef?.current) submitRef.current.click();
-    }
+    return (<form onSubmit={handleSubmit(onSave)}>
+        <input type="file" id="fileInput" style={{display: 'none'}} {...register('file')} onChange={onFileChange} />
 
-    function onClearFiles() {
-        reset(); // {file: undefined} ?
-    }
-
-    return (<form onSubmit={handleSubmit(onSubmit)}>
-        <input type='file' style={{display: 'hidden'}} {...register('file')} ref={fileRef} />
-        <input type='submit' style={{display: 'hidden'}} ref={submitRef} />
-
-        {selectedFile?.name ? (
+        {fileAvatar ? (
             <>
-                File name: {selectedFile?.name}
-                <ActionButton action={onUpload}>Upload</ActionButton>
-                <ActionButton action={onClearFiles}>Clear</ActionButton>
+                {fileAvatar.name}
+                <br />
+                <SubmitInput text="Save" />
+                <ActionButton action={clearForm}>Clear</ActionButton>
             </>
         ) : (
             <>
