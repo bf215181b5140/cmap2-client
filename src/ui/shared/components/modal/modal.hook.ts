@@ -5,6 +5,7 @@ export interface Modal {
     message?: string;
     confirmValue?: string;
     confirmFunction: () => void;
+    cancelFunction?: () => void;
 }
 
 export interface ModalFunction {

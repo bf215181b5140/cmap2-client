@@ -14,6 +14,7 @@ export interface ModalComponentProps extends ReactProps {
 export default function ModalComponent({modal, clearModal}: ModalComponentProps) {
 
     function onClose() {
+        modal?.cancelFunction?.apply(null);
         clearModal();
     }
 
