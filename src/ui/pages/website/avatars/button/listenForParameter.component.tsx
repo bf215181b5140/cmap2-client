@@ -18,6 +18,8 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
 
     useEffect(() => {
         const removeListener = window.electronAPI.receive('vrcParameter', (message: VrcParameter) => {
+            if (!listening) return;
+
             let value = message.value;
             if (typeof value === 'number') {
                 if (Number.isInteger(value)) {
@@ -30,7 +32,6 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
             }
             setValue('path', message.path, {shouldDirty: true});
             setValue('value', value, {shouldDirty: true});
-            window.electronAPI.send('forwardOscToRenderer', false);
             setListening(false);
         });
 
@@ -40,7 +41,6 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
     }, []);
 
     function forwardOscToRenderer() {
-        window.electronAPI.send('forwardOscToRenderer', true);
         setListening(true);
         reset({path: '', value: ''});
     }

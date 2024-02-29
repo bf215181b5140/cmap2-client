@@ -18,7 +18,6 @@ type IpcGetOptions = {
     getLastOscActivity: number;
     // Osc status
     getTrackedParameters: Map<string, boolean | number | string>;
-    getTrackedAvatar: string | undefined;
     // VrcOscData
     getVrcOscAvatars: VrcOscAvatar[];
 };
@@ -28,7 +27,6 @@ type IpcSendOptions = {
     setWindowState: WindowState;
     disconnectSocket: undefined;
     setSettings: Settings;
-    forwardOscToRenderer: boolean;
     setLovenseSettings: LovenseSettings;
     getLovenseStatus: undefined;
     lovenseConnect: undefined;

@@ -6,7 +6,6 @@ import { ClientCredentials } from '../../shared/classes';
 
 type MessageEvents = {
     vrcParameter: (parameter: VrcParameter) => void;
-    vrcAvatar: (parameter: VrcParameter) => void;
     sendOscMessage: (parameter: VrcParameter) => void;
     settings: (settings: Settings) => void;
     clientCredentials: (clientCredentials: ClientCredentials) => void;

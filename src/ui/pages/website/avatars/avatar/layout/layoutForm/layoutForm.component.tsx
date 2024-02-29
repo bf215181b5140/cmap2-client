@@ -71,8 +71,6 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
         });
     }
 
-    console.log();
-
     return (<>
         {!inEdit &&
             <FormControlBar>

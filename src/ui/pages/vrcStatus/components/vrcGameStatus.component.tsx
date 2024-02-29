@@ -7,31 +7,36 @@ export default function VrcGameStatus() {
 
     const [isVrchatRunning, setIsVrchatRunning] = useState<boolean | null>(null);
     const [lastOscActivity, setLastOscActivity] = useState<number | null>(null);
+    const [key, setKey] = useState(0);
 
     useEffect(() => {
         window.electronAPI.send('getIsVrchatRunning');
         const removeListener = window.electronAPI.receive('isVrchatRunning', (data) => setIsVrchatRunning(data));
 
         function getLastOscActivity() {
-            window.electronAPI.get('getLastOscActivity').then(data => setLastOscActivity(data));
+            window.electronAPI.get('getLastOscActivity').then(data => {
+                setLastOscActivity(data);
+                // set key state to force a re-render for osc activity text if lastOscActivity number doesn't change
+                setKey(state => state + 1);
+            });
         }
 
         getLastOscActivity();
-        const activityInterval = setInterval(getLastOscActivity, 1000)
+        const activityInterval = setInterval(getLastOscActivity, 1000);
 
         return () => {
             if (removeListener) removeListener();
             if (activityInterval) clearInterval(activityInterval);
-        }
+        };
     }, []);
 
     return (<ContentBox flexBasis={ContentBoxWidth.Full}>
-        <Header isVrchatRunning={isVrchatRunning}/>
-        <p>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
+        <Header isVrchatRunning={isVrchatRunning} />
+        <p key={key}>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
     </ContentBox>);
 }
 
-function Header({ isVrchatRunning }: { isVrchatRunning: boolean | null }) {
+function Header({isVrchatRunning}: { isVrchatRunning: boolean | null }) {
     if (isVrchatRunning === null) {
         return (<h2 style={{color: 'grey'}}>Not tracking if Vrchar is running</h2>);
     }

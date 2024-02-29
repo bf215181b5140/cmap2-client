@@ -1,5 +1,5 @@
-export default function timeSinceTimestamp(timestamp: number | null, messagePrefix?: string, noTimestampMessage?: string): string | null {
-    if (timestamp === null || timestamp === 0) return noTimestampMessage ?? null;
+export default function timeSinceTimestamp(timestamp: number | null, messagePrefix?: string, noTimestampMessage?: string): string {
+    if (timestamp === null || timestamp === 0) return noTimestampMessage ?? '';
 
     const diff = (Date.now() - timestamp) / 1000;
     const message = messagePrefix ?? '';
