@@ -9,7 +9,7 @@ export class OscController extends OscService {
     private trackedAvatar: string | undefined;
     private isActive: boolean = false;
     private lastActivity: number = 0;
-    private activityInterval: NodeJS.Timer | undefined;
+    private activityInterval: NodeJS.Timeout | undefined;
     private activityIntervalMs: number = 60000;
 
     private forwardOscToRenderer: boolean = false;
@@ -41,7 +41,7 @@ export class OscController extends OscService {
     }
 
     /**
-     * Gets called every time a new osc message is recieved.<br>
+     * Gets called every time a new osc message is received.<br>
      * Used to track any osc activity.
      * @protected
      */
@@ -54,12 +54,12 @@ export class OscController extends OscService {
     }
 
     /**
-     * Gets called every time a new valid parameter is recieved.<br>
+     * Gets called every time a new valid parameter is received.<br>
      * Spam parameters have already been filtered.
      * @param vrcParameter
      * @protected
      */
-    protected recieved(vrcParameter: VrcParameter) {
+    protected received(vrcParameter: VrcParameter) {
         if (vrcParameter.path.indexOf('/avatar/change') !== -1) {
             this.trackedAvatar = vrcParameter.value.toString();
             BridgeService.emit('vrcAvatar', vrcParameter);

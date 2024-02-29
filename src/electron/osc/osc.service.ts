@@ -18,7 +18,7 @@ export abstract class OscService {
         this.start(settings);
     }
 
-    protected abstract recieved(vrcParameter: VrcParameter): void;
+    protected abstract received(vrcParameter: VrcParameter): void;
     protected abstract activity(): void;
 
     /**
@@ -46,7 +46,7 @@ export abstract class OscService {
 
                 const vrcParameter: VrcParameter = {path, value};
 
-                this.recieved(vrcParameter);
+                this.received(vrcParameter);
             }
         });
     }

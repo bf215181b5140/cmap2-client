@@ -5,7 +5,7 @@ import VrcOscHistory from './components/vrcOscHistory.component';
 
 export default function VrcStatusPage() {
 
-    return(<Content>
+    return(<Content flexDirection={'row'}>
 
         <VrcGameStatus />
 

@@ -15,10 +15,10 @@ export default class VrcDetectorService {
 
         BridgeService.on('settings', (settings) => this.resetInterval(settings));
 
-        TypedIpcMain.on('getIsVrchatRunning', () => this.isVrchatRunning());
+        TypedIpcMain.on('getIsVrchatRunning', () => this.isVrcRunning());
     }
 
-    isVrchatRunning() {
+    isVrcRunning() {
         if (!this.enableVrcDetector) {
             TypedIpcMain.emit('isVrchatRunning', null);
             return;
@@ -45,7 +45,7 @@ export default class VrcDetectorService {
             if (this.intervalId !== null) clearInterval(this.intervalId);
             // set new interval
             const frequency = settings.vrcDetectorFrequency ?? this.defaultFrequency; // in seconds
-            this.intervalId = setInterval(() => this.isVrchatRunning(), frequency * 1000);
+            this.intervalId = setInterval(() => this.isVrcRunning(), frequency * 1000);
         } else {
             // clear old interval if exists
             if (this.intervalId !== null) clearInterval(this.intervalId);
