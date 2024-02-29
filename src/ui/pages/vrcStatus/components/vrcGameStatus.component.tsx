@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { ContentBoxWidth } from 'cmap2-shared';
+import timeSinceTimestamp from '../../../shared/util/timeSinceTimestamp';
 
 export default function VrcGameStatus() {
 
@@ -16,7 +17,7 @@ export default function VrcGameStatus() {
         }
 
         getLastOscActivity();
-        const activityInterval = setInterval(getLastOscActivity, 4500)
+        const activityInterval = setInterval(getLastOscActivity, 1000)
 
         return () => {
             if (removeListener) removeListener();
@@ -24,19 +25,9 @@ export default function VrcGameStatus() {
         }
     }, []);
 
-    function lastOscActivityText(): string {
-        if (lastOscActivity === null || lastOscActivity === 0) return 'No OSC activity detected';
-        const diff = (Date.now() - lastOscActivity) / 1000;
-        if (diff < 5) return 'Last OSC activity: just now';
-        if (diff < 60) return `Last OSC activity: ${Math.floor(diff)} seconds ago`;
-        if (diff < 120) return `Last OSC activity: ${Math.floor(diff / 60)} minute ago`;
-        if (diff < 3600) return `Last OSC activity: ${Math.floor(diff / 60)} minutes ago`;
-        return `Last OSC activity: ${Math.floor(diff / 3600)} hours ago`;
-    }
-
     return (<ContentBox flexBasis={ContentBoxWidth.Full}>
         <Header isVrchatRunning={isVrchatRunning}/>
-        <p>{lastOscActivityText()}</p>
+        <p>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
     </ContentBox>);
 }
 

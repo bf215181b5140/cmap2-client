@@ -1,5 +1,6 @@
 import ConnectionBox from './connectionBox.component';
 import { useEffect, useState } from 'react';
+import timeSinceTimestamp from '../../../shared/util/timeSinceTimestamp';
 
 export default function VrcConnection() {
 
@@ -23,20 +24,10 @@ export default function VrcConnection() {
         }
     }, []);
 
-    function lastOscActivityText(): string {
-        if (lastOscActivity === null || lastOscActivity === 0) return 'No OSC activity detected';
-        const diff = (Date.now() - lastOscActivity) / 1000;
-        if (diff < 5) return 'just now';
-        if (diff < 60) return `${Math.floor(diff)} seconds ago`;
-        if (diff < 120) return `${Math.floor(diff / 60)} minute ago`;
-        if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-        return `${Math.floor(diff / 3600)} hours ago`;
-    }
-
     return (<ConnectionBox icon={'ri-gamepad-line'} connected={isVrchatRunning === true} redirectPath={'/vrcStatus'}>
         <h1>Vrchat</h1>
         <Header isVrchatRunning={isVrchatRunning}/>
-        <p>Last OSC activity: {lastOscActivityText()}</p>
+        <p>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
     </ConnectionBox>);
 }
 
