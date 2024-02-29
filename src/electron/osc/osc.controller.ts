@@ -5,12 +5,11 @@ import { VrcParameter } from 'cmap2-shared';
 import { Settings } from '../../shared/types/settings';
 
 export class OscController extends OscService {
+    private trackedParameters: Map<string, boolean | number | string> = new Map();
     private isActive: boolean = false;
     private lastActivity: number = 0;
-    private activityInterval: NodeJS.Timer | undefined;
+    private activityInterval: NodeJS.Timeout | undefined;
     private activityIntervalMs: number = 60000;
-
-    private forwardOscToRenderer: boolean = false;
 
     /**
      * Sets listeners for events and starts OSC server and client
@@ -27,7 +26,8 @@ export class OscController extends OscService {
                 this.start(settings);
             }
         });
-        TypedIpcMain.on('forwardOscToRenderer', (forward: boolean) => this.forwardOscToRenderer = forward);
+        TypedIpcMain.handle('getLastOscActivity', async () => this.lastActivity);
+        TypedIpcMain.handle('getTrackedParameters', async () => this.trackedParameters);
 
         BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
         BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
@@ -36,7 +36,7 @@ export class OscController extends OscService {
     }
 
     /**
-     * Gets called every time a new osc message is recieved.<br>
+     * Gets called every time a new osc message is received.<br>
      * Used to track any osc activity.
      * @protected
      */
@@ -49,20 +49,15 @@ export class OscController extends OscService {
     }
 
     /**
-     * Gets called every time a new valid parameter is recieved.<br>
+     * Gets called every time a new valid parameter is received.<br>
      * Spam parameters have already been filtered.
      * @param vrcParameter
      * @protected
      */
-    protected recieved(vrcParameter: VrcParameter) {
-        if (vrcParameter.path.indexOf('/avatar/change') !== -1) {
-            BridgeService.emit('vrcAvatar', vrcParameter);
-        } else {
-            BridgeService.emit('vrcParameter', vrcParameter);
-            if (this.forwardOscToRenderer) {
-                TypedIpcMain.emit('vrcParameter', vrcParameter);
-            }
-        }
+    protected received(vrcParameter: VrcParameter) {
+        this.trackedParameters.set(vrcParameter.path, vrcParameter.value);
+        BridgeService.emit('vrcParameter', vrcParameter);
+        TypedIpcMain.emit('vrcParameter', vrcParameter);
     }
 
     /**

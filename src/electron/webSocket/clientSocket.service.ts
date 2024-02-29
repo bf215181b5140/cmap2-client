@@ -21,8 +21,13 @@ export class ClientSocketService {
         TypedIpcMain.on('disconnectSocket', () => this.disconnect());
 
         BridgeService.on('oscActivity', (isActive) => this.sendData('activity', isActive));
-        BridgeService.on('vrcParameter', (vrcParameter: VrcParameter) => this.sendParameter('parameter', vrcParameter));
-        BridgeService.on('vrcAvatar', (vrcParameter: VrcParameter) => this.sendParameter('avatar', vrcParameter));
+        BridgeService.on('vrcParameter', (vrcParameter: VrcParameter) => {
+            if (vrcParameter.path.indexOf('/avatar/change') !== -1) {
+                this.sendParameter('avatar', vrcParameter);
+            } else {
+                this.sendParameter('parameter', vrcParameter);
+            }
+        });
 
         if (settings.autoLogin) this.connect(StoreService.getClientCredentials());
     }

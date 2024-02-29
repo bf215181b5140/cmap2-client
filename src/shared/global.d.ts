@@ -5,6 +5,7 @@ import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 import { Settings } from './types/settings';
+import { VrcOscAvatar, VrcOscAvatarParameter } from './types/osc';
 
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
@@ -14,6 +15,11 @@ type IpcGetOptions = {
     getToyCommandParameters: ToyCommandParameter[];
     getToyCommandOscMessages: ToyCommandOscMessage[];
     getFingerprint: string;
+    getLastOscActivity: number;
+    // Osc status
+    getTrackedParameters: Map<string, boolean | number | string>;
+    // VrcOscData
+    getVrcOscAvatars: VrcOscAvatar[];
 };
 
 type IpcSendOptions = {
@@ -21,7 +27,6 @@ type IpcSendOptions = {
     setWindowState: WindowState;
     disconnectSocket: undefined;
     setSettings: Settings;
-    forwardOscToRenderer: boolean;
     setLovenseSettings: LovenseSettings;
     getLovenseStatus: undefined;
     lovenseConnect: undefined;
@@ -30,13 +35,15 @@ type IpcSendOptions = {
     setToyCommandParameters: ToyCommandParameter[];
     setToyCommandOscMessages: ToyCommandOscMessage[];
     getIsVrchatRunning: undefined;
+    // VrcOscData
+    setVrcOscAvatars: VrcOscAvatar[];
 };
 
 type IpcReceiveOptions = {
     updateConnectionStatus: SocketConnection;
     vrcParameter: VrcParameter;
     lovenseStatus: LovenseStatus;
-    isVrchatRunning: boolean;
+    isVrchatRunning: boolean | null;
 };
 
 export interface IElectronAPI {

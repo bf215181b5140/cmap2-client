@@ -28,7 +28,7 @@ export default class LovenseController extends LovenseService {
         this.setToyCommandOscMessages(StoreService.getToyCommandOscMessages());
 
         TypedIpcMain.on('setLovenseSettings', (lovenseSettings: LovenseSettings) => this.lovenseSettings = lovenseSettings);
-        TypedIpcMain.on('getLovenseStatus', () => this.updateLovenseStatus());
+        TypedIpcMain.on('getLovenseStatus', () => TypedIpcMain.emit('lovenseStatus', this.lovenseStatus));
         TypedIpcMain.on('sendLovenseToyCommand', (toyCommand: ToyCommand) => this.sendToyCommand(toyCommand));
         TypedIpcMain.on('lovenseConnect', () => this.connect());
         TypedIpcMain.on('lovenseDisconnect', () => this.disconnect());

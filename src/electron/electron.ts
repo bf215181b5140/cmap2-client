@@ -7,6 +7,7 @@ import LovenseController from './lovense/lovense.controller';
 import VrcDetectorService from './vrcDetector/vrcDetector.service';
 import mainWindow from './mainWindow/mainWindow';
 import { OscController } from './osc/osc.controller';
+import { OscDataStoreService } from './store/oscData/oscDataStore.service';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -23,6 +24,7 @@ app.whenReady().then(() => {
 
     // initiate services
     new StoreService();
+    new OscDataStoreService();
     new IpcMainController();
     new OscController(settings);
     new ClientSocketService(settings);

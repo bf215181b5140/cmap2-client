@@ -42,13 +42,12 @@ const CheckboxInputStyled = styled.span<{ errors?: boolean }>`
 
   div {
     ${globalInputStyle};
-    width: fit-content;
     cursor: pointer;
-    padding: 0;
+    width: 44px;
+    font-size: 35px;
   }
 
   div i {
-    font-size: 2em;
     visibility: hidden;
   }
 

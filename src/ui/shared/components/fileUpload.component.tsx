@@ -80,6 +80,7 @@ const FileInputStyled = styled.div`
   ${globalInputStyle};
   display: flex;
   flex-direction: row;
+  height: 70px;
   padding: 0;
   margin: 0;
   

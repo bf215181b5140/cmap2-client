@@ -70,7 +70,7 @@ export const SidePanelButton = styled.button<{active?: boolean}>`
     cursor: pointer;
 
     :hover {
-      //transform: scale(1.05) perspective(1px);
+      //transform: scale(1.05);
       // background: ${colors['ui-primary-3']};
       border: 2px solid ${colors['button-2-hover-border']};
     }
