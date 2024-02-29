@@ -16,6 +16,9 @@ type IpcGetOptions = {
     getToyCommandOscMessages: ToyCommandOscMessage[];
     getFingerprint: string;
     getLastOscActivity: number;
+    // Osc status
+    getTrackedParameters: Map<string, boolean | number | string>;
+    getTrackedAvatar: string | undefined;
     // VrcOscData
     getVrcOscAvatars: VrcOscAvatar[];
 };

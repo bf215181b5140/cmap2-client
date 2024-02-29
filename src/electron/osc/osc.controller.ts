@@ -5,6 +5,8 @@ import { VrcParameter } from 'cmap2-shared';
 import { Settings } from '../../shared/types/settings';
 
 export class OscController extends OscService {
+    private trackedParameters: Map<string, boolean | number | string> = new Map();
+    private trackedAvatar: string | undefined;
     private isActive: boolean = false;
     private lastActivity: number = 0;
     private activityInterval: NodeJS.Timer | undefined;
@@ -29,6 +31,8 @@ export class OscController extends OscService {
         });
         TypedIpcMain.on('forwardOscToRenderer', (forward: boolean) => this.forwardOscToRenderer = forward);
         TypedIpcMain.handle('getLastOscActivity', async () => this.lastActivity);
+        TypedIpcMain.handle('getTrackedParameters', async () => this.trackedParameters);
+        TypedIpcMain.handle('getTrackedAvatar', async () => this.trackedAvatar);
 
         BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
         BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
@@ -57,8 +61,10 @@ export class OscController extends OscService {
      */
     protected recieved(vrcParameter: VrcParameter) {
         if (vrcParameter.path.indexOf('/avatar/change') !== -1) {
+            this.trackedAvatar = vrcParameter.value.toString();
             BridgeService.emit('vrcAvatar', vrcParameter);
         } else {
+            this.trackedParameters.set(vrcParameter.path, vrcParameter.value);
             BridgeService.emit('vrcParameter', vrcParameter);
             if (this.forwardOscToRenderer) {
                 TypedIpcMain.emit('vrcParameter', vrcParameter);

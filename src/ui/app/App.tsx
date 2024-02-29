@@ -14,6 +14,7 @@ import MainWindow from './mainWindow/mainWindow.componenet';
 import LovensePage from '../pages/lovense/lovense.page';
 import WebsitePage from '../pages/website/website.page';
 import AvatarsPage from '../pages/avatars/avatars.page';
+import VrcStatusPage from '../pages/vrcStatus/vrcStatus.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
@@ -36,6 +37,7 @@ export default function App() {
                     <Routes>
                         <Route path="/website/*" element={<WebsitePage />} />
                         <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
+                        <Route path="/vrcStatus" element={<VrcStatusPage />} />
                         <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/lovense" element={<LovensePage />} />
                         <Route path="*" element={<LaunchPadPage />} />

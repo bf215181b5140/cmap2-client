@@ -1,7 +1,7 @@
-import ConnectionBox from './connectionBox.component';
 import { useEffect, useState } from 'react';
+import { ContentBox } from 'cmap2-shared/dist/react';
 
-export default function VrcConnection() {
+export default function VrcGameStatus() {
 
     const [isVrchatRunning, setIsVrchatRunning] = useState<boolean | null>(null);
     const [lastOscActivity, setLastOscActivity] = useState<number | null>(null);
@@ -26,18 +26,17 @@ export default function VrcConnection() {
     function lastOscActivityText(): string {
         if (lastOscActivity === null || lastOscActivity === 0) return 'No OSC activity detected';
         const diff = (Date.now() - lastOscActivity) / 1000;
-        if (diff < 5) return 'just now';
-        if (diff < 60) return `${Math.floor(diff)} seconds ago`;
-        if (diff < 120) return `${Math.floor(diff / 60)} minute ago`;
-        if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-        return `${Math.floor(diff / 3600)} hours ago`;
+        if (diff < 5) return 'Last OSC activity: just now';
+        if (diff < 60) return `Last OSC activity: ${Math.floor(diff)} seconds ago`;
+        if (diff < 120) return `Last OSC activity: ${Math.floor(diff / 60)} minute ago`;
+        if (diff < 3600) return `Last OSC activity: ${Math.floor(diff / 60)} minutes ago`;
+        return `Last OSC activity: ${Math.floor(diff / 3600)} hours ago`;
     }
 
-    return (<ConnectionBox icon={'ri-gamepad-line'} connected={isVrchatRunning === true} redirectPath={'/vrcStatus'}>
-        <h1>Vrchat</h1>
+    return (<ContentBox>
         <Header isVrchatRunning={isVrchatRunning}/>
-        <p>Last OSC activity: {lastOscActivityText()}</p>
-    </ConnectionBox>);
+        <p>{lastOscActivityText()}</p>
+    </ContentBox>);
 }
 
 function Header({ isVrchatRunning }: { isVrchatRunning: boolean | null }) {
