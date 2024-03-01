@@ -17,8 +17,16 @@ export default function AvatarParameterProperties({type, properties}: AvatarPara
     const toastsDispatch = useContext(ToastContext);
 
     function copyPath(path: string) {
-        navigator.clipboard.writeText(path);
-        toastsDispatch({type: 'add', toast: {message: `Copied parameter path to clipboard: ${path}`, type: ToastType.INFO}});
+        navigator.clipboard.writeText(path).then(() => {
+            toastsDispatch({
+                type: 'add',
+                toast: {
+                    message: `Copied parameter path to clipboard: ${path}`,
+                    type: ToastType.INFO,
+                    group: 'copyToClipboard'
+                }
+            });
+        });
     }
 
     function typeColor() {
@@ -70,7 +78,7 @@ const TypeStyled = styled.div<{ color: string }>`
 
 const ParameterPathStyled = styled.p<{ color: string }>`
   cursor: pointer;
-  
+
   i {
     font-size: 16px;
     color: ${props => props.color};
@@ -80,7 +88,7 @@ const ParameterPathStyled = styled.p<{ color: string }>`
     color: ${colors['button-2-hover-border']};
 
     i {
-    color: ${colors['button-2-hover-border']};
+      color: ${colors['button-2-hover-border']};
     }
   }
 `;
