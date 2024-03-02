@@ -1,11 +1,10 @@
 import { VrcOscAvatar, VrcOscAvatarSchema } from '../../../../shared/types/osc';
-import { ToastType } from '../../../app/toast/toast.component';
-import React, { ChangeEvent, ChangeEventHandler, RefObject, useContext, useRef, useState } from 'react';
+import React, { ChangeEvent, useContext, useState } from 'react';
 import { ModalContext, ToastContext } from '../../../app/mainWindow/mainWindow.componenet';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import { useForm } from 'react-hook-form';
 import ActionButton from '../../../shared/components/actionButton.component';
-import SubmitInput from '../../../shared/components/form/inputs/submit.component';
+import { ToastType } from '../../../app/toast/toast.hook';
 
 interface AvatarUploadFormProps {
     avatars: VrcOscAvatar[];

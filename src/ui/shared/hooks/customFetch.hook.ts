@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { ClientCredentialsContext } from '../../app/App';
-import { ToastType } from '../../app/toast/toast.component';
 import { ToastContext } from '../../app/mainWindow/mainWindow.componenet';
 import { URL } from '../../../shared/const';
+import { ToastType } from '../../app/toast/toast.hook';
 
 interface CustomFetchResponse<T> {
     code: number;
@@ -68,7 +68,7 @@ export default function useCustomFetch() {
             if (e instanceof Error) {
                 toastsDispatch({
                     type: 'add',
-                    toast: {message: e.message, type: ToastType.ERROR}
+                    toast: {message: e.message, type: ToastType.ERROR, group: 'customFetchError'}
                 });
             }
             return null;

@@ -3,23 +3,11 @@ import { ReactProps } from 'cmap2-shared';
 import styled, { css } from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { Toast, ToastReducerAction, ToastType } from './toast.hook';
 
 interface ToastProps extends ReactProps {
     toasts: Toast[];
-    dispatch: (action: any) => void;
-}
-
-export interface Toast {
-    id?: string;
-    message: string;
-    type: ToastType;
-}
-
-export enum ToastType {
-    INFO,
-    WARNING,
-    ERROR,
-    SUCCESS
+    dispatch: (action: ToastReducerAction) => void;
 }
 
 export function ToastComponent(props: ToastProps) {

@@ -1,12 +1,11 @@
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { VRChatOscAvatar } from '../../../../../../shared/interfaces';
-import { ParameterDto, ReactProps } from 'cmap2-shared';
+import { ReactProps } from 'cmap2-shared';
 import FileUpload from '../../../../../shared/components/fileUpload.component';
 import { EventBus } from '../../../../../shared/util/eventBus';
-import { useToast } from '../../../../../app/toast/toast.hook';
-import { ToastType } from '../../../../../app/toast/toast.component';
 import { useContext } from 'react';
 import { ToastContext } from '../../../../../app/mainWindow/mainWindow.componenet';
+import { ToastType } from '../../../../../app/toast/toast.hook';
 
 interface UploadAvatarProps extends ReactProps {
     eventBus: EventBus<VRChatOscAvatar>;
