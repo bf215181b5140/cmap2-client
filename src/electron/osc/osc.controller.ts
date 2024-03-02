@@ -8,8 +8,6 @@ export class OscController extends OscService {
     private trackedParameters: Map<string, boolean | number | string> = new Map();
     private isActive: boolean = false;
     private lastActivity: number = 0;
-    private activityInterval: NodeJS.Timeout | undefined;
-    private activityIntervalMs: number = 60000;
 
     /**
      * Sets listeners for events and starts OSC server and client
@@ -31,8 +29,6 @@ export class OscController extends OscService {
 
         BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
         BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
-
-        if (!this.activityInterval) this.activityInterval = setInterval(() => this.activityChecker(), this.activityIntervalMs);
     }
 
     /**
@@ -59,18 +55,4 @@ export class OscController extends OscService {
         BridgeService.emit('vrcParameter', vrcParameter);
         TypedIpcMain.emit('vrcParameter', vrcParameter);
     }
-
-    /**
-     * Periodically sends OSC message to VRChat (every this.activityIntervalMs).<br>
-     * Checks if last activity was more than 3x this.activityIntervalMs ago.<br>
-     * Emits on activity change.
-     */
-    private activityChecker() {
-        this.send({path: '/avatar/parameters/VRMode', value: 10});
-        const recentActivity = this.lastActivity > (Date.now() - ((this.activityIntervalMs * 3) + 2000));
-        if (recentActivity !== this.isActive) {
-            this.isActive = recentActivity;
-            BridgeService.emit('oscActivity', this.isActive);
-        }
-    };
 }

@@ -1,13 +1,13 @@
 import { app, Tray, Menu } from 'electron';
 import { ClientSocketService } from './webSocket/clientSocket.service';
 import { IpcMainController } from './ipc/ipcMain.controller';
-import { testing } from './testing/testing.service';
 import { StoreService } from './store/store.service';
 import LovenseController from './lovense/lovense.controller';
 import VrcDetectorService from './vrcDetector/vrcDetector.service';
 import mainWindow from './mainWindow/mainWindow';
 import { OscController } from './osc/osc.controller';
 import { OscDataStoreService } from './store/oscData/oscDataStore.service';
+import LocalTimeController from './osc/localTime/localTime.controller';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -30,6 +30,7 @@ app.whenReady().then(() => {
     new ClientSocketService(settings);
     new LovenseController();
     new VrcDetectorService();
+    new LocalTimeController();
 
     // testing service
     // testing();
