@@ -7,11 +7,11 @@ import { SocketConnection, SocketConnectionType } from '../../../../../shared/So
 import { registrationSchema } from 'cmap2-shared/src/zodSchemas';
 import { useNavigate } from 'react-router-dom';
 import { ToastContext } from '../../../../app/mainWindow/mainWindow.componenet';
-import { ToastType } from '../../../../app/toast/toast.component';
 import FormTable from '../../../../shared/components/form/formTable.component';
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
+import { ToastType } from '../../../../app/toast/toast.hook';
 
 interface ActivateFormProps extends ReactProps {
     socketConnection: SocketConnection,

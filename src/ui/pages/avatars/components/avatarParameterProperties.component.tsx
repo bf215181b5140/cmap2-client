@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import React, { useContext } from 'react';
 import { ToastContext } from '../../../app/mainWindow/mainWindow.componenet';
-import { ToastType } from '../../../app/toast/toast.component';
 import colors from 'cmap2-shared/src/colors.json';
+import { ToastType } from '../../../app/toast/toast.hook';
 
 interface AvatarParameterPropertiesProps extends ReactProps {
     type: string;
