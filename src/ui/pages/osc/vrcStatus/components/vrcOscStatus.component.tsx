@@ -1,7 +1,7 @@
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { useEffect, useState } from 'react';
 import { ContentBoxWidth } from 'cmap2-shared';
-import { VrcOscAvatar } from '../../../../shared/types/osc';
+import { VrcOscAvatar } from '../../../../../shared/types/osc';
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 

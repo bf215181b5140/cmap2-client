@@ -1,11 +1,11 @@
-const oscControlDefaults = {
-    localTime: {
-        format24h: true,
-        sendToChatbox: false,
-        chatboxFormat: 'My time: {HH:MM:ss}',
-        sendToAvatar: false,
-        avatarParameters: [],
-    },
+import { OscClockSettings, OscClockSettingsDefaults } from '../../osc/clock/types';
+
+type OscControlDefaultsType = {
+    clock: OscClockSettings
+}
+
+const oscControlDefaults: OscControlDefaultsType = {
+    clock: OscClockSettingsDefaults,
 };
 
 export default oscControlDefaults;

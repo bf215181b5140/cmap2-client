@@ -7,7 +7,7 @@ import VrcDetectorService from './vrcDetector/vrcDetector.service';
 import mainWindow from './mainWindow/mainWindow';
 import { OscController } from './osc/osc.controller';
 import { OscDataStoreService } from './store/oscData/oscDataStore.service';
-import LocalTimeController from './osc/localTime/localTime.controller';
+import OscClockController from './osc/clock/oscClock.controller';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -30,7 +30,7 @@ app.whenReady().then(() => {
     new ClientSocketService(settings);
     new LovenseController();
     new VrcDetectorService();
-    new LocalTimeController();
+    new OscClockController();
 
     // testing service
     // testing();

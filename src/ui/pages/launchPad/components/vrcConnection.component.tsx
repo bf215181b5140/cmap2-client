@@ -24,7 +24,7 @@ export default function VrcConnection() {
         }
     }, []);
 
-    return (<ConnectionBox icon={'ri-gamepad-line'} connected={isVrchatRunning === true} redirectPath={'/vrcStatus'}>
+    return (<ConnectionBox icon={'ri-gamepad-line'} connected={isVrchatRunning === true} redirectPath={'/osc'}>
         <h1>Vrchat</h1>
         <Header isVrchatRunning={isVrchatRunning}/>
         <p>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>

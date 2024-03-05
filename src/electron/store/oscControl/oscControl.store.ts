@@ -10,11 +10,11 @@ export default class OscControlStore {
 
     public static init() {
         // LocalTime
-        TypedIpcMain.handle('getLocalTimeSettings', async () => this.store.get('localTime'));
-        TypedIpcMain.on('setLocalTimeSettings', (data) => this.store.set('localTime', data));
+        TypedIpcMain.handle('getOscClockSettings', async () => this.store.get('clock'));
+        TypedIpcMain.on('setOscClockSettings', (data) => this.store.set('clock', data));
     }
 
-    public static getLocalTimeSettings() {
-        return this.store.get('localTime');
+    public static getOscClockSettings() {
+        return this.store.get('clock');
     }
 }

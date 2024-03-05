@@ -1,21 +1,21 @@
 import TypedIpcMain from '../../ipc/typedIpcMain';
-import { LocalTimeSettings } from './types';
+import { OscClockSettings, OscClockUnit } from './types';
 import { BridgeService } from '../../bridge/bridge.service';
 import { VrcParameter } from 'cmap2-shared';
 import { Message } from 'node-osc';
 import OscControlStore from '../../store/oscControl/oscControl.store';
 
-export default class LocalTimeController {
-    private settings: LocalTimeSettings;
+export default class OscClockController {
+    private settings: OscClockSettings;
     private sendToAvatarInterval: NodeJS.Timeout | undefined;
     private sendToChatboxInterval: NodeJS.Timeout | undefined;
 
     constructor() {
-        this.settings = OscControlStore.getLocalTimeSettings();
+        this.settings = OscControlStore.getOscClockSettings();
 
         this.start();
 
-        TypedIpcMain.on('setLocalTimeSettings', (data) => {
+        TypedIpcMain.on('setOscClockSettings', (data) => {
             this.settings = data;
             this.start();
         });
@@ -61,22 +61,22 @@ export default class LocalTimeController {
         this.settings?.avatarParameters.forEach(parameter => {
             let value: number;
             switch (parameter.unit) {
-                case 'second':
+                case OscClockUnit.Second:
                     value = currentTime.getSeconds();
                     break;
-                case 'minute':
+                case OscClockUnit.Minute:
                     value = currentTime.getMinutes();
                     break;
-                case 'hour':
+                case OscClockUnit.Hour:
                     value = currentTime.getHours();
                     break;
-                case 'day':
+                case OscClockUnit.Day:
                     value = currentTime.getDay();
                     break;
-                case 'month':
+                case OscClockUnit.Month:
                     value = currentTime.getMonth();
                     break;
-                case 'year':
+                case OscClockUnit.Year:
                     value = currentTime.getFullYear() % 100;
                     break;
             }

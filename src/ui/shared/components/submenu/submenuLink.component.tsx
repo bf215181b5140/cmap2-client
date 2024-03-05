@@ -2,22 +2,23 @@ import { Link, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 
-interface WebsiteMenuLinkProps {
+interface SubmenuLinkProps {
     to: string;
     icon: string;
 }
 
-export default function WebsiteMenuLink({to, icon}: WebsiteMenuLinkProps) {
+export default function SubmenuLink({to, icon}: SubmenuLinkProps) {
 
     const pathname = useLocation().pathname;
 
     function isCurrentPath(): boolean {
+        // todo fix dynamic
         return (pathname.indexOf(to) === 0 && to !== '/website') || pathname === to;
     }
 
-    return (<WebsiteMenuLinkStyled to={to} active={isCurrentPath()}>
+    return (<SubmenuLinkStyled to={to} active={isCurrentPath()}>
         <i className={icon} />
-    </WebsiteMenuLinkStyled>);
+    </SubmenuLinkStyled>);
 }
 
 const highlight = css`
@@ -29,7 +30,7 @@ const highlight = css`
   }
 `;
 
-const WebsiteMenuLinkStyled = styled(Link)<{ active: boolean }>`
+const SubmenuLinkStyled = styled(Link)<{ active: boolean }>`
   display: block;
   background-color: ${colors['button-2-bg']};
   border: 2px solid ${colors['button-2-border']};

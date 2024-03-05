@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { ContentBoxWidth } from 'cmap2-shared';
-import timeSinceTimestamp from '../../../shared/util/timeSinceTimestamp';
+import timeSinceTimestamp from '../../../../shared/util/timeSinceTimestamp';
 
 export default function VrcGameStatus() {
 

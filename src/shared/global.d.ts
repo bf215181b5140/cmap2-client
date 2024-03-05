@@ -6,7 +6,7 @@ import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 import { Settings } from './types/settings';
 import { VrcOscAvatar, VrcOscAvatarParameter } from './types/osc';
-import { LocalTimeSettings } from '../electron/osc/localTime/types';
+import { OscClockSettings } from '../electron/osc/clock/types';
 
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
@@ -22,7 +22,7 @@ type IpcGetOptions = {
     // VrcOscData
     getVrcOscAvatars: VrcOscAvatar[];
     // Osc control
-    getLocalTimeSettings: LocalTimeSettings;
+    getOscClockSettings: OscClockSettings;
 };
 
 type IpcSendOptions = {
@@ -41,7 +41,7 @@ type IpcSendOptions = {
     // VrcOscData
     setVrcOscAvatars: VrcOscAvatar[];
     // Osc control
-    setLocalTimeSettings: LocalTimeSettings;
+    setOscClockSettings: OscClockSettings;
 };
 
 type IpcReceiveOptions = {
