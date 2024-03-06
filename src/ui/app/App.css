@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'Dosis-Bold';
-    src: local('Dosis-Bold'), url(../shared/style/Dosis-Bold.ttf) format('truetype');
+    src: local('Dosis-Bold'), url(shared/style/Dosis-Bold.ttf) format('truetype');
 }
 
 @font-face {
     font-family: 'Noto-Sans-Regular';
-    src: local('Noto-Sans-Regular'), url(../shared/style/Noto-Sans-Regular.ttf) format('truetype');
+    src: local('Noto-Sans-Regular'), url(shared/style/Noto-Sans-Regular.ttf) format('truetype');
 }
 
 * {

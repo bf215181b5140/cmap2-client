@@ -3,6 +3,7 @@ import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { VrcParameter } from 'cmap2-shared';
 import { Settings } from '../../shared/types/settings';
+import { Message } from 'node-osc';
 
 export class OscController extends OscService {
     private trackedParameters: Map<string, boolean | number | string> = new Map();
@@ -27,7 +28,7 @@ export class OscController extends OscService {
         TypedIpcMain.handle('getLastOscActivity', async () => this.lastActivity);
         TypedIpcMain.handle('getTrackedParameters', async () => this.trackedParameters);
 
-        BridgeService.on('sendOscMessage', (vrcParameter: VrcParameter) => this.send(vrcParameter));
+        BridgeService.on('sendOscMessage', (message: Message) => this.send(message));
         BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
     }
 

@@ -4,6 +4,7 @@ import { BridgeService } from '../../bridge/bridge.service';
 import { VrcParameter } from 'cmap2-shared';
 import { Message } from 'node-osc';
 import OscControlStore from '../../store/oscControl/oscControl.store';
+import oscClockChatboxText from './chatboxText';
 
 export default class OscClockController {
     private settings: OscClockSettings;
@@ -21,43 +22,45 @@ export default class OscClockController {
         });
     }
 
+    /**
+     * Check the settings and start sending to chatbox and/or avatar.
+     * Trigger send command right away, so we don't wait for interval timer.
+     * Clear interval when setting a new one.
+     */
     private start() {
         if (this.settings.sendToChatbox) {
+            this.sendToChatbox();
             if (this.sendToChatboxInterval) clearInterval(this.sendToChatboxInterval);
-            this.sendToChatboxInterval = setInterval(() => this.sendToChatbox(), 1000);
+            this.sendToChatboxInterval = setInterval(() => this.sendToChatbox(), 20000);
         } else {
             if (this.sendToChatboxInterval) clearInterval(this.sendToChatboxInterval);
         }
 
-        if (this.settings.sendToAvatar) {
+        if (this.settings.sendToAvatar && this.settings?.avatarParameters.length > 0) {
+            this.sendToAvatar();
             if (this.sendToAvatarInterval) clearInterval(this.sendToAvatarInterval);
-            this.sendToAvatarInterval = setInterval(() => this.sendToAvatar(), 1000);
+            // if there is a Seconds parameter, update every second
+            // otherwise update every 10 seconds
+            const updateSeconds = !!this.settings?.avatarParameters.find(parameter => parameter.unit === OscClockUnit.Second);
+            const updateRate = updateSeconds ? 1000 : 10000;
+            this.sendToAvatarInterval = setInterval(() => this.sendToAvatar(), updateRate);
         } else {
             if (this.sendToAvatarInterval) clearInterval(this.sendToAvatarInterval);
         }
     }
 
     private sendToChatbox() {
-        const currentTime = new Date();
-
-        // todo check does THIS.settings work in this context
         let text: string = this.settings?.chatboxFormat ?? '';
         let formattedText: string;
 
-        // todo need more formats, make a shared util function to replace string
-        formattedText = text.replace('{time}', currentTime.toLocaleTimeString());
+        formattedText = oscClockChatboxText(text);
 
         // https://docs.vrchat.com/docs/osc-as-input-controller
-        // send new Message() instead of VrcParameter
-        const oscMessage: Message = new Message('/chatbox/input', formattedText, true);
-
-        // todo sendOscMessage need to be Message type
-        // BridgeService.emit('sendOscMessage', oscMessage);
+        BridgeService.emit('sendOscMessage', new Message('/chatbox/input', formattedText, true));
     }
 
     private sendToAvatar() {
         const currentTime = new Date();
-        // todo check does THIS.settings work in this context
         this.settings?.avatarParameters.forEach(parameter => {
             let value: number;
             switch (parameter.unit) {
@@ -80,11 +83,7 @@ export default class OscClockController {
                     value = currentTime.getFullYear() % 100;
                     break;
             }
-            const vrcParameter: VrcParameter = {
-                path: parameter.path,
-                value: value,
-            };
-            BridgeService.emit('sendOscMessage', vrcParameter);
+            BridgeService.emit('sendOscMessage', new Message(parameter.path, value));
         });
     }
 }

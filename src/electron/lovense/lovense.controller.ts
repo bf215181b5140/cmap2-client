@@ -5,6 +5,7 @@ import { BridgeService } from '../bridge/bridge.service';
 import LovenseService from './lovense.service';
 import { StoreService } from '../store/store.service';
 import TypedIpcMain from '../ipc/typedIpcMain';
+import { Message } from 'node-osc';
 
 // '/avatar/parameters/LovenseContact',
 //                                     '/avatar/parameters/OGB/Pen/Penis/TouchOthers',
@@ -68,7 +69,7 @@ export default class LovenseController extends LovenseService {
                 path: this.lovenseSettings.connectionOscMessagePath,
                 value: this.lovenseStatus.status === 1
             };
-            BridgeService.emit('sendOscMessage', vrcParameter);
+            BridgeService.emit('sendOscMessage', new Message(vrcParameter.path, vrcParameter.value));
         }
     }
 
@@ -210,7 +211,7 @@ export default class LovenseController extends LovenseService {
                     value = actionValue !== 0;
                     break;
             }
-            BridgeService.emit('sendOscMessage', {path: toyCommandOscMessage.parameterPath, value: value});
+            BridgeService.emit('sendOscMessage', new Message(toyCommandOscMessage.parameterPath, value));
         });
     }
 }

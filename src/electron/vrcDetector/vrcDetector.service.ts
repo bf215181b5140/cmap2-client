@@ -13,7 +13,7 @@ export default class VrcDetectorService {
     constructor() {
         this.resetInterval(StoreService.getSettings());
 
-        BridgeService.on('settings', (settings) => this.resetInterval(settings));
+        TypedIpcMain.on('setSettings', (settings) => this.resetInterval(settings));
 
         TypedIpcMain.on('getIsVrchatRunning', () => this.isVrcRunning());
     }

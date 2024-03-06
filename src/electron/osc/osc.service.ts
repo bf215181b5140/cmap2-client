@@ -56,9 +56,9 @@ export abstract class OscService {
      * @param message
      * @private
      */
-    protected send(message: VrcParameter) {
+    protected send(message: Message) {
         if (this.oscClient) {
-            this.oscClient.send(new Message(message.path, message.value));
+            this.oscClient.send(message);
         }
     }
 

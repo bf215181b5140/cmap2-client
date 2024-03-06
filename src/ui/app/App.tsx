@@ -1,21 +1,21 @@
 import { Route, Routes } from 'react-router-dom';
-import LaunchPadPage from '../pages/launchPad/launchPad.page';
+import LaunchPadPage from './pages/launchPad/launchPad.page';
 import React from 'react';
 import styled from 'styled-components';
-import TitleBar from './titleBar/titleBar.component';
-import NavBar from './navBar/navBar.component';
+import TitleBar from './components/titleBar/titleBar.component';
+import NavBar from './components/navBar/navBar.component';
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
-import useSocketConnection from '../shared/hooks/socketConnection.hook';
-import useClientCredentials, { ClientCredentialsHook } from '../shared/hooks/clientCredentials.hook';
+import useSocketConnection from './shared/hooks/socketConnection.hook';
+import useClientCredentials, { ClientCredentialsHook } from './shared/hooks/clientCredentials.hook';
 import { ClientCredentials } from '../../shared/classes';
-import SettingsPage from '../pages/settings/settings.page';
-import MainWindow from './mainWindow/mainWindow.componenet';
-import LovensePage from '../pages/lovense/lovense.page';
-import WebsitePage from '../pages/website/website.page';
-import AvatarsPage from '../pages/avatars/avatars.page';
-import VrcStatusPage from '../pages/osc/vrcStatus/vrcStatus.page';
-import OscPage from '../pages/osc/osc.page';
+import SettingsPage from './pages/settings/settings.page';
+import MainWindow from './components/mainWindow/mainWindow.componenet';
+import LovensePage from './pages/lovense/lovense.page';
+import WebsitePage from './pages/website/website.page';
+import AvatarsPage from './pages/osc/avatars/avatars.page';
+import VrcStatusPage from './pages/osc/vrcStatus/vrcStatus.page';
+import OscPage from './pages/osc/osc.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),

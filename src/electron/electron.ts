@@ -8,6 +8,7 @@ import mainWindow from './mainWindow/mainWindow';
 import { OscController } from './osc/osc.controller';
 import { OscDataStoreService } from './store/oscData/oscDataStore.service';
 import OscClockController from './osc/clock/oscClock.controller';
+import OscControlStore from './store/oscControl/oscControl.store';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -19,12 +20,15 @@ if (!app.requestSingleInstanceLock()) {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
+    // start store services
+    StoreService.start();
+    OscDataStoreService.start();
+    OscControlStore.start();
+
     // grab settings
     const settings = StoreService.getSettings();
 
     // initiate services
-    new StoreService();
-    new OscDataStoreService();
     new IpcMainController();
     new OscController(settings);
     new ClientSocketService(settings);

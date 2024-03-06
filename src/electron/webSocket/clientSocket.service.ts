@@ -7,6 +7,7 @@ import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { ClientCredentials } from '../../shared/classes';
 import { Settings } from '../../shared/types/settings';
+import { Message } from 'node-osc';
 
 export class ClientSocketService {
     private socket: SocketIOClient.Socket | undefined;
@@ -72,7 +73,7 @@ export class ClientSocketService {
         });
 
         this.socket.on('parameter', (parameter: VrcParameter) => {
-            BridgeService.emit('sendOscMessage', parameter);
+            BridgeService.emit('sendOscMessage', new Message(parameter.path, parameter.value));
         });
     }
 
