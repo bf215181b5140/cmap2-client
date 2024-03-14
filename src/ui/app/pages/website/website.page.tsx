@@ -12,10 +12,10 @@ export default function WebsitePage() {
 
     return (<WebsitePageStyled>
         <Submenu>
-            <SubmenuLink to={'/website/connection'} icon={'ri-wifi-fill'} />
-            <SubmenuLink to={'/website/profile'} icon={'ri-user-fill'} />
-            <SubmenuLink to={'/website/avatars'} icon={'ri-contacts-book-fill'} />
-            <SubmenuLink to={'/website/tiers'} icon={'ri-medal-fill'} />
+            <SubmenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Connection status'} />
+            <SubmenuLink to={'/website/profile'} icon={'ri-user-fill'} tooltip={'Website profile'} />
+            <SubmenuLink to={'/website/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Website layout'} />
+            <SubmenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Account tiers'} />
         </Submenu>
 
         <div style={{flexBasis: '100%'}}>

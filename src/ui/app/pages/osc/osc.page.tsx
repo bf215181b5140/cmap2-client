@@ -11,9 +11,9 @@ export default function OscPage() {
 
     return (<OscPageStyled>
         <Submenu>
-            <SubmenuLink to={'/osc/status'} icon={'ri-wifi-fill'} />
-            <SubmenuLink to={'/osc/avatars'} icon={'ri-contacts-book-fill'} />
-            <SubmenuLink to={'/osc/clock'} icon={'ri-time-line'} />
+            <SubmenuLink to={'/osc/status'} icon={'ri-wifi-fill'} tooltip={'Game status'} />
+            <SubmenuLink to={'/osc/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Saved avatars'} />
+            <SubmenuLink to={'/osc/clock'} icon={'ri-time-line'} tooltip={'Clock'} />
         </Submenu>
 
         <div style={{flexBasis: '100%'}}>

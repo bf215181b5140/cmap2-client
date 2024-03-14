@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import colors from 'cmap2-shared/src/colors.json';
 import { ReactProps } from 'cmap2-shared';
+import { Tooltip } from 'react-tooltip';
 
 export default function Submenu({children}: ReactProps) {
 
@@ -19,7 +20,7 @@ const SubmenuStyled = styled.div`
     top: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: 12px;
+    gap: 8px;
+    padding: 8px;
   }
 `;
