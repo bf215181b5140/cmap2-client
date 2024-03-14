@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { ModalContext } from '../../components/mainWindow/mainWindow.componenet';
 import { globalInputStyle } from './form/input.style';
-import colors from 'cmap2-shared/src/colors.json';
 
 interface DeleteButtonProps {
     keyword: string;
@@ -39,9 +38,9 @@ const DeleteButtonStyled = styled.button`
 
   :disabled {
     pointer-events: none;
-    color: ${colors['font-text-disabled']};
-    background: ${colors['ui-primary-1']};
-    border-color: ${colors['ui-primary-2']};
+    color: ${props => props.theme.colors.input.textDisabled};
+    background: ${props => props.theme.colors.input.bg};
+    border-color: ${props => props.theme.colors.input.border};
     filter: saturate(0%);
   }
 `;

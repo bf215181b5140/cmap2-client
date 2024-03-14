@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { LovenseStatus } from '../../../../shared/lovense';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
-import colors from 'cmap2-shared/src/colors.json';
 import ToyControl from './components/toyControl.component';
 import OscControl from './components/oscControl.component';
 import Settings from './components/lovenseSettings.component';
@@ -108,7 +107,7 @@ const QRCodeImageOverlay = styled.div`
     text-align: center;
     font-size: 16px;
     text-shadow: 0 0 5px black;
-    color: ${colors['text-4']};
+    color: ${props => props.theme.colors.font.textBright};
     top: 30%;
     bottom: 30%;
     left: 10%;

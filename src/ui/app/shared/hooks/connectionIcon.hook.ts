@@ -1,5 +1,5 @@
-import colors from 'cmap2-shared/src/colors.json';
 import { SocketConnection, SocketConnectionType } from '../../../../shared/SocketConnection';
+import { theme } from '../../theme';
 
 export default function useConnectionIcon(connectionStatus: SocketConnection) {
 
@@ -9,15 +9,15 @@ export default function useConnectionIcon(connectionStatus: SocketConnection) {
     switch(connectionStatus.type) {
         case SocketConnectionType.SUCCESS:
             type = 'ri-wifi-fill';
-            color = colors['success'];
+            color = theme.colors.success;
             break;
         case SocketConnectionType.MESSAGE:
             type = 'ri-wifi-line';
-            color = colors['info'];
+            color = theme.colors.info;
             break;
         case SocketConnectionType.ERROR:
             type = 'ri-wifi-off-fill';
-            color = colors['error'];
+            color = theme.colors.error;
             break;
     }
 

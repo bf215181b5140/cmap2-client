@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import React from 'react';
 import { ToastReducerAction, useToast } from '../toast/toast.hook';
 import { ToastComponent } from '../toast/toast.component';
-import colors from 'cmap2-shared/src/colors.json';
 import ModalComponent from '../modal/modal.component';
 import useModalHook, { ModalFunction } from '../modal/modal.hook';
 
@@ -37,8 +36,8 @@ export default function MainWindow({children}: ReactProps) {
 const MainWindowStyled = styled.div`
   overflow: hidden;
   width: 100%;
-  background-color: ${colors['app-bg']};
-  border: 2px solid ${colors['app-border']};
+  background-color: ${props => props.theme.colors.ui.appBg};
+  border: 2px solid ${props => props.theme.colors.ui.appBorder};
   border-radius: 10px;
   box-sizing: border-box;
   flex: 1;

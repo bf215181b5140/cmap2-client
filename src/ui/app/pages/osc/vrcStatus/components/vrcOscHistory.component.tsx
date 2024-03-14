@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { ContentBoxWidth, VrcParameter } from 'cmap2-shared';
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 
 interface VrcParameterWithDate extends VrcParameter {
     date: Date;
@@ -51,7 +50,7 @@ export default function VrcOscHistory() {
 const VrcOscHistoryTableStyled = styled.table`
   display: block;
   border-collapse: collapse;
-  background: ${colors['button-2-border']};
+  background: ${props => props.theme.colors.ui.background5};
   border-radius: 8px;
   padding: 10px 15px;
 
@@ -59,7 +58,7 @@ const VrcOscHistoryTableStyled = styled.table`
     padding: 0 15px 6px 10px;
     text-align: left;
     font-size: 18px;
-    color: ${colors['font-header-2']};
+    color: ${props => props.theme.colors.font.h2};
   }
 
   tbody {

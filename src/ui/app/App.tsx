@@ -14,7 +14,6 @@ import MainWindow from './components/mainWindow/mainWindow.componenet';
 import LovensePage from './pages/lovense/lovense.page';
 import WebsitePage from './pages/website/website.page';
 import AvatarsPage from './pages/osc/avatars/avatars.page';
-import VrcStatusPage from './pages/osc/vrcStatus/vrcStatus.page';
 import OscPage from './pages/osc/osc.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({

@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import { ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonType, ValueType } from 'cmap2-shared';
 
 export const URL = process.env.NODE_ENV === 'production' ? 'https://changemyavatarparams.com' : 'http://localhost:8080';
@@ -55,28 +54,28 @@ const ParameterButtonStyled = styled.div<{ flexBasis?: string, active: boolean }
   overflow: hidden;
 
   &.buttonStyle-1 {
-    background: ${colors['button-bg']};
-    border: 2px solid ${colors['button-border']};
+    background: ${props => props.theme.colors.buttonPrimary.bg};
+    border: 2px solid ${props => props.theme.colors.buttonPrimary.border};
     border-radius: 8px;
     transition: 0.2s linear;
 
     :hover {
       transform: scale(1.02);
-      background: ${colors['button-hover-bg']};
-      border: 2px solid ${colors['button-hover-border']};
+      background: ${props => props.theme.colors.buttonPrimary.hoverBg};
+      border: 2px solid ${props => props.theme.colors.buttonPrimary.hoverBorder};
     }
   }
 
   &.buttonStyle-2 {
-    background: ${colors['button-2-bg']};
-    border: 2px solid ${colors['button-2-border']};
+    background: ${props => props.theme.colors.buttonSecondary.bg};
+    border: 2px solid ${props => props.theme.colors.buttonSecondary.border};
     border-radius: 8px;
     transition: 0.2s linear;
 
     :hover {
       transform: scale(1.02);
-      background: ${colors['button-2-hover-bg']};
-      border: 2px solid ${colors['button-2-hover-border']};
+      background: ${props => props.theme.colors.buttonSecondary.hoverBg};
+      border: 2px solid ${props => props.theme.colors.buttonSecondary.hoverBorder};
     }
   }
 
@@ -118,7 +117,7 @@ const ParameterSliderStyled = styled.input<{ flexBasis?: string }>`
   border-radius: 8px;
 
   -webkit-appearance: none;
-  background: ${colors['input-bg']};
+  background: ${props => props.theme.colors.input.bg};
 
   ::-webkit-slider-thumb {
     height: 26px;
@@ -127,29 +126,29 @@ const ParameterSliderStyled = styled.input<{ flexBasis?: string }>`
   }
 
   &.buttonStyle-1 {
-      background: ${colors['button-bg']};
-    border: 2px solid ${colors['button-border']};
+      background: ${props => props.theme.colors.buttonPrimary.bg};
+    border: 2px solid ${props => props.theme.colors.buttonPrimary.border};
     border-radius: 8px;
 
     &::-webkit-slider-thumb {
-      background: ${colors['button-border']};
+      background: ${props => props.theme.colors.buttonPrimary.border};
 
       :hover {
-        background: ${colors['button-hover-border']};
+        background: ${props => props.theme.colors.buttonPrimary.hoverBorder};
       }
     }
   }
 
   &.buttonStyle-2 {
-    background: ${colors['button-2-bg']};
-    border: 2px solid ${colors['button-2-border']};
+    background: ${props => props.theme.colors.buttonSecondary.bg};
+    border: 2px solid ${props => props.theme.colors.buttonSecondary.border};
     border-radius: 8px;
 
     &::-webkit-slider-thumb {
-      background: ${colors['button-2-hover-bg']};
+      background: ${props => props.theme.colors.buttonSecondary.hoverBg};
 
       :hover {
-        background: ${colors['button-2-hover-border']};
+        background: ${props => props.theme.colors.buttonSecondary.hoverBorder};
       }
     }
   }

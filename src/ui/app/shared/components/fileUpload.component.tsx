@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import useCustomFetch from '../hooks/customFetch.hook';
 import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 
 interface FileUploadProps extends ReactProps {
     parentType: string,
@@ -85,19 +84,19 @@ const FileInputStyled = styled.div`
   margin: 0;
   
   :hover {
-    background: ${colors['ui-primary-1']};
+    background: ${props => props.theme.colors.input.bg};
   }
 
   div {
     flex: 1;
     text-align: center;
-    color: ${colors['ui-primary-2']};
+    color: ${props => props.theme.colors.input.border};
     cursor: pointer;
     padding: 12px;
     transition: 0.1s linear;
 
     :hover {
-        color: ${colors['ui-primary-4']};
+        color: ${props => props.theme.colors.input.hoverBorder};
       }
   }
   

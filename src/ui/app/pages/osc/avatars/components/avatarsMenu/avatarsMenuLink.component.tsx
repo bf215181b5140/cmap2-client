@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { ReactProps } from 'cmap2-shared';
-import colors from 'cmap2-shared/src/colors.json';
 
 interface AvatarsMenuLinkProps extends ReactProps {
     onClick: () => void;
@@ -15,21 +14,21 @@ export default function AvatarsMenuLink({onClick, isActive, children}: AvatarsMe
 }
 
 const highlight = css`
-  background-color: ${colors['button-2-hover-bg']};
-  border-color: ${colors['button-2-hover-border']};
-  color: ${colors['button-2-hover-border']};
+  background-color: ${props => props.theme.colors.buttonSecondary.hoverBg};
+  border-color: ${props => props.theme.colors.buttonSecondary.hoverBorder};
+  color: ${props => props.theme.colors.buttonSecondary.hoverBorder};
 `;
 
 const AvatarsMenuLinkStyled = styled.div<{ isActive: boolean }>`
   display: block;
-  background-color: ${colors['button-2-bg']};
-  border: 2px solid ${colors['button-2-border']};
+  background-color: ${props => props.theme.colors.buttonSecondary.bg};
+  border: 2px solid ${props => props.theme.colors.buttonSecondary.border};
   transition: 0.1s linear;
   text-decoration: none;
   padding: 8px 14px;
   font-size: 18px;
   border-radius: 7px;
-  color: ${colors['button-2-hover-border']};
+  color: ${props => props.theme.colors.buttonSecondary.hoverBorder};
   cursor: pointer;
 
   ${props => props.isActive ? highlight : null};

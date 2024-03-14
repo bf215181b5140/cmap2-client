@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import { ReactProps } from 'cmap2-shared';
 
@@ -21,14 +20,14 @@ const AddNewButtonStyled = styled.div`
   padding: 0.3em 1.5em 0.5em 1.5em;
   cursor: pointer;
   
-  border: 2px solid ${colors['button-2-border']};
+  border: 2px solid ${props => props.theme.colors.buttonSecondary.border};
   border-radius: 8px;
   transition: 0.2s linear;
 
   :hover {
     transform: scale(1.02);
-    background: ${colors['button-2-hover-bg']};
-    border: 2px solid ${colors['button-2-hover-border']};
+    background: ${props => props.theme.colors.buttonSecondary.hoverBg};
+    border: 2px solid ${props => props.theme.colors.buttonSecondary.hoverBorder};
   }
 
 `;

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import { globalInputStyle } from '../input.style';
 import { ReactProps } from 'cmap2-shared';
 import { UseFormWatch } from 'react-hook-form';
@@ -77,11 +76,11 @@ const RangeInputStyled = styled.div`
   user-select: none;
 
   :hover {
-    background: ${colors['ui-primary-1']};
-    border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-2']};
+    background: ${props => props.theme.colors.input.bg};
+    border-color: ${props => props.errors ? props.theme.colors.error : props.theme.colors.input.border};
 
     div {
-      background: ${colors['ui-primary-4']};
+      background: ${props => props.theme.colors.input.hoverBorder};
     }
   }
 
@@ -92,7 +91,7 @@ const RangeInputStyled = styled.div`
 `;
 
 const RangeInputProgressStyled = styled.div`
-  background: ${colors['button-hover-bg']};
+  background: ${props => props.theme.colors.buttonPrimary.hoverBg};
   border-radius: 7px;
   height: 30px;
 `;

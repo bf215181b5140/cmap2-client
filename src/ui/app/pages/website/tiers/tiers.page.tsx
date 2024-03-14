@@ -4,7 +4,6 @@ import { Tiers, TierDto, ClientTier } from 'cmap2-shared';
 import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import styled from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
-import colors from 'cmap2-shared/src/colors.json';
 
 export default function TiersPage() {
 
@@ -57,7 +56,7 @@ const Tier = styled.div<{ current: boolean }>`
   padding: ${props => props.current ? '25px' : '15px'};
   margin: ${props => props.current ? '15px 10px' : '40px 0'};
   flex-basis: 28%;
-  border: 2px solid ${props => props.current ? colors['button-hover-border'] : colors['button-border']};
+  border: 2px solid ${props => props.current ? props.theme.colors.ui.element1 : props.theme.colors.ui.element2};
   border-radius: 1em;
   
   p {

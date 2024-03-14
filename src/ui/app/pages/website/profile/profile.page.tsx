@@ -6,7 +6,6 @@ import { profileSchema } from 'cmap2-shared/src/zodSchemas';
 import useProlfilePage from './profile.hook';
 import FileUpload from '../../../shared/components/fileUpload.component';
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import TierBadge from './components/tierBadge.component';
 import ButtonStylePicker from './buttonStylePicker/buttonStylePicker';
 import BackgroundPicker from './backgroundPicker/backgroundPicker.component';
@@ -72,7 +71,7 @@ export default function ProfilePage() {
 
 const ProfilePictureStyled = styled.img`
   width: 100%;
-  border: 3px solid ${colors['ui-primary-1']};
+  border: 3px solid ${props => props.theme.colors.ui.element3};
   border-radius: 8px;
   box-sizing: border-box;
   display: block;

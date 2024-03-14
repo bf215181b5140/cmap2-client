@@ -4,7 +4,8 @@ export enum ToastType {
     INFO,
     WARNING,
     ERROR,
-    SUCCESS
+    SUCCESS,
+    ATTENTION
 }
 
 export interface Toast {

@@ -12,13 +12,13 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { parametersSchema } from 'cmap2-shared/src/zodSchemas';
 import { EventBus } from '../../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../../../shared/interfaces';
-import colors from 'cmap2-shared/src/colors.json';
 import { ModalContext } from '../../../../../components/mainWindow/mainWindow.componenet';
 import SubmitInput from '../../../../../shared/components/form/inputs/submit.component';
 import ButtonInput from '../../../../../shared/components/form/inputs/button.component';
 import HiddenInput from '../../../../../shared/components/form/inputs/hidden.component';
 import Input from '../../../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../../../shared/components/form/inputs/select.component';
+import { theme } from '../../../../../theme';
 
 interface ParametersProps extends ReactProps {
     selectedAvatar: AvatarDto;
@@ -88,7 +88,7 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
         <p>
             Optional list of parameters that this avatar supports. Makes it easier to build buttons by letting you pick parameters from this list.
             <br />
-            <span style={watchParameters.length > 16 ? {color: colors['error']} : undefined}>You can save up to 16 parameters.</span>
+            <span style={watchParameters.length > 16 ? {color: theme.colors.error} : undefined}>You can save up to 16 parameters.</span>
         </p>
         <form onSubmit={handleSubmit(onSave)}>
             <HiddenInput name={'avatarId'} />

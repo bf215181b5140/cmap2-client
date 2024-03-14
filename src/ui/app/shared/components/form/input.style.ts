@@ -1,15 +1,14 @@
 import { css } from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 
 export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   font-family: Dosis-Bold, sans-serif;
   font-size: 1em;
   margin: 7px;
   padding: 0 10px;
-  color: ${colors['text-1']};
-  background: ${colors['ui-primary-1']};
-  border: 2px solid ${colors['ui-primary-2']};
-  border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-2']};
+  color: ${props => props.theme.colors.font.text};
+  background: ${props => props.theme.colors.input.bg};
+  border: 2px solid ${props => props.theme.colors.input.border};
+  border-color: ${props => props.errors ? props.theme.colors.error : props.theme.colors.input.border};
   border-radius: 7px;
   transition: 0.1s linear;
   width: ${props => props.width ? props.width : '250px'};
@@ -19,19 +18,19 @@ export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   align-items: center;
 
   :hover {
-    background: ${colors['ui-primary-3']};
-    border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-4']};
+    background: ${props => props.theme.colors.input.hoverBg};
+    border-color: ${props => props.errors ? props => props.theme.colors.error : props.theme.colors.input.hoverBorder};
   }
 
   :focus-visible {
-    background: ${colors['ui-primary-3']};
-    border-color: ${props => props.errors ? colors['error'] : colors['ui-primary-4']};
+    background: ${props => props.theme.colors.input.hoverBg};
+    border-color: ${props => props.errors ? props => props.theme.colors.error : props.theme.colors.input.hoverBorder};
     outline: none;
   }
 
   :disabled {
     pointer-events: none;
-    color: ${colors['font-text-disabled']};
+    color: ${props => props.theme.colors.input.textDisabled};
     filter: saturate(0%);
   }
 

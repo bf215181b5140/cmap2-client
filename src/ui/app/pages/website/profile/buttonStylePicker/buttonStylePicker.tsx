@@ -4,7 +4,6 @@ import { ButtonDto, ButtonStyleDto, ClientDto, ReactProps } from 'cmap2-shared';
 import { ParameterButton } from 'cmap2-shared/dist/react';
 import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import PickerOverlayCheck from '../../../../shared/components/pickerOverlay/PickerOverlayCheck.component';
 import PickerOverlayTier from '../../../../shared/components/pickerOverlay/PickerOverlayTier.component';
 
@@ -67,7 +66,7 @@ const ButtonStylePickerStyled = styled.div<{ color: string, validPick: boolean }
   flex-basis: calc(25% - (3 * 15px / 4));
 
   :hover {
-    border-color: ${props => props.validPick ? colors['button-active-border'] : colors['error']};
+    border-color: ${props => props.validPick ? props.theme.colors.buttonPrimary.activeBorder :props.theme.colors.error};
   }
 
 `;

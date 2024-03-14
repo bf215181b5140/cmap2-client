@@ -1,7 +1,6 @@
 import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
-import colors from 'cmap2-shared/src/colors.json';
 import { useNavigate } from 'react-router-dom';
 
 interface ConnectionBoxProps extends ReactProps {
@@ -32,16 +31,16 @@ const ConnectionBoxStyled = styled.div<{ connected: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${colors['content-bg']};
-  border: 2px solid ${colors['button-border']};
+  background-color: ${props => props.theme.colors.ui.contentBg};
+  border: 2px solid ${props => props.theme.colors.buttonPrimary.border};
   border-radius: 8px;
   transition: 0.15s linear;
-  // border-color: ${props => props.connected ? colors['button-border'] : 'indianred'};
+  // border-color: ${props => props.connected ? props.theme.colors.buttonPrimary.border : props.theme.colors.error};
   cursor: pointer;
 
   :hover {
-    background-color: ${colors['button-hover-bg']};
-    border-color: ${colors['button-hover-border']};
+    background-color: ${props => props.theme.colors.buttonPrimary.hoverBg};
+    border-color: ${props => props.theme.colors.buttonPrimary.hoverBorder};
   }
 `;
 

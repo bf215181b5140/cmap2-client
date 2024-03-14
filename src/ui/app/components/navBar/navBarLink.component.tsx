@@ -1,65 +1,64 @@
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import { Link, useLocation } from 'react-router-dom';
 
 interface NavBarLinkProps {
     to: string,
     icon?: string,
-    children?: any
+    attention?: boolean;
 }
 
-export default function NavBarLink({to, icon, children}: NavBarLinkProps) {
+export default function NavBarLink({to, icon, attention = false}: NavBarLinkProps) {
 
     const pathname = useLocation().pathname;
-    if ((pathname.indexOf(to) === 0 && to !== '/') || (pathname === to)) {
-        return (<NavBarLinkSelectedStyled to={to}>
-            {icon && <i className={icon}></i>} {children}
-        </NavBarLinkSelectedStyled>);
+
+    function selected() {
+        return (pathname.indexOf(to) === 0 && to !== '/') || (pathname === to);
     }
 
-    return (<NavBarLinkStyled to={to}>
-        {icon && <i className={icon}></i>} {children}
+    return (<NavBarLinkStyled to={to} $selected={selected()}>
+        {icon && <i className={icon}></i>}
+        {attention && <i id="attention" className="ri-shining-fill"></i>}
     </NavBarLinkStyled>);
 }
 
-const NavBarLinkStyled = styled(Link)`
+const NavBarLinkStyled = styled(Link)<{ $selected: boolean }>`
   display: block;
-  background-color: ${colors['nav-bg']};
-  margin-bottom: 7px;
-  transition: 0.1s linear;
   text-decoration: none;
-  padding: 10px 16px;
   border-radius: 0 0 7px 7px;
+  transition: 0.1s linear;
+  position: relative;
+  padding: ${props => props.$selected ? '15px 16px 12px 16px' : '10px 16px'};
+  margin-bottom: ${props => props.$selected ? '0' : '7px'};
+  background-color: ${props => props.$selected ? props.theme.colors.navBar.activeBg : props.theme.colors.navBar.bg};
+
+  i {
+    color: ${props => props.$selected ? props.theme.colors.navBar.activeIcon : props.theme.colors.navBar.icon};
+    font-size: 32px;
+    transition: 0.1s linear;
+  }
+
+  #attention {
+    color: ${props => props.theme.colors.attention};
+    font-size: 10px;
+    position: absolute;
+    top: ${props => props.$selected ? '14px' : '8px'};
+    right: 8px;
+    transition: 0.1s linear;
+
+  }
 
   :hover {
     padding: 15px 16px 12px 16px;
     margin-bottom: 0;
-    background-color: ${colors['nav-hover-bg']};
+    background-color: ${props => props.$selected ? props.theme.colors.navBar.activeBg : props.theme.colors.navBar.hoverBg};
 
     i {
-      color: ${colors['nav-hover-icon']};
+      color: ${props => props.theme.colors.navBar.hoverIcon};
+      color: ${props => props.$selected ? props.theme.colors.navBar.activeIcon : props.theme.colors.navBar.hoverIcon};
     }
-  }
 
-  i {
-    color: ${colors['nav-icon']};
-    //float: left;
-    font-size: 2em;
-    //margin: -0.2em 0 -0.2em -0.2em;
-  }
-`;
-
-const NavBarLinkSelectedStyled = styled(Link)`
-  display: block;
-  padding: 15px 16px 12px 16px;
-  margin-bottom: 0;
-  background-color: ${colors['nav-active-bg']};
-  transition: 0.1s linear;
-  text-decoration: none;
-  border-radius: 0 0 7px 7px;
-
-  i {
-    color: ${colors['nav-active-icon']};
-    font-size: 2em;
+    #attention {
+      top: 14px;
+    }
   }
 `;

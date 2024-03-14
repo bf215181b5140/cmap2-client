@@ -1,7 +1,6 @@
 import React from 'react';
 import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import { Icon } from 'cmap2-shared/dist/react';
 import { Modal } from './modal.hook';
 import ButtonInput from '../../shared/components/form/inputs/button.component';
@@ -59,8 +58,8 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalStyled = styled.div`
-  background-color: ${colors['content-bg']};
-  border: 2px solid ${colors['app-border']};
+  background-color: ${props => props.theme.colors.ui.contentBg};
+  border: 2px solid ${props => props.theme.colors.ui.appBg};
   border-radius: 8px;
   min-width: 350px;
   max-width: 600px;
@@ -69,8 +68,8 @@ const ModalStyled = styled.div`
 `;
 
 const ModalTitle = styled.div`
-  background-color: ${colors['input-bg']};
-  border-bottom: 1px solid ${colors['app-border']};
+  background-color: ${props => props.theme.colors.input.bg};
+  border-bottom: 1px solid ${props => props.theme.colors.ui.appBorder};
   width: 100%;
   display: flex;
   flex-direction: row;

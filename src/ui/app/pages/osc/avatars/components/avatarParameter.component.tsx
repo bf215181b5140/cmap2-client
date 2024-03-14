@@ -1,7 +1,6 @@
 import { ReactProps } from 'cmap2-shared';
 import { VrcOscAvatarParameter } from '../../../../../../shared/types/osc';
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import React, { useEffect, useState } from 'react';
 import AvatarParameterProperties from './avatarParameterProperties.component';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
@@ -48,8 +47,8 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
 }
 
 const AvatarParameterStyled = styled.div`
-  border-left: 2px solid ${colors['button-2-border']};
-  background: ${colors['button-2-border']};
+  border-left: 2px solid ${props => props.theme.colors.buttonSecondary.border};
+  background: ${props => props.theme.colors.buttonSecondary.border};
   border-radius: 8px;
   padding: 10px 15px;
   display: flex;
@@ -59,7 +58,7 @@ const AvatarParameterStyled = styled.div`
 
   h4 {
     font-size: 1em;
-    color: ${colors['font-header-2']};
+    color: ${props => props.theme.colors.font.h4};
     padding: 0;
     margin: 0;
     cursor: pointer;

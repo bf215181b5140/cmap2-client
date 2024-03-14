@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
 import Background from 'cmap2-shared/src/react/components/background.component';
 import PickerOverlayCheck from '../../../../shared/components/pickerOverlay/PickerOverlayCheck.component';
-import colors from 'cmap2-shared/src/colors.json';
 import PickerOverlayTier from '../../../../shared/components/pickerOverlay/PickerOverlayTier.component';
 
 interface BackgroundPickerProps extends ReactProps {
@@ -60,13 +59,13 @@ const BackgroundPickerStyled = styled.div<{ color: string, validPick: boolean }>
   overflow: hidden;
   cursor: pointer;
   border-radius: 1em;
-  border: 2px solid ${colors['button-border']};
+  border: 2px solid ${props => props.theme.colors.buttonPrimary.border};
   transition: 0.1s linear;
   flex-basis: calc(25% - (3 * 15px / 4));
   aspect-ratio: 16/9;
 
   :hover {
-    border-color: ${props => props.validPick ? colors['button-active-border'] : colors['error']};
+    border-color: ${props => props.validPick ? props.theme.colors.buttonPrimary.activeBorder : props.theme.colors.error};
   }
 
 `;

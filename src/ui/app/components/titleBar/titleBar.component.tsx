@@ -2,7 +2,6 @@ import styled from "styled-components";
 import {WindowState} from "../../../../shared/enums";
 import ActionButton from "../../shared/components/actionButton.component";
 import {TitleBarStatus} from "./titleBarStatus.component";
-import colors from 'cmap2-shared/src/colors.json';
 
 export default function TitleBar(props: any) {
 
@@ -23,7 +22,7 @@ export default function TitleBar(props: any) {
 const TitleBarStyled = styled.div`
   width: 800px;
   padding: 0px;
-  background-color: ${colors["ui-background-2"]};
+  background-color: ${props => props.theme.colors.ui.background2};
   border-radius: 8px 8px 0 0;
   display: flex;
   flex-direction: row;

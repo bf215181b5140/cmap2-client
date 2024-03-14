@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { ContentBoxWidth } from 'cmap2-shared';
 import { VrcOscAvatar } from '../../../../../../shared/types/osc';
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 
 export default function VrcOscStatus() {
 
@@ -91,7 +90,7 @@ const AvatarNameStyled = styled.h4`
 const VrcOscStatusTableStyled = styled.table`
   display: block;
   border-collapse: collapse;
-  background: ${colors['button-2-border']};
+  background: ${props => props.theme.colors.ui.background5};
   border-radius: 8px;
   padding: 10px 15px;
 
@@ -99,7 +98,7 @@ const VrcOscStatusTableStyled = styled.table`
     padding: 0 15px 6px 10px;
     text-align: left;
     font-size: 18px;
-    color: ${colors['font-header-2']};
+    color: ${props => props.theme.colors.font.h2};
   }
 
   tbody {

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import React, { useContext } from 'react';
 import { ToastContext } from '../../../../components/mainWindow/mainWindow.componenet';
-import colors from 'cmap2-shared/src/colors.json';
 import { ToastType } from '../../../../components/toast/toast.hook';
 
 interface AvatarParameterPropertiesProps extends ReactProps {
@@ -85,10 +84,10 @@ const ParameterPathStyled = styled.p<{ color: string }>`
   }
 
   :hover {
-    color: ${colors['button-2-hover-border']};
+    color: ${props => props.theme.colors.font.textActive};
 
     i {
-      color: ${colors['button-2-hover-border']};
+      color: ${props => props.theme.colors.font.textActive};
     }
   }
 `;

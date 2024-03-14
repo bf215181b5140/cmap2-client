@@ -1,15 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
-import { Tooltip } from 'react-tooltip';
 
 interface SubmenuLinkProps {
     to: string;
     icon: string;
     tooltip?: string;
+    attention?: boolean;
 }
 
-export default function SubmenuLink({to, icon, tooltip}: SubmenuLinkProps) {
+export default function SubmenuLink({to, icon, tooltip, attention = false}: SubmenuLinkProps) {
 
     const pathname = useLocation().pathname;
 
@@ -20,17 +19,18 @@ export default function SubmenuLink({to, icon, tooltip}: SubmenuLinkProps) {
     return (<>
         <SubmenuLinkStyled to={to} $active={isCurrentPath()}>
             <i className={icon} />
-            {tooltip && <div>{tooltip}</div>}
+            {tooltip && <div id="tooltip">{tooltip}</div>}
+            {attention && <i id="attention" className="ri-shining-fill"></i>}
         </SubmenuLinkStyled>
     </>);
 }
 
 const highlight = css`
-  background-color: ${colors['button-2-hover-bg']};
-  border-color: ${colors['button-2-hover-border']};
+  background-color: ${props => props.theme.colors.submenu.hoverBg};
+  border-color: ${props => props.theme.colors.submenu.hoverBorder};
 
   i {
-    color: ${colors['button-2-hover-border']};
+    color: ${props => props.theme.colors.submenu.hoverIcon};
   }
 `;
 
@@ -39,32 +39,42 @@ const SubmenuLinkStyled = styled(Link)<{ $active: boolean }>`
   flex-direction: row;
   gap: 8px;
   align-items: center;
-  background-color: ${colors['button-2-bg']};
-  border: 2px solid ${colors['button-2-border']};
+  background-color: ${props => props.theme.colors.submenu.bg};
+  border: 2px solid ${props => props.theme.colors.submenu.border};
   transition: 0.1s linear;
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 7px;
-  
+  position: relative;
+
   i {
     font-size: 24px;
     display: block;
-    color: ${colors['nav-icon']};
+    color: ${props => props.theme.colors.submenu.icon};
   }
-  
-  div {
-    color: ${colors['button-2-hover-border']};
+
+  #tooltip {
+    color: ${props => props.theme.colors.submenu.hoverIcon};
     display: none;
     position: fixed;
-    left: 70px;
+    left: 76px;
+    text-shadow: 0 0 5px ${props => props.theme.colors.ui.appBgOpaque};
+  }
+
+  #attention {
+    color: ${props => props.theme.colors.attention};
+    font-size: 10px;
+    position: absolute;
+    top: 4px;
+    right: 5px;
   }
 
   ${props => props.$active ? highlight : null};
 
   :hover {
     ${highlight};
-    
-    div {
+
+    #tooltip {
       display: block;
     }
   }

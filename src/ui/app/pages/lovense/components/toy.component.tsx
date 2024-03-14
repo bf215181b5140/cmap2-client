@@ -1,6 +1,5 @@
 import { Toy, ToyCommand } from 'lovense';
 import styled, { css } from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import gushImage from '../icons/lovenseToyGush.png';
 import otherToyImage from '../icons/lovenseToyOther.png';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
@@ -70,7 +69,7 @@ const LovenseToyStyled = styled.div<{ connected: boolean }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  background-color: ${colors['content-bg']};
+  background-color: ${props => props.theme.colors.ui.contentBg};
   border: 2px solid darkred;
   border-radius: 8px;
   transition: 0.15s linear;
@@ -79,12 +78,12 @@ const LovenseToyStyled = styled.div<{ connected: boolean }>`
 `;
 
 const LovenseToyConnectedStyled = css`
-  border: 2px solid ${colors['button-hover-border']};
+  border: 2px solid ${props => props.theme.colors.buttonPrimary.hoverBorder};
   cursor: pointer;
   
   :hover {
-    background-color: ${colors['button-hover-bg']};
-    border: 2px solid ${colors['button-hover-border']};
+    background-color: ${props => props.theme.colors.buttonPrimary.hoverBg};
+    border: 2px solid ${props => props.theme.colors.buttonPrimary.hoverBorder};
   }
 `;
 

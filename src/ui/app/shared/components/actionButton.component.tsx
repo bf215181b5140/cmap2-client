@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import { globalInputStyle } from './form/input.style';
 
 interface ActionButtonProps {
@@ -28,7 +27,7 @@ const ActionButtonStyled = styled.div`
     }
 
     i {
-      color: ${colors['ui-primary-5']};
+      color: ${props => props.theme.colors.font.icon};
       float: left;
       font-size: 1.75em;
       margin: -0.12em 0 -0.12em -0.12em;

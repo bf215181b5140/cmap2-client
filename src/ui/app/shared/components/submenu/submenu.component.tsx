@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import { ReactProps } from 'cmap2-shared';
 import { Tooltip } from 'react-tooltip';
 
@@ -13,7 +12,7 @@ export default function Submenu({children}: ReactProps) {
 }
 
 const SubmenuStyled = styled.div`
-  background: ${colors['ui-background-3']};
+  background: ${props => props.theme.colors.ui.background3};
 
   > div {
     position: sticky;

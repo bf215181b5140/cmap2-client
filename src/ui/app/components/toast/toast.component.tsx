@@ -1,7 +1,6 @@
 import React from 'react';
 import { ReactProps } from 'cmap2-shared';
 import styled, { css } from 'styled-components';
-import colors from 'cmap2-shared/src/colors.json';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { Toast, ToastReducerAction, ToastType } from './toast.hook';
 
@@ -31,7 +30,7 @@ const ToastComponentStyled = styled.div`
 
 const ToastStyled = styled.div<{type: ToastType}>`
   margin: 10px;
-  background-color: ${colors['ui-background-3']};
+  background-color: ${props => props.theme.colors.ui.background3};
   border: 1px solid;
   padding: 10px 20px;
   border-radius: 8px;
@@ -55,6 +54,10 @@ const ToastStyled = styled.div<{type: ToastType}>`
         case ToastType.WARNING:
             return css`
               border-color: ${props => props.theme.colors.warning};
+            `;
+        case ToastType.ATTENTION:
+            return css`
+              border-color: ${props => props.theme.colors.attention};
             `;
       }
   }}
