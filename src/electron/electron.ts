@@ -1,13 +1,14 @@
 import { app, Tray, Menu } from 'electron';
 import { ClientSocketService } from './webSocket/clientSocket.service';
 import { IpcMainController } from './ipc/ipcMain.controller';
-import { testing } from './testing/testing.service';
 import { StoreService } from './store/store.service';
 import LovenseController from './lovense/lovense.controller';
 import VrcDetectorService from './vrcDetector/vrcDetector.service';
 import mainWindow from './mainWindow/mainWindow';
 import { OscController } from './osc/osc.controller';
 import { OscDataStoreService } from './store/oscData/oscDataStore.service';
+import OscClockController from './osc/clock/oscClock.controller';
+import OscControlStore from './store/oscControl/oscControl.store';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -19,17 +20,21 @@ if (!app.requestSingleInstanceLock()) {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
 
+    // start store services
+    StoreService.start();
+    OscDataStoreService.start();
+    OscControlStore.start();
+
     // grab settings
     const settings = StoreService.getSettings();
 
     // initiate services
-    new StoreService();
-    new OscDataStoreService();
     new IpcMainController();
     new OscController(settings);
     new ClientSocketService(settings);
     new LovenseController();
     new VrcDetectorService();
+    new OscClockController();
 
     // testing service
     // testing();

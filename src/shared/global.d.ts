@@ -6,6 +6,7 @@ import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 import { Settings } from './types/settings';
 import { VrcOscAvatar, VrcOscAvatarParameter } from './types/osc';
+import { OscClockSettings } from '../electron/osc/clock/types';
 
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
@@ -16,8 +17,12 @@ type IpcGetOptions = {
     getToyCommandOscMessages: ToyCommandOscMessage[];
     getFingerprint: string;
     getLastOscActivity: number;
+    // Osc status
+    getTrackedParameters: Map<string, boolean | number | string>;
     // VrcOscData
     getVrcOscAvatars: VrcOscAvatar[];
+    // Osc control
+    getOscClockSettings: OscClockSettings;
 };
 
 type IpcSendOptions = {
@@ -25,7 +30,6 @@ type IpcSendOptions = {
     setWindowState: WindowState;
     disconnectSocket: undefined;
     setSettings: Settings;
-    forwardOscToRenderer: boolean;
     setLovenseSettings: LovenseSettings;
     getLovenseStatus: undefined;
     lovenseConnect: undefined;
@@ -36,6 +40,8 @@ type IpcSendOptions = {
     getIsVrchatRunning: undefined;
     // VrcOscData
     setVrcOscAvatars: VrcOscAvatar[];
+    // Osc control
+    setOscClockSettings: OscClockSettings;
 };
 
 type IpcReceiveOptions = {

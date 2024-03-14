@@ -5,6 +5,7 @@ import { BridgeService } from '../bridge/bridge.service';
 import LovenseService from './lovense.service';
 import { StoreService } from '../store/store.service';
 import TypedIpcMain from '../ipc/typedIpcMain';
+import { Message } from 'node-osc';
 
 // '/avatar/parameters/LovenseContact',
 //                                     '/avatar/parameters/OGB/Pen/Penis/TouchOthers',
@@ -28,7 +29,7 @@ export default class LovenseController extends LovenseService {
         this.setToyCommandOscMessages(StoreService.getToyCommandOscMessages());
 
         TypedIpcMain.on('setLovenseSettings', (lovenseSettings: LovenseSettings) => this.lovenseSettings = lovenseSettings);
-        TypedIpcMain.on('getLovenseStatus', () => this.updateLovenseStatus());
+        TypedIpcMain.on('getLovenseStatus', () => TypedIpcMain.emit('lovenseStatus', this.lovenseStatus));
         TypedIpcMain.on('sendLovenseToyCommand', (toyCommand: ToyCommand) => this.sendToyCommand(toyCommand));
         TypedIpcMain.on('lovenseConnect', () => this.connect());
         TypedIpcMain.on('lovenseDisconnect', () => this.disconnect());
@@ -67,8 +68,8 @@ export default class LovenseController extends LovenseService {
             const vrcParameter: VrcParameter = {
                 path: this.lovenseSettings.connectionOscMessagePath,
                 value: this.lovenseStatus.status === 1
-            }
-            BridgeService.emit('sendOscMessage', vrcParameter);
+            };
+            BridgeService.emit('sendOscMessage', new Message(vrcParameter.path, vrcParameter.value));
         }
     }
 
@@ -134,17 +135,18 @@ export default class LovenseController extends LovenseService {
             this.checkToyCommandForOscMessage(toyCommand);
 
             // if this isn't a stop command and command time isn't infinite
-            if (toyCommand.action !== ToyActionType.Stop || toyCommand.timeSec !== 0) this.createToyCommandCallback(toyCommand);
+            if (toyCommand.action !== ToyActionType.Stop || toyCommand.timeSec !== 0) this.createToyCommandStopCallback(toyCommand);
         }
     }
 
     /**
-     * If toy command doesn't have specificed duration, then create a timeout to send another command after 1000ms and stop the toy.<br>
+     * If ToyCommand duration isn't infinite,
+     * then create a timeout to send another OSC message after timeSec (ToyCommand time length) and mimic a ToyCommand for stopping.<br>
      * Unless a new command was issued since the last one.
      * @param toyCommand
      * @private
      */
-    private createToyCommandCallback(toyCommand: ToyCommand) {
+    private createToyCommandStopCallback(toyCommand: ToyCommand) {
         // save toy command unix time
         this.toyCommandHistory.set(toyCommand.toy ?? '', Date.now());
         // create callback with timeout (with extra 50ms leeway)
@@ -152,7 +154,7 @@ export default class LovenseController extends LovenseService {
             // if last saved command for this toy is older than how long the command lasted
             if ((this.toyCommandHistory.get(toyCommand.toy ?? '') ?? 0) + (toyCommand.timeSec * 1000) < Date.now()) {
                 // emmit a false stop command
-                this.checkToyCommandForOscMessage(toyCommand);
+                this.checkToyCommandForOscMessage({...toyCommand, action: ToyActionType.Stop});
             }
         }, (toyCommand.timeSec * 1000) + 50, toyCommand);
     }
@@ -209,7 +211,7 @@ export default class LovenseController extends LovenseService {
                     value = actionValue !== 0;
                     break;
             }
-            BridgeService.emit('sendOscMessage', {path: toyCommandOscMessage.parameterPath, value: value});
+            BridgeService.emit('sendOscMessage', new Message(toyCommandOscMessage.parameterPath, value));
         });
     }
 }
