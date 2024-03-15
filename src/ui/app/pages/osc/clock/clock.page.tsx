@@ -68,7 +68,11 @@ export default function ClockPage() {
                     </tr>
                     <tr>
                         <th>Format options</th>
-                        <td colSpan={2}>{OscClockChatboxFormats.map(format => (<>{format.format + ' - ' + format.description}<br /></>))}</td>
+                        <td colSpan={2}>
+                            <p style={{margin: 0}}>
+                                {OscClockChatboxFormats.map(format => (<>{format.format + ' - ' + format.description}<br /></>))}
+                            </p>
+                        </td>
                     </tr>
                 </FormTable>
 

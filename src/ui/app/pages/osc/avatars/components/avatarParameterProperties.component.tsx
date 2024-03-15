@@ -1,13 +1,13 @@
-import { ReactProps } from 'cmap2-shared';
+import { ReactProps, theme } from 'cmap2-shared';
 import { VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import React, { useContext } from 'react';
 import { ToastContext } from '../../../../components/mainWindow/mainWindow.componenet';
 import { ToastType } from '../../../../components/toast/toast.hook';
 
 interface AvatarParameterPropertiesProps extends ReactProps {
-    type: string;
+    type: 'input' | 'output';
     properties?: VrcOscAvatarParameterProperties;
 }
 
@@ -20,7 +20,7 @@ export default function AvatarParameterProperties({type, properties}: AvatarPara
             toastsDispatch({
                 type: 'add',
                 toast: {
-                    message: `Copied parameter path to clipboard: ${path}`,
+                    message: `Copied parameter to clipboard: ${path}`,
                     type: ToastType.INFO,
                     group: 'copyToClipboard'
                 }
@@ -28,35 +28,37 @@ export default function AvatarParameterProperties({type, properties}: AvatarPara
         });
     }
 
-    function typeColor() {
-        if (type === 'input') {
-            return 'darkolivegreen';
-        } else if (type === 'output') {
-            return 'slateblue';
-        } else {
-            return '';
-        }
-    }
-
-    function typeIcon() {
-        if (type === 'input') {
-            return (<Icon icon="ri-arrow-right-line" color={typeColor()} />);
-        } else if (type === 'output') {
-            return (<Icon icon="ri-arrow-left-line" color={typeColor()} />);
-        }
-    }
-
     if (!properties) return (<></>);
 
     return (<AvatarParameterPropertiesStyled>
-        <TypeStyled color={typeColor()}>{type} {typeIcon()}</TypeStyled>
+        <TypeStyled $color={color(type)}>{type} {icon(type)}</TypeStyled>
         <div>
             <p>{properties?.type}</p>
-            <ParameterPathStyled color={typeColor()} onClick={() => copyPath(properties.address)}>
+            <ParameterPathStyled $color={color(type)} onClick={() => copyPath(properties.address)}>
                 <i className="ri-link-m" /> {properties.address}
             </ParameterPathStyled>
         </div>
     </AvatarParameterPropertiesStyled>);
+}
+
+function icon(type: string) {
+    switch (type) {
+        case 'input':
+            return (<i className="ri-arrow-right-line" />);
+        case 'output':
+            return (<i className="ri-arrow-left-line" />);
+    }
+}
+
+function color(type: string) {
+    switch (type) {
+        case 'input':
+            return theme.colors.vrchat.parameterInput;
+        case 'output':
+            return theme.colors.vrchat.parameterOutput;
+        default:
+            return theme.colors.font.text;
+    }
 }
 
 const AvatarParameterPropertiesStyled = styled.div`
@@ -65,22 +67,29 @@ const AvatarParameterPropertiesStyled = styled.div`
   gap: 12px;
 `;
 
-const TypeStyled = styled.div<{ color: string }>`
+const TypeStyled = styled.div<{ $color: string }>`
   display: flex;
   flex-direction: row;
   width: 75px;
   align-items: center;
   justify-content: flex-end;
   gap: 5px;
-  border-right: 2px solid ${props => props.color};
+  border-right: 2px solid;
+  border-color: ${props => props.$color};
+
+  i {
+    color: ${props => props.$color};
+    font-size: 20px;
+  }
 `;
 
-const ParameterPathStyled = styled.p<{ color: string }>`
+const ParameterPathStyled = styled.p<{ $color: string }>`
   cursor: pointer;
+  white-space: nowrap;
 
   i {
     font-size: 16px;
-    color: ${props => props.color};
+    color: ${props => props.$color};
   }
 
   :hover {

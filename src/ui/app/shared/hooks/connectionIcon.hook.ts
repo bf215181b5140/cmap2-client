@@ -1,5 +1,5 @@
 import { SocketConnection, SocketConnectionType } from '../../../../shared/SocketConnection';
-import { theme } from '../../theme';
+import { theme } from 'cmap2-shared';
 
 export default function useConnectionIcon(connectionStatus: SocketConnection) {
 

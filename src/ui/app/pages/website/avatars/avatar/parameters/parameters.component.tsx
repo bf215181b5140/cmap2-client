@@ -1,4 +1,4 @@
-import { AvatarDto, ControlParameterDto, ParameterDto, ParametersForm, ReactProps, ValueType } from 'cmap2-shared';
+import { AvatarDto, ControlParameterDto, ParameterDto, ParametersForm, ReactProps, theme, ValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../../../shared/components/form/formTable.component';
 import React, { useContext, useEffect } from 'react';
@@ -18,7 +18,6 @@ import ButtonInput from '../../../../../shared/components/form/inputs/button.com
 import HiddenInput from '../../../../../shared/components/form/inputs/hidden.component';
 import Input from '../../../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../../../shared/components/form/inputs/select.component';
-import { theme } from '../../../../../theme';
 
 interface ParametersProps extends ReactProps {
     selectedAvatar: AvatarDto;

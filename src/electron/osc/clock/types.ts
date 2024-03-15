@@ -25,9 +25,12 @@ export type OscClockAvatarParameters = z.infer<typeof OscClockAvatarParametersSc
 
 export type OscClockSettings = z.infer<typeof OscClockSettingsSchema>;
 
-export const OscClockSettingsDefaults = {
+export const OscClockSettingsDefaults: OscClockSettings = {
     sendToChatbox: false,
     chatboxFormat: 'My time: {time}',
     sendToAvatar: false,
-    avatarParameters: []
+    avatarParameters: [
+        {path: '/avatar/parameters/OscClockSecond', unit: OscClockUnit.Second},
+        {path: '/avatar/parameters/OscClockMinute', unit: OscClockUnit.Minute},
+    ]
 }

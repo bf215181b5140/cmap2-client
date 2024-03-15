@@ -86,6 +86,7 @@ const RangeInputStyled = styled.div`
 
   &.readOnly {
     pointer-events: none;
+    color: ${props => props.theme.colors.input.textDisabled};
     filter: saturate(0%);
   }
 `;

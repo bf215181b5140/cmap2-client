@@ -33,6 +33,7 @@ export const SelectInputStyled = styled.select<{ errors: boolean, width?: string
 
   &.readOnly {
     pointer-events: none;
+    color: ${props => props.theme.colors.input.textDisabled};
     filter: saturate(0%);
   }
 `;

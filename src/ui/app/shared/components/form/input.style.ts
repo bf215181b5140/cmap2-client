@@ -36,6 +36,7 @@ export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
 
   &[readonly] {
     pointer-events: none;
+    color: ${props => props.theme.colors.input.textDisabled};
     filter: saturate(0%);
   }
 `;
