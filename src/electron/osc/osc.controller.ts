@@ -30,6 +30,16 @@ export class OscController extends OscService {
 
         BridgeService.on('sendOscMessage', (message: Message) => this.send(message));
         BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
+
+        // todo
+        // temp oscActivity checker for current website version
+        // redo this into a vrchat detector event
+        setInterval(() => {
+            if (this.lastActivity < Date.now() - 240000) {
+              this.isActive = false;
+              BridgeService.emit('oscActivity', this.isActive);
+            }
+        }, 60000);
     }
 
     /**
