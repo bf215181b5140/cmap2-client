@@ -1,5 +1,5 @@
 import { Content, ContentBox } from 'cmap2-shared/dist/react';
-import ActionButton from '../../shared/components/actionButton.component';
+import ActionButton from '../../shared/components/buttons/actionButton.component';
 import { Toy } from 'lovense';
 import { LovenseToy } from './components/toy.component';
 import styled from 'styled-components';

@@ -13,6 +13,7 @@ import ButtonInput from '../../../shared/components/form/inputs/button.component
 import Input from '../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../shared/components/form/inputs/select.component';
 import NumberInput from '../../../shared/components/form/inputs/number.component';
+import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
 
 interface ToyControlProps {
     toyList: Toy[] | undefined;
@@ -21,7 +22,7 @@ interface ToyControlProps {
 export default function ToyControl({toyList}: ToyControlProps) {
 
     const {deleteModal} = useContext(ModalContext);
-    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ToyCommandParameterForm>({
+    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}, setValue} = useForm<ToyCommandParameterForm>({
         defaultValues: {toyCommandParameters: []}, resolver: zodResolver(ToyCommandParameterFormSchema)
     });
 
@@ -55,7 +56,7 @@ export default function ToyControl({toyList}: ToyControlProps) {
     }
 
     return (<ContentBox title="Toy control" show={false}>
-        <p>Control Lovense toys based on your avatar parameters VRChat sends.</p>
+        <p>Control Lovense toys based on avatar parameters VRChat sends out.</p>
         <form onSubmit={handleSubmit(onsubmit)}>
             <FormTableStyled>
                 <thead>
@@ -72,7 +73,8 @@ export default function ToyControl({toyList}: ToyControlProps) {
                 {fields.map((item, index) => (
                     <tr key={index}>
                         <td>
-                            <Input name={`toyCommandParameters.${index}.parameterPath`} register={register} errors={errors} />
+                            <ParameterInput register={register} name={`toyCommandParameters.${index}.parameterPath`} errors={errors}
+                                            setValue={setValue} defaultType={'output'} />
                         </td>
                         <td>
                             <SelectInput name={`toyCommandParameters.${index}.ToyActionType`} width="160px" register={register} errors={errors}

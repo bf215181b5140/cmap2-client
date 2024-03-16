@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {WindowState} from "../../../../shared/enums";
-import ActionButton from "../../shared/components/actionButton.component";
+import ActionButton from "../../shared/components/buttons/actionButton.component";
 import {TitleBarStatus} from "./titleBarStatus.component";
 
 export default function TitleBar(props: any) {

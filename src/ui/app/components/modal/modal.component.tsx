@@ -53,8 +53,9 @@ const ModalWrapper = styled.div`
   align-content: center;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  backdrop-filter: blur(2px);
 `;
 
 const ModalStyled = styled.div`

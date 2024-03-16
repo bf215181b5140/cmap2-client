@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { globalInputStyle } from './form/input.style';
+import { globalInputStyle } from '../form/input.style';
 
 interface ActionButtonProps {
     children?: any,

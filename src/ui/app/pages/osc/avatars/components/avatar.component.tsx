@@ -2,10 +2,10 @@ import { ReactProps } from 'cmap2-shared';
 import { VrcOscAvatar } from '../../../../../../shared/types/osc';
 import AvatarParameters from './avatarParameters.component';
 import styled from 'styled-components';
-import DeleteButton from '../../../../shared/components/deleteButton.component';
+import DeleteButton from '../../../../shared/components/buttons/deleteButton.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import { useEffect, useState } from 'react';
-import ActionButton from '../../../../shared/components/actionButton.component';
+import ActionButton from '../../../../shared/components/buttons/actionButton.component';
 
 interface AvatarProps extends ReactProps {
     avatar: VrcOscAvatar;
