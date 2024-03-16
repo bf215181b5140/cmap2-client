@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import AvatarParameterProperties from './avatarParameterProperties.component';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import DeleteButton from '../../../../shared/components/deleteButton.component';
+import DeleteButton from '../../../../shared/components/buttons/deleteButton.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 
 interface AvatarParameterProps extends ReactProps {

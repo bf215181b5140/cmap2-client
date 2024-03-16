@@ -7,11 +7,11 @@ import FormTable from '../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
 import SubmitInput from '../../../shared/components/form/inputs/submit.component';
 import ButtonInput from '../../../shared/components/form/inputs/button.component';
-import Input from '../../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../../shared/components/form/inputs/checkbox.component';
+import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
 
 export default function Settings() {
-    const {register, reset, watch, formState: {errors, isDirty}, handleSubmit} = useForm<LovenseSettings>({resolver: zodResolver(LovenseSettingsSchema)});
+    const {register, reset, watch, formState: {errors, isDirty}, handleSubmit, setValue} = useForm<LovenseSettings>({resolver: zodResolver(LovenseSettingsSchema)});
     const formWatch = watch();
 
     useEffect(() => {
@@ -29,8 +29,8 @@ export default function Settings() {
                 <tr>
                     <th>Send connection osc message</th>
                     <td><CheckboxInput register={register} name={'sendConnectionOscMessage'} errors={errors} /></td>
-                    <td><Input register={register} name={'connectionOscMessagePath'} placeholder={'Parameter'} errors={errors}
-                                   readOnly={!formWatch.sendConnectionOscMessage} /></td>
+                    <td><ParameterInput register={register} name={'connectionOscMessagePath'} placeholder={'Parameter'} errors={errors}
+                                        readOnly={!formWatch.sendConnectionOscMessage} setValue={setValue} defaultType={'input'} /></td>
                 </tr>
             </FormTable>
             <FormControlBar>

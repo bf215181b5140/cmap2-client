@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useContext } from 'react';
-import { ModalContext } from '../../components/mainWindow/mainWindow.componenet';
-import { globalInputStyle } from './form/input.style';
+import { ModalContext } from '../../../components/mainWindow/mainWindow.componenet';
+import { globalInputStyle } from '../form/input.style';
 
 interface DeleteButtonProps {
     keyword: string;

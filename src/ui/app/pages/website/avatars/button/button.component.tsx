@@ -1,7 +1,6 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
-import { AvatarDto, ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonType, InputType, LayoutDto, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
+import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
+import { AvatarDto, ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonType, LayoutDto, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
-import { ParameterButton } from 'cmap2-shared/dist/react';
 import React, { useContext } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
 import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
@@ -19,8 +18,10 @@ import SubmitInput from '../../../../shared/components/form/inputs/submit.compon
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
-import SelectInput, { SelectInputStyled } from '../../../../shared/components/form/inputs/select.component';
+import SelectInput from '../../../../shared/components/form/inputs/select.component';
 import NumberInput from '../../../../shared/components/form/inputs/number.component';
+import ParameterInput from '../../../../shared/components/form/inputs/parameterInput.component';
+import { VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;
@@ -87,12 +88,8 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         return [{key: '', value: ''}, ...controlParameters];
     }
 
-    function setParameterFromOptions(parameterId: string) {
-        const parameter = avatar.parameters?.find(p => p.id === parameterId);
-        if (parameter) {
-            setValue('path', parameter.path);
-            setValue('valueType', parameter.valueType);
-        }
+    function setValueTypeFromParameterSelection(param: VrcOscAvatarParameterProperties) {
+        setValue('valueType', ValueType[param.type]);
     }
 
     function valuePrimaryPlaceholder(): string {
@@ -143,22 +140,17 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                     <tr>
                         <th>Parameter</th>
                         <td>
-                            <Input register={register} name={'path'} errors={errors} />
-                        </td>
-                        <td>
-                            <SelectInputStyled onChange={e => setParameterFromOptions(e.target.value)} errors={false}>
-                                <option value="" key="" />
-                                {avatar.parameters?.map(p => (<option value={p.id} key={p.id}>{p.label}</option>))}
-                            </SelectInputStyled>
+                            <ParameterInput register={register} name={'path'} errors={errors} setValue={setValue} defaultAvatarId={avatar.id} defaultType={'input'}
+                                            onSelection={setValueTypeFromParameterSelection} />
                         </td>
                     </tr>
                     <tr>
                         <th>Parameter values</th>
                         <td>
                             <Input register={register} name={'value'} placeholder={valuePrimaryPlaceholder()} width="130px"
-                                       errors={errors} />
+                                   errors={errors} />
                             <Input register={register} name={'valueAlt'} placeholder={valueSecondaryPlaceholder()} width="130px"
-                                       errors={errors} readOnly={formWatch.buttonType !== ButtonType.Slider && formWatch.buttonType !== ButtonType.Toggle} />
+                                   errors={errors} readOnly={formWatch.buttonType !== ButtonType.Slider && formWatch.buttonType !== ButtonType.Toggle} />
                         </td>
                     </tr>
                     <tr>
@@ -171,22 +163,22 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                         <th>Button type</th>
                         <td>
                             <SelectInput options={enumToInputOptions(ButtonType)} register={register} name={'buttonType'}
-                                       errors={errors} />
+                                         errors={errors} />
                         </td>
                     </tr>
                     <tr>
                         <th>Image orientation</th>
                         <td>
                             <SelectInput options={enumToInputOptions(ButtonImageOrientation)} register={register}
-                                       name={'imageOrientation'}
-                                       errors={errors} readOnly={!button.image} />
+                                         name={'imageOrientation'}
+                                         errors={errors} readOnly={!button.image} />
                         </td>
                     </tr>
                     <tr>
                         <th>Control parameter</th>
                         <td>
                             <SelectInput options={controlParameterOptions()} register={register} name={'controlParameterId'}
-                                       errors={errors} />
+                                         errors={errors} />
                         </td>
                     </tr>
                     <tr>

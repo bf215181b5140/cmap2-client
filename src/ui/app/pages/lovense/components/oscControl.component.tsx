@@ -12,6 +12,7 @@ import SubmitInput from '../../../shared/components/form/inputs/submit.component
 import ButtonInput from '../../../shared/components/form/inputs/button.component';
 import Input from '../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../shared/components/form/inputs/select.component';
+import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
 
 interface ToyControlProps {
     toyList: Toy[] | undefined;
@@ -20,7 +21,7 @@ interface ToyControlProps {
 export default function OscControl({toyList}: ToyControlProps) {
 
     const {deleteModal} = useContext(ModalContext);
-    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ToyCommandOscMessageForm>({
+    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}, setValue} = useForm<ToyCommandOscMessageForm>({
         defaultValues: {toyCommandOscMessages: []}, resolver: zodResolver(ToyCommandOscMessageFormSchema)
     });
 
@@ -72,7 +73,8 @@ export default function OscControl({toyList}: ToyControlProps) {
                             <Input name={`toyCommandOscMessages.${index}.toy`} register={register} errors={errors} />
                         </td>
                         <td>
-                            <Input name={`toyCommandOscMessages.${index}.parameterPath`} register={register} errors={errors} />
+                            <ParameterInput register={register} name={`toyCommandOscMessages.${index}.parameterPath`} errors={errors}
+                                            setValue={setValue} defaultType={'input'} />
                         </td>
                         <td>
                             <SelectInput name={`toyCommandOscMessages.${index}.valueType`} width="160px" register={register}

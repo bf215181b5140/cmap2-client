@@ -13,11 +13,12 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { OscClockSettings, OscClockSettingsDefaults, OscClockSettingsSchema, OscClockUnit } from '../../../../../electron/osc/clock/types';
 import oscClockChatboxText, { OscClockChatboxFormats } from '../../../../../electron/osc/clock/chatboxText';
 import CheckboxInput from '../../../shared/components/form/inputs/checkbox.component';
+import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
 
 export default function ClockPage() {
 
     const {deleteModal} = useContext(ModalContext);
-    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<OscClockSettings>({
+    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}, setValue} = useForm<OscClockSettings>({
         resolver: zodResolver(OscClockSettingsSchema),
         defaultValues: OscClockSettingsDefaults,
     });
@@ -99,8 +100,8 @@ export default function ClockPage() {
                         {fields.map((item, index) => (
                             <tr key={index}>
                                 <td>
-                                    <Input register={register} name={`avatarParameters.${index}.path`} readOnly={!watch('sendToAvatar')} errors={errors}
-                                           width={'350px'} />
+                                    <ParameterInput register={register} name={`avatarParameters.${index}.path`} readOnly={!watch('sendToAvatar')}
+                                                    errors={errors} width={'350px'} setValue={setValue} defaultType={'input'} />
                                 </td>
                                 <td>
                                     <SelectInput register={register} name={`avatarParameters.${index}.unit`} width="auto" readOnly={!watch('sendToAvatar')}

@@ -1,7 +1,7 @@
 import { AvatarDto, ReactProps, TierDto } from "cmap2-shared";
 import { useNavigate } from "react-router-dom";
 import { ContentBox } from 'cmap2-shared/dist/react';
-import ActionButton from '../../../../shared/components/actionButton.component';
+import ActionButton from '../../../../shared/components/buttons/actionButton.component';
 import { ContentBoxWidth } from 'cmap2-shared/src';
 
 interface AvatarsMenuProps extends ReactProps {
