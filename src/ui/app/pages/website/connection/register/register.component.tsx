@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { URL } from '../../../../../../shared/const';
-import { ReactProps, RegistrationFormDto } from 'cmap2-shared';
+import { ReactProps, RegistrationFormDto, RegistrationInfoDto } from 'cmap2-shared';
 import { SocketConnection, SocketConnectionType } from '../../../../../../shared/SocketConnection';
 import { registrationSchema } from 'cmap2-shared/src/zodSchemas';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import SubmitInput from '../../../../shared/components/form/inputs/submit.compon
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
 import { ToastType } from '../../../../components/toast/toast.hook';
+import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
 
 interface ActivateFormProps extends ReactProps {
     socketConnection: SocketConnection,
@@ -20,9 +21,25 @@ interface ActivateFormProps extends ReactProps {
 
 export default function RegistrationForm({socketConnection, setConnectForm}: ActivateFormProps) {
 
-    const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm<RegistrationFormDto>({resolver: zodResolver(registrationSchema)});
+    const { register, setValue, formState: {errors}, handleSubmit } = useForm<RegistrationFormDto>({resolver: zodResolver(registrationSchema)});
+    const [regAvailable, setRegAvailable] = useState<boolean>(true);
+    const [regKeyRequired, setRegKeyRequired] = useState<boolean>(false);
     const navigate = useNavigate();
     const toastsDispatch = useContext(ToastContext);
+
+    useEffect(() => {
+        window.electronAPI.get('getFingerprint').then(data => setValue('fingerprint', data));
+
+        fetch(URL + '/api/register', {
+            method: 'GET',
+        }).then(async res => {
+            if (res?.ok) {
+                const response = await res.json() as RegistrationInfoDto;
+                if (response.available !== undefined) setRegAvailable(response.available);
+                if (response.keyRequired !== undefined) setRegKeyRequired(response.keyRequired);
+            }
+        });
+    }, []);
 
     useEffect(() => {
         if (socketConnection.type === SocketConnectionType.SUCCESS) {
@@ -37,7 +54,7 @@ export default function RegistrationForm({socketConnection, setConnectForm}: Act
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => {
+        }).then(async res => {
             if (res?.ok) {
                 toastsDispatch({
                     type: 'add',
@@ -45,38 +62,48 @@ export default function RegistrationForm({socketConnection, setConnectForm}: Act
                 });
                 setConnectForm(true);
             } else {
+                const response = await res.json()
                 toastsDispatch({
                     type: 'add',
-                    toast: {message: 'Registration failed', type: ToastType.ERROR}
+                    toast: {message: response.message, type: ToastType.ERROR}
                 });
             }
         });
     }
 
-    return (<form onSubmit={handleSubmit(onSubmit)}>
-        <FormTable>
-            <tr>
-                <th>Username</th>
-                <td><Input register={register} name={'username'} errors={errors} /></td>
-            </tr>
-            <tr>
-                <th rowSpan={2}>Password</th>
-                <td><Input type="password" register={register} name={'passwordOne'} errors={errors} /></td>
-            </tr>
-            <tr>
-                <td><Input type="password" register={register} name={'passwordTwo'} errors={errors} /></td>
-            </tr>
-            <tr>
-                <th>Registration key</th>
-                <td><Input register={register} name={'registrationKey'} errors={errors} /></td>
-            </tr>
-            <tr>
-                <td colSpan={2} style={{textAlign: 'center'}}>
-                    <SubmitInput text={'Register'} />
-                    <ButtonInput onClick={() => setConnectForm(true)} text="Back to connect" />
-                </td>
-            </tr>
-        </FormTable>
-    </form>);
+    return (<>
+        {regAvailable ? (
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <HiddenInput name={'registrationKey'} />
+                <FormTable>
+                    <tr>
+                        <th>Username</th>
+                        <td><Input register={register} name={'username'} errors={errors} /></td>
+                    </tr>
+                    <tr>
+                        <th rowSpan={2}>Password</th>
+                        <td><Input type="password" register={register} name={'passwordOne'} errors={errors} /></td>
+                    </tr>
+                    <tr>
+                        <td><Input type="password" register={register} name={'passwordTwo'} errors={errors} /></td>
+                    </tr>
+                    {regKeyRequired &&
+                        <tr>
+                            <th>Registration key</th>
+                            <td><Input register={register} name={'registrationKey'} errors={errors} /></td>
+                        </tr>}
+                    <tr>
+                        <td colSpan={2} style={{textAlign: 'center'}}>
+                            <SubmitInput text={'Register'} />
+                            <ButtonInput onClick={() => setConnectForm(true)} text="Back to connect" />
+                        </td>
+                    </tr>
+                </FormTable>
+            </form>
+        ) : (<>
+            <h1>Server is not accepting registrations currently</h1>
+            <ButtonInput onClick={() => setConnectForm(true)} text="Back to connect" />
+        </>)}
+    </>);
 
 }
