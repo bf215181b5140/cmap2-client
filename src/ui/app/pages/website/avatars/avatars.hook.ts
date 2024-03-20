@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState } from 'react';
 import { AvatarDto, Avatars, ButtonDto, ButtonStyleDto, LayoutDto, TierDto } from 'cmap2-shared';
-import useCustomFetch from '../../../shared/hooks/customFetch.hook';
+import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 import avatarsReducer from './avatars.reducer';
 
@@ -8,7 +8,7 @@ export default function useAvatarPage() {
 
     const navigate = useNavigate();
     const routeParams = useParams();
-    const customFetch = useCustomFetch();
+    const customFetch = useCmapFetch();
     const [avatars, avatarDataDispatch] = useReducer(avatarsReducer, []);
     const [clientTier, setClientTier] = useState<TierDto>(new TierDto());
     const [clientButtonStyle, setClientButtonStyle] = useState<ButtonStyleDto>(new ButtonStyleDto());
@@ -17,13 +17,11 @@ export default function useAvatarPage() {
     const [selectedButton, setButton] = useState<ButtonDto | undefined>(undefined);
 
     useEffect(() => {
-        customFetch<Avatars>('avatar').then(res => {
-            if (res?.body) {
-                avatarDataDispatch({type: 'setAvatars', avatars: res.body.avatars});
-                setClientTier(res.body.tier);
-                setClientButtonStyle(res.body.buttonStyle);
-                setDefaultOrFirstAvatar(res.body.avatars);
-            }
+        customFetch<Avatars>('avatar', {}, data => {
+            avatarDataDispatch({type: 'setAvatars', avatars: data.avatars});
+            setClientTier(data.tier);
+            setClientButtonStyle(data.buttonStyle);
+            setDefaultOrFirstAvatar(data.avatars);
         });
     }, []);
 

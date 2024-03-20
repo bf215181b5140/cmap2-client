@@ -3,7 +3,7 @@ import { AvatarDto, ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonTyp
 import { useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
-import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
+import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { buttonSchema } from 'cmap2-shared/src/zodSchemas';
@@ -36,7 +36,7 @@ interface ButtonComponentProps extends ReactProps {
 export default function ButtonComponent({button, avatarDataDispatch, avatar, layout, buttonStyle, clientTier}: ButtonComponentProps) {
 
     const navigate = useNavigate();
-    const customFetch = useCustomFetch();
+    const customFetch = useCmapFetch();
     const {deleteModal} = useContext(ModalContext);
     const {register, setValue, reset, formState: {errors, isDirty}, watch, handleSubmit} = useForm<ButtonDto>({
         defaultValues: {...button, order: 0, parentId: layout.id},
@@ -45,29 +45,33 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     const formWatch = watch();
 
     function onSave(formData: ButtonDto) {
+        function onEdit() {
+            avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
+            reset({...button, ...formData});
+        }
+
+        function onAdd(data: ButtonDto) {
+            avatarDataDispatch({type: 'addButton', button: data, avatarId: avatar.id, layoutId: layout.id});
+            navigate(-1);
+        }
+
         customFetch<ButtonDto>('button', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
-            headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) {
-                avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
-                reset({...button, ...formData});
+            headers: {
+                'Content-Type': 'application/json'
             }
-            if (res?.code === 201 && res.body) {
-                avatarDataDispatch({type: 'addButton', button: res.body, avatarId: avatar.id, layoutId: layout.id});
-                navigate(-1);
-            }
-        });
+        }, formData.id ? onEdit : onAdd);
     }
+
 
     function onDelete(button: ButtonDto) {
         customFetch('button', {
             method: 'DELETE',
             body: JSON.stringify(button),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) avatarDataDispatch({type: 'removeButton', button: button, avatarId: avatar.id, layoutId: layout.id});
+        }, () => {
+            avatarDataDispatch({type: 'removeButton', button: button, avatarId: avatar.id, layoutId: layout.id});
             navigate(-1);
         });
     }

@@ -3,19 +3,22 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import ProfilePage from './profile/profile.page';
 import AvatarsPage from './avatars/avatars.page';
 import TiersPage from './tiers/tiers.page';
-import React from 'react';
+import React, { useContext } from 'react';
 import ConnectionPage from './connection/connection.page';
 import Submenu from '../../shared/components/submenu/submenu.component';
 import SubmenuLink from '../../shared/components/submenu/submenuLink.component';
+import { ClientCredentialsContext } from '../../App';
 
 export default function WebsitePage() {
+
+    const {clientCredentials: {apiToken}} = useContext(ClientCredentialsContext);
 
     return (<WebsitePageStyled>
         <Submenu>
             <SubmenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Connection status'} />
-            <SubmenuLink to={'/website/profile'} icon={'ri-user-fill'} tooltip={'Website profile'} />
-            <SubmenuLink to={'/website/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Website layout'} />
-            <SubmenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Account tiers'} />
+            <SubmenuLink to={'/website/profile'} icon={'ri-user-fill'} tooltip={'Website profile'} disabled={!apiToken} />
+            <SubmenuLink to={'/website/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Website layout'} disabled={!apiToken} />
+            <SubmenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Account tiers'} disabled={!apiToken} />
         </Submenu>
 
         <div style={{flexBasis: '100%'}}>

@@ -4,11 +4,12 @@ import styled, { css } from 'styled-components';
 interface SubmenuLinkProps {
     to: string;
     icon: string;
+    disabled?: boolean;
     tooltip?: string;
     attention?: boolean;
 }
 
-export default function SubmenuLink({to, icon, tooltip, attention = false}: SubmenuLinkProps) {
+export default function SubmenuLink({to, icon, disabled = false, tooltip, attention = false}: SubmenuLinkProps) {
 
     const pathname = useLocation().pathname;
 
@@ -17,7 +18,7 @@ export default function SubmenuLink({to, icon, tooltip, attention = false}: Subm
     }
 
     return (<>
-        <SubmenuLinkStyled to={to} $active={isCurrentPath()}>
+        <SubmenuLinkStyled to={to} $active={isCurrentPath()} disabled={disabled}>
             <i className={icon} />
             {tooltip && <div id="tooltip">{tooltip}</div>}
             {attention && <i id="attention" className="ri-shining-fill"></i>}
@@ -34,7 +35,7 @@ const highlight = css`
   }
 `;
 
-const SubmenuLinkStyled = styled(Link)<{ $active: boolean }>`
+const SubmenuLinkStyled = styled(Link)<{ $active: boolean, disabled: boolean }>`
   display: flex;
   flex-direction: row;
   gap: 8px;
@@ -77,5 +78,10 @@ const SubmenuLinkStyled = styled(Link)<{ $active: boolean }>`
     #tooltip {
       display: block;
     }
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    filter: saturate(0%);
   }
 `;

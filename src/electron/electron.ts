@@ -31,7 +31,7 @@ app.whenReady().then(() => {
     // initiate services
     new IpcMainController();
     new OscController(settings);
-    new ClientSocketService(settings);
+    new ClientSocketService();
     new LovenseController();
     new VrcDetectorService();
     new OscClockController();

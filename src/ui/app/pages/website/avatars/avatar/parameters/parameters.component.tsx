@@ -2,7 +2,7 @@ import { AvatarDto, ControlParameterDto, ParameterDto, ParametersForm, ReactProp
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../../../shared/components/form/formTable.component';
 import React, { useContext, useEffect } from 'react';
-import useCustomFetch from '../../../../../shared/hooks/customFetch.hook';
+import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { AvatarReducerAction } from '../../avatars.reducer';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { ContentBoxWidth } from 'cmap2-shared/src';
@@ -27,7 +27,7 @@ interface ParametersProps extends ReactProps {
 
 export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus}: ParametersProps) {
 
-    const customFetch = useCustomFetch();
+    const customFetch = useCmapFetch();
     const {deleteModal} = useContext(ModalContext);
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ParametersForm>({
         defaultValues: {
@@ -63,8 +63,8 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.body) avatarDataDispatch({type: 'saveParameters', parameters: res.body, avatarId: selectedAvatar.id});
+        }, data => {
+            avatarDataDispatch({type: 'saveParameters', parameters: data, avatarId: selectedAvatar.id});
         });
     }
 
@@ -75,8 +75,8 @@ export default function Parameters({selectedAvatar, avatarDataDispatch, eventBus
                 method: 'DELETE',
                 body: JSON.stringify(param),
                 headers: {'Content-Type': 'application/json'}
-            }).then(res => {
-                if (res?.code === 200) avatarDataDispatch({type: 'removeParameter', parameter: param, avatarId: selectedAvatar.id});
+            }, () => {
+                avatarDataDispatch({type: 'removeParameter', parameter: param, avatarId: selectedAvatar.id});
             });
         } else {
             remove(index);

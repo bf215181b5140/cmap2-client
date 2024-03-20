@@ -6,7 +6,7 @@ import { URL } from '../../shared/const';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { ClientCredentials } from '../../shared/classes';
-import { Settings } from '../../shared/types/settings';
+import { Settings, WebsocketSettings } from '../../shared/types/settings';
 import { Message } from 'node-osc';
 
 export class ClientSocketService {
@@ -16,9 +16,13 @@ export class ClientSocketService {
     /**
      * Sets listeners for events and starts socket connection to server
      */
-    constructor(settings: Settings) {
-        TypedIpcMain.on('setClientCredentials', (clientCredentials) => this.connect(clientCredentials));
+    constructor() {
+        TypedIpcMain.on('setClientCredentials', (clientCredentials) => {
+            if (this.connectionStatus.type === SocketConnectionType.SUCCESS) this.connect(clientCredentials);
+            if (StoreService.getWebsocketSettings().autoLogin) this.connect(clientCredentials);
+        });
         TypedIpcMain.handle('getConnectionStatus', async () => this.connectionStatus);
+        TypedIpcMain.on('connectSocket', () => this.connect(StoreService.getClientCredentials()));
         TypedIpcMain.on('disconnectSocket', () => this.disconnect());
 
         BridgeService.on('oscActivity', (isActive) => this.sendData('activity', isActive));
@@ -30,7 +34,7 @@ export class ClientSocketService {
             }
         });
 
-        if (settings.autoLogin) this.connect(StoreService.getClientCredentials());
+        if (StoreService.getWebsocketSettings().autoLogin) this.connect(StoreService.getClientCredentials());
     }
 
     /**
@@ -40,10 +44,11 @@ export class ClientSocketService {
      */
     private connect(clientCredentials: ClientCredentials) {
         if (this.socket) this.socket.close();
+        if (typeof clientCredentials.apiToken !== 'string') return;
+
         this.socket = io(URL + '/clientSocket', {
             query: {
-                username: clientCredentials.username,
-                password: clientCredentials.password
+                apiToken: clientCredentials.apiToken
             },
             transports: ['websocket']
         });

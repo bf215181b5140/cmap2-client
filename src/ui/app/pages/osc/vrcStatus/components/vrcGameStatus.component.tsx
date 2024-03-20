@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ContentBox } from 'cmap2-shared/dist/react';
-import { ContentBoxWidth } from 'cmap2-shared';
+import { ContentBoxWidth, theme } from 'cmap2-shared';
 import timeSinceTimestamp from '../../../../shared/util/timeSinceTimestamp';
 
 export default function VrcGameStatus() {
@@ -41,9 +41,9 @@ function Header({isVrchatRunning}: { isVrchatRunning: boolean | null }) {
         return (<h2 style={{color: 'grey'}}>Not tracking if VRChat is running</h2>);
     }
     if (isVrchatRunning) {
-        return (<h2 style={{color: 'seagreen'}}>VRChat is running</h2>);
+        return (<h2 style={{color: theme.colors.success}}>VRChat is running</h2>);
     } else {
-        return (<h2 style={{color: 'indianred'}}>VRChat is not running</h2>);
+        return (<h2 style={{color: theme.colors.error}}>VRChat is not running</h2>);
     }
 }
 

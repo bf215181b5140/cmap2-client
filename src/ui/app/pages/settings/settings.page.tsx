@@ -8,11 +8,11 @@ import SubmitInput from '../../shared/components/form/inputs/submit.component';
 import NumberInput from '../../shared/components/form/inputs/number.component';
 import Input from '../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
-import { Settings, settingsSchema } from '../../../../shared/types/settings';
+import { Settings, generalSettingsSchema } from '../../../../shared/types/settings';
 
 export default function SettingsPage() {
 
-    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm<Settings>({ resolver: zodResolver(settingsSchema) });
+    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm<Settings>({ resolver: zodResolver(generalSettingsSchema) });
 
     useEffect(() => {
         window.electronAPI.get('getSettings').then(settings => {

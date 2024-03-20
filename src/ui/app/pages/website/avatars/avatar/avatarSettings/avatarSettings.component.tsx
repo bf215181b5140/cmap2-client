@@ -1,9 +1,9 @@
-import { AvatarDto, ReactProps } from 'cmap2-shared';
+import { AvatarDto, ButtonDto, ReactProps } from 'cmap2-shared';
 import FormTable from '../../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import React, { useContext, useEffect } from 'react';
-import useCustomFetch from '../../../../../shared/hooks/customFetch.hook';
+import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';
@@ -26,8 +26,8 @@ interface AvatarSettingsProps extends ReactProps {
 
 export default function AvatarSettings({selectedAvatar, avatarDataDispatch, eventBus}: AvatarSettingsProps) {
 
-    const customFetch = useCustomFetch();
-    const { deleteModal } = useContext(ModalContext);
+    const customFetch = useCmapFetch();
+    const {deleteModal} = useContext(ModalContext);
     const {register, reset, formState: {errors, isDirty}, handleSubmit, setValue} = useForm({resolver: zodResolver(avatarSchema)});
     const navigate = useNavigate();
 
@@ -51,25 +51,26 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
     }
 
     function onSave(formData: any) {
+        function onEdit() {
+            avatarDataDispatch({type: 'editAvatar', avatar: formData});
+            reset({
+                id: formData?.id ? formData?.id : null,
+                vrcId: formData?.vrcId,
+                label: formData?.label,
+                default: formData?.default ? formData?.default : false,
+            });
+        }
+
+        function onAdd(data: AvatarDto) {
+            avatarDataDispatch({type: 'addAvatar', avatar: data});
+            navigate('/website/avatars/' + data.id);
+        }
+
         customFetch<AvatarDto>('avatar', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) {
-                avatarDataDispatch({type: 'editAvatar', avatar: formData});
-                reset({
-                    id: formData?.id ? formData?.id : null,
-                    vrcId: formData?.vrcId,
-                    label: formData?.label,
-                    default: formData?.default ? formData?.default : false,
-                });
-            }
-            if (res?.code === 201 && res.body) {
-                avatarDataDispatch({type: 'addAvatar', avatar: res.body});
-                navigate('/website/avatars/' + res.body.id);
-            }
-        });
+        }, formData.id ? onEdit : onAdd);
     }
 
     function onDelete(avatar: AvatarDto) {
@@ -77,11 +78,9 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
             method: 'DELETE',
             body: JSON.stringify(avatar),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) {
-                avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
-                navigate('/website/avatars');
-            }
+        }, () => {
+            avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
+            navigate('/website/avatars');
         });
     }
 

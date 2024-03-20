@@ -15,12 +15,15 @@ import LovensePage from './pages/lovense/lovense.page';
 import WebsitePage from './pages/website/website.page';
 import AvatarsPage from './pages/osc/avatars/avatars.page';
 import OscPage from './pages/osc/osc.page';
+import { LoginTokenDTO } from 'cmap2-shared';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
     setClientCredentials: () => {
     },
-    setClientToken: (token: string) => {
+    setClientToken: () => {
+    },
+    clearClientToken: () => {
     }
 });
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { ButtonDto, ButtonStyleDto, ClientDto, ReactProps } from 'cmap2-shared';
 import { ParameterButton } from 'cmap2-shared/dist/react';
-import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
+import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import styled from 'styled-components';
 import PickerOverlayCheck from '../../../../shared/components/pickerOverlay/PickerOverlayCheck.component';
 import PickerOverlayTier from '../../../../shared/components/pickerOverlay/PickerOverlayTier.component';
@@ -15,7 +15,7 @@ interface ButtonStylePickerProps extends ReactProps {
 
 export default function ButtonStylePicker({client, setFunction, buttonStyles}: ButtonStylePickerProps) {
 
-    const customFetch = useCustomFetch();
+    const customFetch = useCmapFetch();
 
     function saveSelected(buttonStyle: ButtonStyleDto) {
         if ((client?.tier?.rank || 0) < buttonStyle.tier.rank) return;
@@ -23,10 +23,8 @@ export default function ButtonStylePicker({client, setFunction, buttonStyles}: B
             method: 'POST',
             body: JSON.stringify(buttonStyle),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) {
-                setFunction(buttonStyle);
-            }
+        }, () => {
+            setFunction(buttonStyle);
         });
     }
 
@@ -66,7 +64,7 @@ const ButtonStylePickerStyled = styled.div<{ color: string, validPick: boolean }
   flex-basis: calc(25% - (3 * 15px / 4));
 
   :hover {
-    border-color: ${props => props.validPick ? props.theme.colors.buttonPrimary.activeBorder :props.theme.colors.error};
+    border-color: ${props => props.validPick ? props.theme.colors.buttonPrimary.activeBorder : props.theme.colors.error};
   }
 
 `;

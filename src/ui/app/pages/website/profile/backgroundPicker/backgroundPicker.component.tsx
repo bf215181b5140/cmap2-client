@@ -2,7 +2,7 @@ import { ContentBox } from 'cmap2-shared/dist/react';
 import React from 'react';
 import { BackgroundDto, ClientDto, ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
-import useCustomFetch from '../../../../shared/hooks/customFetch.hook';
+import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import Background from 'cmap2-shared/src/react/components/background.component';
 import PickerOverlayCheck from '../../../../shared/components/pickerOverlay/PickerOverlayCheck.component';
 import PickerOverlayTier from '../../../../shared/components/pickerOverlay/PickerOverlayTier.component';
@@ -15,7 +15,7 @@ interface BackgroundPickerProps extends ReactProps {
 
 export default function BackgroundPicker({client, setFunction, backgrounds}: BackgroundPickerProps) {
 
-    const customFetch = useCustomFetch();
+    const customFetch = useCmapFetch();
 
     function saveSelected(background: BackgroundDto) {
         if ((client?.tier?.rank || 0) < background.tier.rank) return;
@@ -23,10 +23,8 @@ export default function BackgroundPicker({client, setFunction, backgrounds}: Bac
             method: 'POST',
             body: JSON.stringify(background),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) {
-                setFunction(background);
-            }
+        }, () => {
+            setFunction(background);
         });
     }
 
