@@ -33,7 +33,7 @@ export default function WebsocketStatus() {
     }
 
     return (<ContentBox>
-        <h2 style={{color: websocketConnectionColor}}>{websocketConnection.status}</h2>
+        <h2 style={{color: websocketConnectionColor}}>{websocketConnection.displayMessage()}</h2>
 
         {websocketConnection.message && <span>{websocketConnection.message}</span>}
 

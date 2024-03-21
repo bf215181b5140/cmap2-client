@@ -26,7 +26,7 @@ const TitleBarStyled = styled.div`
   border-radius: 8px 8px 0 0;
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content: space-between;
   -webkit-app-region: drag;
   -webkit-user-select: none;
 `;

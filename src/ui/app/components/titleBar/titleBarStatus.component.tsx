@@ -1,19 +1,26 @@
 import styled from 'styled-components';
 import useWebsocketConnection from '../../shared/hooks/websocketConnection.hook';
+import useVrcConnection from '../../shared/hooks/vrcConnection.hook';
 
 export function TitleBarStatus() {
 
-    const {websocketConnection} = useWebsocketConnection();
+    const {websocketConnectionColor} = useWebsocketConnection();
+    const {vrcStatusColor} = useVrcConnection();
 
     return (<TitleBarStatusStyled>
-        <span>{websocketConnection.status}</span>
+        <i className={'ri-gamepad-line'} style={{color: vrcStatusColor}}></i>
+        <i className={'ri-global-line'} style={{color: websocketConnectionColor}}></i>
     </TitleBarStatusStyled>);
 }
 
 const TitleBarStatusStyled = styled.div`
-  flex: 1;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  padding: 0 25px;
+  padding: 5px 25px 0 25px;
+  font-size: 30px;
+
+  i {
+    padding-right: 20px;
+    text-shadow: 0 0 3px black;
+  }
 `;
