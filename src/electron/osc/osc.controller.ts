@@ -2,7 +2,7 @@ import { OscService } from './osc.service';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { VrcParameter } from 'cmap2-shared';
-import { Settings } from '../../shared/types/settings';
+import { GeneralSettings } from '../../shared/types/settings';
 import { Message } from 'node-osc';
 
 export class OscController extends OscService {
@@ -13,10 +13,10 @@ export class OscController extends OscService {
     /**
      * Sets listeners for events and starts OSC server and client
      */
-    constructor(settings: Settings) {
+    constructor(settings: GeneralSettings) {
         super(settings);
 
-        TypedIpcMain.on('setSettings', (settings) => {
+        TypedIpcMain.on('setGeneralSettings', (settings) => {
             if (!this.oscSettings) {
                 this.start(settings);
             } else if (this.oscSettings.oscIp !== settings.oscIp ||

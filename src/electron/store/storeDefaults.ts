@@ -5,9 +5,11 @@ import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from '../.
 type Store = {
     clientCredentials: ClientCredentials,
     settings: Settings,
-    lovenseSettings: LovenseSettings,
-    toyCommandOscMessage: ToyCommandOscMessage[],
-    toyCommandParameter: ToyCommandParameter[]
+    lovense: {
+        settings: LovenseSettings,
+        toyCommandOscMessage: ToyCommandOscMessage[],
+        toyCommandParameter: ToyCommandParameter[]
+    }
 }
 
 const storeDefaults: Store = {
@@ -30,12 +32,14 @@ const storeDefaults: Store = {
             autoLogin: true,
         }
     },
-    lovenseSettings: {
-        sendConnectionOscMessage: false,
-        connectionOscMessagePath: ''
+    lovense: {
+        settings: {
+            sendConnectionOscMessage: false,
+            connectionOscMessagePath: ''
+        },
+        toyCommandOscMessage: [],
+        toyCommandParameter: []
     },
-    toyCommandOscMessage: [],
-    toyCommandParameter: []
 };
 
 export default storeDefaults;

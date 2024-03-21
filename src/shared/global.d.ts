@@ -4,14 +4,15 @@ import { ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
-import { Settings, WebsocketSettings } from './types/settings';
-import { VrcOscAvatar, VrcOscAvatarParameter } from './types/osc';
+import { GeneralSettings, Settings, WebsocketSettings } from './types/settings';
+import { VrcOscAvatar } from './types/osc';
 import { OscClockSettings } from '../electron/osc/clock/types';
 
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
     getConnectionStatus: SocketConnection;
     getSettings: Settings;
+    getGeneralSettings: GeneralSettings;
     getWebsocketSettings: WebsocketSettings;
     getLovenseSettings: LovenseSettings;
     getToyCommandParameters: ToyCommandParameter[];
@@ -32,6 +33,7 @@ type IpcSendOptions = {
     connectSocket: undefined;
     disconnectSocket: undefined;
     setSettings: Settings;
+    setGeneralSettings: GeneralSettings;
     setWebsocketSettings: WebsocketSettings;
     setLovenseSettings: LovenseSettings;
     getLovenseStatus: undefined;

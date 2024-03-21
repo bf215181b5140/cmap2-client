@@ -26,11 +26,11 @@ app.whenReady().then(() => {
     OscControlStore.start();
 
     // grab settings
-    const settings = StoreService.getSettings();
+    const generalSettings = StoreService.getGeneralSettings();
 
     // initiate services
     new IpcMainController();
-    new OscController(settings);
+    new OscController(generalSettings);
     new ClientSocketService();
     new LovenseController();
     new VrcDetectorService();
@@ -39,7 +39,7 @@ app.whenReady().then(() => {
     // testing service
     // testing();
 
-    mainWindow.init(settings);
+    mainWindow.init(generalSettings);
 
     // create tray icon
     let tray = new Tray('resources/icon.png');

@@ -8,22 +8,22 @@ import SubmitInput from '../../shared/components/form/inputs/submit.component';
 import NumberInput from '../../shared/components/form/inputs/number.component';
 import Input from '../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
-import { Settings, generalSettingsSchema } from '../../../../shared/types/settings';
+import { generalSettingsSchema, GeneralSettings } from '../../../../shared/types/settings';
 
 export default function SettingsPage() {
 
-    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm<Settings>({ resolver: zodResolver(generalSettingsSchema) });
+    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm<GeneralSettings>({ resolver: zodResolver(generalSettingsSchema) });
 
     useEffect(() => {
-        window.electronAPI.get('getSettings').then(settings => {
+        window.electronAPI.get('getGeneralSettings').then(settings => {
             if (settings) {
-                reset(settings as Settings);
+                reset(settings);
             }
         });
     }, []);
 
-    function onSubmit(formData: Settings) {
-        window.electronAPI.send('setSettings', formData);
+    function onSubmit(formData: GeneralSettings) {
+        window.electronAPI.send('setGeneralSettings', formData);
     }
 
     return (<Content flexDirection="column">
