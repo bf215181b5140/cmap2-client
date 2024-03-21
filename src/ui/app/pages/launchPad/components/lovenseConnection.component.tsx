@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LovenseStatus } from '../../../../../shared/lovense';
 import ConnectionBox from './connectionBox.component';
+import { theme } from 'cmap2-shared';
 
 export default function LovenseConnection() {
 
@@ -26,9 +27,9 @@ export default function LovenseConnection() {
 function Header({ lovenseStatus }: { lovenseStatus: LovenseStatus }) {
     if (lovenseStatus.socketConnection) {
         if (lovenseStatus.status === 1) {
-            return (<h2 style={{color: 'seagreen'}}>Connected</h2>);
+            return (<h2 style={{color: theme.colors.success}}>Connected</h2>);
         }
-        return (<h2 style={{color: 'orange'}}>Connecting...</h2>);
+        return (<h2 style={{color: theme.colors.warning}}>Connecting...</h2>);
     }
-    return (<h2 style={{color: 'indianred'}}>Not connected</h2>);
+    return (<h2 style={{color: theme.colors.error}}>Not connected</h2>);
 }

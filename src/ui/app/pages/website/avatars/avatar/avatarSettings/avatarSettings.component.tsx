@@ -51,26 +51,24 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
     }
 
     function onSave(formData: any) {
-        function onEdit() {
-            avatarDataDispatch({type: 'editAvatar', avatar: formData});
-            reset({
-                id: formData?.id ? formData?.id : null,
-                vrcId: formData?.vrcId,
-                label: formData?.label,
-                default: formData?.default ? formData?.default : false,
-            });
-        }
-
-        function onAdd(data: AvatarDto) {
-            avatarDataDispatch({type: 'addAvatar', avatar: data});
-            navigate('/website/avatars/' + data.id);
-        }
-
         customFetch<AvatarDto>('avatar', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
-        }, formData.id ? onEdit : onAdd);
+        }, (data, res) => {
+            if (res.code === 201) {
+                avatarDataDispatch({type: 'addAvatar', avatar: data});
+                navigate('/website/avatars/' + data.id);
+            } else {
+                avatarDataDispatch({type: 'editAvatar', avatar: formData});
+                reset({
+                    id: formData?.id ? formData?.id : null,
+                    vrcId: formData?.vrcId,
+                    label: formData?.label,
+                    default: formData?.default ? formData?.default : false,
+                });
+            }
+        });
     }
 
     function onDelete(avatar: AvatarDto) {

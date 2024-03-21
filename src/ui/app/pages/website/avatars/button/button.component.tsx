@@ -45,23 +45,21 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     const formWatch = watch();
 
     function onSave(formData: ButtonDto) {
-        function onEdit() {
-            avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
-            reset({...button, ...formData});
-        }
-
-        function onAdd(data: ButtonDto) {
-            avatarDataDispatch({type: 'addButton', button: data, avatarId: avatar.id, layoutId: layout.id});
-            navigate(-1);
-        }
-
         customFetch<ButtonDto>('button', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {
                 'Content-Type': 'application/json'
             }
-        }, formData.id ? onEdit : onAdd);
+        }, (data, res) => {
+            if (res.code === 201) {
+                avatarDataDispatch({type: 'addButton', button: data, avatarId: avatar.id, layoutId: layout.id});
+                navigate(-1);
+            } else {
+                avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
+                reset({...button, ...formData});
+            }
+        });
     }
 
 

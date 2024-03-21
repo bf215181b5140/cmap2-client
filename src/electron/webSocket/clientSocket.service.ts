@@ -1,25 +1,25 @@
 import io from 'socket.io-client';
-import { SocketConnection, SocketConnectionType } from '../../shared/SocketConnection';
+import { WebsocketConnection, WebsocketConnectionStatus } from '../../shared/webSocket';
 import { VrcParameter } from 'cmap2-shared';
 import { StoreService } from '../store/store.service';
 import { URL } from '../../shared/const';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { ClientCredentials } from '../../shared/classes';
-import { Settings, WebsocketSettings } from '../../shared/types/settings';
 import { Message } from 'node-osc';
 
 export class ClientSocketService {
     private socket: SocketIOClient.Socket | undefined;
-    private connectionStatus: SocketConnection = new SocketConnection();
+    private connectionStatus: WebsocketConnection = new WebsocketConnection();
 
     /**
      * Sets listeners for events and starts socket connection to server
      */
     constructor() {
         TypedIpcMain.on('setClientCredentials', (clientCredentials) => {
-            if (this.connectionStatus.type === SocketConnectionType.SUCCESS) this.connect(clientCredentials);
-            if (StoreService.getWebsocketSettings().autoLogin) this.connect(clientCredentials);
+            if (this.connectionStatus.status === 'Connected' || StoreService.getWebsocketSettings().autoLogin) {
+                this.connect(clientCredentials);
+            }
         });
         TypedIpcMain.handle('getConnectionStatus', async () => this.connectionStatus);
         TypedIpcMain.on('connectSocket', () => this.connect(StoreService.getClientCredentials()));
@@ -44,6 +44,7 @@ export class ClientSocketService {
      */
     private connect(clientCredentials: ClientCredentials) {
         if (this.socket) this.socket.close();
+
         if (typeof clientCredentials.apiToken !== 'string') return;
 
         this.socket = io(URL + '/clientSocket', {
@@ -53,28 +54,23 @@ export class ClientSocketService {
             transports: ['websocket']
         });
 
-        this.connectionStatus.setConnection(SocketConnectionType.MESSAGE, 'Connecting...', '');
-        this.updateConnectionStatus();
+        this.updateConnectionStatus('Connecting');
 
         this.socket.on('joined', () => {
-            this.connectionStatus.setConnection(SocketConnectionType.SUCCESS, 'Connected', '');
-            this.updateConnectionStatus();
+            this.updateConnectionStatus('Connected');
             BridgeService.emit('getOscActivity');
         });
 
         this.socket.on('error', (message: string) => {
-            this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Error', message);
-            this.updateConnectionStatus();
+            this.updateConnectionStatus('Not connected', message);
         });
 
         this.socket.on('connect_error', (err: Error) => {
-            this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Error', err.message);
-            this.updateConnectionStatus();
+            this.updateConnectionStatus('Not connected', err.message);
         });
 
         this.socket.on('disconnect', () => {
-            this.connectionStatus.setConnection(SocketConnectionType.ERROR, 'Disconnected');
-            this.updateConnectionStatus();
+            this.updateConnectionStatus('Not connected');
         });
 
         this.socket.on('parameter', (parameter: VrcParameter) => {
@@ -84,8 +80,12 @@ export class ClientSocketService {
 
     private disconnect() {
         if (this.socket) this.socket.close();
-        this.connectionStatus.setConnection(SocketConnectionType.MESSAGE, 'Not connected', '');
-        this.updateConnectionStatus();
+        this.updateConnectionStatus('Not connected');
+    }
+
+    private updateConnectionStatus(status: WebsocketConnectionStatus, message?: string) {
+        this.connectionStatus.setStatus(status, message);
+        TypedIpcMain.emit('updateConnectionStatus', this.connectionStatus);
     }
 
     /**
@@ -110,9 +110,5 @@ export class ClientSocketService {
         if (this.socket) {
             this.socket.emit(event, data);
         }
-    }
-
-    private updateConnectionStatus() {
-        TypedIpcMain.emit('updateConnectionStatus', this.connectionStatus);
     }
 }

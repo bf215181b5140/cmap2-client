@@ -42,26 +42,24 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
     }, [avatarId]);
 
     function onSave(formData: any) {
-        function onEdit() {
-            avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatarId});
-            reset({
-                id: formData.id,
-                label: formData.label,
-                order: order,
-                parentId: formData.id
-            });
-        }
-
-        function onAdd(data: LayoutDto) {
-            avatarDataDispatch({type: 'addLayout', layout: data, avatarId: avatarId});
-            setEditing(false);
-        }
-
         customFetch<LayoutDto>('layout', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
-        },  formData.id ? onEdit : onAdd);
+        },  (data, res) => {
+            if (res.code === 201) {
+                avatarDataDispatch({type: 'addLayout', layout: data, avatarId: avatarId});
+                setEditing(false);
+            } else {
+                avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatarId});
+                reset({
+                    id: formData.id,
+                    label: formData.label,
+                    order: order,
+                    parentId: formData.id
+                });
+            }
+        });
     }
 
     function onDelete(layout: LayoutDto) {

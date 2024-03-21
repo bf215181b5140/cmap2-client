@@ -1,6 +1,7 @@
 import ConnectionBox from './connectionBox.component';
 import { useEffect, useState } from 'react';
 import timeSinceTimestamp from '../../../shared/util/timeSinceTimestamp';
+import { theme } from 'cmap2-shared';
 
 export default function VrcConnection() {
 
@@ -36,9 +37,9 @@ function Header({ isVrchatRunning }: { isVrchatRunning: boolean | null }) {
         return (<h2 style={{color: 'grey'}}>Not tracking if VRChat is running</h2>);
     }
     if (isVrchatRunning) {
-        return (<h2 style={{color: 'seagreen'}}>VRChat is running</h2>);
+        return (<h2 style={{color: theme.colors.success}}>VRChat is running</h2>);
     } else {
-        return (<h2 style={{color: 'indianred'}}>VRChat is not running</h2>);
+        return (<h2 style={{color: theme.colors.error}}>VRChat is not running</h2>);
     }
 }
 

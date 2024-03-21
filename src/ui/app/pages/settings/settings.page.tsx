@@ -12,14 +12,10 @@ import { generalSettingsSchema, GeneralSettings } from '../../../../shared/types
 
 export default function SettingsPage() {
 
-    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm<GeneralSettings>({ resolver: zodResolver(generalSettingsSchema) });
+    const {register, reset, formState: {errors, isDirty}, handleSubmit, watch} = useForm<GeneralSettings>({resolver: zodResolver(generalSettingsSchema)});
 
     useEffect(() => {
-        window.electronAPI.get('getGeneralSettings').then(settings => {
-            if (settings) {
-                reset(settings);
-            }
-        });
+        window.electronAPI.get('getGeneralSettings').then(settings => reset(settings, {keepDirty: false}));
     }, []);
 
     function onSubmit(formData: GeneralSettings) {
@@ -39,15 +35,9 @@ export default function SettingsPage() {
                         <th>Check if Vrchat is running</th>
                         <td><CheckboxInput name={'enableVrcDetector'} register={register} errors={errors} /></td>
                         <th>every</th>
-                        <td><NumberInput name={'vrcDetectorFrequency'} register={register} errors={errors} width={'60px'} readOnly={!watch('enableVrcDetector')}/></td>
+                        <td><NumberInput name={'vrcDetectorFrequency'} register={register} errors={errors} width={'60px'}
+                                         readOnly={!watch('enableVrcDetector')} /></td>
                         <th>seconds</th>
-                    </tr>
-                </FormTable>
-                <h2>Website</h2>
-                <FormTable>
-                    <tr>
-                        <th>Connect to website automatically</th>
-                        <td><CheckboxInput register={register} name={'autoLogin'} errors={errors} /></td>
                     </tr>
                 </FormTable>
                 <h2>OSC</h2>
@@ -69,7 +59,7 @@ export default function SettingsPage() {
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <SubmitInput />
+                    <SubmitInput disabled={!isDirty} />
                 </FormControlBar>
             </form>
         </ContentBox>

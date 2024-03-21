@@ -48,9 +48,10 @@ export default function LoginForm() {
                 <td><Input type="password" register={register} name={'password'} readOnly={!!clientCredentials.apiToken} errors={errors} /></td>
             </tr>
             <tr>
-                <td colSpan={2} style={{textAlign: 'center'}}>
-                    <SubmitInput text={'Log in'} />
+                <td></td>
+                <td style={{textAlign: 'center'}}>
                     <ButtonInput text={'Clear'} onClick={onClear} />
+                    <SubmitInput text={'Log in'} />
                 </td>
             </tr>
         </FormTable>

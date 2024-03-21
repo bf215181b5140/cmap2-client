@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { ReactProps, RegisterFormDTO, RegisterKeySchema, RegisterDTO, RegisterInfoDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import { ToastContext } from '../../../../components/mainWindow/mainWindow.componenet';
@@ -63,16 +63,17 @@ export default function RegisterForm({setShowLogin, registrationInfo}: RegisterF
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
         <HiddenInput name={'fingerprint'} />
-        <FormTable>
+        <FormTable thAlign={'right'}>
             <tr>
                 <th>Username</th>
                 <td><Input register={register} name={'username'} errors={errors} /></td>
             </tr>
             <tr>
-                <th rowSpan={2}>Password</th>
+                <th>Password</th>
                 <td><Input type="password" register={register} name={'passwordOne'} errors={errors} /></td>
             </tr>
             <tr>
+                <th>Confirm password</th>
                 <td><Input type="password" register={register} name={'passwordTwo'} errors={errors} /></td>
             </tr>
             {registrationInfo.keyRequired &&
@@ -81,7 +82,8 @@ export default function RegisterForm({setShowLogin, registrationInfo}: RegisterF
                     <td><Input register={register} name={'registrationKey'} errors={errors} /></td>
                 </tr>}
             <tr>
-                <td colSpan={2} style={{textAlign: 'center'}}>
+                <td></td>
+                <td style={{textAlign: 'center'}}>
                     <SubmitInput text={'Register'} />
                 </td>
             </tr>

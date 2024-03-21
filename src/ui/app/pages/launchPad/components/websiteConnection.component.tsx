@@ -1,40 +1,13 @@
 import ConnectionBox from './connectionBox.component';
-import { useEffect, useState } from 'react';
-import { SocketConnection, SocketConnectionType } from '../../../../../shared/SocketConnection';
+import useWebsocketConnection from '../../../shared/hooks/websocketConnection.hook';
 
 export default function WebsiteConnection() {
 
-    const [socketConnection, setSocketConnection] = useState<SocketConnection | null>(null);
+    const {websocketConnection, websocketConnectionColor} = useWebsocketConnection();
 
-    useEffect(() => {
-        window.electronAPI.get('getConnectionStatus').then(data => setSocketConnection(data));
-
-        const removeListener = window.electronAPI.receive('updateConnectionStatus', (data) => setSocketConnection(data));
-
-        return () => {
-            if (removeListener) removeListener();
-        }
-    }, []);
-
-    return (<ConnectionBox icon={'ri-global-line'} connected={socketConnection?.type === SocketConnectionType.SUCCESS} redirectPath={'/website'}>
+    return (<ConnectionBox icon={'ri-global-line'} connected={websocketConnection.status === 'Connected'} redirectPath={'/website'}>
         <h1>Website</h1>
-        <Header socketConnection={socketConnection} />
+        <h2 style={{color: websocketConnectionColor}}>{websocketConnection.status}</h2>
     </ConnectionBox>);
-}
-
-function Header({ socketConnection }: { socketConnection: SocketConnection | null }) {
-    if (socketConnection === null) {
-        return (<h2/>);
-    }
-    if (socketConnection.type === SocketConnectionType.SUCCESS) {
-        return (<h2 style={{color: 'seagreen'}}>Connected</h2>);
-    }
-    if (socketConnection.type === SocketConnectionType.MESSAGE) {
-        return (<h2 style={{color: 'orange'}}>Connecting...</h2>);
-    }
-    if (socketConnection.type === SocketConnectionType.ERROR) {
-        return (<h2 style={{color: 'indianred'}}>Not connected</h2>);
-    }
-    return (<h2/>);
 }
 

@@ -1,15 +1,12 @@
-import styled from "styled-components";
-import { ReactProps } from 'cmap2-shared';
-import { SocketConnection } from '../../../../shared/SocketConnection';
+import styled from 'styled-components';
+import useWebsocketConnection from '../../shared/hooks/websocketConnection.hook';
 
-interface TitleBarStatusProps extends ReactProps {
-    socketConnection: SocketConnection;
-}
+export function TitleBarStatus() {
 
-export function TitleBarStatus(props: TitleBarStatusProps) {
+    const {websocketConnection} = useWebsocketConnection();
 
     return (<TitleBarStatusStyled>
-        <span>{props.socketConnection.message}</span>
+        <span>{websocketConnection.status}</span>
     </TitleBarStatusStyled>);
 }
 

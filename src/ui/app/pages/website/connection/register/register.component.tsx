@@ -33,11 +33,11 @@ export default function Register({setShowLogin}: RegisterProps) {
         {registrationInfo?.available ? (
             <RegisterForm registrationInfo={registrationInfo} setShowLogin={setShowLogin} />
         ) : (
-            <span>Server is not currently accepting registrations</span>
+            <div>
+                Server is not currently accepting registrations
+            </div>
         )}
-        <div>
-            <ButtonInput onClick={() => setShowLogin(true)} text="Login" />
-        </div>
+        <ButtonInput onClick={() => setShowLogin(true)} text="Login" />
     </ContentBox>);
 
 }

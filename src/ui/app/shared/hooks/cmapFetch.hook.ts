@@ -16,7 +16,7 @@ export default function useCmapFetch() {
     const {clientCredentials, clearClientToken} = useContext(ClientCredentialsContext);
     const toastsDispatch = useContext(ToastContext);
 
-    async function cmapFetch<T>(urlSuffix: RequestInfo | URL, init: RequestInit, onSuccess: (data: T) => void, onError?: () => void): Promise<void> {
+    async function cmapFetch<T>(urlSuffix: RequestInfo | URL, init: RequestInit, onSuccess: (data: T, res: CmapFetchResponse) => void, onError?: () => void): Promise<void> {
         if (init.headers) {
             init.headers = {...init?.headers, Authorization: '' + clientCredentials.apiToken};
         } else {
@@ -53,7 +53,7 @@ export default function useCmapFetch() {
             .then(cmapRes => {
                 if (cmapRes.ok) {
                     // Todo validate response? :/
-                    onSuccess(cmapRes.body as T);
+                    onSuccess(cmapRes.body as T, cmapRes);
                 } else {
                     if (cmapRes.code === 401) {
                         clearClientToken();

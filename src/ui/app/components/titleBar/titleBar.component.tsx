@@ -3,14 +3,14 @@ import {WindowState} from "../../../../shared/enums";
 import ActionButton from "../../shared/components/buttons/actionButton.component";
 import {TitleBarStatus} from "./titleBarStatus.component";
 
-export default function TitleBar(props: any) {
+export default function TitleBar() {
 
     function setWindowState(state: WindowState) {
         window.electronAPI.send('setWindowState', state);
     }
 
     return (<TitleBarStyled>
-        <TitleBarStatus socketConnection={props.socketConnection} />
+        <TitleBarStatus />
         <TitleBarButtons>
             <ActionButton action={() => setWindowState(WindowState.MINIMIZE)} icon={"ri-subtract-fill"}>Minimize</ActionButton>
             <ActionButton action={() => setWindowState(WindowState.TRAY)} icon={"ri-arrow-right-down-line"}>Tray</ActionButton>
