@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { BackgroundDto, ButtonStyleDto, ClientDto, Profile, TierDto } from 'cmap2-shared';
+import { BackgroundDto, ButtonStyleDto, ClientDTO, Profile } from 'cmap2-shared';
 import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 
 export default function useProlfilePage() {
 
     const customFetch = useCmapFetch();
-    const [client, setClient] = useState<ClientDto | null>(null);
+    const [client, setClient] = useState<ClientDTO | null>(null);
     const [backgrounds, setBackgrounds] = useState<BackgroundDto[] | null>(null);
     const [buttonStyles, setButtonStyles] = useState<ButtonStyleDto[] | null>(null);
 

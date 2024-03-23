@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContentBox } from 'cmap2-shared/dist/react';
-import { ButtonDto, ButtonStyleDto, ClientDto, ReactProps } from 'cmap2-shared';
+import { ButtonDto, ButtonStyleDto, ClientDTO, ClientDto, ReactProps } from 'cmap2-shared';
 import { ParameterButton } from 'cmap2-shared/dist/react';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import styled from 'styled-components';
@@ -8,7 +8,7 @@ import PickerOverlayCheck from '../../../../shared/components/pickerOverlay/Pick
 import PickerOverlayTier from '../../../../shared/components/pickerOverlay/PickerOverlayTier.component';
 
 interface ButtonStylePickerProps extends ReactProps {
-    client: ClientDto | null;
+    client: ClientDTO | null;
     setFunction: (buttonStyle: ButtonStyleDto) => void;
     buttonStyles: ButtonStyleDto[] | null;
 }

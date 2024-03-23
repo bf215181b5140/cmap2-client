@@ -1,6 +1,6 @@
 import { ContentBox } from 'cmap2-shared/dist/react';
 import React from 'react';
-import { BackgroundDto, ClientDto, ReactProps } from 'cmap2-shared';
+import { BackgroundDto, ClientDTO, ClientDto, ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import Background from 'cmap2-shared/src/react/components/background.component';
@@ -8,7 +8,7 @@ import PickerOverlayCheck from '../../../../shared/components/pickerOverlay/Pick
 import PickerOverlayTier from '../../../../shared/components/pickerOverlay/PickerOverlayTier.component';
 
 interface BackgroundPickerProps extends ReactProps {
-    client: ClientDto | null;
+    client: ClientDTO | null;
     setFunction: (background: BackgroundDto) => void;
     backgrounds: BackgroundDto[] | null;
 }
