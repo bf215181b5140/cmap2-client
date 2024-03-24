@@ -2,7 +2,6 @@ import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { profileSchema } from 'cmap2-shared/src/zodSchemas';
 import useProlfilePage from './profile.hook';
 import FileUpload from '../../../shared/components/fileUpload.component';
 import styled from 'styled-components';
@@ -16,11 +15,12 @@ import SubmitInput from '../../../shared/components/form/inputs/submit.component
 import CheckboxInput from '../../../shared/components/form/inputs/checkbox.component';
 import Input from '../../../shared/components/form/inputs/input.component';
 import TextareaInput from '../../../shared/components/form/inputs/textarea.component';
+import { ProfileFormSchema } from 'cmap2-shared';
 
 export default function ProfilePage() {
 
     const {client, backgrounds, buttonStyles, onSubmit, setClientPicture, setClientBackground, setClientButtonStyle} = useProlfilePage();
-    const {register, reset, formState: {errors, isDirty}, handleSubmit} = useForm({resolver: zodResolver(profileSchema)});
+    const {register, reset, formState: {errors, isDirty}, handleSubmit} = useForm({resolver: zodResolver(ProfileFormSchema)});
 
     useEffect(() => {
         reset({
