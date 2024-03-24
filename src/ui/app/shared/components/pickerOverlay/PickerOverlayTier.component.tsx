@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import React from "react";
 import Icon from 'cmap2-shared/src/react/components/icon.component';
-import { ReactProps, TierDto } from 'cmap2-shared';
+import { ReactProps, TierDTO } from 'cmap2-shared';
 
 interface PickerOverlayTierProps extends ReactProps {
-    tier: TierDto;
+    tier: TierDTO;
 }
 
 export default function PickerOverlayTier({ tier }: PickerOverlayTierProps) {

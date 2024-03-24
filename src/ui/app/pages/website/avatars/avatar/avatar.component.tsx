@@ -1,5 +1,5 @@
 import React from 'react';
-import { AvatarDto, ButtonStyleDto, LayoutDto, ReactProps, TierDto } from 'cmap2-shared';
+import { AvatarDTO, ButtonStyleDto, LayoutDto, ReactProps, TierDTO } from 'cmap2-shared';
 import { AvatarReducerAction } from '../avatars.reducer';
 import UploadAvatar from './uploadAvatar/uploadAvatar.component';
 import Parameters from './parameters/parameters.component';
@@ -10,8 +10,8 @@ import { EventBus } from '../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../../shared/interfaces';
 
 interface AvatarComponentProps extends ReactProps {
-    selectedAvatar: AvatarDto;
-    clientTier: TierDto;
+    selectedAvatar: AvatarDTO;
+    clientTier: TierDTO;
     buttonStyle: ButtonStyleDto;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }

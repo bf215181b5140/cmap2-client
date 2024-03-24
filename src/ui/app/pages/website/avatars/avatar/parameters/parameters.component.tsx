@@ -1,4 +1,4 @@
-import { AvatarDto, ControlParameterDto, ParameterDto, ParametersForm, ReactProps, theme, ValueType } from 'cmap2-shared';
+import { AvatarDTO, ControlParameterDto, ParameterDto, ParametersForm, ReactProps, theme, ValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../../../shared/components/form/formTable.component';
 import React, { useContext, useEffect } from 'react';
@@ -20,7 +20,7 @@ import Input from '../../../../../shared/components/form/inputs/input.component'
 import SelectInput from '../../../../../shared/components/form/inputs/select.component';
 
 interface ParametersProps extends ReactProps {
-    selectedAvatar: AvatarDto;
+    selectedAvatar: AvatarDTO;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
     eventBus: EventBus<VRChatOscAvatar>;
 }

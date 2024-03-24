@@ -1,4 +1,4 @@
-import { AvatarDto, ButtonDto, ReactProps } from 'cmap2-shared';
+import { AvatarDTO, ButtonDto, ReactProps } from 'cmap2-shared';
 import FormTable from '../../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
 import { ContentBox } from 'cmap2-shared/dist/react';
@@ -19,7 +19,7 @@ import SubmitInput from '../../../../../shared/components/form/inputs/submit.com
 import ButtonInput from '../../../../../shared/components/form/inputs/button.component';
 
 interface AvatarSettingsProps extends ReactProps {
-    selectedAvatar: AvatarDto;
+    selectedAvatar: AvatarDTO;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
     eventBus: EventBus<VRChatOscAvatar>;
 }
@@ -51,7 +51,7 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
     }
 
     function onSave(formData: any) {
-        customFetch<AvatarDto>('avatar', {
+        customFetch<AvatarDTO>('avatar', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
@@ -71,7 +71,7 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
         });
     }
 
-    function onDelete(avatar: AvatarDto) {
+    function onDelete(avatar: AvatarDTO) {
         customFetch('avatar', {
             method: 'DELETE',
             body: JSON.stringify(avatar),

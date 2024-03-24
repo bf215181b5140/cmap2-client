@@ -1,5 +1,5 @@
 import { ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
-import { AvatarDto, ButtonDto, LayoutDto, ReactProps, TierDto } from 'cmap2-shared';
+import { AvatarDTO, ButtonDto, LayoutDto, ReactProps, TierDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import styled from 'styled-components';
@@ -11,8 +11,8 @@ import LayoutFormComponent from './layoutForm/layoutForm.component';
 interface LayoutComponentProps extends ReactProps {
     layout: LayoutDto;
     order: number;
-    avatar: AvatarDto;
-    clientTier: TierDto;
+    avatar: AvatarDTO;
+    clientTier: TierDTO;
     buttonStyle: ButtonStyleDto;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }

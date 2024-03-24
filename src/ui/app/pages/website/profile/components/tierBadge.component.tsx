@@ -1,9 +1,9 @@
-import { ReactProps, TierDto } from 'cmap2-shared';
+import { ReactProps, TierDTO } from 'cmap2-shared';
 import styled from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 
 interface TierBadgeProps extends ReactProps {
-    tier: TierDto;
+    tier: TierDTO;
 }
 
 export default function TierBadge({ tier }: TierBadgeProps) {

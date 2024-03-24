@@ -1,9 +1,9 @@
-import { AvatarDto, ButtonDto, ControlParameterDto, LayoutDto, ParameterDto } from 'cmap2-shared';
+import { AvatarDTO, ButtonDto, ControlParameterDto, LayoutDto, ParameterDto } from 'cmap2-shared';
 
-export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDto[] } |
-    { type: 'addAvatar', avatar: AvatarDto } |
-    { type: 'editAvatar', avatar: AvatarDto } |
-    { type: 'removeAvatar', avatar: AvatarDto } |
+export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDTO[] } |
+    { type: 'addAvatar', avatar: AvatarDTO } |
+    { type: 'editAvatar', avatar: AvatarDTO } |
+    { type: 'removeAvatar', avatar: AvatarDTO } |
     { type: 'saveParameters', parameters: ParameterDto[], avatarId: string } |
     { type: 'removeParameter', parameter: ParameterDto, avatarId: string } |
     { type: 'saveControlParameters', controlParameters: ControlParameterDto[], avatarId: string } |
@@ -16,7 +16,7 @@ export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDto[] } |
     { type: 'removeButton', button: ButtonDto, layoutId: string, avatarId: string } |
     { type: 'changeButtonPicture', picture: string, buttonId: string, layoutId: string, avatarId: string };
 
-export default function avatarsReducer(state: AvatarDto[], action: AvatarReducerAction) {
+export default function avatarsReducer(state: AvatarDTO[], action: AvatarReducerAction) {
     switch (action.type) {
         case 'setAvatars':
             return action.avatars;

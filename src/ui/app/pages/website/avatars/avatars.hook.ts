@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
-import { AvatarDto, Avatars, ButtonDto, ButtonStyleDto, LayoutDto, TierDto } from 'cmap2-shared';
+import { AvatarDTO, Avatars, ButtonDto, ButtonStyleDto, LayoutDto, TierDTO } from 'cmap2-shared';
 import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 import avatarsReducer from './avatars.reducer';
@@ -10,9 +10,9 @@ export default function useAvatarPage() {
     const routeParams = useParams();
     const customFetch = useCmapFetch();
     const [avatars, avatarDataDispatch] = useReducer(avatarsReducer, []);
-    const [clientTier, setClientTier] = useState<TierDto>(new TierDto());
+    const [clientTier, setClientTier] = useState<TierDTO>(new TierDTO());
     const [clientButtonStyle, setClientButtonStyle] = useState<ButtonStyleDto>(new ButtonStyleDto());
-    const [selectedAvatar, setAvatar] = useState<AvatarDto | undefined>(undefined);
+    const [selectedAvatar, setAvatar] = useState<AvatarDTO | undefined>(undefined);
     const [selectedLayout, setLayout] = useState<LayoutDto | undefined>(undefined);
     const [selectedButton, setButton] = useState<ButtonDto | undefined>(undefined);
 
@@ -25,10 +25,10 @@ export default function useAvatarPage() {
         });
     }, []);
 
-    function setDefaultOrFirstAvatar(list?: AvatarDto[]) {
+    function setDefaultOrFirstAvatar(list?: AvatarDTO[]) {
         const tempList = list ? list : avatars;
         if (tempList) {
-            const tempAvatar = tempList.find((avatar: AvatarDto) => avatar.default);
+            const tempAvatar = tempList.find((avatar: AvatarDTO) => avatar.default);
             if (tempAvatar) {
                 navigate('/website/avatars/' + tempAvatar.id);
             } else if (tempList[0]?.id) {
@@ -40,7 +40,7 @@ export default function useAvatarPage() {
     useEffect(() => {
         if (routeParams.avatarId) {
             if (routeParams.avatarId === 'new') {
-                setAvatar(new AvatarDto());
+                setAvatar(new AvatarDTO());
             } else {
                 setAvatar(avatars.find(avi => avi.id === routeParams.avatarId));
             }

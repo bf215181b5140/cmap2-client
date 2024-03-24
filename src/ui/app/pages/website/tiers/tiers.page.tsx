@@ -1,6 +1,6 @@
 import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 import { useEffect, useState } from 'react';
-import { Tiers, TierDto, ClientTier } from 'cmap2-shared';
+import { Tiers, TierDTO, ClientTier } from 'cmap2-shared';
 import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import styled from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
@@ -8,8 +8,8 @@ import Icon from 'cmap2-shared/src/react/components/icon.component';
 export default function TiersPage() {
 
     const customFetch = useCmapFetch();
-    const [tiers, setTiers] = useState<TierDto[] | null>(null);
-    const [clientTier, setClientTier] = useState<TierDto | null>(null);
+    const [tiers, setTiers] = useState<TierDTO[] | null>(null);
+    const [clientTier, setClientTier] = useState<TierDTO | null>(null);
 
     useEffect(() => {
         customFetch<Tiers>('tiers', {}, data => {

@@ -1,5 +1,5 @@
 import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
-import { AvatarDto, ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonType, LayoutDto, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
+import { AvatarDTO, ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonType, LayoutDto, ParameterRole, ReactProps, TierDTO, ValueType } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
@@ -27,9 +27,9 @@ interface ButtonComponentProps extends ReactProps {
     button: ButtonDto;
     // order: number;
     layout: LayoutDto;
-    avatar: AvatarDto;
+    avatar: AvatarDTO;
     buttonStyle: ButtonStyleDto;
-    clientTier: TierDto;
+    clientTier: TierDTO;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
