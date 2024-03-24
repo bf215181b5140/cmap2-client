@@ -18,7 +18,7 @@ export default function ButtonStylePicker({client, setFunction, buttonStyles}: B
 
     function saveSelected(buttonStyle: ButtonStyleDTO) {
         if (buttonStyle.tier?.rank && (client?.tier?.rank || 0) < buttonStyle.tier.rank) return;
-        customFetch('profileButtonStyle', {
+        customFetch('profile/buttonStyle', {
             method: 'POST',
             body: JSON.stringify(buttonStyle),
             headers: {'Content-Type': 'application/json'}

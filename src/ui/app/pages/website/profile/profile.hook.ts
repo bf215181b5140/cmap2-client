@@ -11,9 +11,9 @@ export default function useProlfilePage() {
 
     useEffect(() => {
         customFetch<ProfileDTO>('profile', {}, data => {
-            if (data.client) setClient(data.client);
-            if (data.backgrounds) setBackgrounds(data.backgrounds);
-            if (data.buttonStyles) setButtonStyles(data.buttonStyles);
+            setClient(data.client);
+            setBackgrounds(data.backgrounds);
+            setButtonStyles(data.buttonStyles);
         });
     }, []);
 

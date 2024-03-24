@@ -19,7 +19,7 @@ export default function BackgroundPicker({client, setFunction, backgrounds}: Bac
 
     function saveSelected(background: BackgroundDTO) {
         if ((client?.tier?.rank || 0) < background.tier.rank) return;
-        customFetch('profileBackground', {
+        customFetch('profile/background', {
             method: 'POST',
             body: JSON.stringify(background),
             headers: {'Content-Type': 'application/json'}
