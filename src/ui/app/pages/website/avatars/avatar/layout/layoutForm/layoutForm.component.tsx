@@ -1,4 +1,4 @@
-import { ContentBoxWidth, LayoutDTO, LayoutFormSchema, ReactProps } from 'cmap2-shared';
+import { LayoutDTO, LayoutFormSchema, LayoutWidth, ReactProps } from 'cmap2-shared';
 import React, { useContext, useEffect, useState } from 'react';
 import { AvatarReducerAction } from '../../../avatars.reducer';
 import { useForm } from 'react-hook-form';
@@ -91,7 +91,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
                     <tr>
                         <th>Minimum width</th>
                         <td>
-                            <SelectInput options={enumToInputOptions(ContentBoxWidth)} register={register} name={'width'}
+                            <SelectInput options={enumToInputOptions(LayoutWidth)} register={register} name={'width'}
                                          errors={errors} />
                         </td>
                     </tr>

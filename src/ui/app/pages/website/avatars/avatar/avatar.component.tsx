@@ -1,5 +1,5 @@
 import React from 'react';
-import { AvatarDTO, ButtonStyleDTO, ContentBoxWidth, LayoutDTO, ReactProps, TierDTO } from 'cmap2-shared';
+import { AvatarDTO, ButtonStyleDTO, ContentBoxWidth, LayoutDTO, LayoutWidth, ReactProps, TierDTO } from 'cmap2-shared';
 import { AvatarReducerAction } from '../avatars.reducer';
 import UploadAvatar from './uploadAvatar/uploadAvatar.component';
 import LayoutComponent from './layout/layout.component';
@@ -34,7 +34,7 @@ export default function AvatarComponent({selectedAvatar, clientTier, buttonStyle
                 id: '',
                 label: '',
                 order: 0,
-                width: ContentBoxWidth.None
+                width: LayoutWidth.None
             }} avatar={selectedAvatar} order={(selectedAvatar.layouts?.length || 0) + 1}
                              clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} buttonStyle={buttonStyle} />
         }
