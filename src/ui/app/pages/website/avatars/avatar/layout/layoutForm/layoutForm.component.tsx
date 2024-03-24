@@ -1,9 +1,8 @@
-import { ContentBoxWidth, LayoutDto, ReactProps } from 'cmap2-shared';
+import { ContentBoxWidth, LayoutDTO, LayoutFormSchema, ReactProps } from 'cmap2-shared';
 import React, { useContext, useEffect, useState } from 'react';
 import { AvatarReducerAction } from '../../../avatars.reducer';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { layoutSchema } from 'cmap2-shared/src/zodSchemas';
 import useCmapFetch from '../../../../../../shared/hooks/cmapFetch.hook';
 import FormTable from '../../../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../../../shared/components/form/formControlBar.component';
@@ -16,7 +15,7 @@ import SelectInput from '../../../../../../shared/components/form/inputs/select.
 import Input from '../../../../../../shared/components/form/inputs/input.component';
 
 interface LayoutFormComponentProps extends ReactProps {
-    layout: LayoutDto;
+    layout: LayoutDTO;
     order: number;
     avatarId: string;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
@@ -32,7 +31,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
             order: order,
             width: layout.width,
             parentId: avatarId
-        }, resolver: zodResolver(layoutSchema)
+        }, resolver: zodResolver(LayoutFormSchema)
     });
     const [inEdit, setEditing] = useState<boolean>(!layout.id);
     const customFetch = useCmapFetch();
@@ -42,7 +41,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
     }, [avatarId]);
 
     function onSave(formData: any) {
-        customFetch<LayoutDto>('layout', {
+        customFetch<LayoutDTO>('layout', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
@@ -62,7 +61,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
         });
     }
 
-    function onDelete(layout: LayoutDto) {
+    function onDelete(layout: LayoutDTO) {
         customFetch('layout', {
             method: 'DELETE',
             body: JSON.stringify(layout),

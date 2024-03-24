@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
-import { BackgroundDto, ButtonStyleDto, ClientDTO, Profile } from 'cmap2-shared';
+import { BackgroundDTO, ButtonStyleDTO, ClientDTO, ProfileDTO, UploadedFileDTO } from 'cmap2-shared';
 import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 
 export default function useProlfilePage() {
 
     const customFetch = useCmapFetch();
     const [client, setClient] = useState<ClientDTO | null>(null);
-    const [backgrounds, setBackgrounds] = useState<BackgroundDto[] | null>(null);
-    const [buttonStyles, setButtonStyles] = useState<ButtonStyleDto[] | null>(null);
+    const [backgrounds, setBackgrounds] = useState<BackgroundDTO[] | null>(null);
+    const [buttonStyles, setButtonStyles] = useState<ButtonStyleDTO[] | null>(null);
 
     useEffect(() => {
-        customFetch<Profile>('profile', {}, data => {
-            setClient(data.client);
-            setBackgrounds(data.backgrounds);
-            setButtonStyles(data.buttonStyles);
+        customFetch<ProfileDTO>('profile', {}, data => {
+            if (data.client) setClient(data.client);
+            if (data.backgrounds) setBackgrounds(data.backgrounds);
+            if (data.buttonStyles) setButtonStyles(data.buttonStyles);
         });
     }, []);
 
@@ -27,21 +27,21 @@ export default function useProlfilePage() {
         });
     };
 
-    function setClientPicture(picture: string) {
+    function setClientPicture(file: UploadedFileDTO) {
         setClient(prevState => {
             if (!prevState) return null;
-            return {...prevState, picture: picture};
+            return {...prevState, image: file};
         });
     }
 
-    function setClientBackground(background: BackgroundDto) {
+    function setClientBackground(background: BackgroundDTO) {
         setClient(prevState => {
             if (!prevState) return null;
             return {...prevState, background: background};
         });
     }
 
-    function setClientButtonStyle(buttonStyle: ButtonStyleDto) {
+    function setClientButtonStyle(buttonStyle: ButtonStyleDTO) {
         setClient(prevState => {
             if (!prevState) return null;
             return {...prevState, buttonStyle: buttonStyle};

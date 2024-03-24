@@ -1,4 +1,4 @@
-import { AvatarDTO, ButtonDto, ReactProps } from 'cmap2-shared';
+import { AvatarDTO, AvatarFormSchema, ButtonDTO, ReactProps } from 'cmap2-shared';
 import FormTable from '../../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
 import { ContentBox } from 'cmap2-shared/dist/react';
@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';
 import { AvatarReducerAction } from '../../avatars.reducer';
-import { avatarSchema } from 'cmap2-shared/dist/zodSchemas';
 import { EventBus } from '../../../../../shared/util/eventBus';
 import { VRChatOscAvatar } from '../../../../../../../shared/interfaces';
 import { ModalContext } from '../../../../../components/mainWindow/mainWindow.componenet';
@@ -28,7 +27,7 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
 
     const customFetch = useCmapFetch();
     const {deleteModal} = useContext(ModalContext);
-    const {register, reset, formState: {errors, isDirty}, handleSubmit, setValue} = useForm({resolver: zodResolver(avatarSchema)});
+    const {register, reset, formState: {errors, isDirty}, handleSubmit, setValue} = useForm({resolver: zodResolver(AvatarFormSchema)});
     const navigate = useNavigate();
 
     useEffect(() => {

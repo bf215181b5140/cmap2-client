@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react';
-import { AvatarDTO, Avatars, ButtonDto, ButtonStyleDto, LayoutDto, TierDTO } from 'cmap2-shared';
+import { AvatarDTO, AvatarPageDTO, ButtonDTO, ButtonImageOrientation, ButtonStyleDTO, ButtonType, LayoutDTO, ParameterValueType, TierDTO } from 'cmap2-shared';
 import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 import avatarsReducer from './avatars.reducer';
@@ -10,14 +10,14 @@ export default function useAvatarPage() {
     const routeParams = useParams();
     const customFetch = useCmapFetch();
     const [avatars, avatarDataDispatch] = useReducer(avatarsReducer, []);
-    const [clientTier, setClientTier] = useState<TierDTO>(new TierDTO());
-    const [clientButtonStyle, setClientButtonStyle] = useState<ButtonStyleDto>(new ButtonStyleDto());
+    const [clientTier, setClientTier] = useState<TierDTO | null>(null);
+    const [clientButtonStyle, setClientButtonStyle] = useState<ButtonStyleDTO | null>(null);
     const [selectedAvatar, setAvatar] = useState<AvatarDTO | undefined>(undefined);
-    const [selectedLayout, setLayout] = useState<LayoutDto | undefined>(undefined);
-    const [selectedButton, setButton] = useState<ButtonDto | undefined>(undefined);
+    const [selectedLayout, setLayout] = useState<LayoutDTO | undefined>(undefined);
+    const [selectedButton, setButton] = useState<ButtonDTO | undefined>(undefined);
 
     useEffect(() => {
-        customFetch<Avatars>('avatar', {}, data => {
+        customFetch<AvatarPageDTO>('avatar', {}, data => {
             avatarDataDispatch({type: 'setAvatars', avatars: data.avatars});
             setClientTier(data.tier);
             setClientButtonStyle(data.buttonStyle);
@@ -40,7 +40,12 @@ export default function useAvatarPage() {
     useEffect(() => {
         if (routeParams.avatarId) {
             if (routeParams.avatarId === 'new') {
-                setAvatar(new AvatarDTO());
+                setAvatar({
+                    default: false,
+                    id: '',
+                    label: '',
+                    vrcId: ''
+                });
             } else {
                 setAvatar(avatars.find(avi => avi.id === routeParams.avatarId));
             }
@@ -54,7 +59,19 @@ export default function useAvatarPage() {
         }
         if (routeParams.avatarId && routeParams.layoutId && routeParams.buttonId) {
             if (routeParams.buttonId === 'new') {
-                setButton(new ButtonDto());
+                setButton({
+                    buttonType: ButtonType.Button,
+                    id: '',
+                    image: null,
+                    imageOrientation: ButtonImageOrientation.Square,
+                    label: '',
+                    order: 0,
+                    path: '',
+                    useCost: null,
+                    value: '',
+                    valueAlt: null,
+                    valueType: ParameterValueType.Int
+                });
             } else {
                 setButton(avatars.find(a => a.id === routeParams.avatarId)?.layouts?.find(l => l.id === routeParams.layoutId)?.buttons
                     ?.find(b => b.id === routeParams.buttonId));

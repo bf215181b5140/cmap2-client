@@ -31,7 +31,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
         }, resolver: zodResolver(ControlParametersFormSchema)
     });
     const {fields, append, remove} = useFieldArray({control, name: 'controlParameters'});
-    const watchParameters = watch('controlParameters');
+    const watchParameters = watch('controlParameters')!;
 
     useEffect(() => {
         reset({avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []]});
@@ -43,11 +43,12 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }, data => {
-            avatarDataDispatch({type: 'saveControlParameters', controlParameters: data, avatarId: selectedAvatar.id});
+            avatarDataDispatch({type: 'saveControlParameters', controlParameters: data, avatarId: selectedAvatar.id!});
         });
     }
 
     function onDelete(index: number) {
+        if (!watchParameters) return;
         const param = watchParameters[index];
         if (param.id) {
             customFetch('controlParameters', {
@@ -55,7 +56,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                 body: JSON.stringify(param),
                 headers: {'Content-Type': 'application/json'}
             }, () => {
-                avatarDataDispatch({type: 'removeControlParameter', controlParameter: param, avatarId: selectedAvatar.id});
+                avatarDataDispatch({type: 'removeControlParameter', controlParameter: {...param, id: param.id!}, avatarId: selectedAvatar.id!});
             });
         } else {
             remove(index);
@@ -112,7 +113,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
             <HiddenInput name={'avatarId'} />
             <FormTableStyled>
                 <thead>
-                {watchParameters.length > 0 &&
+                {watchParameters && watchParameters.length > 0 &&
                     <tr>
                         <th>Label</th>
                         <th>Parameter role</th>
@@ -158,7 +159,15 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <ButtonInput text="Add new" disabled={watchParameters.length >= Math.min(8, clientTier.controlParameters)} onClick={() => append(new ControlParameterDto())} />
+                <ButtonInput text="Add new" disabled={watchParameters.length >= Math.min(8, clientTier.controlParameters)} onClick={() => append({
+                    id: null,
+                    label: '',
+                    path: '',
+                    role: ControlParameterRole.Callback,
+                    valueType: ParameterValueType.Int,
+                    valuePrimary: '',
+                    valueSecondary: null
+                })} />
                 <SubmitInput disabled={!isDirty} />
                 <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>

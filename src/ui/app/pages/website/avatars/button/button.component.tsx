@@ -1,12 +1,11 @@
-import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
-import { AvatarDTO, ButtonDto, ButtonImageOrientation, ButtonStyleDto, ButtonType, LayoutDto, ParameterRole, ReactProps, TierDTO, ValueType } from 'cmap2-shared';
+import { Content, ContentBox, ParameterButton } from 'cmap2-shared/src/react';
+import { AvatarDTO, ButtonDTO, ButtonFormDTO, ButtonFormSchema, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ControlParameterRole, LayoutDTO, ParameterValueType, ReactProps, TierDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { buttonSchema } from 'cmap2-shared/src/zodSchemas';
 import FileUpload from '../../../../shared/components/fileUpload.component';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import ListenForParameter from './listenForParameter.component';
@@ -22,13 +21,14 @@ import SelectInput from '../../../../shared/components/form/inputs/select.compon
 import NumberInput from '../../../../shared/components/form/inputs/number.component';
 import ParameterInput from '../../../../shared/components/form/inputs/parameterInput.component';
 import { VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
+import { ControlParameterDTO } from 'cmap2-shared/src/types/controlParameters';
 
 interface ButtonComponentProps extends ReactProps {
-    button: ButtonDto;
+    button: ButtonDTO;
     // order: number;
-    layout: LayoutDto;
+    layout: LayoutDTO;
     avatar: AvatarDTO;
-    buttonStyle: ButtonStyleDto;
+    buttonStyle: ButtonStyleDTO;
     clientTier: TierDTO;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
@@ -38,14 +38,14 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     const navigate = useNavigate();
     const customFetch = useCmapFetch();
     const {deleteModal} = useContext(ModalContext);
-    const {register, setValue, reset, formState: {errors, isDirty}, watch, handleSubmit} = useForm<ButtonDto>({
+    const {register, setValue, reset, formState: {errors, isDirty}, watch, handleSubmit} = useForm<ButtonFormDTO>({
         defaultValues: {...button, order: 0, parentId: layout.id},
-        resolver: zodResolver(buttonSchema)
+        resolver: zodResolver(ButtonFormSchema)
     });
     const formWatch = watch();
 
-    function onSave(formData: ButtonDto) {
-        customFetch<ButtonDto>('button', {
+    function onSave(formData: ButtonFormDTO) {
+        customFetch<ButtonDTO>('button', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {
@@ -53,45 +53,44 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
             }
         }, (data, res) => {
             if (res.code === 201) {
-                avatarDataDispatch({type: 'addButton', button: data, avatarId: avatar.id, layoutId: layout.id});
+                avatarDataDispatch({type: 'addButton', button: data, avatarId: avatar.id!, layoutId: layout.id!});
                 navigate(-1);
             } else {
-                avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id, layoutId: layout.id});
+                avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id!, layoutId: layout.id!});
                 reset({...button, ...formData});
             }
         });
     }
 
-
-    function onDelete(button: ButtonDto) {
+    function onDelete(button: ButtonDTO) {
         customFetch('button', {
             method: 'DELETE',
             body: JSON.stringify(button),
             headers: {'Content-Type': 'application/json'}
         }, () => {
-            avatarDataDispatch({type: 'removeButton', button: button, avatarId: avatar.id, layoutId: layout.id});
+            avatarDataDispatch({type: 'removeButton', button: button, avatarId: avatar.id!, layoutId: layout.id!});
             navigate(-1);
         });
     }
 
-    function setButtonPicture(picture: string) {
-        avatarDataDispatch({type: 'changeButtonPicture', picture: picture, buttonId: button.id, avatarId: avatar.id, layoutId: layout.id});
-        button.image = picture;
-        setValue('image', picture);
+    function setButtonPicture(file: UploadedFileDTO) {
+        avatarDataDispatch({type: 'changeButtonPicture', image: file, buttonId: button.id!, avatarId: avatar.id!, layoutId: layout.id!});
+        button.image = file;
+        // setValue('image', image);
     }
 
-    function setFormDataFromOsc(data: ButtonDto) {
+    function setFormDataFromOsc(data: ButtonDTO) {
         setValue('path', data.path);
         setValue('value', data.value);
     }
 
     function controlParameterOptions() {
-        const controlParameters = avatar.controlParameters?.filter(cp => cp.role === ParameterRole.Callback).map(cp => ({key: cp.id, value: cp.label})) || [];
+        const controlParameters = avatar.controlParameters?.filter((cp: ControlParameterDTO) => cp.role === ControlParameterRole.Callback).map((cp: ControlParameterDTO) => ({key: cp.id!, value: cp.label})) || [];
         return [{key: '', value: ''}, ...controlParameters];
     }
 
     function setValueTypeFromParameterSelection(param: VrcOscAvatarParameterProperties) {
-        setValue('valueType', ValueType[param.type]);
+        setValue('valueType', ParameterValueType[param.type]);
     }
 
     function valuePrimaryPlaceholder(): string {
@@ -103,6 +102,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
             case ButtonType.Slider:
                 return 'Minimum value';
         }
+        return '';
     }
 
     function valueSecondaryPlaceholder(): string {
@@ -114,6 +114,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
             case ButtonType.Slider:
                 return 'Maximum value';
         }
+        return '';
     }
 
     return (<Content flexDirection="row">
@@ -124,7 +125,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         </ContentBox>
         <ContentBox flexGrow={1}>
             <h2>Preview</h2>
-            <ParameterButton button={formWatch} buttonStyle={buttonStyle} />
+            <ParameterButton button={{...formWatch, id: button.id, image: button.image}} buttonStyle={buttonStyle} />
             <br />
             {button.id && formWatch.buttonType !== ButtonType.Slider &&
                 <FileUpload parentType="button" parentId={button?.id} uploadCallback={setButtonPicture} />}
@@ -142,7 +143,8 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                     <tr>
                         <th>Parameter</th>
                         <td>
-                            <ParameterInput register={register} name={'path'} errors={errors} setValue={setValue} defaultAvatarId={avatar.id} defaultType={'input'}
+                            <ParameterInput register={register} name={'path'} errors={errors} setValue={setValue} defaultAvatarId={avatar.id}
+                                            defaultType={'input'}
                                             onSelection={setValueTypeFromParameterSelection} />
                         </td>
                     </tr>
@@ -158,7 +160,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                     <tr>
                         <th>Value type</th>
                         <td>
-                            <SelectInput options={enumToInputOptions(ValueType)} register={register} name={'valueType'} errors={errors} />
+                            <SelectInput options={enumToInputOptions(ParameterValueType)} register={register} name={'valueType'} errors={errors} />
                         </td>
                     </tr>
                     <tr>

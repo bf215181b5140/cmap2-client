@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
-import { ReactProps, RegisterFormDTO, RegisterKeySchema, RegisterDTO, RegisterInfoDTO } from 'cmap2-shared';
+import { ReactProps, RegisterFormDTO, RegisterKeySchema, RegisterDTO, RegisterInfoDTO, RegisterFormSchema } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import { ToastContext } from '../../../../components/mainWindow/mainWindow.componenet';
 import FormTable from '../../../../shared/components/form/formTable.component';
@@ -10,7 +10,6 @@ import Input from '../../../../shared/components/form/inputs/input.component';
 import { ToastType } from '../../../../components/toast/toast.hook';
 import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
-import { RegisterFormSchema } from 'cmap2-shared/src/types/api/register';
 import { ClientCredentialsContext } from '../../../../App';
 
 interface RegisterFormProps extends ReactProps {

@@ -1,6 +1,6 @@
 import { ContentBox } from 'cmap2-shared/dist/react';
 import React, { useEffect, useState } from 'react';
-import { ButtonDto, VrcParameter, ReactProps } from 'cmap2-shared';
+import { ButtonDTO, VrcParameter, ReactProps } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import FormTable from '../../../../shared/components/form/formTable.component';
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
@@ -8,12 +8,12 @@ import ButtonInput from '../../../../shared/components/form/inputs/button.compon
 import Input from '../../../../shared/components/form/inputs/input.component';
 
 interface ListenForParameterProps extends ReactProps {
-    applyMessage: (data: ButtonDto) => void;
+    applyMessage: (data: ButtonDTO) => void;
 }
 
 export default function ListenForParameter({applyMessage}: ListenForParameterProps) {
 
-    const {register, setValue, reset, formState: {errors, isDirty}, handleSubmit} = useForm<ButtonDto>({defaultValues: {path: '', value: ''}});
+    const {register, setValue, reset, formState: {errors, isDirty}, handleSubmit} = useForm<ButtonDTO>({defaultValues: {path: '', value: ''}});
     const [listening, setListening] = useState<boolean>(false);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
         reset({path: '', value: ''});
     }
 
-    function onApply(formData: ButtonDto) {
+    function onApply(formData: ButtonDTO) {
         applyMessage(formData);
         reset({path: '', value: ''});
     }

@@ -14,7 +14,7 @@ export default function TierBadge({ tier }: TierBadgeProps) {
     </TierBadgeStyled>);
 }
 
-const TierBadgeStyled = styled.span<{ color: string }>`
+const TierBadgeStyled = styled.span<{ color?: string }>`
   border: 1px solid ${props => props.color};
   border-radius: 0.5em;
   padding: 0 0.4em 0.2em 0.4em;

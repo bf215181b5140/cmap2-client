@@ -1,6 +1,6 @@
 import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 import { useEffect, useState } from 'react';
-import { Tiers, TierDTO, ClientTier } from 'cmap2-shared';
+import { TiersDTO, TierDTO, TierType } from 'cmap2-shared';
 import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import styled from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
@@ -12,9 +12,9 @@ export default function TiersPage() {
     const [clientTier, setClientTier] = useState<TierDTO | null>(null);
 
     useEffect(() => {
-        customFetch<Tiers>('tiers', {}, data => {
-            setTiers(data.tiers);
-            setClientTier(data.clientTier);
+        customFetch<TiersDTO>('tiers', {}, data => {
+            if (data.tiers) setTiers(data.tiers);
+            if (data.clientTier) setClientTier(data.clientTier);
         });
     }, []);
 
@@ -31,10 +31,10 @@ export default function TiersPage() {
                         <p>Up to <Highlight color={tier.color}>{tier.avatars}</Highlight> avatars</p>
                         <p>Up to <Highlight color={tier.color}>{tier.layouts}</Highlight> button groups</p>
                         <p>Up to <Highlight color={tier.color}>{tier.buttons}</Highlight> buttons per group</p>
-                        {tier.tier === ClientTier.Standard && <p>Unlock <Highlight color={tier.color}>more</Highlight> website backgrounds</p>}
-                        {tier.tier === ClientTier.Premium && <p>Unlock <Highlight color={tier.color}>all</Highlight> website backgrounds</p>}
-                        {tier.tier === ClientTier.Standard && <p>Unlock <Highlight color={tier.color}>more</Highlight> button styles</p>}
-                        {tier.tier === ClientTier.Premium && <p>Unlock <Highlight color={tier.color}>all</Highlight> button styles</p>}
+                        {tier.tier === TierType.Standard && <p>Unlock <Highlight color={tier.color}>more</Highlight> website backgrounds</p>}
+                        {tier.tier === TierType.Premium && <p>Unlock <Highlight color={tier.color}>all</Highlight> website backgrounds</p>}
+                        {tier.tier === TierType.Standard && <p>Unlock <Highlight color={tier.color}>more</Highlight> button styles</p>}
+                        {tier.tier === TierType.Premium && <p>Unlock <Highlight color={tier.color}>all</Highlight> button styles</p>}
                     </Tier>
                 ))}
             </TiersPageStyled>
@@ -66,6 +66,6 @@ const Tier = styled.div<{ current: boolean }>`
   }
 `;
 
-const Highlight = styled.span<{ color: string }>`
+const Highlight = styled.span<{ color?: string }>`
   color: ${props => props.color};
 `;
