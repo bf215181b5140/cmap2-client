@@ -4,6 +4,7 @@ import ButtonInput from '../../../../shared/components/form/inputs/button.compon
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { ContentBox } from 'cmap2-shared/dist/react/';
 import RegisterForm from './registerForm.component';
+import FormControlBar from '../../../../shared/components/form/formControlBar.component';
 
 interface RegisterProps extends ReactProps {
     setShowLogin: Dispatch<SetStateAction<boolean>>;
@@ -37,7 +38,9 @@ export default function Register({setShowLogin}: RegisterProps) {
                 Server is not currently accepting registrations
             </div>
         )}
-        <ButtonInput onClick={() => setShowLogin(true)} text="Login" />
+        <FormControlBar>
+            <ButtonInput onClick={() => setShowLogin(true)} text="Login" />
+        </FormControlBar>
     </ContentBox>);
 
 }

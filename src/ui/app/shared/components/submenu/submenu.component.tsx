@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { ReactProps } from 'cmap2-shared';
-import { Tooltip } from 'react-tooltip';
 
 export default function Submenu({children}: ReactProps) {
 
@@ -21,5 +20,6 @@ const SubmenuStyled = styled.div`
     flex-direction: column;
     gap: 8px;
     padding: 8px;
+    z-index: 10;
   }
 `;

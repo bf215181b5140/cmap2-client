@@ -17,16 +17,6 @@ export default function useProlfilePage() {
         });
     }, []);
 
-    const onSubmit = (formData: any) => {
-        customFetch('profile', {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: {'Content-Type': 'application/json'}
-        }, () => {
-            setClient({...client, ...formData});
-        });
-    };
-
     function setClientPicture(file: UploadedFileDTO) {
         setClient(prevState => {
             if (!prevState) return null;
@@ -48,5 +38,5 @@ export default function useProlfilePage() {
         });
     }
 
-    return {client, backgrounds, buttonStyles, onSubmit, setClientPicture, setClientBackground, setClientButtonStyle};
+    return {client, backgrounds, buttonStyles, setClient, setClientPicture, setClientBackground, setClientButtonStyle};
 }

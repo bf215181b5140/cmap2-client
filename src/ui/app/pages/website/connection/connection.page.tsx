@@ -8,13 +8,13 @@ export default function ConnectionPage() {
 
     const [showLogin, setShowLogin] = useState<boolean>(true);
 
-    return (<Content flexDirection={'column'}>
+    return (<Content flexDirection={'row'}>
+        <WebsocketStatus />
         {showLogin ? (
             <Login setShowLogin={setShowLogin} />
             ) : (
             <Register setShowLogin={setShowLogin} />
             )}
-        <WebsocketStatus />
     </Content>);
 }
 

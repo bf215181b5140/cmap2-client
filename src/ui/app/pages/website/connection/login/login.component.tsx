@@ -4,6 +4,7 @@ import { ClientCredentialsContext } from '../../../../App';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import { ContentBox } from 'cmap2-shared/dist/react/';
 import LoginForm from './loginForm.component';
+import FormControlBar from '../../../../shared/components/form/formControlBar.component';
 
 interface LoginProps extends ReactProps {
     setShowLogin: Dispatch<SetStateAction<boolean>>;
@@ -24,7 +25,9 @@ export default function Login({setShowLogin}: LoginProps) {
         </>) : (<>
             <h2>Log in</h2>
             <LoginForm />
-            <ButtonInput onClick={() => setShowLogin(false)} text={'Register'} />
+            <FormControlBar>
+                <ButtonInput onClick={() => setShowLogin(false)} text={'Register'} />
+            </FormControlBar>
         </>)}
     </ContentBox>);
 

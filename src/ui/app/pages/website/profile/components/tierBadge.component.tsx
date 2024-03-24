@@ -15,8 +15,9 @@ export default function TierBadge({ tier }: TierBadgeProps) {
 }
 
 const TierBadgeStyled = styled.span<{ color?: string }>`
+  display: inline-block;
   border: 1px solid ${props => props.color};
-  border-radius: 0.5em;
-  padding: 0 0.4em 0.2em 0.4em;
+  border-radius: 6px;
+  padding: 2px 6px 3px 4px;
   text-transform: capitalize;
 `;

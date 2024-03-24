@@ -119,8 +119,6 @@ export default function ClockPage() {
                                  disabled={!watch('sendToAvatar')} />
                 </>)}
 
-                <hr />
-
                 <FormControlBar>
                     <SubmitInput disabled={!isDirty} />
                     <ButtonInput text="Reset" disabled={!isDirty} onClick={onReset} />
