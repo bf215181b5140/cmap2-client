@@ -45,7 +45,6 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     const formWatch = watch();
 
     function onSave(formData: ButtonFormDTO) {
-        console.log('onSave', formData);
         customFetch<ButtonDTO>('button', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),

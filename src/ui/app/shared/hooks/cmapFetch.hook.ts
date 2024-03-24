@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ClientCredentialsContext } from '../../App';
 import { ToastContext } from '../../components/mainWindow/mainWindow.componenet';
 import { URL } from '../../../../shared/const';
@@ -15,8 +15,12 @@ export default function useCmapFetch() {
 
     const {clientCredentials, clearClientToken} = useContext(ClientCredentialsContext);
     const toastsDispatch = useContext(ToastContext);
+    const [inUse, setInUse] = useState<boolean>(false);
 
     async function cmapFetch<T>(urlSuffix: RequestInfo | URL, init: RequestInit, onSuccess: (data: T, res: CmapFetchResponse) => void, onError?: () => void): Promise<void> {
+        if (inUse) return;
+        setInUse(true);
+
         if (init.headers) {
             init.headers = {...init?.headers, Authorization: '' + clientCredentials.apiToken};
         } else {
@@ -82,7 +86,7 @@ export default function useCmapFetch() {
                     });
                 }
                 if (onError) onError();
-            });
+            }).finally(() => setInUse(false));
     }
 
     return cmapFetch;
