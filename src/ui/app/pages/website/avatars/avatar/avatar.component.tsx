@@ -31,6 +31,7 @@ export default function AvatarComponent({selectedAvatar, clientTier, buttonStyle
         }
         {selectedAvatar.id && clientTier.layouts && (!selectedAvatar.layouts || selectedAvatar.layouts.length < clientTier.layouts) &&
             <LayoutComponent layout={{
+                id: '',
                 label: '',
                 order: 0,
                 width: ContentBoxWidth.None

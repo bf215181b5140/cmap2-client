@@ -1,4 +1,4 @@
-import { Content, ContentBox, ParameterButton } from 'cmap2-shared/src/react';
+import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, ButtonFormDTO, ButtonFormSchema, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ControlParameterRole, LayoutDTO, ParameterValueType, ReactProps, TierDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
@@ -45,6 +45,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     const formWatch = watch();
 
     function onSave(formData: ButtonFormDTO) {
+        console.log('onSave', formData);
         customFetch<ButtonDTO>('button', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
@@ -132,9 +133,9 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         </ContentBox>
         <ContentBox>
             <form onSubmit={handleSubmit(onSave)}>
-                <HiddenInput name={'id'} />
-                <HiddenInput name={'parentId'} />
-                <HiddenInput name={'order'} />
+                <HiddenInput register={register} name={'id'} />
+                <HiddenInput register={register} name={'parentId'} />
+                <HiddenInput register={register} name={'order'} />
                 <FormTable>
                     <tr>
                         <th>Label</th>

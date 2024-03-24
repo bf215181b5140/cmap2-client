@@ -83,7 +83,7 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
 
     return (<ContentBox>
         <form onSubmit={handleSubmit(onSave)}>
-            <HiddenInput name={'id'} />
+            <HiddenInput register={register} name={'id'} />
             <FormTable>
                 <tr>
                     <th>Label</th>

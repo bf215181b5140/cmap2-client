@@ -61,7 +61,7 @@ export default function RegisterForm({setShowLogin, registrationInfo}: RegisterF
     }
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
-        <HiddenInput name={'fingerprint'} />
+        <HiddenInput register={register} name={'fingerprint'} />
         <FormTable thAlign={'right'}>
             <tr>
                 <th>Username</th>

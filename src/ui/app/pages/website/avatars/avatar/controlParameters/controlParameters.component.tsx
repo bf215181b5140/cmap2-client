@@ -110,7 +110,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
         <p>Utility parameters that can be used to control avatar. These aren't displayed or interactable, instead they can be used to bind to other actions
             which trigger them.</p>
         <form onSubmit={handleSubmit(onSave)}>
-            <HiddenInput name={'avatarId'} />
+            <HiddenInput register={register} name={'avatarId'} />
             <FormTableStyled>
                 <thead>
                 {watchParameters && watchParameters.length > 0 &&
@@ -128,7 +128,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                 {fields.map((item, index) => (
                     <tr>
                         <td>
-                            <HiddenInput name={`controlParameters.${index}.id`} />
+                            <HiddenInput register={register} name={`controlParameters.${index}.id`} />
                             <Input register={register} name={`controlParameters.${index}.label`} width="180px" errors={errors} />
                         </td>
                         <td>

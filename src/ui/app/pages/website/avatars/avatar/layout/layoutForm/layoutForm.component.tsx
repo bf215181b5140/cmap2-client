@@ -78,9 +78,9 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
             </FormControlBar>}
         {inEdit &&
             <form onSubmit={handleSubmit(onSave)}>
-                <HiddenInput name={'id'} />
-                <HiddenInput name={'parentId'} />
-                <HiddenInput name={'order'} />
+                <HiddenInput register={register} name={'id'} />
+                <HiddenInput register={register} name={'parentId'} />
+                <HiddenInput register={register} name={'order'} />
                 <FormTable>
                     <tr>
                         <th>Label</th>
