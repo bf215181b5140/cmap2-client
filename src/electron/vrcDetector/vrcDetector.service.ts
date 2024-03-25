@@ -1,7 +1,6 @@
 import { exec } from 'child_process';
 import TypedIpcMain from '../ipc/typedIpcMain';
-import { BridgeService } from '../bridge/bridge.service';
-import { Settings } from '../../shared/types/settings';
+import { GeneralSettings } from '../../shared/types/settings';
 import { StoreService } from '../store/store.service';
 
 export default class VrcDetectorService {
@@ -11,9 +10,9 @@ export default class VrcDetectorService {
     private enableVrcDetector: boolean = false;
 
     constructor() {
-        this.resetInterval(StoreService.getSettings());
+        this.resetInterval(StoreService.getGeneralSettings());
 
-        TypedIpcMain.on('setSettings', (settings) => this.resetInterval(settings));
+        TypedIpcMain.on('setGeneralSettings', (data) => this.resetInterval(data));
 
         TypedIpcMain.on('getIsVrchatRunning', () => this.isVrcRunning());
     }
@@ -37,7 +36,7 @@ export default class VrcDetectorService {
         });
     }
 
-    resetInterval(settings: Settings) {
+    resetInterval(settings: GeneralSettings) {
         this.enableVrcDetector = settings.enableVrcDetector;
 
         if (this.enableVrcDetector) {

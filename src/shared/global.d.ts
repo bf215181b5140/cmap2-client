@@ -1,17 +1,19 @@
 import { WindowState } from './enums';
-import { SocketConnection } from './SocketConnection';
+import { WebsocketConnection } from './webSocket';
 import { ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
-import { Settings } from './types/settings';
-import { VrcOscAvatar, VrcOscAvatarParameter } from './types/osc';
+import { GeneralSettings, Settings, WebsocketSettings } from './types/settings';
+import { VrcOscAvatar } from './types/osc';
 import { OscClockSettings } from '../electron/osc/clock/types';
 
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
-    getConnectionStatus: SocketConnection;
+    getConnectionStatus: WebsocketConnection;
     getSettings: Settings;
+    getGeneralSettings: GeneralSettings;
+    getWebsocketSettings: WebsocketSettings;
     getLovenseSettings: LovenseSettings;
     getToyCommandParameters: ToyCommandParameter[];
     getToyCommandOscMessages: ToyCommandOscMessage[];
@@ -28,8 +30,11 @@ type IpcGetOptions = {
 type IpcSendOptions = {
     setClientCredentials: ClientCredentials;
     setWindowState: WindowState;
+    connectSocket: undefined;
     disconnectSocket: undefined;
     setSettings: Settings;
+    setGeneralSettings: GeneralSettings;
+    setWebsocketSettings: WebsocketSettings;
     setLovenseSettings: LovenseSettings;
     getLovenseStatus: undefined;
     lovenseConnect: undefined;
@@ -45,7 +50,7 @@ type IpcSendOptions = {
 };
 
 type IpcReceiveOptions = {
-    updateConnectionStatus: SocketConnection;
+    updateConnectionStatus: WebsocketConnection;
     vrcParameter: VrcParameter;
     lovenseStatus: LovenseStatus;
     isVrchatRunning: boolean | null;

@@ -1,82 +1,43 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
-import { URL } from '../../../../../../shared/const';
-import { ReactProps, RegistrationFormDto } from 'cmap2-shared';
-import { SocketConnection, SocketConnectionType } from '../../../../../../shared/SocketConnection';
-import { registrationSchema } from 'cmap2-shared/src/zodSchemas';
-import { useNavigate } from 'react-router-dom';
-import { ToastContext } from '../../../../components/mainWindow/mainWindow.componenet';
-import FormTable from '../../../../shared/components/form/formTable.component';
-import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { ReactProps, RegisterInfoDTO, RegisterRequestDTO } from 'cmap2-shared';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
-import Input from '../../../../shared/components/form/inputs/input.component';
-import { ToastType } from '../../../../components/toast/toast.hook';
+import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
+import { ContentBox } from 'cmap2-shared/dist/react/';
+import RegisterForm from './registerForm.component';
 
-interface ActivateFormProps extends ReactProps {
-    socketConnection: SocketConnection,
-    setConnectForm: Dispatch<SetStateAction<boolean>>
+interface RegisterProps extends ReactProps {
+    setShowLogin: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function RegistrationForm({socketConnection, setConnectForm}: ActivateFormProps) {
+export default function Register({setShowLogin}: RegisterProps) {
 
-    const {register, setValue, reset, formState: {errors}, handleSubmit} = useForm<RegistrationFormDto>({resolver: zodResolver(registrationSchema)});
-    const navigate = useNavigate();
-    const toastsDispatch = useContext(ToastContext);
+    const cmapFetch = useCmapFetch();
+    const [registrationInfo, setRegistrationInfo] = useState<RegisterInfoDTO | null>(null);
 
     useEffect(() => {
-        if (socketConnection.type === SocketConnectionType.SUCCESS) {
-            navigate('/website/');
-        }
-    }, [socketConnection]);
-
-    function onSubmit(formData: RegistrationFormDto) {
-        fetch(URL + '/api/register', {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            if (res?.ok) {
-                toastsDispatch({
-                    type: 'add',
-                    toast: {message: 'Account registered!', type: ToastType.SUCCESS}
-                });
-                setConnectForm(true);
-            } else {
-                toastsDispatch({
-                    type: 'add',
-                    toast: {message: 'Registration failed', type: ToastType.ERROR}
-                });
-            }
+        window.electronAPI.get('getFingerprint').then(fingerprint => {
+            cmapFetch<RegisterInfoDTO>('register', {
+                method: 'POST',
+                body: JSON.stringify({fingerprint} as RegisterRequestDTO),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }, data => {
+                setRegistrationInfo(data);
+            });
         });
-    }
+    }, []);
 
-    return (<form onSubmit={handleSubmit(onSubmit)}>
-        <FormTable>
-            <tr>
-                <th>Username</th>
-                <td><Input register={register} name={'username'} errors={errors} /></td>
-            </tr>
-            <tr>
-                <th rowSpan={2}>Password</th>
-                <td><Input type="password" register={register} name={'passwordOne'} errors={errors} /></td>
-            </tr>
-            <tr>
-                <td><Input type="password" register={register} name={'passwordTwo'} errors={errors} /></td>
-            </tr>
-            <tr>
-                <th>Registration key</th>
-                <td><Input register={register} name={'registrationKey'} errors={errors} /></td>
-            </tr>
-            <tr>
-                <td colSpan={2} style={{textAlign: 'center'}}>
-                    <SubmitInput text={'Register'} />
-                    <ButtonInput onClick={() => setConnectForm(true)} text="Back to connect" />
-                </td>
-            </tr>
-        </FormTable>
-    </form>);
+    return (<ContentBox loading={registrationInfo == null}>
+        <h2>Register</h2>
+        {registrationInfo?.available ? (
+            <RegisterForm registrationInfo={registrationInfo} setShowLogin={setShowLogin} />
+        ) : (
+            <div>
+                Server is not currently accepting registrations
+            </div>
+        )}
+        <ButtonInput onClick={() => setShowLogin(true)} text="Login" />
+    </ContentBox>);
 
 }

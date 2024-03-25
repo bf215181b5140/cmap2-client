@@ -1,7 +1,7 @@
 import { globalInputStyle } from './form/input.style';
 import React, { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import useCustomFetch from '../hooks/customFetch.hook';
+import useCmapFetch from '../hooks/cmapFetch.hook';
 import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 
@@ -14,7 +14,7 @@ interface FileUploadProps extends ReactProps {
 
 export default function FileUpload({parentType, parentId, handleUpload, uploadCallback}: FileUploadProps) {
 
-    const customFetch = useCustomFetch();
+    const customFetch = useCmapFetch();
     const {register, watch, reset, formState: {errors}, handleSubmit} = useForm();
     const submitRef: RefObject<HTMLInputElement> = useRef(null);
     const selectedFile = watch('file');
@@ -33,11 +33,9 @@ export default function FileUpload({parentType, parentId, handleUpload, uploadCa
                 customFetch<string>('file', {
                     method: 'POST',
                     body: data
-                }).then(res => {
-                    if (res?.body) {
-                        if (uploadCallback) uploadCallback(res.body);
-                        onClearFiles();
-                    }
+                }, data => {
+                    if (uploadCallback) uploadCallback(data);
+                    onClearFiles();
                 });
             }
         }
@@ -46,28 +44,28 @@ export default function FileUpload({parentType, parentId, handleUpload, uploadCa
     const onBrowse = () => {
         const input = document.getElementById('fileInput');
         if (input) input.click();
-    }
+    };
 
     const onUpload = () => {
         if (submitRef?.current) {
             submitRef?.current?.click();
         }
-    }
+    };
 
     const onClearFiles = () => {
         reset({file: null});
-    }
+    };
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
-        <FileInputHidden type='file' {...register('file')} id="fileInput" />
+        <FileInputHidden type="file" {...register('file')} id="fileInput" />
         <FileInputStyled>
             <FileName onClick={onBrowse}>{selectedFile?.[0]?.name ? selectedFile?.[0]?.name : <i className={'ri-image-add-line'} />}</FileName>
             {selectedFile?.[0]?.name && <>
-                <div onClick={onUpload}><i className={'ri-upload-2-line'}/></div>
-                <div onClick={onClearFiles}><i className={'ri-close-line'}/></div>
+                <div onClick={onUpload}><i className={'ri-upload-2-line'} /></div>
+                <div onClick={onClearFiles}><i className={'ri-close-line'} /></div>
             </>}
         </FileInputStyled>
-        <FileInputHidden type='submit' ref={submitRef} />
+        <FileInputHidden type="submit" ref={submitRef} />
     </form>);
 }
 
@@ -82,7 +80,7 @@ const FileInputStyled = styled.div`
   height: 70px;
   padding: 0;
   margin: 0;
-  
+
   :hover {
     background: ${props => props.theme.colors.input.bg};
   }
@@ -96,10 +94,10 @@ const FileInputStyled = styled.div`
     transition: 0.1s linear;
 
     :hover {
-        color: ${props => props.theme.colors.input.hoverBorder};
-      }
+      color: ${props => props.theme.colors.input.hoverBorder};
+    }
   }
-  
+
   i {
     font-size: 3em;
   }

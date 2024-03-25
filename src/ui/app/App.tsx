@@ -6,7 +6,7 @@ import TitleBar from './components/titleBar/titleBar.component';
 import NavBar from './components/navBar/navBar.component';
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
-import useSocketConnection from './shared/hooks/socketConnection.hook';
+import useWebsocketConnection from './shared/hooks/websocketConnection.hook';
 import useClientCredentials, { ClientCredentialsHook } from './shared/hooks/clientCredentials.hook';
 import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from './pages/settings/settings.page';
@@ -15,24 +15,26 @@ import LovensePage from './pages/lovense/lovense.page';
 import WebsitePage from './pages/website/website.page';
 import AvatarsPage from './pages/osc/avatars/avatars.page';
 import OscPage from './pages/osc/osc.page';
+import { LoginTokenDTO } from 'cmap2-shared';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
     setClientCredentials: () => {
     },
-    setClientToken: (token: string) => {
+    setClientToken: () => {
+    },
+    clearClientToken: () => {
     }
 });
 
 export default function App() {
 
     const clientCredentialsHook = useClientCredentials();
-    const socketConnection = useSocketConnection();
 
     return (
         <AppStyled>
             <ClientCredentialsContext.Provider value={clientCredentialsHook}>
-                <TitleBar socketConnection={socketConnection} />
+                <TitleBar />
                 <MainWindow>
                     <Routes>
                         <Route path="/website/*" element={<WebsitePage />} />

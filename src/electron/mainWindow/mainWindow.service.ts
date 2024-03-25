@@ -2,7 +2,7 @@ import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { WindowState } from '../../shared/enums';
 import TypedIpcMain from '../ipc/typedIpcMain';
-import { Settings } from '../../shared/types/settings';
+import { GeneralSettings } from '../../shared/types/settings';
 
 export class MainWindowService {
     private initialized: boolean = false;
@@ -12,7 +12,7 @@ export class MainWindowService {
      * Called on app.whenReady(), only initialize once.
      * @param settings
      */
-    public init(settings: Settings) {
+    public init(settings: GeneralSettings) {
         if (this.initialized) return;
 
         if (!settings.startMinimized) this.mainWindow = this.createWindowInternal();

@@ -34,9 +34,9 @@ export default function ProfilePage() {
         <Content>
             <ContentBox flexGrow={1} loading={!client}>
                 {client && <>
-                    <ProfilePictureStyled src={URL + '/' + client.image} alt="Profile picture" />
+                    {client.image?.urlPath && <ProfilePictureStyled src={URL + '/' + client.image.urlPath} alt="Profile picture" />}
                     <br />
-                    <FileUpload parentType="profile" parentId={client.id} uploadCallback={setClientPicture} />
+                    <FileUpload parentType="profile" parentId={client.id!} uploadCallback={setClientPicture} />
                     <br />
                     {client.tier && <>
                         <h3>Account tier</h3>

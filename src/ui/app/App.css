@@ -21,7 +21,7 @@ body {
 p {
     font-family: Noto-Sans-Regular, serif;
     font-size: 14px;
-    padding: 5px;
+    padding: 5px 0;
 }
 
 /* width */

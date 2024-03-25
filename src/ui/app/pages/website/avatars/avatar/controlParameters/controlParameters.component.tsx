@@ -1,7 +1,7 @@
 import { AvatarDto, ControlParameterDto, ControlParametersForm, FieldOption, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
 import { FormTableStyled } from '../../../../../shared/components/form/formTable.component';
 import React, { useContext, useEffect } from 'react';
-import useCustomFetch from '../../../../../shared/hooks/customFetch.hook';
+import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { AvatarReducerAction } from '../../avatars.reducer';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { ContentBoxWidth } from 'cmap2-shared/src';
@@ -24,7 +24,7 @@ interface ControlParametersProps extends ReactProps {
 
 export default function ControlParameters({selectedAvatar, clientTier, avatarDataDispatch}: ControlParametersProps) {
 
-    const customFetch = useCustomFetch();
+    const customFetch = useCmapFetch();
     const {deleteModal} = useContext(ModalContext);
     const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ControlParametersForm>({
         defaultValues: {
@@ -43,8 +43,8 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.body) avatarDataDispatch({type: 'saveControlParameters', controlParameters: res.body, avatarId: selectedAvatar.id});
+        }, data => {
+            avatarDataDispatch({type: 'saveControlParameters', controlParameters: data, avatarId: selectedAvatar.id});
         });
     }
 
@@ -55,8 +55,8 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                 method: 'DELETE',
                 body: JSON.stringify(param),
                 headers: {'Content-Type': 'application/json'}
-            }).then(res => {
-                if (res?.code === 200) avatarDataDispatch({type: 'removeControlParameter', controlParameter: param, avatarId: selectedAvatar.id});
+            }, () => {
+                avatarDataDispatch({type: 'removeControlParameter', controlParameter: param, avatarId: selectedAvatar.id});
             });
         } else {
             remove(index);

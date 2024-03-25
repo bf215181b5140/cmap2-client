@@ -1,33 +1,20 @@
-import { useEffect, useState } from 'react';
-import { SocketConnection } from '../../../../../shared/SocketConnection';
-import RegistrationForm from './register/register.component';
-import ConnectForm from './connect/connect.component';
-import styled from 'styled-components';
+import { useState } from 'react';
+import Login from './login/login.component';
+import { Content } from 'cmap2-shared/dist/react';
+import WebsocketStatus from './websocketStatus/websocketStatus.component';
+import Register from './register/register.component';
 
 export default function ConnectionPage() {
-    const [socketConnection, setSocketConnection] = useState<SocketConnection | null>(null);
-    const [connectForm, setConnectForm] = useState<boolean>(true);
 
-    useEffect(() => {
-        window.electronAPI.get('getConnectionStatus').then(data => setSocketConnection(data));
-        const removeListener = window.electronAPI.receive('updateConnectionStatus', (data) => setSocketConnection(data));
+    const [showLogin, setShowLogin] = useState<boolean>(true);
 
-        return () => {
-            if (removeListener) removeListener();
-        }
-    }, []);
-
-    return (<HomePageStyled>
-        {socketConnection !== null && (connectForm ? <ConnectForm socketConnection={socketConnection} setConnectForm={setConnectForm} />
-            : <RegistrationForm socketConnection={socketConnection} setConnectForm={setConnectForm} />)}
-    </HomePageStyled>);
+    return (<Content flexDirection={'column'}>
+        {showLogin ? (
+            <Login setShowLogin={setShowLogin} />
+            ) : (
+            <Register setShowLogin={setShowLogin} />
+            )}
+        <WebsocketStatus />
+    </Content>);
 }
-
-const HomePageStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-`;
 

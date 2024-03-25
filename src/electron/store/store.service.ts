@@ -1,14 +1,13 @@
-import Store from 'electron-store';
 import { ClientCredentials } from '../../shared/classes';
 import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from '../../shared/lovense';
-import { BridgeService } from '../bridge/bridge.service';
-import { Settings } from '../../shared/types/settings';
+import { GeneralSettings, Settings, WebsocketSettings } from '../../shared/types/settings';
 import storeDefaults from './storeDefaults';
 import TypedIpcMain from '../ipc/typedIpcMain';
+import CmapStore from './cmapStore';
 
 export class StoreService {
     private static started: boolean = false;
-    private static clientStore = new Store({
+    private static store = new CmapStore<typeof storeDefaults>({
         encryptionKey: 'client-settings',
         defaults: storeDefaults
     });
@@ -18,60 +17,84 @@ export class StoreService {
 
         // Client credentials
         TypedIpcMain.handle('getClientCredentials', async () => StoreService.getClientCredentials());
-        TypedIpcMain.on('setClientCredentials', (clientCredentials: ClientCredentials) => StoreService.setClientCredentials(clientCredentials));
+        TypedIpcMain.on('setClientCredentials', (data) => StoreService.setClientCredentials(data));
 
         // Settings
         TypedIpcMain.handle('getSettings', async () => StoreService.getSettings());
-        TypedIpcMain.on('setSettings', (settings) => StoreService.setSettings(settings));
+        TypedIpcMain.on('setSettings', (data) => StoreService.setSettings(data));
+
+        // General settings
+        TypedIpcMain.handle('getGeneralSettings', async () => StoreService.getGeneralSettings());
+        TypedIpcMain.on('setGeneralSettings', (data) => StoreService.setGeneralSettings(data));
+
+        // Websocket settings
+        TypedIpcMain.handle('getWebsocketSettings', async () => this.getWebsocketSettings());
+        TypedIpcMain.on('setWebsocketSettings', (data) => this.setWebsocketSettings(data));
 
         // Lovense
         TypedIpcMain.handle('getLovenseSettings', async () => StoreService.getLovenseSettings());
-        TypedIpcMain.on('setLovenseSettings', (lovenseSettings: LovenseSettings) => StoreService.setLovenseSettings(lovenseSettings));
+        TypedIpcMain.on('setLovenseSettings', (data) => StoreService.setLovenseSettings(data));
         TypedIpcMain.handle('getToyCommandParameters', async () => StoreService.getToyCommandParameters());
-        TypedIpcMain.on('setToyCommandParameters', (toyCommandParameters: ToyCommandParameter[]) => StoreService.setToyCommandParameters(toyCommandParameters));
+        TypedIpcMain.on('setToyCommandParameters', (data) => StoreService.setToyCommandParameters(data));
         TypedIpcMain.handle('getToyCommandOscMessages', async () => StoreService.getToyCommandOscMessages());
-        TypedIpcMain.on('setToyCommandOscMessages', (toyCommandOscMessages: ToyCommandOscMessage[]) => StoreService.setToyCommandOscMessages(toyCommandOscMessages));
+        TypedIpcMain.on('setToyCommandOscMessages', (data) => StoreService.setToyCommandOscMessages(data));
 
         this.started = true;
     }
 
-    public static getClientCredentials(): ClientCredentials {
-        return this.clientStore.get('clientCredentials');
+    public static getClientCredentials() {
+        return this.store.get('clientCredentials');
     }
 
     public static setClientCredentials(clientCredentials: ClientCredentials) {
-        this.clientStore.set('clientCredentials', clientCredentials);
+        this.store.set('clientCredentials', clientCredentials);
     }
 
-    public static getSettings(): Settings {
-        return this.clientStore.get('settings');
+    public static getSettings() {
+        return this.store.get('settings');
     }
 
-    public static setSettings(settings: Settings) {
-        this.clientStore.set('settings', settings);
+    public static setSettings(data: Settings) {
+        this.store.set('settings', data);
     }
 
-    public static getToyCommandParameters(): ToyCommandParameter[] {
-        return this.clientStore.get('toyCommandParameters');
+    public static getGeneralSettings() {
+        return this.store.get('settings').general;
     }
 
-    public static setToyCommandParameters(toyCommandParameters: ToyCommandParameter[]) {
-        this.clientStore.set('toyCommandParameters', toyCommandParameters);
+    public static setGeneralSettings(data: GeneralSettings) {
+        this.store.set('settings.websocket', data);
     }
 
-    public static getToyCommandOscMessages(): ToyCommandOscMessage[] {
-        return this.clientStore.get('toyCommandOscMessages');
+    public static getWebsocketSettings() {
+        return this.store.get('settings').websocket;
     }
 
-    public static setToyCommandOscMessages(toyCommandOscMessages: ToyCommandOscMessage[]) {
-        this.clientStore.set('toyCommandOscMessages', toyCommandOscMessages);
+    public static setWebsocketSettings(data: WebsocketSettings) {
+        this.store.set('settings.websocket', data);
     }
 
-    public static getLovenseSettings(): LovenseSettings {
-        return this.clientStore.get('lovenseSettings');
+    public static getToyCommandParameters() {
+        return this.store.get('lovense').toyCommandParameter;
     }
 
-    public static setLovenseSettings(lovenseSettings: LovenseSettings) {
-        this.clientStore.set('lovenseSettings', lovenseSettings);
+    public static setToyCommandParameters(data: ToyCommandParameter[]) {
+        this.store.set('lovense.toyCommandParameter', data);
+    }
+
+    public static getToyCommandOscMessages() {
+        return this.store.get('lovense').toyCommandOscMessage;
+    }
+
+    public static setToyCommandOscMessages(data: ToyCommandOscMessage[]) {
+        this.store.set('lovense.toyCommandOscMessage', data);
+    }
+
+    public static getLovenseSettings() {
+        return this.store.get('lovense').settings;
+    }
+
+    public static setLovenseSettings(data: LovenseSettings) {
+        this.store.set('lovense.settings', data);
     }
 }

@@ -1,10 +1,10 @@
-import { ContentBoxWidth, InputType, LayoutDto, ReactProps } from 'cmap2-shared';
+import { ContentBoxWidth, LayoutDto, ReactProps } from 'cmap2-shared';
 import React, { useContext, useEffect, useState } from 'react';
 import { AvatarReducerAction } from '../../../avatars.reducer';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { layoutSchema } from 'cmap2-shared/src/zodSchemas';
-import useCustomFetch from '../../../../../../shared/hooks/customFetch.hook';
+import useCmapFetch from '../../../../../../shared/hooks/cmapFetch.hook';
 import FormTable from '../../../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../../../shared/components/form/formControlBar.component';
 import enumToInputOptions from '../../../../../../shared/util/enumToInputOptions.function';
@@ -35,7 +35,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
         }, resolver: zodResolver(layoutSchema)
     });
     const [inEdit, setEditing] = useState<boolean>(!layout.id);
-    const customFetch = useCustomFetch();
+    const customFetch = useCmapFetch();
 
     useEffect(() => {
         reset();
@@ -46,8 +46,11 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) {
+        },  (data, res) => {
+            if (res.code === 201) {
+                avatarDataDispatch({type: 'addLayout', layout: data, avatarId: avatarId});
+                setEditing(false);
+            } else {
                 avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatarId});
                 reset({
                     id: formData.id,
@@ -56,8 +59,6 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
                     parentId: formData.id
                 });
             }
-            if (res?.code === 201 && res.body) avatarDataDispatch({type: 'addLayout', layout: res.body, avatarId: avatarId});
-            setEditing(false);
         });
     }
 
@@ -66,8 +67,8 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
             method: 'DELETE',
             body: JSON.stringify(layout),
             headers: {'Content-Type': 'application/json'}
-        }).then(res => {
-            if (res?.code === 200) avatarDataDispatch({type: 'removeLayout', layout: layout, avatarId: avatarId});
+        }, () => {
+            avatarDataDispatch({type: 'removeLayout', layout: layout, avatarId: avatarId});
         });
     }
 

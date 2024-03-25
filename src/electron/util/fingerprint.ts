@@ -8,5 +8,5 @@ export async function getFingerprint(): Promise<string> {
 
     const systemInfo = {serial, systemUuid, hardware, boardSerial};
 
-    return createHash('sha256').update(Object.values(systemInfo).join(',')).digest().toString();
+    return createHash('sha256').update(Object.values(systemInfo).join(',')).digest('hex').toString();
 }

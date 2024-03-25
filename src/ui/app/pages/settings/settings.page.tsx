@@ -8,22 +8,18 @@ import SubmitInput from '../../shared/components/form/inputs/submit.component';
 import NumberInput from '../../shared/components/form/inputs/number.component';
 import Input from '../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
-import { Settings, settingsSchema } from '../../../../shared/types/settings';
+import { generalSettingsSchema, GeneralSettings } from '../../../../shared/types/settings';
 
 export default function SettingsPage() {
 
-    const {register, reset, formState: {errors}, handleSubmit, watch} = useForm<Settings>({ resolver: zodResolver(settingsSchema) });
+    const {register, reset, formState: {errors, isDirty}, handleSubmit, watch} = useForm<GeneralSettings>({resolver: zodResolver(generalSettingsSchema)});
 
     useEffect(() => {
-        window.electronAPI.get('getSettings').then(settings => {
-            if (settings) {
-                reset(settings as Settings);
-            }
-        });
+        window.electronAPI.get('getGeneralSettings').then(settings => reset(settings, {keepDirty: false}));
     }, []);
 
-    function onSubmit(formData: Settings) {
-        window.electronAPI.send('setSettings', formData);
+    function onSubmit(formData: GeneralSettings) {
+        window.electronAPI.send('setGeneralSettings', formData);
     }
 
     return (<Content flexDirection="column">
@@ -39,15 +35,9 @@ export default function SettingsPage() {
                         <th>Check if Vrchat is running</th>
                         <td><CheckboxInput name={'enableVrcDetector'} register={register} errors={errors} /></td>
                         <th>every</th>
-                        <td><NumberInput name={'vrcDetectorFrequency'} register={register} errors={errors} width={'60px'} readOnly={!watch('enableVrcDetector')}/></td>
+                        <td><NumberInput name={'vrcDetectorFrequency'} register={register} errors={errors} width={'60px'}
+                                         readOnly={!watch('enableVrcDetector')} /></td>
                         <th>seconds</th>
-                    </tr>
-                </FormTable>
-                <h2>Website</h2>
-                <FormTable>
-                    <tr>
-                        <th>Connect to website automatically</th>
-                        <td><CheckboxInput register={register} name={'autoLogin'} errors={errors} /></td>
                     </tr>
                 </FormTable>
                 <h2>OSC</h2>
@@ -69,7 +59,7 @@ export default function SettingsPage() {
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <SubmitInput />
+                    <SubmitInput disabled={!isDirty} />
                 </FormControlBar>
             </form>
         </ContentBox>

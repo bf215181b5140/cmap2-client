@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { globalInputStyle } from '../input.style';
 import { ReactProps } from 'cmap2-shared';
@@ -13,15 +13,17 @@ interface CheckboxInputProps extends ReactProps {
     register: UseFormRegister<any>;
     errors?: FieldErrors;
     readOnly?: boolean;
+    onChange?: () => void;
 }
 
-export default function CheckboxInput({name, register, errors, readOnly}: CheckboxInputProps) {
+export default function CheckboxInput({name, register, errors, readOnly, onChange}: CheckboxInputProps) {
     const [hasError, errorMessage] = useInputError(name, errors);
 
     function booleanClick(id: string) {
         if (readOnly) return;
         const input = document.getElementById(id);
         if (input) input.click();
+        if (onChange) onChange();
     }
 
     return (<div>
