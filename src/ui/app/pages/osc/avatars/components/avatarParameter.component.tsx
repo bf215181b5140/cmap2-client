@@ -1,11 +1,11 @@
 import { ReactProps } from 'cmap2-shared';
-import { VrcOscAvatarParameter } from '../../../../../../shared/types/osc';
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import AvatarParameterProperties from './avatarParameterProperties.component';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import DeleteButton from '../../../../shared/components/buttons/deleteButton.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
+import { VrcOscAvatarParameter } from '../../../../../../shared/osc';
 
 interface AvatarParameterProps extends ReactProps {
     avatarId: string;

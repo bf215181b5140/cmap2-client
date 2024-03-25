@@ -6,7 +6,6 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { ContentBoxWidth } from 'cmap2-shared/src';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { ContentBox } from 'cmap2-shared/dist/react/';
 import { ModalContext } from '../../../../../components/mainWindow/mainWindow.componenet';
 import SubmitInput from '../../../../../shared/components/form/inputs/submit.component';
 import ButtonInput from '../../../../../shared/components/form/inputs/button.component';
@@ -14,6 +13,7 @@ import HiddenInput from '../../../../../shared/components/form/inputs/hidden.com
 import Input from '../../../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../../../shared/components/form/inputs/select.component';
 import { AvatarDTO, ControlParametersFormDTO, ControlParametersFormSchema, FieldOption, ControlParameterRole, ReactProps, TierDTO, ParameterValueType, ControlParameterDTO } from 'cmap2-shared';
+import ContentBox from '../../../../../shared/components/contentBox/contentBox.component';
 
 interface ControlParametersProps extends ReactProps {
     selectedAvatar: AvatarDTO;
@@ -106,7 +106,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
         }
     }
 
-    return (<ContentBox title="Control parameters" flexBasis={ContentBoxWidth.Full} show={false}>
+    return (<ContentBox toggleTitle="Control parameters" flexBasis={ContentBoxWidth.Full}>
         <p>Utility parameters that can be used to control avatar. These aren't displayed or interactable, instead they can be used to bind to other actions
             which trigger them.</p>
         <form onSubmit={handleSubmit(onSave)}>

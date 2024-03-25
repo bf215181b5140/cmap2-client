@@ -1,4 +1,4 @@
-import { ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
+import { ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, LayoutDTO, ReactProps, TierDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
@@ -7,6 +7,7 @@ import { AvatarReducerAction } from '../../avatars.reducer';
 import { ButtonStyleDTO } from 'cmap2-shared/src';
 import AddNewButton from './addNew.button';
 import LayoutFormComponent from './layoutForm/layoutForm.component';
+import ContentBox from '../../../../../shared/components/contentBox/contentBox.component';
 
 interface LayoutComponentProps extends ReactProps {
     layout: LayoutDTO;
@@ -21,7 +22,7 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
 
     const navigate = useNavigate();
 
-    return (<ContentBox key={layout.id} title={layout.label} flexBasis={layout.width}>
+    return (<ContentBox key={layout.id} toggleTitle={layout.id ? layout.label : 'Add new'} flexBasis={layout.width}>
         <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id!} avatarDataDispatch={avatarDataDispatch} />
         {layout.id &&
             <ButtonsWrapper>

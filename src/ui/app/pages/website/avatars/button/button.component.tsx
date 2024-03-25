@@ -1,4 +1,4 @@
-import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
+import { ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, ButtonFormDTO, ButtonFormSchema, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ControlParameterRole, LayoutDTO, ParameterValueType, ReactProps, TierDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
@@ -20,8 +20,10 @@ import Input from '../../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../../shared/components/form/inputs/select.component';
 import NumberInput from '../../../../shared/components/form/inputs/number.component';
 import ParameterInput from '../../../../shared/components/form/inputs/parameterInput.component';
-import { VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
 import { ControlParameterDTO } from 'cmap2-shared/src/types/controlParameters';
+import { VrcOscAvatarParameterProperties } from '../../../../../../shared/osc';
+import Content from '../../../../shared/components/contentBox/content.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDTO;
@@ -123,8 +125,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
             <Icon icon="ri-arrow-right-s-line" />&nbsp;{layout.label}&nbsp;
             <Icon icon="ri-arrow-right-s-line" />&nbsp;{button.id ? button.label : 'new button'}
         </ContentBox>
-        <ContentBox flexGrow={1}>
-            <h2>Preview</h2>
+        <ContentBox flexGrow={1} contentTitle={'Preview'}>
             <ParameterButton button={{...formWatch, id: button.id, image: button.image}} buttonStyle={buttonStyle} />
             <br />
             {button.id && formWatch.buttonType !== ButtonType.Slider &&

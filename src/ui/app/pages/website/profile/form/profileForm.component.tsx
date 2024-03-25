@@ -40,7 +40,6 @@ export default function ProfileForm({ client, setClient }: ProfileFormProps) {
     };
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
-        <h2>Edit profile</h2>
         <FormTable>
             <tr>
                 <th>Display name</th>

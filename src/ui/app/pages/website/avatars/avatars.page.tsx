@@ -1,8 +1,8 @@
-import { Content } from 'cmap2-shared/dist/react';
 import useAvatarPage from './avatars.hook';
 import ButtonComponent from './button/button.component';
 import AvatarsMenu from './avatarsMenu/avatarsMenu.component';
 import AvatarComponent from './avatar/avatar.component';
+import Content from '../../../shared/components/contentBox/content.component';
 
 export default function AvatarsPage() {
 

@@ -1,4 +1,3 @@
-import { ContentBox } from 'cmap2-shared/dist/react';
 import React, { useEffect, useState } from 'react';
 import { ButtonDTO, VrcParameter, ReactProps } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
@@ -6,6 +5,7 @@ import FormTable from '../../../../shared/components/form/formTable.component';
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 interface ListenForParameterProps extends ReactProps {
     applyMessage: (data: ButtonDTO) => void;
@@ -50,8 +50,7 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
         reset({path: '', value: ''});
     }
 
-    return (<ContentBox flexBasis="100%">
-        <h2>Listen for next VRChat parameter</h2>
+    return (<ContentBox flexBasis="100%" toggleTitle={'Listen for next VRChat parameter'}>
         <form onSubmit={handleSubmit(onApply)}>
             <FormTable>
                 <tr>

@@ -1,10 +1,11 @@
 import React from 'react';
-import { ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
+import { ParameterButton } from 'cmap2-shared/dist/react';
 import { ButtonDTO, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ClientDTO, ParameterValueType, ReactProps } from 'cmap2-shared';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import styled from 'styled-components';
 import PickerOverlayCheck from '../../../../shared/components/pickerOverlay/PickerOverlayCheck.component';
 import PickerOverlayTier from '../../../../shared/components/pickerOverlay/PickerOverlayTier.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 interface ButtonStylePickerProps extends ReactProps {
     client: ClientDTO | null;
@@ -42,8 +43,7 @@ export default function ButtonStylePicker({client, setFunction, buttonStyles}: B
         };
     }
 
-    return (<ContentBox flexBasis="100%" loading={!client}>
-        <h2>Button style</h2>
+    return (<ContentBox flexBasis="100%" loading={!client} toggleTitle={'Button style'}>
         <ButtonStyleFlex>
             {buttonStyles?.map(buttonStyle => (
                 <ButtonStylePickerStyled color={buttonStyle.tier?.color} validPick={(client?.tier?.rank || 0) >= buttonStyle.tier.rank}

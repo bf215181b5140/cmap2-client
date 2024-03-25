@@ -1,7 +1,7 @@
-import { VrcOscAvatar } from '../../../../../../../shared/types/osc';
 import { ReactProps } from 'cmap2-shared';
 import AvatarsMenuLink from './avatarsMenuLink.component';
 import styled from 'styled-components';
+import { VrcOscAvatar } from '../../../../../../../shared/osc';
 
 interface AvatarsMenuProps extends ReactProps {
     avatars: VrcOscAvatar[];

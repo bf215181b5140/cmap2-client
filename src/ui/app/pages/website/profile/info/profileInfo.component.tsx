@@ -11,7 +11,6 @@ interface ProfileInfoProps {
 export default function ProfileInfo({ client, setClientPicture }: ProfileInfoProps) {
 
     return (<>
-        <h2>Hello, {client.displayName}!</h2>
         <ProfilePicture image={client.image} setClientPicture={setClientPicture} />
         <br />
         <h3>Account tier</h3>
