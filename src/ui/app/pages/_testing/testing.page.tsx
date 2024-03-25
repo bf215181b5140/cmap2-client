@@ -12,21 +12,15 @@ import NumberInput from '../../shared/components/form/inputs/number.component';
 import HiddenInput from '../../shared/components/form/inputs/hidden.component';
 
 interface TestingForm {
-    unregisteredHidden: string;
-    registereHidden: string;
-    unregInput: string;
-    regInput: string;
-    unsetInput: string;
+    hiddenReg: string;
+    inputReg: string;
     number: number;
     checkbox: boolean;
 }
 
 const testingSchema = z.object({
-    unregisteredHidden: z.string(),
-    registereHidden: z.string(),
-    unregInput: z.string(),
-    regInput: z.string(),
-    unsetInput: z.string(),
+    hiddenReg: z.string(),
+    inputReg: z.string(),
     number: z.number(),
     checkbox: z.boolean(),
 })
@@ -35,10 +29,8 @@ export default function TestingPage() {
 
     const { register, reset, watch, formState: { errors, isDirty }, handleSubmit } = useForm<TestingForm>({
         defaultValues: {
-            unregisteredHidden: 'defaultValue',
-            registereHidden: 'defaultValue',
-            unregInput: 'defaultValue',
-            regInput: 'defaultValue',
+            hiddenReg: undefined,
+            inputReg: undefined,
             number: 0,
             checkbox: false,
         },
@@ -51,12 +43,10 @@ export default function TestingPage() {
 
     function onReset() {
         reset({
-            unregisteredHidden: 'resetValue',
-            registereHidden: 'resetValue',
-            unregInput: 'resetValue',
-            regInput: 'resetValue',
-            number: 1,
-            checkbox: true,
+            hiddenReg: undefined,
+            inputReg: undefined,
+            number: 0,
+            checkbox: false,
         });
     }
 
@@ -67,26 +57,13 @@ export default function TestingPage() {
                 <h2>Edit profile</h2>
                 <FormTable>
                     <tr>
-                        <th>unregisteredHidden</th>
-                        <td><HiddenInput name={'unregisteredHidden'} errors={errors} /></td>
+                        <th>hiddenReg</th>
+                        <td><HiddenInput register={register} name={'hiddenReg'} errors={errors} /></td>
                     </tr>
                     <tr>
-                        <th>registereHidden</th>
-                        <td><HiddenInput register={register} name={'registereHidden'} errors={errors} /></td>
+                        <th>inputReg</th>
+                        <td><Input register={register} name={'inputReg'} errors={errors} /></td>
                     </tr>
-                    <tr>
-                        <th>unregInput</th>
-                        <td><input name={'unregInput'} /></td>
-                    </tr>
-                    <tr>
-                        <th>regInput</th>
-                        <td><Input register={register} name={'regInput'} errors={errors} /></td>
-                    </tr>
-                    <tr>
-                        <th>unsetInput</th>
-                        <td><Input register={register} name={'unsetInput'} errors={errors} /></td>
-                    </tr>
-
                     <tr>
                         <th>number</th>
                         <td><NumberInput register={register} name={'number'} errors={errors} /></td>

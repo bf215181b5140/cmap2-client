@@ -12,7 +12,7 @@ export default function NavBar() {
         {/* <NavBarLink to="/about" icon="ri-book-open-fill" /> */}
 
         {/* Show testing page when app is not packaged */}
-        {!window.isPackaged && <NavBarLink to="/testing" icon="ri-terminal-box-line" />}
+        {process.env.NODE_ENV === 'development' && <NavBarLink to="/testing" icon="ri-terminal-box-line" />}
     </NavBarStyled>);
 }
 

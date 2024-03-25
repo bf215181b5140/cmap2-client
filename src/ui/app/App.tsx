@@ -41,7 +41,7 @@ export default function App() {
                         <Route path="/settings" element={<SettingsPage />} />
 
                         {/* Route testing page when app is not packaged */}
-                        {!window.isPackaged && <Route path="/testing" element={<TestingPage />} />}
+                        {process.env.NODE_ENV === 'development' && <Route path="/testing" element={<TestingPage />} />}
 
                         <Route path="*" element={<LaunchPadPage />} />
                     </Routes>
