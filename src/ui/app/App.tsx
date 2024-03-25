@@ -12,7 +12,6 @@ import SettingsPage from './pages/settings/settings.page';
 import MainWindow from './components/mainWindow/mainWindow.componenet';
 import LovensePage from './pages/lovense/lovense.page';
 import WebsitePage from './pages/website/website.page';
-import AvatarsPage from './pages/osc/avatars/avatars.page';
 import OscPage from './pages/osc/osc.page';
 import TestingPage from './pages/_testing/testing.page';
 
