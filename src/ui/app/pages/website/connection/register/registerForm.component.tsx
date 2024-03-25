@@ -7,7 +7,7 @@ import { ToastContext } from '../../../../components/mainWindow/mainWindow.compo
 import FormTable from '../../../../shared/components/form/formTable.component';
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
-import { ToastType } from '../../../../components/toast/toast.hook';
+import { ToastType } from '../../../../shared/components/toast/toast.hook';
 import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { ClientCredentialsContext } from '../../../../App';

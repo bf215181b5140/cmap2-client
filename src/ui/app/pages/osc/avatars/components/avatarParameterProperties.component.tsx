@@ -1,10 +1,9 @@
 import { ReactProps, theme } from 'cmap2-shared';
 import { VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
-import styled, { css } from 'styled-components';
-import Icon from 'cmap2-shared/src/react/components/icon.component';
+import styled from 'styled-components';
 import React, { useContext } from 'react';
 import { ToastContext } from '../../../../components/mainWindow/mainWindow.componenet';
-import { ToastType } from '../../../../components/toast/toast.hook';
+import { ToastType } from '../../../../shared/components/toast/toast.hook';
 
 interface AvatarParameterPropertiesProps extends ReactProps {
     type: 'input' | 'output';

@@ -3,7 +3,7 @@ import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import { Icon } from 'cmap2-shared/dist/react';
 import { Modal } from './modal.hook';
-import ButtonInput from '../../shared/components/form/inputs/button.component';
+import ButtonInput from '../form/inputs/button.component';
 
 export interface ModalComponentProps extends ReactProps {
     modal: Modal | null;

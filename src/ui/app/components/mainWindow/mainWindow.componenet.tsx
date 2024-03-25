@@ -1,10 +1,10 @@
 import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import React from 'react';
-import { ToastReducerAction, useToast } from '../toast/toast.hook';
-import { ToastComponent } from '../toast/toast.component';
-import ModalComponent from '../modal/modal.component';
-import useModalHook, { ModalFunction } from '../modal/modal.hook';
+import { ToastReducerAction, useToast } from '../../shared/components/toast/toast.hook';
+import { ToastComponent } from '../../shared/components/toast/toast.component';
+import ModalComponent from '../../shared/components/modal/modal.component';
+import useModalHook, { ModalFunction } from '../../shared/components/modal/modal.hook';
 
 export const ToastContext = React.createContext<(action: ToastReducerAction) => void>(() => {
 });
