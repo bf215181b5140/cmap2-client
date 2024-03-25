@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { app, contextBridge, ipcRenderer } from 'electron';
 import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from './global';
 
 contextBridge.exposeInMainWorld('electronAPI', {
@@ -16,3 +16,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     removeAllListeners: (channel: keyof IpcReceiveOptions) => ipcRenderer.removeAllListeners(channel),
 });
+
+contextBridge.exposeInMainWorld('isPackaged', app.isPackaged)

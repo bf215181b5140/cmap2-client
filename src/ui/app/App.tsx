@@ -6,7 +6,6 @@ import TitleBar from './components/titleBar/titleBar.component';
 import NavBar from './components/navBar/navBar.component';
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
-import useWebsocketConnection from './shared/hooks/websocketConnection.hook';
 import useClientCredentials, { ClientCredentialsHook } from './shared/hooks/clientCredentials.hook';
 import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from './pages/settings/settings.page';
@@ -15,7 +14,7 @@ import LovensePage from './pages/lovense/lovense.page';
 import WebsitePage from './pages/website/website.page';
 import AvatarsPage from './pages/osc/avatars/avatars.page';
 import OscPage from './pages/osc/osc.page';
-import { LoginTokenDTO } from 'cmap2-shared';
+import TestingPage from './pages/_testing/testing.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
@@ -38,10 +37,13 @@ export default function App() {
                 <MainWindow>
                     <Routes>
                         <Route path="/website/*" element={<WebsitePage />} />
-                        <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
                         <Route path="/osc/*" element={<OscPage />} />
-                        <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/lovense" element={<LovensePage />} />
+                        <Route path="/settings" element={<SettingsPage />} />
+
+                        {/* Route testing page when app is not packaged */}
+                        {!window.isPackaged && <Route path="/testing" element={<TestingPage />} />}
+
                         <Route path="*" element={<LaunchPadPage />} />
                     </Routes>
                 </MainWindow>
