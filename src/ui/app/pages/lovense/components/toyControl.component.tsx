@@ -1,4 +1,3 @@
-import { ContentBox } from 'cmap2-shared/dist/react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { FieldOption } from 'cmap2-shared';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
@@ -14,6 +13,7 @@ import Input from '../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../shared/components/form/inputs/select.component';
 import NumberInput from '../../../shared/components/form/inputs/number.component';
 import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
+import ContentBox from '../../../shared/components/contentBox/contentBox.component';
 
 interface ToyControlProps {
     toyList: Toy[] | undefined;
@@ -55,7 +55,7 @@ export default function ToyControl({toyList}: ToyControlProps) {
             .map((key: string) => ({key: ToyActionType[key as keyof typeof ToyActionType], value: ToyActionType[key as keyof typeof ToyActionType]}));
     }
 
-    return (<ContentBox title="Toy control" show={false}>
+    return (<ContentBox toggleTitle="Toy control">
         <p>Control Lovense toys based on avatar parameters VRChat sends out.</p>
         <form onSubmit={handleSubmit(onsubmit)}>
             <FormTableStyled>

@@ -4,10 +4,10 @@ import CheckboxInput from '../../../../shared/components/form/inputs/checkbox.co
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { WebsocketSettings, websocketSettingsSchema } from '../../../../../../shared/types/settings';
+import { WebsocketSettings, websocketSettingsSchema } from '../../../../../../shared/store/main';
 import FormTable from '../../../../shared/components/form/formTable.component';
-import { ClientCredentialsContext } from '../../../../App';
 import useWebsocketConnection from '../../../../shared/hooks/websocketConnection.hook';
+import { ClientCredentialsContext } from '../../../../contexts/context.component';
 
 export default function WebsocketStatus() {
 

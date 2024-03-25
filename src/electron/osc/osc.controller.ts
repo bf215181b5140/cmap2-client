@@ -2,7 +2,7 @@ import { OscService } from './osc.service';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { VrcParameter } from 'cmap2-shared';
-import { GeneralSettings } from '../../shared/types/settings';
+import { GeneralSettings } from '../../shared/store/main';
 import { Message } from 'node-osc';
 
 export class OscController extends OscService {

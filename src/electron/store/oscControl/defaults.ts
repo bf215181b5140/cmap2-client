@@ -1,6 +1,6 @@
 import { OscClockSettings, OscClockSettingsDefaults } from '../../osc/clock/types';
 
-type OscControlDefaultsType = {
+interface OscControlDefaultsType {
     clock: OscClockSettings
 }
 

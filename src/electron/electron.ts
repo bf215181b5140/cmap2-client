@@ -1,12 +1,12 @@
 import { app, Tray, Menu } from 'electron';
 import { ClientSocketService } from './webSocket/clientSocket.service';
 import { IpcMainController } from './ipc/ipcMain.controller';
-import { StoreService } from './store/store.service';
+import { MainStore } from './store/main/main.store';
 import LovenseController from './lovense/lovense.controller';
 import VrcDetectorService from './vrcDetector/vrcDetector.service';
 import mainWindow from './mainWindow/mainWindow';
 import { OscController } from './osc/osc.controller';
-import { OscDataStoreService } from './store/oscData/oscDataStore.service';
+import { OscDataStore } from './store/oscData/oscData.store';
 import OscClockController from './osc/clock/oscClock.controller';
 import OscControlStore from './store/oscControl/oscControl.store';
 
@@ -21,12 +21,12 @@ if (!app.requestSingleInstanceLock()) {
 app.whenReady().then(() => {
 
     // start store services
-    StoreService.start();
-    OscDataStoreService.start();
+    MainStore.start();
+    OscDataStore.start();
     OscControlStore.start();
 
     // grab settings
-    const generalSettings = StoreService.getGeneralSettings();
+    const generalSettings = MainStore.getGeneralSettings();
 
     // initiate services
     new IpcMainController();

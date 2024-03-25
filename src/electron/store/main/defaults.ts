@@ -1,18 +1,20 @@
-import { ClientCredentials } from '../../shared/classes';
-import { Settings } from '../../shared/types/settings';
-import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from '../../shared/lovense';
+import { ClientCredentials } from '../../../shared/classes';
+import { rendererSettingsStoreDefaults, Settings } from '../../../shared/store/main';
+import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from '../../../shared/lovense';
+import { RendererSettings } from '../../../shared/store/main';
 
-type Store = {
+interface MainStoreDefaultsType {
     clientCredentials: ClientCredentials,
     settings: Settings,
     lovense: {
         settings: LovenseSettings,
         toyCommandOscMessage: ToyCommandOscMessage[],
         toyCommandParameter: ToyCommandParameter[]
-    }
+    },
+    renderer: RendererSettings
 }
 
-const storeDefaults: Store = {
+const mainStoreDefaults: MainStoreDefaultsType = {
     clientCredentials: {
         username: '',
         password: '',
@@ -40,6 +42,7 @@ const storeDefaults: Store = {
         toyCommandOscMessage: [],
         toyCommandParameter: []
     },
+    renderer: rendererSettingsStoreDefaults,
 };
 
-export default storeDefaults;
+export default mainStoreDefaults;

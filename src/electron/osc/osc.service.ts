@@ -1,6 +1,6 @@
 import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { VrcParameter } from 'cmap2-shared';
-import { GeneralSettings } from '../../shared/types/settings';
+import { GeneralSettings } from '../../shared/store/main';
 
 export abstract class OscService {
     private oscServer: Server | undefined;

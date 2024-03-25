@@ -20,3 +20,16 @@ export type Settings = {
     general: GeneralSettings
     websocket: WebsocketSettings
 }
+
+export interface RendererSettingsContentBox {
+    code: string;
+    isShown: boolean;
+}
+
+export interface RendererSettings {
+    contentBox: RendererSettingsContentBox[];
+}
+
+export const rendererSettingsStoreDefaults = {
+    contentBox: [],
+}

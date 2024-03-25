@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import TypedIpcMain from '../ipc/typedIpcMain';
-import { GeneralSettings } from '../../shared/types/settings';
-import { StoreService } from '../store/store.service';
+import { GeneralSettings } from '../../shared/store/main';
+import { MainStore } from '../store/main/main.store';
 
 export default class VrcDetectorService {
     private intervalId: NodeJS.Timeout | null = null;
@@ -10,7 +10,7 @@ export default class VrcDetectorService {
     private enableVrcDetector: boolean = false;
 
     constructor() {
-        this.resetInterval(StoreService.getGeneralSettings());
+        this.resetInterval(MainStore.getGeneralSettings());
 
         TypedIpcMain.on('setGeneralSettings', (data) => this.resetInterval(data));
 

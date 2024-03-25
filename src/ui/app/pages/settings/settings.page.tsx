@@ -8,7 +8,7 @@ import SubmitInput from '../../shared/components/form/inputs/submit.component';
 import NumberInput from '../../shared/components/form/inputs/number.component';
 import Input from '../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
-import { generalSettingsSchema, GeneralSettings } from '../../../../shared/types/settings';
+import { generalSettingsSchema, GeneralSettings } from '../../../../shared/store/main';
 
 export default function SettingsPage() {
 

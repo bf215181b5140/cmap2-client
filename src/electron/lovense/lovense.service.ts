@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { ConnectionStatus, DeviceInformation, QRCodeData, QRCodeResponse, SocketIoData, SocketIoResponse, ToyCommand } from 'lovense';
 import { URL } from '../../shared/const';
-import { StoreService } from '../store/store.service';
+import { MainStore } from '../store/main/main.store';
 
 export default abstract class LovenseService {
     private authToken: string | null = null;
@@ -123,7 +123,7 @@ export default abstract class LovenseService {
     private async getAuthToken(): Promise<string | void> {
         const url = URL + '/api/lovense';
 
-        const apiToken = StoreService.getClientCredentials().apiToken;
+        const apiToken = MainStore.getClientCredentials().apiToken;
         if (!apiToken) {
             console.log('apiToken is undefined');
             return;

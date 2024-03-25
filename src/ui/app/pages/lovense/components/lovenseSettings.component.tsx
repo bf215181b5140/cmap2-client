@@ -1,4 +1,3 @@
-import { ContentBox } from 'cmap2-shared/dist/react';
 import { LovenseSettingsSchema, LovenseSettings } from '../../../../../shared/lovense';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
@@ -9,6 +8,7 @@ import SubmitInput from '../../../shared/components/form/inputs/submit.component
 import ButtonInput from '../../../shared/components/form/inputs/button.component';
 import CheckboxInput from '../../../shared/components/form/inputs/checkbox.component';
 import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
+import ContentBox from '../../../shared/components/contentBox/contentBox.component';
 
 export default function Settings() {
     const {register, reset, watch, formState: {errors, isDirty}, handleSubmit, setValue} = useForm<LovenseSettings>({resolver: zodResolver(LovenseSettingsSchema)});
@@ -23,7 +23,7 @@ export default function Settings() {
         reset(formData, {keepDirty: false});
     }
 
-    return (<ContentBox title="Settings" show={false}>
+    return (<ContentBox toggleTitle="Settings">
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormTable>
                 <tr>

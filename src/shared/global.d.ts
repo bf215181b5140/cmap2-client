@@ -4,9 +4,10 @@ import { ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
-import { GeneralSettings, Settings, WebsocketSettings } from './types/settings';
+import { GeneralSettings, Settings, WebsocketSettings } from './store/main';
 import { VrcOscAvatar } from './types/osc';
 import { OscClockSettings } from '../electron/osc/clock/types';
+import { RendererSettings } from './store/main';
 
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
@@ -25,6 +26,8 @@ type IpcGetOptions = {
     getVrcOscAvatars: VrcOscAvatar[];
     // Osc control
     getOscClockSettings: OscClockSettings;
+    // Renderer settings
+    getRendererSettings: RendererSettings;
 };
 
 type IpcSendOptions = {
@@ -47,6 +50,8 @@ type IpcSendOptions = {
     setVrcOscAvatars: VrcOscAvatar[];
     // Osc control
     setOscClockSettings: OscClockSettings;
+    // Renderer settings
+    setRendererSettings: RendererSettings;
 };
 
 type IpcReceiveOptions = {

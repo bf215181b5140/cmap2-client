@@ -1,4 +1,3 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import FormTable, { FormTableStyled } from '../../../shared/components/form/formTable.component';
 import Input from '../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../shared/components/form/inputs/select.component';
@@ -14,6 +13,8 @@ import { OscClockSettings, OscClockSettingsDefaults, OscClockSettingsSchema, Osc
 import oscClockChatboxText, { OscClockChatboxFormats } from '../../../../../electron/osc/clock/chatboxText';
 import CheckboxInput from '../../../shared/components/form/inputs/checkbox.component';
 import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
+import Content from '../../../shared/components/contentBox/content.component';
+import ContentBox from '../../../shared/components/contentBox/contentBox.component';
 
 export default function ClockPage() {
 
@@ -56,7 +57,7 @@ export default function ClockPage() {
         <ContentBox>
             <form onSubmit={handleSubmit(onSave)}>
 
-                <h2>Send local time to chatbox</h2>
+                <h2 style={{marginTop: 0}}>Send local time to chatbox</h2>
                 <FormTable>
                     <tr>
                         <th>Send to chatbox</th>

@@ -2,7 +2,7 @@ import Store from 'electron-store';
 import oscDataDefaults from './defaults';
 import TypedIpcMain from '../../ipc/typedIpcMain';
 
-export class OscDataStoreService {
+export class OscDataStore {
     private static started: boolean = false;
     private static store = new Store({
         name: 'oscData',

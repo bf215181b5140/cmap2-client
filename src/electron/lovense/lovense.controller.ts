@@ -1,9 +1,9 @@
 import { DeviceInformation, QRCodeData, ToyCommand } from 'lovense';
-import { ValueType, VrcParameter } from 'cmap2-shared';
+import { ParameterValueType, VrcParameter } from 'cmap2-shared';
 import { LovenseSettings, LovenseStatus, ToyActionType, ToyCommandOscMessage, ToyCommandParameter } from '../../shared/lovense';
 import { BridgeService } from '../bridge/bridge.service';
 import LovenseService from './lovense.service';
-import { StoreService } from '../store/store.service';
+import { MainStore } from '../store/main/main.store';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { Message } from 'node-osc';
 
@@ -24,9 +24,9 @@ export default class LovenseController extends LovenseService {
     constructor() {
         super();
 
-        this.lovenseSettings = StoreService.getLovenseSettings();
-        this.setToyCommandParameters(StoreService.getToyCommandParameters());
-        this.setToyCommandOscMessages(StoreService.getToyCommandOscMessages());
+        this.lovenseSettings = MainStore.getLovenseSettings();
+        this.setToyCommandParameters(MainStore.getToyCommandParameters());
+        this.setToyCommandOscMessages(MainStore.getToyCommandOscMessages());
 
         TypedIpcMain.on('setLovenseSettings', (lovenseSettings: LovenseSettings) => this.lovenseSettings = lovenseSettings);
         TypedIpcMain.on('getLovenseStatus', () => TypedIpcMain.emit('lovenseStatus', this.lovenseStatus));
@@ -188,10 +188,10 @@ export default class LovenseController extends LovenseService {
 
             let value: number | boolean;
             switch (toyCommandOscMessage.valueType) {
-                case ValueType.Int:
+                case ParameterValueType.Int:
                     value = actionValue;
                     break;
-                case ValueType.Float:
+                case ParameterValueType.Float:
                     const action = toyCommand.action.split(':').at(0);
                     switch (action) {
                         case ToyActionType.Stop:
@@ -206,7 +206,7 @@ export default class LovenseController extends LovenseService {
                             break;
                     }
                     break;
-                case ValueType.Bool:
+                case ParameterValueType.Bool:
                 default:
                     value = actionValue !== 0;
                     break;

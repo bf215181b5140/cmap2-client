@@ -7,7 +7,7 @@ import React, { useContext } from 'react';
 import ConnectionPage from './connection/connection.page';
 import Submenu from '../../shared/components/submenu/submenu.component';
 import SubmenuLink from '../../shared/components/submenu/submenuLink.component';
-import { ClientCredentialsContext } from '../../App';
+import { ClientCredentialsContext } from '../../contexts/context.component';
 
 export default function WebsitePage() {
 

@@ -1,29 +1,50 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CONTENT_GAP } from './content.component';
 import { ContentBoxWidth, ReactProps } from 'cmap2-shared';
+import { RendererSettingsContext } from '../../hooks/rendererSettings.hook';
 
 interface ContentBoxProps extends ReactProps {
-    title?: string;
+    contentTitle?: string;
+    toggleTitle?: string;
     flexGrow?: number | string;
     flexBasis?: string | ContentBoxWidth;
     loading?: boolean;
-    show?: boolean;
 }
 
-export default function ContentBox({ title, flexGrow, flexBasis, loading, show, children }: ContentBoxProps) {
+export default function ContentBox({ contentTitle, toggleTitle = '', flexGrow, flexBasis, loading = false, children }: ContentBoxProps) {
 
-    const [shown, setShown] = useState<boolean>(true);
+    const [shown, setShownInternal] = useState<boolean>(!toggleTitle);
+    const { rendererSettings, rendererSettingsDispatch } = useContext(RendererSettingsContext);
+    const boxCode = toggleTitle.replace(/ /g, '');
+    console.log(shown)
 
+    // Calculate if element is shown based on renderer settings
     useEffect(() => {
-        if (typeof show === 'boolean') {
-            setShown(show);
+        if (toggleTitle) {
+            const boxSettings = rendererSettings.contentBox.find(box => box.code === boxCode);
+            if (boxSettings) {
+                setShownInternal(boxSettings.isShown);
+            }
         }
-    }, [show]);
+    }, []);
+
+    // Toggle shown and update renderer settings
+    function setShown(value: boolean) {
+        if (toggleTitle) {
+            rendererSettingsDispatch({
+                type: 'setContentBoxSetting', setting: {
+                    code: boxCode,
+                    isShown: value
+                }
+            });
+        }
+        setShownInternal(value);
+    }
 
     function getFlexBasis(): string | undefined {
         if (!flexBasis) return undefined;
-        switch(flexBasis) {
+        switch (flexBasis) {
             case ContentBoxWidth.None:
                 return '0';
             case ContentBoxWidth.Third:
@@ -38,16 +59,26 @@ export default function ContentBox({ title, flexGrow, flexBasis, loading, show, 
     }
 
     return (<ContentBoxWrapper flexGrow={flexGrow} flexBasis={getFlexBasis()}>
-        {title && <ContentBoxTitle shown={shown}>
-            <h2 onClick={() => setShown(prevState => !prevState)}>
+        {/* Toggle title */}
+        {toggleTitle && <ContentBoxTitle shown={shown}>
+            <h2 onClick={() => setShown(!shown)}>
                 <i className={'ri-arrow-down-s-line'} />
-                {title}
+                {toggleTitle}
             </h2>
         </ContentBoxTitle>}
+
+        {/* Main box */}
         {shown && <ContentBoxStyled>
-            {loading !== true ? children : <ContentLoading>
-                <div className={'loader'} />
-            </ContentLoading>}
+            {loading ? (
+                <ContentLoading>
+                    <div className={'loader'} />
+                </ContentLoading>
+            ) : (
+                <>
+                    {contentTitle && <h2 style={{ marginTop: 0 }}>{contentTitle}</h2>}
+                    {children}
+                </>
+            )}
         </ContentBoxStyled>}
     </ContentBoxWrapper>);
 }
@@ -62,7 +93,7 @@ const ContentBoxTitle = styled.div<{ shown: boolean }>`
 
   h2 {
     display: inline-block;
-    font-size: 1.4em;
+    font-size: 22px;
     padding: 0;
     margin: 5px;
     cursor: pointer;
@@ -83,28 +114,28 @@ const ContentBoxStyled = styled.div`
 
   hr {
     border: 1px solid ${props => props.theme.colors.ui.appBgOpaque};
-    margin: 0.5em 0 1em 0;
+    margin: 8px 0 16px 0;
     padding: 0;
   }
-  
+
   h1 {
     text-shadow: 0 0 3px black;
   }
 
   h2 {
-    font-size: 1.4em;
+    font-size: 24px;
     color: ${props => props.theme.colors.font.h2};
     padding: 0;
-    margin: 0.5em 0;
+    margin: 12px 0;
     text-shadow: 0 0 3px black;
   }
 
   h3 {
-    font-size: 1em;
+    font-size: 16px;
     color: ${props => props.theme.colors.font.h3};
     text-transform: uppercase;
     padding: 0;
-    margin: 0.5em 0;
+    margin: 8px 0;
   }
 
   p {

@@ -2,7 +2,7 @@ import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { WindowState } from '../../shared/enums';
 import TypedIpcMain from '../ipc/typedIpcMain';
-import { GeneralSettings } from '../../shared/types/settings';
+import { GeneralSettings } from '../../shared/store/main';
 
 export class MainWindowService {
     private initialized: boolean = false;

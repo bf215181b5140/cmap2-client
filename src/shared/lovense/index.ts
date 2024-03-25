@@ -1,6 +1,6 @@
 import { DeviceInformation, QRCodeData } from 'lovense';
 import { z } from 'zod';
-import { ValueType } from 'cmap2-shared';
+import { ParameterValueType } from 'cmap2-shared';
 
 export class LovenseSettings {
     sendConnectionOscMessage: boolean = false;
@@ -47,7 +47,7 @@ export type ToyCommandParameterForm = z.infer<typeof ToyCommandParameterFormSche
 export const ToyCommandOscMessageSchema = z.object({
     toy: z.string(),
     parameterPath: z.string(),
-    valueType: z.nativeEnum(ValueType),
+    valueType: z.nativeEnum(ParameterValueType),
 });
 export type ToyCommandOscMessage = z.infer<typeof ToyCommandOscMessageSchema>;
 

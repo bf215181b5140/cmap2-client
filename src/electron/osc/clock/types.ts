@@ -30,7 +30,7 @@ export const OscClockSettingsDefaults: OscClockSettings = {
     chatboxFormat: 'My time: {time}',
     sendToAvatar: false,
     avatarParameters: [
-        {path: '/avatar/parameters/OscClockSecond', unit: OscClockUnit.Second},
-        {path: '/avatar/parameters/OscClockMinute', unit: OscClockUnit.Minute},
+        { path: '/avatar/parameters/OscClockSecond', unit: OscClockUnit.Second },
+        { path: '/avatar/parameters/OscClockMinute', unit: OscClockUnit.Minute },
     ]
-}
+};

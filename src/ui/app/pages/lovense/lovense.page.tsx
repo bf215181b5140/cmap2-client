@@ -1,14 +1,15 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import ActionButton from '../../shared/components/buttons/actionButton.component';
 import { Toy } from 'lovense';
 import { LovenseToy } from './components/toy.component';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { LovenseStatus } from '../../../../shared/lovense';
-import Icon from 'cmap2-shared/src/react/components/icon.component';
 import ToyControl from './components/toyControl.component';
 import OscControl from './components/oscControl.component';
 import Settings from './components/lovenseSettings.component';
+import Content from '../../shared/components/contentBox/content.component';
+import ContentBox from '../../shared/components/contentBox/contentBox.component';
+import { theme } from 'cmap2-shared';
 
 export default function LovensePage() {
 
@@ -21,7 +22,7 @@ export default function LovensePage() {
 
         return () => {
             if (removeListener) removeListener();
-        }
+        };
     }, []);
 
     function connect() {
@@ -32,22 +33,11 @@ export default function LovensePage() {
         window.electronAPI.send('lovenseDisconnect');
     }
 
-    function connectionMessage() {
-        if (lovenseStatus.socketConnection) {
-            if (lovenseStatus.status === 1) {
-                return <p><Icon icon="ri-wifi-fill" /> Connected</p>;
-            }
-            return <p><Icon icon="ri-wifi-fill" color="orange" /> Connecting...</p>;
-        }
-        return <p><Icon icon="ri-wifi-off-fill" color="red" /> Not connected</p>;
-    }
-
     return (<Content flexDirection="column">
         <ContentBox>
             <ConnectionFlexbox>
                 <Connection>
-                    <h2>Lovense connection</h2>
-                    {connectionMessage()}
+                    <h2 style={{ color: lovenseStatusColor(lovenseStatus), marginTop: 0 }}>{lovenseStatusMessage(lovenseStatus)}</h2>
                     {!lovenseStatus.socketConnection && <ActionButton action={connect}>Connect</ActionButton>}
                     {lovenseStatus.socketConnection && <ActionButton action={disconnect}>Disconnect</ActionButton>}
                 </Connection>
@@ -62,7 +52,7 @@ export default function LovensePage() {
             </ConnectionFlexbox>
         </ContentBox>
         {lovenseStatus.deviceInformation?.toyList &&
-            <ContentBox title='Toys'>
+            <ContentBox toggleTitle="Toys">
                 <ToysStyled>
                     {lovenseStatus.deviceInformation.toyList.map((toy: Toy) => (<LovenseToy toy={toy} key={toy.id} />))}
                 </ToysStyled>
@@ -73,6 +63,26 @@ export default function LovensePage() {
     </Content>);
 }
 
+function lovenseStatusMessage(lovenseStatus: LovenseStatus): string {
+    if (lovenseStatus.socketConnection) {
+        if (lovenseStatus.status === 1) {
+            return 'Connected to lovense';
+        }
+        return 'Connecting to lovense...';
+    }
+    return 'Not connected to lovense';
+}
+
+function lovenseStatusColor(lovenseStatus: LovenseStatus): string {
+    if (lovenseStatus.socketConnection) {
+        if (lovenseStatus.status === 1) {
+            return theme.colors.success;
+        }
+        return theme.colors.warning;
+    }
+    return theme.colors.error;
+}
+
 const ConnectionFlexbox = styled.div`
   display: flex;
   flex-flow: row;
@@ -81,10 +91,6 @@ const ConnectionFlexbox = styled.div`
 
 const Connection = styled.div`
   flex-basis: 100%;
-  
-  i {
-    font-size: 20px;
-  }
 `;
 
 const QRCode = styled.div`

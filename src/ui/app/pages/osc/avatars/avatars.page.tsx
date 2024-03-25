@@ -1,9 +1,10 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import AvatarsMenu from './components/avatarsMenu/avatarsMenu.component';
 import Avatar from './components/avatar.component';
 import useAvatarsPage from './avatars.hook';
 import AvatarUploadForm from './components/avatarUploadForm.component';
 import { ContentBoxWidth } from 'cmap2-shared';
+import Content from '../../../shared/components/contentBox/content.component';
+import ContentBox from '../../../shared/components/contentBox/contentBox.component';
 
 export default function AvatarsPage() {
 
@@ -11,15 +12,13 @@ export default function AvatarsPage() {
 
     return (<Content flexDirection={'row'}>
 
-        <ContentBox flexBasis={ContentBoxWidth.Third}>
-            <h2>Saved avatars</h2>
+        <ContentBox flexBasis={ContentBoxWidth.Third} contentTitle={'Saved avatars'}>
             <p>Import, view or edit your avatar information.</p>
             <p>This can help you keep track of parameters on your avatar, let you set up OSC interactions faster and help you come up with creative ways of
                 interacting with Vrchat.</p>
         </ContentBox>
 
-        <ContentBox flexBasis={ContentBoxWidth.Half}>
-            <h2>Upload OSC file</h2>
+        <ContentBox flexBasis={ContentBoxWidth.Half} contentTitle={'Upload OSC file'}>
             <p>Upload your avatar file found in: C:\ Users \ [USER] \ AppData \ LocalLow \ VRChat \ VRChat \ OSC \ [USER] \ Avatars</p>
             <AvatarUploadForm avatars={avatars} avatarsDispatch={avatarsDispatch} />
         </ContentBox>

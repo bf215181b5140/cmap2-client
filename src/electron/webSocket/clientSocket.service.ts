@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { WebsocketConnection, WebsocketConnectionStatus } from '../../shared/webSocket';
 import { VrcParameter } from 'cmap2-shared';
-import { StoreService } from '../store/store.service';
+import { MainStore } from '../store/main/main.store';
 import { URL } from '../../shared/const';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
@@ -17,12 +17,12 @@ export class ClientSocketService {
      */
     constructor() {
         TypedIpcMain.on('setClientCredentials', (clientCredentials) => {
-            if (this.connectionStatus.status === 'Connected' || StoreService.getWebsocketSettings().autoLogin) {
+            if (this.connectionStatus.status === 'Connected' || MainStore.getWebsocketSettings().autoLogin) {
                 this.connect(clientCredentials);
             }
         });
         TypedIpcMain.handle('getConnectionStatus', async () => this.connectionStatus);
-        TypedIpcMain.on('connectSocket', () => this.connect(StoreService.getClientCredentials()));
+        TypedIpcMain.on('connectSocket', () => this.connect(MainStore.getClientCredentials()));
         TypedIpcMain.on('disconnectSocket', () => this.disconnect());
 
         BridgeService.on('oscActivity', (isActive) => this.sendData('activity', isActive));
@@ -34,7 +34,7 @@ export class ClientSocketService {
             }
         });
 
-        if (StoreService.getWebsocketSettings().autoLogin) this.connect(StoreService.getClientCredentials());
+        if (MainStore.getWebsocketSettings().autoLogin) this.connect(MainStore.getClientCredentials());
     }
 
     /**

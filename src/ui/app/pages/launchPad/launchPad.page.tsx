@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import LovenseConnection from './components/lovenseConnection.component';
 import VrcConnection from './components/vrcConnection.component';
 import WebsiteConnection from './components/websiteConnection.component';
+import Content from '../../shared/components/contentBox/content.component';
+import ContentBox from '../../shared/components/contentBox/contentBox.component';
 
 export default function LaunchPadPage() {
 
@@ -23,4 +24,18 @@ const LaunchPadStyled = styled.div`
   flex-direction: column;
   gap: 15px;
   width: 550px;
+  
+  h1 {
+    font-size: 22px;
+    margin: 0;
+  }
+  
+  h2 {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  p {
+    margin: 0;
+  }
 `;

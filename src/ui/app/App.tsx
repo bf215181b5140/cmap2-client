@@ -6,48 +6,32 @@ import TitleBar from './components/titleBar/titleBar.component';
 import NavBar from './components/navBar/navBar.component';
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
-import useWebsocketConnection from './shared/hooks/websocketConnection.hook';
-import useClientCredentials, { ClientCredentialsHook } from './shared/hooks/clientCredentials.hook';
-import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from './pages/settings/settings.page';
 import MainWindow from './components/mainWindow/mainWindow.componenet';
 import LovensePage from './pages/lovense/lovense.page';
 import WebsitePage from './pages/website/website.page';
 import AvatarsPage from './pages/osc/avatars/avatars.page';
 import OscPage from './pages/osc/osc.page';
-import { LoginTokenDTO } from 'cmap2-shared';
-
-export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
-    clientCredentials: new ClientCredentials(),
-    setClientCredentials: () => {
-    },
-    setClientToken: () => {
-    },
-    clearClientToken: () => {
-    }
-});
+import CmapContexts from './contexts/context.component';
 
 export default function App() {
 
-    const clientCredentialsHook = useClientCredentials();
-
-    return (
-        <AppStyled>
-            <ClientCredentialsContext.Provider value={clientCredentialsHook}>
-                <TitleBar />
-                <MainWindow>
-                    <Routes>
-                        <Route path="/website/*" element={<WebsitePage />} />
-                        <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
-                        <Route path="/osc/*" element={<OscPage />} />
-                        <Route path="/settings" element={<SettingsPage />} />
-                        <Route path="/lovense" element={<LovensePage />} />
-                        <Route path="*" element={<LaunchPadPage />} />
-                    </Routes>
-                </MainWindow>
-                <NavBar />
-            </ClientCredentialsContext.Provider>
-        </AppStyled>);
+    return (<AppStyled>
+        <CmapContexts>
+            <TitleBar />
+            <MainWindow>
+                <Routes>
+                    <Route path="/website/*" element={<WebsitePage />} />
+                    <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
+                    <Route path="/osc/*" element={<OscPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
+                    <Route path="/lovense" element={<LovensePage />} />
+                    <Route path="*" element={<LaunchPadPage />} />
+                </Routes>
+            </MainWindow>
+            <NavBar />
+        </CmapContexts>
+    </AppStyled>);
 }
 
 const AppStyled = styled.div`
