@@ -1,6 +1,6 @@
 import { ContentBox } from 'cmap2-shared/dist/react';
 import React from 'react';
-import { BackgroundDto, ClientDTO, ClientDto, ReactProps } from 'cmap2-shared';
+import { BackgroundDTO, ClientDTO, ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import Background from 'cmap2-shared/src/react/components/background.component';
@@ -9,17 +9,17 @@ import PickerOverlayTier from '../../../../shared/components/pickerOverlay/Picke
 
 interface BackgroundPickerProps extends ReactProps {
     client: ClientDTO | null;
-    setFunction: (background: BackgroundDto) => void;
-    backgrounds: BackgroundDto[] | null;
+    setFunction: (background: BackgroundDTO) => void;
+    backgrounds: BackgroundDTO[] | null;
 }
 
 export default function BackgroundPicker({client, setFunction, backgrounds}: BackgroundPickerProps) {
 
     const customFetch = useCmapFetch();
 
-    function saveSelected(background: BackgroundDto) {
+    function saveSelected(background: BackgroundDTO) {
         if ((client?.tier?.rank || 0) < background.tier.rank) return;
-        customFetch('profileBackground', {
+        customFetch('profile/background', {
             method: 'POST',
             body: JSON.stringify(background),
             headers: {'Content-Type': 'application/json'}

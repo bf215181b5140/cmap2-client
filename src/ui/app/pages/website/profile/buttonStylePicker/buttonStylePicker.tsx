@@ -1,7 +1,6 @@
 import React from 'react';
-import { ContentBox } from 'cmap2-shared/dist/react';
-import { ButtonDto, ButtonStyleDto, ClientDTO, ClientDto, ReactProps } from 'cmap2-shared';
-import { ParameterButton } from 'cmap2-shared/dist/react';
+import { ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
+import { ButtonDTO, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ClientDTO, ParameterValueType, ReactProps } from 'cmap2-shared';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import styled from 'styled-components';
 import PickerOverlayCheck from '../../../../shared/components/pickerOverlay/PickerOverlayCheck.component';
@@ -9,17 +8,17 @@ import PickerOverlayTier from '../../../../shared/components/pickerOverlay/Picke
 
 interface ButtonStylePickerProps extends ReactProps {
     client: ClientDTO | null;
-    setFunction: (buttonStyle: ButtonStyleDto) => void;
-    buttonStyles: ButtonStyleDto[] | null;
+    setFunction: (buttonStyle: ButtonStyleDTO) => void;
+    buttonStyles: ButtonStyleDTO[] | null;
 }
 
 export default function ButtonStylePicker({client, setFunction, buttonStyles}: ButtonStylePickerProps) {
 
     const customFetch = useCmapFetch();
 
-    function saveSelected(buttonStyle: ButtonStyleDto) {
-        if ((client?.tier?.rank || 0) < buttonStyle.tier.rank) return;
-        customFetch('profileButtonStyle', {
+    function saveSelected(buttonStyle: ButtonStyleDTO) {
+        if (buttonStyle.tier?.rank && (client?.tier?.rank || 0) < buttonStyle.tier.rank) return;
+        customFetch('profile/buttonStyle', {
             method: 'POST',
             body: JSON.stringify(buttonStyle),
             headers: {'Content-Type': 'application/json'}
@@ -28,17 +27,26 @@ export default function ButtonStylePicker({client, setFunction, buttonStyles}: B
         });
     }
 
-    function exampleButton(): ButtonDto {
-        const button = new ButtonDto();
-        button.label = 'Example button';
-        return button;
+    function exampleButton(): ButtonDTO {
+        return {
+            label: 'Example button',
+            buttonType: ButtonType.Button,
+            image: null,
+            imageOrientation: ButtonImageOrientation.Square,
+            order: 0,
+            path: '',
+            useCost: null,
+            value: '',
+            valueAlt: null,
+            valueType: ParameterValueType.Int,
+        };
     }
 
     return (<ContentBox flexBasis="100%" loading={!client}>
         <h2>Button style</h2>
         <ButtonStyleFlex>
             {buttonStyles?.map(buttonStyle => (
-                <ButtonStylePickerStyled color={buttonStyle.tier.color} validPick={(client?.tier?.rank || 0) >= buttonStyle.tier.rank}
+                <ButtonStylePickerStyled color={buttonStyle.tier?.color} validPick={(client?.tier?.rank || 0) >= buttonStyle.tier.rank}
                                          onClick={() => saveSelected(buttonStyle)} key={buttonStyle?.className}>
                     <ParameterButton buttonStyle={buttonStyle} button={exampleButton()} />
                     <PickerOverlayTier tier={buttonStyle.tier} />

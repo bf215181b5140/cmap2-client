@@ -1,19 +1,19 @@
 import { ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
-import { AvatarDto, ButtonDto, LayoutDto, ReactProps, TierDto } from 'cmap2-shared';
+import { AvatarDTO, ButtonDTO, LayoutDTO, ReactProps, TierDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import styled from 'styled-components';
 import { AvatarReducerAction } from '../../avatars.reducer';
-import { ButtonStyleDto } from 'cmap2-shared/src';
+import { ButtonStyleDTO } from 'cmap2-shared/src';
 import AddNewButton from './addNew.button';
 import LayoutFormComponent from './layoutForm/layoutForm.component';
 
 interface LayoutComponentProps extends ReactProps {
-    layout: LayoutDto;
+    layout: LayoutDTO;
     order: number;
-    avatar: AvatarDto;
-    clientTier: TierDto;
-    buttonStyle: ButtonStyleDto;
+    avatar: AvatarDTO;
+    clientTier: TierDTO;
+    buttonStyle: ButtonStyleDTO;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
@@ -22,11 +22,11 @@ export default function LayoutComponent({layout, order, avatar, avatarDataDispat
     const navigate = useNavigate();
 
     return (<ContentBox key={layout.id} title={layout.label} flexBasis={layout.width}>
-        <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id} avatarDataDispatch={avatarDataDispatch} />
+        <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id!} avatarDataDispatch={avatarDataDispatch} />
         {layout.id &&
             <ButtonsWrapper>
-                {layout.buttons?.map((button: ButtonDto) => (
-                    <ParameterButton button={button} key={button.id} flexBasis="calc(25% - (3 * 15px / 4))" buttonStyle={buttonStyle}
+                {layout.buttons?.map((button: ButtonDTO) => (
+                    <ParameterButton button={button} key={button.id} buttonStyle={buttonStyle}
                                      onClick={() => navigate('/website/avatars/' + avatar.id + '/' + layout.id + '/' + button.id)} />
                 ))}
                 {(clientTier.buttons && (!layout.buttons || layout.buttons.length < clientTier.buttons)) &&

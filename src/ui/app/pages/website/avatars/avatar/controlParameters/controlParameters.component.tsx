@@ -1,4 +1,3 @@
-import { AvatarDto, ControlParameterDto, ControlParametersForm, FieldOption, ParameterRole, ReactProps, TierDto, ValueType } from 'cmap2-shared';
 import { FormTableStyled } from '../../../../../shared/components/form/formTable.component';
 import React, { useContext, useEffect } from 'react';
 import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
@@ -7,7 +6,6 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { ContentBoxWidth } from 'cmap2-shared/src';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { controlParametersSchema } from 'cmap2-shared/src/zodSchemas';
 import { ContentBox } from 'cmap2-shared/dist/react/';
 import { ModalContext } from '../../../../../components/mainWindow/mainWindow.componenet';
 import SubmitInput from '../../../../../shared/components/form/inputs/submit.component';
@@ -15,10 +13,11 @@ import ButtonInput from '../../../../../shared/components/form/inputs/button.com
 import HiddenInput from '../../../../../shared/components/form/inputs/hidden.component';
 import Input from '../../../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../../../shared/components/form/inputs/select.component';
+import { AvatarDTO, ControlParametersFormDTO, ControlParametersFormSchema, FieldOption, ControlParameterRole, ReactProps, TierDTO, ParameterValueType, ControlParameterDTO } from 'cmap2-shared';
 
 interface ControlParametersProps extends ReactProps {
-    selectedAvatar: AvatarDto;
-    clientTier: TierDto;
+    selectedAvatar: AvatarDTO;
+    clientTier: TierDTO;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
@@ -26,29 +25,30 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
 
     const customFetch = useCmapFetch();
     const {deleteModal} = useContext(ModalContext);
-    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ControlParametersForm>({
+    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ControlParametersFormDTO>({
         defaultValues: {
             avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []]
-        }, resolver: zodResolver(controlParametersSchema)
+        }, resolver: zodResolver(ControlParametersFormSchema)
     });
     const {fields, append, remove} = useFieldArray({control, name: 'controlParameters'});
-    const watchParameters = watch('controlParameters');
+    const watchParameters = watch('controlParameters')!;
 
     useEffect(() => {
         reset({avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []]});
     }, [selectedAvatar, selectedAvatar.controlParameters]);
 
-    function onSave(formData: ControlParametersForm) {
-        customFetch<ControlParameterDto[]>('controlParameters', {
+    function onSave(formData: ControlParametersFormDTO) {
+        customFetch<ControlParameterDTO[]>('controlParameters', {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
         }, data => {
-            avatarDataDispatch({type: 'saveControlParameters', controlParameters: data, avatarId: selectedAvatar.id});
+            avatarDataDispatch({type: 'saveControlParameters', controlParameters: data, avatarId: selectedAvatar.id!});
         });
     }
 
     function onDelete(index: number) {
+        if (!watchParameters) return;
         const param = watchParameters[index];
         if (param.id) {
             customFetch('controlParameters', {
@@ -56,7 +56,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                 body: JSON.stringify(param),
                 headers: {'Content-Type': 'application/json'}
             }, () => {
-                avatarDataDispatch({type: 'removeControlParameter', controlParameter: param, avatarId: selectedAvatar.id});
+                avatarDataDispatch({type: 'removeControlParameter', controlParameter: {...param, id: param.id!}, avatarId: selectedAvatar.id!});
             });
         } else {
             remove(index);
@@ -64,44 +64,44 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
     }
 
     function parameterRoleOptions(index: number): FieldOption[] {
-        return Object.keys(ParameterRole)
+        return Object.keys(ControlParameterRole)
             // filter out useCost and HP if clientTier doesn't support it OR there is already one selected
             .filter(key => {
-                if (key === ParameterRole.UseCost) {
+                if (key === ControlParameterRole.UseCost) {
                     return clientTier.useCost && !watchParameters.find((p,
-                        i) => p.role === ParameterRole.UseCost && i !== index);
+                        i) => p.role === ControlParameterRole.UseCost && i !== index);
                 }
-                if (key === ParameterRole.HP) return clientTier.hp && !watchParameters.find((p, i) => p.role === ParameterRole.HP && i !== index);
+                if (key === ControlParameterRole.HP) return clientTier.hp && !watchParameters.find((p, i) => p.role === ControlParameterRole.HP && i !== index);
                 return true;
-            }).map((key: string) => ({key: ParameterRole[key as keyof typeof ParameterRole], value: ParameterRole[key as keyof typeof ParameterRole]}));
+            }).map((key: string) => ({key: ControlParameterRole[key as keyof typeof ControlParameterRole], value: ControlParameterRole[key as keyof typeof ControlParameterRole]}));
     }
 
-    function valueTypeOptions(role: ParameterRole): FieldOption[] {
-        return Object.keys(ValueType).filter(key => {
-            if (role === ParameterRole.UseCost) return key === ValueType.Int;
-            if (role === ParameterRole.HP) return key === ValueType.Int;
+    function valueTypeOptions(role: ControlParameterRole): FieldOption[] {
+        return Object.keys(ParameterValueType).filter(key => {
+            if (role === ControlParameterRole.UseCost) return key === ParameterValueType.Int;
+            if (role === ControlParameterRole.HP) return key === ParameterValueType.Int;
             return true;
         }).map((key: string) => ({key: key, value: key}));
     }
 
-    function valuePrimaryPlaceholder(role: ParameterRole): string {
+    function valuePrimaryPlaceholder(role: ControlParameterRole): string {
         switch (role) {
-            case ParameterRole.Callback:
+            case ControlParameterRole.Callback:
                 return 'Value';
-            case ParameterRole.UseCost:
+            case ControlParameterRole.UseCost:
                 return 'Min cost';
-            case ParameterRole.HP:
+            case ControlParameterRole.HP:
                 return 'Min HP';
         }
     }
 
-    function valueSecondaryPlaceholder(role: ParameterRole): string {
+    function valueSecondaryPlaceholder(role: ControlParameterRole): string {
         switch (role) {
-            case ParameterRole.Callback:
+            case ControlParameterRole.Callback:
                 return 'Seconds';
-            case ParameterRole.UseCost:
+            case ControlParameterRole.UseCost:
                 return 'Max cost';
-            case ParameterRole.HP:
+            case ControlParameterRole.HP:
                 return 'Max HP';
         }
     }
@@ -110,10 +110,10 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
         <p>Utility parameters that can be used to control avatar. These aren't displayed or interactable, instead they can be used to bind to other actions
             which trigger them.</p>
         <form onSubmit={handleSubmit(onSave)}>
-            <HiddenInput name={'avatarId'} />
+            <HiddenInput register={register} name={'avatarId'} />
             <FormTableStyled>
                 <thead>
-                {watchParameters.length > 0 &&
+                {watchParameters && watchParameters.length > 0 &&
                     <tr>
                         <th>Label</th>
                         <th>Parameter role</th>
@@ -128,7 +128,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                 {fields.map((item, index) => (
                     <tr>
                         <td>
-                            <HiddenInput name={`controlParameters.${index}.id`} />
+                            <HiddenInput register={register} name={`controlParameters.${index}.id`} />
                             <Input register={register} name={`controlParameters.${index}.label`} width="180px" errors={errors} />
                         </td>
                         <td>
@@ -159,7 +159,15 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <ButtonInput text="Add new" disabled={watchParameters.length >= Math.min(8, clientTier.controlParameters)} onClick={() => append(new ControlParameterDto())} />
+                <ButtonInput text="Add new" disabled={watchParameters.length >= Math.min(8, clientTier.controlParameters)} onClick={() => append({
+                    id: null,
+                    label: '',
+                    path: '',
+                    role: ControlParameterRole.Callback,
+                    valueType: ParameterValueType.Int,
+                    valuePrimary: '',
+                    valueSecondary: null
+                })} />
                 <SubmitInput disabled={!isDirty} />
                 <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>

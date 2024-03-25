@@ -1,22 +1,20 @@
-import { AvatarDto, ButtonDto, ControlParameterDto, LayoutDto, ParameterDto } from 'cmap2-shared';
+import { AvatarDTO, ButtonDTO, ButtonFormDTO, ControlParameterDTO, LayoutDTO, UploadedFileDTO } from 'cmap2-shared';
 
-export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDto[] } |
-    { type: 'addAvatar', avatar: AvatarDto } |
-    { type: 'editAvatar', avatar: AvatarDto } |
-    { type: 'removeAvatar', avatar: AvatarDto } |
-    { type: 'saveParameters', parameters: ParameterDto[], avatarId: string } |
-    { type: 'removeParameter', parameter: ParameterDto, avatarId: string } |
-    { type: 'saveControlParameters', controlParameters: ControlParameterDto[], avatarId: string } |
-    { type: 'removeControlParameter', controlParameter: ControlParameterDto, avatarId: string } |
-    { type: 'addLayout', layout: LayoutDto, avatarId: string } |
-    { type: 'editLayout', layout: LayoutDto, avatarId: string } |
-    { type: 'removeLayout', layout: LayoutDto, avatarId: string } |
-    { type: 'addButton', button: ButtonDto, layoutId: string, avatarId: string } |
-    { type: 'editButton', button: ButtonDto, layoutId: string, avatarId: string } |
-    { type: 'removeButton', button: ButtonDto, layoutId: string, avatarId: string } |
-    { type: 'changeButtonPicture', picture: string, buttonId: string, layoutId: string, avatarId: string };
+export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDTO[] } |
+    { type: 'addAvatar', avatar: AvatarDTO } |
+    { type: 'editAvatar', avatar: AvatarDTO } |
+    { type: 'removeAvatar', avatar: AvatarDTO } |
+    { type: 'saveControlParameters', controlParameters: ControlParameterDTO[], avatarId: string } |
+    { type: 'removeControlParameter', controlParameter: ControlParameterDTO, avatarId: string } |
+    { type: 'addLayout', layout: LayoutDTO, avatarId: string } |
+    { type: 'editLayout', layout: LayoutDTO, avatarId: string } |
+    { type: 'removeLayout', layout: LayoutDTO, avatarId: string } |
+    { type: 'addButton', button: ButtonDTO, layoutId: string, avatarId: string } |
+    { type: 'editButton', button: ButtonFormDTO, layoutId: string, avatarId: string } |
+    { type: 'removeButton', button: ButtonDTO, layoutId: string, avatarId: string } |
+    { type: 'changeButtonPicture', image: UploadedFileDTO, buttonId: string, layoutId: string, avatarId: string };
 
-export default function avatarsReducer(state: AvatarDto[], action: AvatarReducerAction) {
+export default function avatarsReducer(state: AvatarDTO[], action: AvatarReducerAction) {
     switch (action.type) {
         case 'setAvatars':
             return action.avatars;
@@ -29,16 +27,6 @@ export default function avatarsReducer(state: AvatarDto[], action: AvatarReducer
             });
         case 'removeAvatar':
             return state.filter(avatar => avatar.id !== action.avatar.id);
-        case 'saveParameters':
-            return state.map(avatar => {
-                if (avatar.id === action.avatarId) avatar.parameters = action.parameters;
-                return avatar;
-            });
-        case 'removeParameter':
-            return state.map(avatar => {
-                if (avatar.id === action.avatarId) avatar.parameters = avatar.parameters?.filter(cp => cp.id !== action.parameter.id);
-                return avatar;
-            });
         case 'saveControlParameters':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) avatar.controlParameters = action.controlParameters;
@@ -89,7 +77,7 @@ export default function avatarsReducer(state: AvatarDto[], action: AvatarReducer
                     avatar.layouts = avatar.layouts?.map(layout => {
                         if (layout.id === action.layoutId) {
                             layout.buttons = layout.buttons?.map(button => {
-                                if (button.id === action.button.id) return {...button, ...action.button};
+                                if (button.id === action.button.id) return {...button, ...action.button, id: action.button.id!};
                                 return button;
                             });
                         }
@@ -114,7 +102,7 @@ export default function avatarsReducer(state: AvatarDto[], action: AvatarReducer
                     avatar.layouts = avatar.layouts?.map(layout => {
                         if (layout.id === action.layoutId) {
                             layout.buttons = layout.buttons?.map(button => {
-                                if (button.id === action.buttonId) return {...button, image: action.picture};
+                                if (button.id === action.buttonId) return {...button, image: action.image};
                                 return button;
                             });
                         }

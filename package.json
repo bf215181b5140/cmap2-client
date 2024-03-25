@@ -1,8 +1,7 @@
 {
-  "name": "cmap",
+  "name": "cmap-client",
+  "version": "2.0.0",
   "description": "VRChat utility application for OSC interactions and access to Cmap website features.",
-  "version": "1.2.0",
-  "author": "cmap",
   "private": true,
   "main": "./build/electron/electron.js",
   "scripts": {
@@ -21,7 +20,7 @@
     "remixicon": "^4.1.0",
     "socket.io-client": "^2.5.0",
     "systeminformation": "^5.18.6",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",
@@ -30,7 +29,7 @@
     "@types/react-dom": "^18.0.9",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^3.0.0",
-    "cmap2-shared": "git://github.com/bf215181b5140/cmap2-shared.git#version/1.2.0",
+    "cmap2-shared": "git://github.com/bf215181b5140/cmap2-shared.git#version/2.0.0",
     "electron": "^28.1.0",
     "electron-builder": "^24.1.1",
     "electron-store": "^8.1.0",

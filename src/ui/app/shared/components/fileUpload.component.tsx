@@ -2,14 +2,14 @@ import { globalInputStyle } from './form/input.style';
 import React, { RefObject, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import useCmapFetch from '../hooks/cmapFetch.hook';
-import { ReactProps } from 'cmap2-shared';
+import { ReactProps, UploadedFileDTO } from 'cmap2-shared';
 import styled from 'styled-components';
 
 interface FileUploadProps extends ReactProps {
     parentType: string,
     parentId: string,
     handleUpload?: (data: any) => void;
-    uploadCallback?: (picture: string) => void
+    uploadCallback?: (picture: UploadedFileDTO) => void
 }
 
 export default function FileUpload({parentType, parentId, handleUpload, uploadCallback}: FileUploadProps) {
@@ -30,7 +30,7 @@ export default function FileUpload({parentType, parentId, handleUpload, uploadCa
                 data.append('parentId', parentId);
                 data.append('file', formData.file[0]);
 
-                customFetch<string>('file', {
+                customFetch<UploadedFileDTO>('file', {
                     method: 'POST',
                     body: data
                 }, data => {

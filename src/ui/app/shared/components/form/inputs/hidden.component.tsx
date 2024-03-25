@@ -9,15 +9,15 @@ import { FieldErrors } from 'react-hook-form/dist/types/errors';
 
 interface HiddenInputProps extends ReactProps {
     name: string;
-    // register: UseFormRegister<any>;
+    register: UseFormRegister<any>;
     errors?: FieldErrors;
 }
 
-export default function HiddenInput({name, errors}: HiddenInputProps) {
+export default function HiddenInput({name, register, errors}: HiddenInputProps) {
     const [hasError, errorMessage] = useInputError(name, errors);
 
     return (<>
-        <HiddenInputStyled type="hidden" errors={hasError} />
+        <HiddenInputStyled type="hidden" {...register(name)} errors={hasError} />
         <InputErrorMessage errorMessage={errorMessage} />
     </>);
 };

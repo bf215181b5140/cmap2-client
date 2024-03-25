@@ -21,18 +21,25 @@ export default function NumberInput({name, register, decimals = 0, placeholder, 
     const [hasError, errorMessage] = useInputError(name, errors);
 
     function setValue(value: string) {
-        if (value === '') return undefined;
+        if (value === undefined) return undefined;
+        if (value === null) return null;
+        if (value === '') return null;
+        if (Number.isNaN(value)) return null;
         if (decimals === 0) return parseInt(value);
         if (decimals >= 0 && decimals <= 100) {
             const factor = Math.pow(10, decimals);
             const number = parseFloat(value);
             return Math.round(number * factor) / factor;
         }
-        return undefined;
+        return null;
+    }
+
+    function step() {
+        return Math.pow(10, -decimals);
     }
 
     return (<div>
-        <NumberInputStyled type='number' {...register(name, { setValueAs: setValue })}
+        <NumberInputStyled type='number' {...register(name, { setValueAs: setValue })} step={step()}
                      placeholder={placeholder} errors={hasError} readOnly={readOnly} width={width} />
         <InputErrorMessage errorMessage={errorMessage}/>
     </div>);

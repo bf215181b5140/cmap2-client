@@ -21,9 +21,8 @@ export default class CmapStore<T extends Record<string, any> = Record<string, un
         Object.keys(defaults).forEach(key => {
             const storeValue = this.get(storePath + key);
             if (storeValue === undefined) {
-                console.log('Setting defaults for ' + storePath + key);
                 this.set(storePath + key, defaults[key]);
-            } else if (typeof storeValue === 'object') {
+            } else if (typeof storeValue === 'object' && storeValue !== null) {
                 this.setDefaultsForObject(defaults[key], storePath + key + '.');
             }
         });

@@ -1,4 +1,4 @@
-import { AvatarDto, ButtonDto, ReactProps } from 'cmap2-shared';
+import { AvatarDTO, AvatarFormSchema, ReactProps } from 'cmap2-shared';
 import FormTable from '../../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
 import { ContentBox } from 'cmap2-shared/dist/react';
@@ -8,9 +8,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';
 import { AvatarReducerAction } from '../../avatars.reducer';
-import { avatarSchema } from 'cmap2-shared/dist/zodSchemas';
-import { EventBus } from '../../../../../shared/util/eventBus';
-import { VRChatOscAvatar } from '../../../../../../../shared/interfaces';
 import { ModalContext } from '../../../../../components/mainWindow/mainWindow.componenet';
 import HiddenInput from '../../../../../shared/components/form/inputs/hidden.component';
 import CheckboxInput from '../../../../../shared/components/form/inputs/checkbox.component';
@@ -19,22 +16,16 @@ import SubmitInput from '../../../../../shared/components/form/inputs/submit.com
 import ButtonInput from '../../../../../shared/components/form/inputs/button.component';
 
 interface AvatarSettingsProps extends ReactProps {
-    selectedAvatar: AvatarDto;
+    selectedAvatar: AvatarDTO;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
-    eventBus: EventBus<VRChatOscAvatar>;
 }
 
-export default function AvatarSettings({selectedAvatar, avatarDataDispatch, eventBus}: AvatarSettingsProps) {
+export default function AvatarSettings({selectedAvatar, avatarDataDispatch}: AvatarSettingsProps) {
 
     const customFetch = useCmapFetch();
     const {deleteModal} = useContext(ModalContext);
-    const {register, reset, formState: {errors, isDirty}, handleSubmit, setValue} = useForm({resolver: zodResolver(avatarSchema)});
+    const {register, reset, formState: {errors, isDirty}, handleSubmit, setValue} = useForm({resolver: zodResolver(AvatarFormSchema)});
     const navigate = useNavigate();
-
-    useEffect(() => {
-        eventBus.on('vrcAvatarData', fillFormFromFile);
-        return () => eventBus.off('vrcAvatarData', fillFormFromFile);
-    }, []);
 
     useEffect(() => {
         reset({
@@ -45,13 +36,8 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
         });
     }, [selectedAvatar]);
 
-    function fillFormFromFile(data: VRChatOscAvatar) {
-        setValue('label', data.name);
-        setValue('vrcId', data.id);
-    }
-
     function onSave(formData: any) {
-        customFetch<AvatarDto>('avatar', {
+        customFetch<AvatarDTO>('avatar', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
             headers: {'Content-Type': 'application/json'}
@@ -71,7 +57,7 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
         });
     }
 
-    function onDelete(avatar: AvatarDto) {
+    function onDelete(avatar: AvatarDTO) {
         customFetch('avatar', {
             method: 'DELETE',
             body: JSON.stringify(avatar),
@@ -83,8 +69,9 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch, even
     }
 
     return (<ContentBox>
+        <h2>Avatar settings</h2>
         <form onSubmit={handleSubmit(onSave)}>
-            <HiddenInput name={'id'} />
+            <HiddenInput register={register} name={'id'} />
             <FormTable>
                 <tr>
                     <th>Label</th>
