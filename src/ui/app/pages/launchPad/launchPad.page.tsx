@@ -24,18 +24,17 @@ const LaunchPadStyled = styled.div`
   flex-direction: column;
   gap: 15px;
   width: 550px;
-  
+
+  h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+  }
+
   h1 {
-    font-size: 22px;
-    margin: 0;
+    font-size: 20px;
   }
-  
+
   h2 {
-    font-size: 18px;
-    margin: 0;
-  }
-  
-  p {
-    margin: 0;
+    font-size: 16px;
   }
 `;

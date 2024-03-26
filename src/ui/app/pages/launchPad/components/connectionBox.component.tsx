@@ -9,7 +9,7 @@ interface ConnectionBoxProps extends ReactProps {
     redirectPath: string;
 }
 
-export default function ConnectionBox({icon, connected, redirectPath, children}: ConnectionBoxProps) {
+export default function ConnectionBox({ icon, connected, redirectPath, children }: ConnectionBoxProps) {
 
     const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ const ConnectionBoxStyled = styled.div<{ connected: boolean }>`
   border: 2px solid ${props => props.theme.colors.buttonPrimary.border};
   border-radius: 8px;
   transition: 0.15s linear;
-  // border-color: ${props => props.connected ? props.theme.colors.buttonPrimary.border : props.theme.colors.error};
+    // border-color: ${props => props.connected ? props.theme.colors.buttonPrimary.border : props.theme.colors.error};
   cursor: pointer;
 
   :hover {
@@ -56,17 +56,4 @@ const ChildrenStyled = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-
-  h1, h2, h3, p {
-    margin: 0;
-    padding: 0;
-  }
-
-  h1 {
-    font-size: 20px;
-  }
-
-  h2 {
-    font-size: 16px;
-  }
 `;
