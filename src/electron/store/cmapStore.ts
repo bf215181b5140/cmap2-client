@@ -5,7 +5,7 @@ export default class CmapStore<T extends Record<string, any> = Record<string, un
     constructor(options: ElectronStore.Options<T>, onInitComplete?: () => void) {
         super(options);
 
-        if (typeof options.defaults === 'object') {
+        if (typeof options.defaults === 'object' && options.defaults !== null) {
             this.setDefaultsForObject(options.defaults, '');
         }
 
