@@ -22,4 +22,10 @@ const SubmenuStyled = styled.div`
     padding: 8px;
     z-index: 10;
   }
+
+  hr {
+    border: 1px solid ${props => props.theme.colors.submenu.bg};
+    margin: 3px 5px;
+    padding: 0;
+  }
 `;
