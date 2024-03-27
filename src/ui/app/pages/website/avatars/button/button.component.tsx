@@ -42,7 +42,7 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
     const { deleteModal } = useContext(ModalContext);
     const onSaveEmitter = new EventEmitter();
     const { register, setValue, reset, formState: { errors, isDirty }, watch, handleSubmit } = useForm<ButtonFormDTO>({
-        defaultValues: { ...button, order: 0, parentId: layout.id },
+        defaultValues: { ...button, order: 0, parentId: layout.id, controlParameterId: button.controlParameter?.id || '' },
         resolver: zodResolver(ButtonFormSchema)
     });
     const [previewImage, setPreviewImage] = useState<UploadedFileDTO | null>(button.image);
@@ -139,7 +139,7 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
         </ContentBox>
         <ContentBox flexGrow={1}>
             <h2>Preview</h2>
-            <ParameterButton button={{ ...formWatch, id: button.id, image: previewImage }} buttonStyle={buttonStyle} />
+            <ParameterButton button={{ ...formWatch, id: button.id, image: previewImage, controlParameter: null }} buttonStyle={buttonStyle} />
             <br />
             <h3>Edit image</h3>
             <ButtonImageForm button={button} onSave={setButtonPicture} onLocalFile={setLocalButtonPicture} buttonEmitter={onSaveEmitter} />
