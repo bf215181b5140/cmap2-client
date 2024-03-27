@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import { ConnectionStatus, DeviceInformation, QRCodeData, QRCodeResponse, SocketIoData, SocketIoResponse, ToyCommand } from 'lovense';
-import { URL } from '../../shared/const';
+import { WEBSITE_URL } from '../../shared/const';
 import { StoreService } from '../store/store.service';
 
 export default abstract class LovenseService {
@@ -121,7 +121,7 @@ export default abstract class LovenseService {
     }
 
     private async getAuthToken(): Promise<string | void> {
-        const url = URL + '/api/lovense';
+        const url = WEBSITE_URL + '/api/lovense';
 
         const apiToken = StoreService.getClientCredentials().apiToken;
         if (!apiToken) {

@@ -10,6 +10,7 @@ import SubmenuLink from '../../shared/components/submenu/submenuLink.component';
 import { ClientCredentialsContext } from '../../App';
 import { WebsitePageDTO } from 'cmap2-shared';
 import useCmapFetch from '../../shared/hooks/cmapFetch.hook';
+import ApproveFilePage from './admin/approveFile/approveFile.page';
 
 export default function WebsitePage() {
 
@@ -18,11 +19,12 @@ export default function WebsitePage() {
     const [pageData, setPageData] = useState<WebsitePageDTO | null>(null);
 
     useEffect(() => {
-        cmapFetch<WebsitePageDTO>('websitePage', {}, data => setPageData(data));
+        if (apiToken) cmapFetch<WebsitePageDTO>('websitePage', {}, data => setPageData(data));
     }, []);
 
     useEffect(() => {
-        if (!apiToken) setPageData(null);
+        setPageData(null);
+        if (apiToken) cmapFetch<WebsitePageDTO>('websitePage', {}, data => setPageData(data));
     }, [apiToken]);
 
     return (<WebsitePageStyled>
@@ -34,7 +36,7 @@ export default function WebsitePage() {
 
             {pageData?.isAdmin && (<>
                 <hr />
-                <SubmenuLink to={'/website/approveFiles'} icon={'ri-settings-4-fill'} tooltip={'Approve file uploads'} />
+                <SubmenuLink to={'/website/approveFiles'} icon={'ri-gallery-fill'} tooltip={'Approve file uploads'} />
             </>)}
         </Submenu>
 
@@ -44,6 +46,7 @@ export default function WebsitePage() {
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
                 <Route path="/tiers" element={<TiersPage />} />
+                <Route path="/approveFiles" element={<ApproveFilePage />} />
                 <Route path="*" element={<Navigate to={'/website/connection'} />} />
             </Routes>
         </div>

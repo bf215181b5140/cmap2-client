@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { ClientCredentialsContext } from '../../App';
 import { ToastContext } from '../../components/mainWindow/mainWindow.componenet';
-import { URL } from '../../../../shared/const';
+import { WEBSITE_URL } from '../../../../shared/const';
 import { ToastType } from '../../components/toast/toast.hook';
 import { CmapApiErrorDTO } from 'cmap2-shared';
 
@@ -27,7 +27,7 @@ export default function useCmapFetch() {
             init = {...init, headers: {Authorization: '' + clientCredentials.apiToken}};
         }
 
-        const url = URL + '/api/' + urlSuffix;
+        const url = WEBSITE_URL + '/api/' + urlSuffix;
 
         return await fetch(url, init)
             // Process server response data
@@ -48,6 +48,11 @@ export default function useCmapFetch() {
 
                 if (contentType?.startsWith('text/html') || contentType?.startsWith('text/plain')) {
                     result.body = await res.text();
+                    return result;
+                }
+
+                if (contentType?.startsWith('image/')) {
+                    result.body = await res.blob();
                     return result;
                 }
 

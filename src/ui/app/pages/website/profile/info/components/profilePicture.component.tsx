@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { UploadedFileDTO } from 'cmap2-shared';
-import { URL } from '../../../../../../../shared/const';
+import { WEBSITE_URL } from '../../../../../../../shared/const';
 import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
 import React, { RefObject, useEffect, useRef } from 'react';
@@ -47,7 +47,7 @@ export default function ProfilePicture({ image, setClientPicture }: ProfilePictu
             <input type="file" id="fileInput" {...register('file')} />
             <input type="submit" ref={submitRef} />
         </form>
-        {image && <img src={URL + '/' + image.urlPath} alt={image.fileName} />}
+        {image && <img src={WEBSITE_URL + '/' + image.urlPath} alt={image.fileName} />}
         <div />
         <i className={image ? 'ri-image-edit-line' : 'ri-image-add-line'} />
     </ProfilePictureStyled>);

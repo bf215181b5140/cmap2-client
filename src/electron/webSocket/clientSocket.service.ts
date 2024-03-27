@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import { WebsocketConnection, WebsocketConnectionStatus } from '../../shared/webSocket';
 import { VrcParameter } from 'cmap2-shared';
 import { StoreService } from '../store/store.service';
-import { URL } from '../../shared/const';
+import { WEBSITE_URL } from '../../shared/const';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { BridgeService } from '../bridge/bridge.service';
 import { ClientCredentials } from '../../shared/classes';
@@ -47,7 +47,7 @@ export class ClientSocketService {
 
         if (typeof clientCredentials.apiToken !== 'string') return;
 
-        this.socket = io(URL + '/clientSocket', {
+        this.socket = io(WEBSITE_URL + '/clientSocket', {
             query: {
                 apiToken: clientCredentials.apiToken
             },
