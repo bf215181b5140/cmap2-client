@@ -36,7 +36,7 @@ export default function ApproveFilePage() {
         <ContentBox>
             <h2>Unapproved files</h2>
             <ApproveFilesWrapper ref={parent}>
-                {approveFiles.slice(0, 4).map(file => <ApproveFileImage file={file} onApprove={onApprove} onDecline={onDecline} />)}
+                {approveFiles.slice(0, 4).map(file => <ApproveFileImage file={file} onApprove={onApprove} onDecline={onDecline} key={file.id} />)}
             </ApproveFilesWrapper>
         </ContentBox>
     </Content>);
@@ -47,6 +47,7 @@ const ApproveFilesWrapper = styled.div`
   padding: 0;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 15px;
 `;
 

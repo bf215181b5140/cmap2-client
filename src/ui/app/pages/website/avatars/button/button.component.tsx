@@ -1,10 +1,10 @@
 import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, ButtonFormDTO, ButtonFormSchema, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ControlParameterRole, LayoutDTO, ParameterValueType, ReactProps, TierDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import FileUpload from '../../../../shared/components/fileUpload.component';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
@@ -22,6 +22,8 @@ import NumberInput from '../../../../shared/components/form/inputs/number.compon
 import ParameterInput from '../../../../shared/components/form/inputs/parameterInput.component';
 import { VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
 import { ControlParameterDTO } from 'cmap2-shared/src/types/controlParameters';
+import ButtonImageForm from './buttonImageForm.component';
+import EventEmitter from 'events';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDTO;
@@ -33,15 +35,17 @@ interface ButtonComponentProps extends ReactProps {
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function ButtonComponent({button, avatarDataDispatch, avatar, layout, buttonStyle, clientTier}: ButtonComponentProps) {
+export default function ButtonComponent({ button, avatarDataDispatch, avatar, layout, buttonStyle, clientTier }: ButtonComponentProps) {
 
     const navigate = useNavigate();
     const customFetch = useCmapFetch();
-    const {deleteModal} = useContext(ModalContext);
-    const {register, setValue, reset, formState: {errors, isDirty}, watch, handleSubmit} = useForm<ButtonFormDTO>({
-        defaultValues: {...button, order: 0, parentId: layout.id},
+    const { deleteModal } = useContext(ModalContext);
+    const onSaveEmitter = new EventEmitter();
+    const { register, setValue, reset, formState: { errors, isDirty }, watch, handleSubmit } = useForm<ButtonFormDTO>({
+        defaultValues: { ...button, order: 0, parentId: layout.id },
         resolver: zodResolver(ButtonFormSchema)
     });
+    const [previewImage, setPreviewImage] = useState<UploadedFileDTO | null>(button.image);
     const formWatch = watch();
 
     function onSave(formData: ButtonFormDTO) {
@@ -53,11 +57,12 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
             }
         }, (data, res) => {
             if (res.code === 201) {
-                avatarDataDispatch({type: 'addButton', button: data, avatarId: avatar.id!, layoutId: layout.id!});
-                navigate(-1);
+                avatarDataDispatch({ type: 'addButton', button: data, avatarId: avatar.id!, layoutId: layout.id! });
+                onSaveEmitter.emit('save');
+                // navigate(-1); // TODO save button as well, maybe navigate to new button URL
             } else {
-                avatarDataDispatch({type: 'editButton', button: formData, avatarId: avatar.id!, layoutId: layout.id!});
-                reset({...button, ...formData});
+                avatarDataDispatch({ type: 'editButton', button: formData, avatarId: avatar.id!, layoutId: layout.id! });
+                reset({ ...button, ...formData });
             }
         });
     }
@@ -66,17 +71,25 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         customFetch('button', {
             method: 'DELETE',
             body: JSON.stringify(button),
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         }, () => {
-            avatarDataDispatch({type: 'removeButton', button: button, avatarId: avatar.id!, layoutId: layout.id!});
+            avatarDataDispatch({ type: 'removeButton', button: button, avatarId: avatar.id!, layoutId: layout.id! });
             navigate(-1);
         });
     }
 
-    function setButtonPicture(file: UploadedFileDTO) {
-        avatarDataDispatch({type: 'changeButtonPicture', image: file, buttonId: button.id!, avatarId: avatar.id!, layoutId: layout.id!});
+    function setButtonPicture(file: UploadedFileDTO | null) {
+        avatarDataDispatch({ type: 'changeButtonPicture', image: file, buttonId: button.id!, avatarId: avatar.id!, layoutId: layout.id! });
         button.image = file;
-        // setValue('image', image);
+        setPreviewImage(file);
+    }
+
+    function setLocalButtonPicture(file?: File | null) {
+        if (file) {
+            setPreviewImage({ fileName: file.name, urlPath: URL.createObjectURL(file) });
+        } else {
+            setPreviewImage(button.image);
+        }
     }
 
     function setFormDataFromOsc(data: ButtonDTO) {
@@ -85,8 +98,9 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
     }
 
     function controlParameterOptions() {
-        const controlParameters = avatar.controlParameters?.filter((cp: ControlParameterDTO) => cp.role === ControlParameterRole.Callback).map((cp: ControlParameterDTO) => ({key: cp.id!, value: cp.label})) || [];
-        return [{key: '', value: ''}, ...controlParameters];
+        const controlParameters = avatar.controlParameters?.filter((cp: ControlParameterDTO) => cp.role === ControlParameterRole.Callback)
+            .map((cp: ControlParameterDTO) => ({ key: cp.id!, value: cp.label })) || [];
+        return [{ key: '', value: '' }, ...controlParameters];
     }
 
     function setValueTypeFromParameterSelection(param: VrcOscAvatarParameterProperties) {
@@ -125,10 +139,10 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
         </ContentBox>
         <ContentBox flexGrow={1}>
             <h2>Preview</h2>
-            <ParameterButton button={{...formWatch, id: button.id, image: button.image}} buttonStyle={buttonStyle} />
+            <ParameterButton button={{ ...formWatch, id: button.id, image: previewImage }} buttonStyle={buttonStyle} />
             <br />
-            {button.id && formWatch.buttonType !== ButtonType.Slider &&
-                <FileUpload parentType="button" parentId={button?.id} uploadCallback={setButtonPicture} />}
+            <h3>Edit image</h3>
+            <ButtonImageForm button={button} onSave={setButtonPicture} onLocalFile={setLocalButtonPicture} buttonEmitter={onSaveEmitter} />
         </ContentBox>
         <ContentBox>
             <form onSubmit={handleSubmit(onSave)}>
@@ -174,8 +188,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                         <th>Image orientation</th>
                         <td>
                             <SelectInput options={enumToInputOptions(ButtonImageOrientation)} register={register}
-                                         name={'imageOrientation'}
-                                         errors={errors} readOnly={!button.image} />
+                                         name={'imageOrientation'} errors={errors} />
                         </td>
                     </tr>
                     <tr>
@@ -188,7 +201,7 @@ export default function ButtonComponent({button, avatarDataDispatch, avatar, lay
                     <tr>
                         <th>Button use cost</th>
                         <td>
-                            <NumberInput register={register} name={'useCost'} errors={errors} readOnly={!clientTier.useCost} />
+                            <NumberInput register={register} name={'useCost'} errors={errors} readOnly={!clientTier.useCost} width="130px" />
                         </td>
                     </tr>
                 </FormTable>

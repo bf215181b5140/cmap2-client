@@ -12,7 +12,7 @@ export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDTO[] } |
     { type: 'addButton', button: ButtonDTO, layoutId: string, avatarId: string } |
     { type: 'editButton', button: ButtonFormDTO, layoutId: string, avatarId: string } |
     { type: 'removeButton', button: ButtonDTO, layoutId: string, avatarId: string } |
-    { type: 'changeButtonPicture', image: UploadedFileDTO, buttonId: string, layoutId: string, avatarId: string };
+    { type: 'changeButtonPicture', image: UploadedFileDTO | null, buttonId: string, layoutId: string, avatarId: string };
 
 export default function avatarsReducer(state: AvatarDTO[], action: AvatarReducerAction) {
     switch (action.type) {

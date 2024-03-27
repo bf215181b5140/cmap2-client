@@ -22,7 +22,7 @@ export default function TiersPage() {
         <ContentBox loading={!tiers || !clientTier}>
             <TiersPageStyled>
                 {(tiers && clientTier) && tiers.map(tier => (
-                    <Tier current={tier.tier === clientTier.tier}>
+                    <Tier current={tier.tier === clientTier.tier} key={tier.tier}>
                         {tier.tier === clientTier.tier && <h3>current</h3>}
                         <h2>
                             <Icon icon="ri-medal-fill" color={tier.color} />

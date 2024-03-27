@@ -6,7 +6,7 @@ import { UseFormRegister, UseFormSetValue } from 'react-hook-form/dist/types/for
 import InputErrorMessage from '../inputErrorMessage.component';
 import useInputError from '../hooks/inputError.hook';
 import { FieldErrors } from 'react-hook-form/dist/types/errors';
-import SearchButton from '../../buttons/searchButton.component';
+import IconButton from '../../buttons/searchButton.component';
 import { VrcOscAvatar, VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
 import { SelectInputStyled } from './select.component';
 
@@ -139,7 +139,7 @@ export default function ParameterInput({name, register, setValue, defaultAvatarI
         </div>
 
         {/* Toggle dropdown for parameters */}
-        <SearchButton onClick={onToggleDropdown} disabled={readOnly} />
+        <IconButton icon={'ri-menu-search-line'} onClick={onToggleDropdown} disabled={readOnly} />
 
         {showDropdown && <SelectionStyled ref={dropdownRef} style={dropdownPosition}>
 

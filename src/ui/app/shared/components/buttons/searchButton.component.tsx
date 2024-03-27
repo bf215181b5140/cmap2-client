@@ -3,16 +3,17 @@ import { useContext } from 'react';
 import { ModalContext } from '../../../components/mainWindow/mainWindow.componenet';
 import { globalInputStyle } from '../form/input.style';
 
-interface SearchButtonProps {
+interface IconButtonProps {
+    icon: string;
     onClick: () => void;
     disabled?: boolean;
     className?: string;
 }
 
-export default function SearchButton({onClick, disabled, className}: SearchButtonProps) {
+export default function IconButton({icon, onClick, disabled, className}: IconButtonProps) {
 
     return (<SearchButtonStyled onClick={onClick} disabled={!!disabled} className={className}>
-        <i className={'ri-menu-search-line'} />
+        <i className={icon} />
     </SearchButtonStyled>);
 }
 

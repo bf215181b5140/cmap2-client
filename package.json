@@ -14,8 +14,10 @@
   "dependencies": {
     "@formkit/auto-animate": "^0.8.1",
     "@hookform/resolvers": "^2.9.11",
+    "@types/events": "^3.0.3",
     "@types/socket.io": "^2.1.13",
     "@types/socket.io-client": "^1.4.36",
+    "events": "^3.3.0",
     "node-osc": "^8.0.6",
     "remixicon": "^4.1.0",
     "socket.io-client": "^2.5.0",

@@ -126,7 +126,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                 </thead>
                 <tbody>
                 {fields.map((item, index) => (
-                    <tr>
+                    <tr key={index}>
                         <td>
                             <HiddenInput register={register} name={`controlParameters.${index}.id`} />
                             <Input register={register} name={`controlParameters.${index}.label`} width="180px" errors={errors} />

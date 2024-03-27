@@ -30,8 +30,8 @@ const ApproveFileImageStyled = styled.div`
   border-radius: 8px;
   position: relative;
   min-height: 100px;
-  min-width: 200px;
-  max-width: 50%;
+  min-width: 120px;
+  max-width: calc(50% - 15px);
   cursor: pointer;
   transition: 0.1s linear;
 
