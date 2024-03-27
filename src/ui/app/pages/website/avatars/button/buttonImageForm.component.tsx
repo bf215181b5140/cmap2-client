@@ -26,9 +26,15 @@ export default function ButtonImageForm({ button, onSave, buttonEmitter, onLocal
     useImperativeHandle(ref, () => inputRef.current);
 
     useEffect(() => {
-        buttonEmitter.on('save', () => {
+        function onNewButtonSave(data: ButtonDTO) {
+            button.id = data.id;
             submitRef.current?.click();
-        });
+        }
+        buttonEmitter.on('save', onNewButtonSave);
+
+        return () => {
+            buttonEmitter.removeListener('save', onNewButtonSave)
+        }
     }, []);
 
     useEffect(() => {

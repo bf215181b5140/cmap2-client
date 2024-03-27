@@ -49,5 +49,6 @@ const ApproveFilesWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 15px;
+  align-items: flex-start;
 `;
 

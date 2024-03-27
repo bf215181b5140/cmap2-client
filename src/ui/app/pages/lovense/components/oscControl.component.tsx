@@ -3,7 +3,7 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { ToyCommandOscMessageForm, ToyCommandOscMessageFormSchema } from '../../../../../shared/lovense';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import React, { useContext, useEffect } from 'react';
-import { FieldOption, ValueType } from 'cmap2-shared';
+import { FieldOption, ParameterValueType } from 'cmap2-shared';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { FormTableStyled } from '../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
@@ -39,7 +39,7 @@ export default function OscControl({toyList}: ToyControlProps) {
         append({
             toy: '',
             parameterPath: '',
-            valueType: ValueType.Bool,
+            valueType: ParameterValueType.Bool,
         });
     }
 
@@ -49,7 +49,7 @@ export default function OscControl({toyList}: ToyControlProps) {
     }
 
     function valueTypeOptions(): FieldOption[] {
-        return Object.keys(ValueType).map((key: string) => ({key: ValueType[key as keyof typeof ValueType], value: ValueType[key as keyof typeof ValueType]}));
+        return Object.keys(ParameterValueType).map((key: string) => ({key: ParameterValueType[key as keyof typeof ParameterValueType], value: ParameterValueType[key as keyof typeof ParameterValueType]}));
     }
 
     return (<ContentBox title="Osc control" show={false}>

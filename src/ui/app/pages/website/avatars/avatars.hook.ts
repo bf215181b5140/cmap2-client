@@ -60,6 +60,7 @@ export default function useAvatarPage() {
         if (routeParams.avatarId && routeParams.layoutId && routeParams.buttonId) {
             if (routeParams.buttonId === 'new') {
                 setButton({
+                    controlParameter: null,
                     buttonType: ButtonType.Button,
                     id: '',
                     image: null,

@@ -1,7 +1,7 @@
 import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, ButtonFormDTO, ButtonFormSchema, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ControlParameterRole, LayoutDTO, ParameterValueType, ReactProps, TierDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { useForm, Controller } from 'react-hook-form';
@@ -40,7 +40,7 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
     const navigate = useNavigate();
     const customFetch = useCmapFetch();
     const { deleteModal } = useContext(ModalContext);
-    const onSaveEmitter = new EventEmitter();
+    const [onSaveEmitter] = useState(new EventEmitter());
     const { register, setValue, reset, formState: { errors, isDirty }, watch, handleSubmit } = useForm<ButtonFormDTO>({
         defaultValues: { ...button, order: 0, parentId: layout.id, controlParameterId: button.controlParameter?.id || '' },
         resolver: zodResolver(ButtonFormSchema)
@@ -58,11 +58,11 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
         }, (data, res) => {
             if (res.code === 201) {
                 avatarDataDispatch({ type: 'addButton', button: data, avatarId: avatar.id!, layoutId: layout.id! });
-                onSaveEmitter.emit('save');
-                // navigate(-1); // TODO save button as well, maybe navigate to new button URL
+                onSaveEmitter.emit('save', data);
+                navigate(-1);
             } else {
                 avatarDataDispatch({ type: 'editButton', button: formData, avatarId: avatar.id!, layoutId: layout.id! });
-                reset({ ...button, ...formData });
+                navigate(-1);
             }
         });
     }
