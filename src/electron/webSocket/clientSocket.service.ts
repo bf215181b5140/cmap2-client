@@ -25,7 +25,7 @@ export class ClientSocketService {
         TypedIpcMain.on('connectSocket', () => this.connect(StoreService.getClientCredentials()));
         TypedIpcMain.on('disconnectSocket', () => this.disconnect());
 
-        BridgeService.on('oscActivity', (isActive) => this.sendData('activity', isActive));
+        BridgeService.on('isVrchatRunning', (data) => this.sendData('isVrchatRunning', data));
         BridgeService.on('vrcParameter', (vrcParameter: VrcParameter) => {
             if (vrcParameter.path.indexOf('/avatar/change') !== -1) {
                 this.sendParameter('avatar', vrcParameter);

@@ -29,17 +29,9 @@ export class OscController extends OscService {
         TypedIpcMain.handle('getTrackedParameters', async () => this.trackedParameters);
 
         BridgeService.on('sendOscMessage', (message: Message) => this.send(message));
-        BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
 
-        // todo
-        // temp oscActivity checker for current website version
-        // redo this into a vrchat detector event
-        setInterval(() => {
-            if (this.lastActivity < Date.now() - 240000) {
-              this.isActive = false;
-              BridgeService.emit('oscActivity', this.isActive);
-            }
-        }, 60000);
+        // Currently nothing subscribes to this
+        // BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
     }
 
     /**
@@ -51,7 +43,9 @@ export class OscController extends OscService {
         this.lastActivity = Date.now();
         if (!this.isActive) {
             this.isActive = true;
-            BridgeService.emit('oscActivity', this.isActive);
+
+            // Currently nothing subscribes to this
+            // BridgeService.emit('oscActivity', this.isActive);
         }
     }
 

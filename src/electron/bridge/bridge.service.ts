@@ -10,6 +10,7 @@ type MessageEvents = {
     clientCredentials: (clientCredentials: ClientCredentials) => void;
     getOscActivity: () => void;
     oscActivity: (isActive: boolean) => void;
+    isVrchatRunning: (isVrchatRunning: boolean | null) => void;
 }
 
 export const BridgeService = new EventEmitter() as TypedEmitter<MessageEvents>;

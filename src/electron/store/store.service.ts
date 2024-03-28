@@ -63,7 +63,7 @@ export class StoreService {
     }
 
     public static setGeneralSettings(data: GeneralSettings) {
-        this.store.set('settings.websocket', data);
+        this.store.set('settings.general', data);
     }
 
     public static getWebsocketSettings() {

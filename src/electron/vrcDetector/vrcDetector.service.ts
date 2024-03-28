@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { GeneralSettings } from '../../shared/types/settings';
 import { StoreService } from '../store/store.service';
+import { BridgeService } from '../bridge/bridge.service';
 
 export default class VrcDetectorService {
     private intervalId: NodeJS.Timeout | null = null;
@@ -19,7 +20,9 @@ export default class VrcDetectorService {
 
     isVrcRunning() {
         if (!this.enableVrcDetector) {
+            // null means we're not tracking
             TypedIpcMain.emit('isVrchatRunning', null);
+            BridgeService.emit('isVrchatRunning', null);
             return;
         }
 
@@ -30,8 +33,10 @@ export default class VrcDetectorService {
 
             if (stdout.toLowerCase().includes(this.processName.toLowerCase())) {
                 TypedIpcMain.emit('isVrchatRunning', true);
+                BridgeService.emit('isVrchatRunning', true);
             } else {
                 TypedIpcMain.emit('isVrchatRunning', false);
+                BridgeService.emit('isVrchatRunning', false);
             }
         });
     }
@@ -48,6 +53,9 @@ export default class VrcDetectorService {
         } else {
             // clear old interval if exists
             if (this.intervalId !== null) clearInterval(this.intervalId);
+            // Emmit that we are not tracking
+            TypedIpcMain.emit('isVrchatRunning', null);
+            BridgeService.emit('isVrchatRunning', null);
         }
     }
 }

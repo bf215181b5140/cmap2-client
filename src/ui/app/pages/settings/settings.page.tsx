@@ -20,6 +20,7 @@ export default function SettingsPage() {
 
     function onSubmit(formData: GeneralSettings) {
         window.electronAPI.send('setGeneralSettings', formData);
+        reset(formData)
     }
 
     return (<Content flexDirection="column">
