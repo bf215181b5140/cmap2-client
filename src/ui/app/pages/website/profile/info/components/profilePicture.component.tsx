@@ -4,6 +4,7 @@ import { WEBSITE_URL } from '../../../../../../../shared/const';
 import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
 import React, { RefObject, useEffect, useRef } from 'react';
+import useFileValidation from '../../../../../shared/hooks/fileValidation.hook';
 
 interface ProfilePictureProps {
     image: UploadedFileDTO | null;
@@ -13,14 +14,16 @@ interface ProfilePictureProps {
 export default function ProfilePicture({ image, setClientPicture }: ProfilePictureProps) {
 
     const customFetch = useCmapFetch();
+    const validateFile = useFileValidation();
     const { register, watch, reset, handleSubmit } = useForm<{ file: FileList }>();
     const submitRef: RefObject<HTMLInputElement> = useRef(null);
+    const file = watch('file')?.item(0);
 
     useEffect(() => {
-        if (watch('file').length === 1 && submitRef?.current) {
-            submitRef?.current?.click();
+        if (file && submitRef?.current) {
+            validateFile(file, 'image', () => submitRef?.current?.click(), () => reset())
         }
-    }, [watch('file')]);
+    }, [file]);
 
     function onSubmit(formData: any) {
         if (formData.file[0]) {

@@ -6,6 +6,7 @@ import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import styled from 'styled-components';
 import EventEmitter from 'events';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
+import useFileValidation from '../../../../shared/hooks/fileValidation.hook';
 
 interface ButtonImageFormProps {
     button: ButtonDTO;
@@ -17,7 +18,8 @@ interface ButtonImageFormProps {
 export default function ButtonImageForm({ button, onSave, buttonEmitter, onLocalFile }: ButtonImageFormProps) {
 
     const customFetch = useCmapFetch();
-    const { register, watch, reset, handleSubmit } = useForm<{ file: FileList }>();
+    const validateFile = useFileValidation();
+    const { register, watch, reset, handleSubmit } = useForm<{ file: FileList | null }>();
     const { ref, ...fileRegister } = register('file');
     const inputRef: RefObject<HTMLInputElement> = useRef(null);
     const submitRef: RefObject<HTMLInputElement> = useRef(null);
@@ -30,15 +32,20 @@ export default function ButtonImageForm({ button, onSave, buttonEmitter, onLocal
             button.id = data.id;
             submitRef.current?.click();
         }
+
         buttonEmitter.on('save', onNewButtonSave);
 
         return () => {
-            buttonEmitter.removeListener('save', onNewButtonSave)
-        }
+            buttonEmitter.removeListener('save', onNewButtonSave);
+        };
     }, []);
 
     useEffect(() => {
-        onLocalFile(file);
+        if (file) {
+            validateFile(file, 'image', () => onLocalFile(file), () => reset());
+        } else {
+            onLocalFile(file);
+        }
     }, [file]);
 
     function onSubmit(formData: any) {
@@ -65,7 +72,7 @@ export default function ButtonImageForm({ button, onSave, buttonEmitter, onLocal
             customFetch<UploadedFileDTO>('button/image', {
                 method: 'DELETE',
                 body: JSON.stringify({ id: button.id }),
-                headers: {'Content-Type': 'application/json'}
+                headers: { 'Content-Type': 'application/json' }
             }, () => {
                 onSave(null);
                 reset();
