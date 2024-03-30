@@ -6,17 +6,17 @@ import AvatarComponent from './avatar/avatar.component';
 
 export default function AvatarsPage() {
 
-    const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle} = useAvatarPage();
+    const {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle, interactionKeys} = useAvatarPage();
 
-    if (clientTier && clientButtonStyle) {
+    if (clientTier && clientButtonStyle && interactionKeys) {
         if (selectedAvatar && selectedLayout && selectedButton) {
             return (<ButtonComponent button={selectedButton} layout={selectedLayout} avatar={selectedAvatar} buttonStyle={clientButtonStyle}
-                                     avatarDataDispatch={avatarDataDispatch} clientTier={clientTier} />);
+                                     interactionKeys={interactionKeys} avatarDataDispatch={avatarDataDispatch} clientTier={clientTier} />);
         } else {
             return (<Content flexDirection={'row'}>
                 <AvatarsMenu avatars={avatars} selectedAvatar={selectedAvatar} clientTier={clientTier} />
                 {selectedAvatar && <AvatarComponent selectedAvatar={selectedAvatar} clientTier={clientTier} buttonStyle={clientButtonStyle}
-                                                    avatarDataDispatch={avatarDataDispatch} />}
+                                                    interactionKeys={interactionKeys} avatarDataDispatch={avatarDataDispatch} />}
             </Content>);
         }
     } else {

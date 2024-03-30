@@ -10,7 +10,7 @@ export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDTO[] } |
     { type: 'editLayout', layout: LayoutDTO, avatarId: string } |
     { type: 'removeLayout', layout: LayoutDTO, avatarId: string } |
     { type: 'addButton', button: ButtonDTO, layoutId: string, avatarId: string } |
-    { type: 'editButton', button: ButtonFormDTO, layoutId: string, avatarId: string } |
+    { type: 'editButton', button: ButtonDTO, layoutId: string, avatarId: string } |
     { type: 'removeButton', button: ButtonDTO, layoutId: string, avatarId: string } |
     { type: 'changeButtonPicture', image: UploadedFileDTO | null, buttonId: string, layoutId: string, avatarId: string };
 

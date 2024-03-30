@@ -24,6 +24,7 @@ import { VrcOscAvatarParameterProperties } from '../../../../../../shared/types/
 import { ControlParameterDTO } from 'cmap2-shared/src/types/controlParameters';
 import ButtonImageForm from './buttonImageForm.component';
 import EventEmitter from 'events';
+import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDTO;
@@ -32,17 +33,20 @@ interface ButtonComponentProps extends ReactProps {
     avatar: AvatarDTO;
     buttonStyle: ButtonStyleDTO;
     clientTier: TierDTO;
+    interactionKeys: InteractionKeyDTO[];
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function ButtonComponent({ button, avatarDataDispatch, avatar, layout, buttonStyle, clientTier }: ButtonComponentProps) {
+export default function ButtonComponent({ button, avatarDataDispatch, avatar, layout, buttonStyle, clientTier, interactionKeys }: ButtonComponentProps) {
 
     const navigate = useNavigate();
     const customFetch = useCmapFetch();
     const { deleteModal } = useContext(ModalContext);
     const [onSaveEmitter] = useState(new EventEmitter());
     const { register, setValue, reset, formState: { errors, isDirty }, watch, handleSubmit } = useForm<ButtonFormDTO>({
-        defaultValues: { ...button, order: 0, parentId: layout.id, controlParameterId: button.controlParameter?.id || '' },
+        defaultValues: {
+            ...button, order: 0, parentId: layout.id, controlParameterId: button.controlParameter?.id || '', interactionKeyId: button.interactionKey?.id
+        },
         resolver: zodResolver(ButtonFormSchema)
     });
     const [previewImage, setPreviewImage] = useState<UploadedFileDTO | null>(button.image);
@@ -61,7 +65,7 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
                 onSaveEmitter.emit('save', data);
                 navigate(-1);
             } else {
-                avatarDataDispatch({ type: 'editButton', button: formData, avatarId: avatar.id!, layoutId: layout.id! });
+                avatarDataDispatch({ type: 'editButton', button: data, avatarId: avatar.id!, layoutId: layout.id! });
                 navigate(-1);
             }
         });
@@ -202,6 +206,13 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
                         <th>Button use cost</th>
                         <td>
                             <NumberInput register={register} name={'useCost'} errors={errors} readOnly={!clientTier.useCost} width="130px" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Interaction key</th>
+                        <td>
+                            <SelectInput options={[{ key: '', value: '' }, ...interactionKeys.map(k => ({ key: k.id!, value: k.label }))]}
+                                         register={register} name={'interactionKeyId'} errors={errors} />
                         </td>
                     </tr>
                 </FormTable>

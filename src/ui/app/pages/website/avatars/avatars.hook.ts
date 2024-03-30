@@ -3,6 +3,7 @@ import { AvatarDTO, AvatarPageDTO, ButtonDTO, ButtonImageOrientation, ButtonStyl
 import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 import { useNavigate, useParams } from 'react-router-dom';
 import avatarsReducer from './avatars.reducer';
+import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
 
 export default function useAvatarPage() {
 
@@ -15,6 +16,7 @@ export default function useAvatarPage() {
     const [selectedAvatar, setAvatar] = useState<AvatarDTO | undefined>(undefined);
     const [selectedLayout, setLayout] = useState<LayoutDTO | undefined>(undefined);
     const [selectedButton, setButton] = useState<ButtonDTO | undefined>(undefined);
+    const [interactionKeys, setInteractionKeys] = useState<InteractionKeyDTO[] | undefined>(undefined);
 
     useEffect(() => {
         customFetch<AvatarPageDTO>('avatar', {}, data => {
@@ -22,6 +24,7 @@ export default function useAvatarPage() {
             setClientTier(data.tier);
             setClientButtonStyle(data.buttonStyle);
             setDefaultOrFirstAvatar(data.avatars);
+            setInteractionKeys(data.interactionKeys);
         });
     }, []);
 
@@ -82,5 +85,5 @@ export default function useAvatarPage() {
         }
     }, [routeParams]);
 
-    return {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle};
+    return {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle, interactionKeys};
 }

@@ -7,6 +7,7 @@ import { AvatarReducerAction } from '../../avatars.reducer';
 import { ButtonStyleDTO } from 'cmap2-shared/src';
 import AddNewButton from './addNew.button';
 import LayoutFormComponent from './layoutForm/layoutForm.component';
+import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
 
 interface LayoutComponentProps extends ReactProps {
     layout: LayoutDTO;
@@ -14,15 +15,16 @@ interface LayoutComponentProps extends ReactProps {
     avatar: AvatarDTO;
     clientTier: TierDTO;
     buttonStyle: ButtonStyleDTO;
+    interactionKeys: InteractionKeyDTO[];
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function LayoutComponent({layout, order, avatar, avatarDataDispatch, clientTier, buttonStyle}: LayoutComponentProps) {
+export default function LayoutComponent({layout, order, avatar, avatarDataDispatch, clientTier, buttonStyle, interactionKeys}: LayoutComponentProps) {
 
     const navigate = useNavigate();
 
     return (<ContentBox key={layout.id} title={layout.label} flexBasis={layout.width}>
-        <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id!} avatarDataDispatch={avatarDataDispatch} />
+        <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id!} interactionKeys={interactionKeys} avatarDataDispatch={avatarDataDispatch} />
         {layout.id &&
             <ButtonsWrapper>
                 {layout.buttons?.map((button: ButtonDTO) => (

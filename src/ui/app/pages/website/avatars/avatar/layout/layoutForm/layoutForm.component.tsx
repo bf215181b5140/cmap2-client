@@ -13,23 +13,27 @@ import HiddenInput from '../../../../../../shared/components/form/inputs/hidden.
 import ButtonInput from '../../../../../../shared/components/form/inputs/button.component';
 import SelectInput from '../../../../../../shared/components/form/inputs/select.component';
 import Input from '../../../../../../shared/components/form/inputs/input.component';
+import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
+import { LayoutFormDTO } from 'cmap2-shared/src/types/layout';
 
 interface LayoutFormComponentProps extends ReactProps {
     layout: LayoutDTO;
     order: number;
     avatarId: string;
+    interactionKeys: InteractionKeyDTO[];
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function LayoutFormComponent({layout, order, avatarId, avatarDataDispatch}: LayoutFormComponentProps) {
+export default function LayoutFormComponent({layout, order, avatarId, interactionKeys, avatarDataDispatch}: LayoutFormComponentProps) {
 
     const {deleteModal} = useContext(ModalContext);
-    const {register, formState: {errors, isDirty}, reset, handleSubmit} = useForm({
+    const {register, formState: {errors, isDirty}, reset, handleSubmit} = useForm<LayoutFormDTO>({
         defaultValues: {
             id: layout.id,
             label: layout.label,
             order: order,
             width: layout.width,
+            interactionKeyId: layout.interactionKey?.id,
             parentId: avatarId
         }, resolver: zodResolver(LayoutFormSchema)
     });
@@ -40,7 +44,7 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
         reset();
     }, [avatarId]);
 
-    function onSave(formData: any) {
+    function onSave(formData: LayoutFormDTO) {
         customFetch<LayoutDTO>('layout', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
@@ -50,12 +54,14 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
                 avatarDataDispatch({type: 'addLayout', layout: data, avatarId: avatarId});
                 setEditing(false);
             } else {
-                avatarDataDispatch({type: 'editLayout', layout: formData, avatarId: avatarId});
+                avatarDataDispatch({type: 'editLayout', layout: data, avatarId: avatarId});
                 reset({
-                    id: formData.id,
-                    label: formData.label,
+                    id: data.id,
+                    label: data.label,
                     order: order,
-                    parentId: formData.id
+                    width: data.width,
+                    interactionKeyId: data.interactionKey?.id,
+                    parentId: avatarId
                 });
             }
         });
@@ -93,6 +99,13 @@ export default function LayoutFormComponent({layout, order, avatarId, avatarData
                         <td>
                             <SelectInput options={enumToInputOptions(LayoutWidth)} register={register} name={'width'}
                                          errors={errors} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Interaction key</th>
+                        <td>
+                            <SelectInput options={[{ key: '', value: '' }, ...interactionKeys.map(k => ({ key: k.id!, value: k.label }))]}
+                                         register={register} name={'interactionKeyId'} errors={errors} />
                         </td>
                     </tr>
                 </FormTable>

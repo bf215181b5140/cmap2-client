@@ -4,15 +4,17 @@ import { AvatarReducerAction } from '../avatars.reducer';
 import LayoutComponent from './layout/layout.component';
 import AvatarSettings from './avatarSettings/avatarSettings.component';
 import ControlParameters from './controlParameters/controlParameters.component';
+import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
 
 interface AvatarComponentProps extends ReactProps {
     selectedAvatar: AvatarDTO;
     clientTier: TierDTO;
     buttonStyle: ButtonStyleDTO;
+    interactionKeys: InteractionKeyDTO[];
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function AvatarComponent({selectedAvatar, clientTier, buttonStyle, avatarDataDispatch}: AvatarComponentProps) {
+export default function AvatarComponent({selectedAvatar, clientTier, buttonStyle, interactionKeys, avatarDataDispatch}: AvatarComponentProps) {
 
     return (<>
         <AvatarSettings selectedAvatar={selectedAvatar} avatarDataDispatch={avatarDataDispatch} />
@@ -20,7 +22,7 @@ export default function AvatarComponent({selectedAvatar, clientTier, buttonStyle
         <h1 style={{flexBasis: '100%'}}>Website buttons</h1>
         {selectedAvatar.id && selectedAvatar.layouts?.map((layout: LayoutDTO, index: number) => (
             <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}
-                             avatarDataDispatch={avatarDataDispatch} buttonStyle={buttonStyle} />))
+                             interactionKeys={interactionKeys} avatarDataDispatch={avatarDataDispatch} buttonStyle={buttonStyle} />))
         }
         {selectedAvatar.id && clientTier.layouts && (!selectedAvatar.layouts || selectedAvatar.layouts.length < clientTier.layouts) &&
             <LayoutComponent layout={{
@@ -28,7 +30,7 @@ export default function AvatarComponent({selectedAvatar, clientTier, buttonStyle
                 label: '',
                 order: 0,
                 width: LayoutWidth.None
-            }} avatar={selectedAvatar} order={(selectedAvatar.layouts?.length || 0) + 1}
+            }} avatar={selectedAvatar} order={(selectedAvatar.layouts?.length || 0) + 1} interactionKeys={interactionKeys}
                              clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} buttonStyle={buttonStyle} />
         }
     </>);

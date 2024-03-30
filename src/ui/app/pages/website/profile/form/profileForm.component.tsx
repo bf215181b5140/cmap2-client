@@ -13,10 +13,10 @@ import InfoTooltipIcon from '../../../../shared/components/infoTooltipIcon.compo
 
 interface ProfileFormProps {
     client: ClientDTO;
-    setClient: Dispatch<SetStateAction<ClientDTO | null>>;
+    setClientInfo: (client: ClientDTO) => void;
 }
 
-export default function ProfileForm({ client, setClient }: ProfileFormProps) {
+export default function ProfileForm({ client, setClientInfo }: ProfileFormProps) {
 
     const customFetch = useCmapFetch();
     const { register, reset, formState: { errors, isDirty }, handleSubmit } = useForm({
@@ -30,7 +30,7 @@ export default function ProfileForm({ client, setClient }: ProfileFormProps) {
             body: JSON.stringify(formData),
             headers: { 'Content-Type': 'application/json' }
         }, data => {
-            setClient(data);
+            setClientInfo(data);
             reset({
                 displayName: data.displayName,
                 bio: data.bio,
@@ -47,7 +47,11 @@ export default function ProfileForm({ client, setClient }: ProfileFormProps) {
                 <td colSpan={2}><Input register={register} name={'displayName'} errors={errors} /></td>
             </tr>
             <tr>
-                <th>Bio</th>
+                <th>
+                    <InfoTooltipIcon title={'Displayed on the website in your profile'}>
+                        Bio/message
+                    </InfoTooltipIcon>
+                </th>
                 <td colSpan={2}><TextareaInput register={register} name={'bio'} errors={errors} width={'400px'} /></td>
             </tr>
             <tr>

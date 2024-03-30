@@ -5,10 +5,11 @@ import ButtonStylePicker from './buttonStylePicker/buttonStylePicker';
 import BackgroundPicker from './backgroundPicker/backgroundPicker.component';
 import ProfileForm from './form/profileForm.component';
 import ProfileInfo from './info/profileInfo.component';
+import InteractionKeys from './interactionKeys/interactionKeys.component';
 
 export default function ProfilePage() {
 
-    const { client, backgrounds, buttonStyles, setClient, setClientPicture, setClientBackground, setClientButtonStyle } = useProlfilePage();
+    const { client, backgrounds, buttonStyles, setClientInfo, setClientPicture, setInteractionKeys, setClientBackground, setClientButtonStyle } = useProlfilePage();
 
     return (
         <Content>
@@ -17,8 +18,10 @@ export default function ProfilePage() {
             </ContentBox>
 
             <ContentBox loading={ !client } flexGrow={3}>
-                { client && <ProfileForm client={ client } setClient={ setClient } /> }
+                { client && <ProfileForm client={ client } setClientInfo={ setClientInfo } /> }
             </ContentBox>
+
+            {client && <InteractionKeys client={client} interactionKeys={client.interactionKeys || []} setInteractionKeys={setInteractionKeys} />}
 
             <BackgroundPicker client={ client } setFunction={ setClientBackground } backgrounds={ backgrounds } />
             <ButtonStylePicker client={ client } setFunction={ setClientButtonStyle } buttonStyles={ buttonStyles } />
