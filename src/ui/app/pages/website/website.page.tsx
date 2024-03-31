@@ -11,6 +11,7 @@ import { ClientCredentialsContext } from '../../App';
 import { WebsitePageDTO } from 'cmap2-shared';
 import useCmapFetch from '../../shared/hooks/cmapFetch.hook';
 import ApproveFilePage from './admin/approveFile/approveFile.page';
+import ClientVersionsPage from './admin/clientVersions/clientVersions.page';
 
 export default function WebsitePage() {
 
@@ -37,6 +38,7 @@ export default function WebsitePage() {
             {pageData?.isAdmin && (<>
                 <hr />
                 <SubmenuLink to={'/website/approveFiles'} icon={'ri-gallery-fill'} tooltip={'Approve file uploads'} />
+                <SubmenuLink to={'/website/clientVersions'} icon={'ri-git-branch-line'} tooltip={'Client versions'} />
             </>)}
         </Submenu>
 
@@ -46,7 +48,11 @@ export default function WebsitePage() {
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
                 <Route path="/tiers" element={<TiersPage />} />
+
+                {/* Admin pages */}
                 <Route path="/approveFiles" element={<ApproveFilePage />} />
+                <Route path="/clientVersions" element={<ClientVersionsPage />} />
+
                 <Route path="*" element={<Navigate to={'/website/connection'} />} />
             </Routes>
         </div>

@@ -13,6 +13,7 @@ import ButtonInput from '../../../../shared/components/form/inputs/button.compon
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import { ContentBox } from 'cmap2-shared/dist/react';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 interface InteractionKeysProps {
     client: ClientDTO;
@@ -39,6 +40,7 @@ export default function InteractionKeys({ client, interactionKeys, setInteractio
             headers: { 'Content-Type': 'application/json' }
         }, (data) => {
             setInteractionKeys(data);
+            reset({clientId: client.id, interactionKeys: data})
         });
     }
 
@@ -51,14 +53,17 @@ export default function InteractionKeys({ client, interactionKeys, setInteractio
                 body: JSON.stringify(key),
                 headers: { 'Content-Type': 'application/json' }
             }, () => {
-                setInteractionKeys(interactionKeys.filter(k => k.id = key.id!));
+                const filteredKeys = interactionKeys.filter(k => k.id !== key.id!);
+                setInteractionKeys(filteredKeys);
+                reset({clientId: client.id, interactionKeys: filteredKeys})
             });
         } else {
             remove(index);
         }
     }
 
-    return (<ContentBox title="Interaction keys" flexBasis={ContentBoxWidth.Full} show={false}>
+    return (<ContentBox flexBasis={ContentBoxWidth.Full}>
+        <h2>Interaction keys</h2>
         <p>
             Here you can edit and manage all your interaction keys. <br />
             You can lock individual buttons or layouts behind keys, then only website visitors who enter the key will be able to see them.
