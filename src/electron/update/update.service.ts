@@ -4,9 +4,9 @@ import { WEBSITE_URL } from '../../shared/const';
 import semver from 'semver';
 import { app, dialog } from 'electron';
 import { spawn } from 'child_process';
-import * as http from 'http';
 import * as fs from 'fs';
 import { GeneralSettings } from '../../shared/types/settings';
+import { Readable } from 'stream';
 
 export default class UpdateService {
     private intervalId: NodeJS.Timeout | null = null;
@@ -21,7 +21,7 @@ export default class UpdateService {
     manageInterval(settings: GeneralSettings) {
         if (settings.autoCheckUpdates) {
             // Check right away
-            this.checkForUpdates(true)
+            this.checkForUpdates(true);
             // If interval already exists return
             if (this.intervalId) return;
             // set new interval
@@ -43,11 +43,11 @@ export default class UpdateService {
             }
         }).catch(() => console.log('error fetching version check'));
 
-        if (typeof version?.clientVersion !== 'string' && typeof version?.download !== 'string') return;
+        if (typeof version?.clientVersion !== 'string' || typeof version?.clientDownload !== 'string') return;
 
         if (semver.lte(version.clientVersion, app.getVersion())) return;
 
-        const downloadUrl: string = version?.download;
+        const downloadUrl: string = version.clientDownload;
         const installerPath: string = './installer-latest.exe';
 
         const dialogRes = await dialog.showMessageBox({
@@ -59,32 +59,19 @@ export default class UpdateService {
 
         if (dialogRes.response === 1) return;
 
-        this.downloadInstaller(downloadUrl, installerPath).then(() => {
-            const installerProcess = spawn(installerPath, [], {
-                detached: true,
-                stdio: 'ignore'
-            });
+        const response = await fetch(downloadUrl);
+        // @ts-ignore
+        const body = Readable.fromWeb(response.body);
+        await fs.promises.writeFile(installerPath, body);
 
-            // Unreference the child process so it can run independently
-            installerProcess.unref();
-
-            app.exit(0);
+        const installerProcess = spawn(installerPath, [], {
+            detached: true,
+            stdio: 'ignore'
         });
-    }
 
-    async downloadInstaller(downloadUrl: string, installerPath: string) {
-        return new Promise((resolve, reject) => {
-            const file = fs.createWriteStream(installerPath);
+        // Unreference the child process so it can run independently
+        installerProcess.unref();
 
-            http.get(downloadUrl, response => {
-                response.pipe(file);
-                file.on('finish', () => {
-                    file.close(resolve);
-                });
-            }).on('error', err => {
-                // Delete the file if there is an error
-                fs.unlink(installerPath, () => reject(err));
-            });
-        });
+        app.exit(0);
     }
 }
