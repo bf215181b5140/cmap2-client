@@ -7,6 +7,7 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import { GeneralSettings } from '../../shared/types/settings';
 import { Readable } from 'stream';
+import { tmpName } from 'tmp-promise';
 
 export default class UpdateService {
     private intervalId: NodeJS.Timeout | null = null;
@@ -48,7 +49,7 @@ export default class UpdateService {
         if (semver.lte(version.clientVersion, app.getVersion())) return;
 
         const downloadUrl: string = version.clientDownload;
-        const installerPath: string = './installer-latest.exe';
+        const installerPath: string = await tmpName({ postfix: '.exe' });
 
         const dialogRes = await dialog.showMessageBox({
             title: 'New update',
@@ -64,13 +65,10 @@ export default class UpdateService {
         const body = Readable.fromWeb(response.body);
         await fs.promises.writeFile(installerPath, body);
 
-        const installerProcess = spawn(installerPath, [], {
+        spawn(installerPath, [], {
             detached: true,
             stdio: 'ignore'
         });
-
-        // Unreference the child process so it can run independently
-        installerProcess.unref();
 
         app.exit(0);
     }
