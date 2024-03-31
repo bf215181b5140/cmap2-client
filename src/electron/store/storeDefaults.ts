@@ -22,6 +22,7 @@ const storeDefaults: Store = {
     settings: {
         general: {
             startMinimized: false,
+            autoCheckUpdates: true,
             enableVrcDetector: true,
             vrcDetectorFrequency: 10,
             oscIp: '127.0.0.1',

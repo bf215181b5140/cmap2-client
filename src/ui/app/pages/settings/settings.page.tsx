@@ -9,6 +9,7 @@ import NumberInput from '../../shared/components/form/inputs/number.component';
 import Input from '../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
 import { generalSettingsSchema, GeneralSettings } from '../../../../shared/types/settings';
+import ButtonInput from '../../shared/components/form/inputs/button.component';
 
 export default function SettingsPage() {
 
@@ -31,6 +32,11 @@ export default function SettingsPage() {
                     <tr>
                         <th>Start minimized to tray</th>
                         <td><CheckboxInput register={register} name={'startMinimized'} errors={errors} /></td>
+                    </tr>
+                    <tr>
+                        <th>Automatically check for updates</th>
+                        <td><CheckboxInput register={register} name={'autoCheckUpdates'} errors={errors} /></td>
+                        <td><ButtonInput text={'Check now'} onClick={() => window.electronAPI.send('checkForUpdate', true)} /></td>
                     </tr>
                     <tr>
                         <th>Check if Vrchat is running</th>

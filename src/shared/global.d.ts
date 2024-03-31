@@ -11,7 +11,6 @@ import { OscClockSettings } from '../electron/osc/clock/types';
 type IpcGetOptions = {
     getClientCredentials: ClientCredentials | null;
     getConnectionStatus: WebsocketConnection;
-    getSettings: Settings;
     getGeneralSettings: GeneralSettings;
     getWebsocketSettings: WebsocketSettings;
     getLovenseSettings: LovenseSettings;
@@ -32,7 +31,6 @@ type IpcSendOptions = {
     setWindowState: WindowState;
     connectSocket: undefined;
     disconnectSocket: undefined;
-    setSettings: Settings;
     setGeneralSettings: GeneralSettings;
     setWebsocketSettings: WebsocketSettings;
     setLovenseSettings: LovenseSettings;
@@ -47,6 +45,8 @@ type IpcSendOptions = {
     setVrcOscAvatars: VrcOscAvatar[];
     // Osc control
     setOscClockSettings: OscClockSettings;
+    // Updates
+    checkForUpdate: boolean;
 };
 
 type IpcReceiveOptions = {

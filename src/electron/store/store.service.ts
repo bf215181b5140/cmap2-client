@@ -19,10 +19,6 @@ export class StoreService {
         TypedIpcMain.handle('getClientCredentials', async () => StoreService.getClientCredentials());
         TypedIpcMain.on('setClientCredentials', (data) => StoreService.setClientCredentials(data));
 
-        // Settings
-        TypedIpcMain.handle('getSettings', async () => StoreService.getSettings());
-        TypedIpcMain.on('setSettings', (data) => StoreService.setSettings(data));
-
         // General settings
         TypedIpcMain.handle('getGeneralSettings', async () => StoreService.getGeneralSettings());
         TypedIpcMain.on('setGeneralSettings', (data) => StoreService.setGeneralSettings(data));
