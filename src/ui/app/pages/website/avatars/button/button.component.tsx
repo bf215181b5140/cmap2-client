@@ -99,6 +99,7 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
     function setFormDataFromOsc(data: ButtonDTO) {
         setValue('path', data.path);
         setValue('value', data.value);
+        setValue('valueType', data.valueType);
     }
 
     function controlParameterOptions() {
@@ -161,7 +162,7 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
                     <tr>
                         <th>Parameter</th>
                         <td>
-                            <ParameterInput register={register} name={'path'} errors={errors} setValue={setValue} defaultAvatarId={avatar.id}
+                            <ParameterInput register={register} name={'path'} errors={errors} setValue={setValue} defaultAvatarVrcId={avatar.vrcId}
                                             defaultType={'input'}
                                             onSelection={setValueTypeFromParameterSelection} />
                         </td>

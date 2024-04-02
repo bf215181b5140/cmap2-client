@@ -10,7 +10,7 @@ interface ActionButtonProps {
 export default function ActionButton({ children, action, icon }: ActionButtonProps) {
 
     return (<ActionButtonStyled>
-        <button onClick={action}>{icon && <i className={icon}></i>} {children}</button>
+        <button type={'button'} onClick={action}>{icon && <i className={icon}></i>} {children}</button>
     </ActionButtonStyled>);
 }
 

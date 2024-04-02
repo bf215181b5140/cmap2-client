@@ -12,7 +12,7 @@ interface IconButtonProps {
 
 export default function IconButton({icon, onClick, disabled, className}: IconButtonProps) {
 
-    return (<SearchButtonStyled onClick={onClick} disabled={!!disabled} className={className}>
+    return (<SearchButtonStyled type={'button'} onClick={onClick} disabled={!!disabled} className={className}>
         <i className={icon} />
     </SearchButtonStyled>);
 }

@@ -22,7 +22,7 @@ interface ParameterInputProps extends ReactProps {
     name: string;
     register: UseFormRegister<any>;
     setValue: UseFormSetValue<any>;
-    defaultAvatarId?: string;
+    defaultAvatarVrcId?: string;
     defaultType?: 'input' | 'output';
     onSelection?: (parameter: VrcOscAvatarParameterProperties) => void;
     placeholder?: string;
@@ -31,11 +31,11 @@ interface ParameterInputProps extends ReactProps {
     width?: string;
 }
 
-export default function ParameterInput({name, register, setValue, defaultAvatarId = '', defaultType = 'input', onSelection, placeholder, errors, readOnly, width}: ParameterInputProps) {
+export default function ParameterInput({ name, register, setValue, defaultAvatarVrcId = '', defaultType = 'input', onSelection, placeholder, errors, readOnly, width }: ParameterInputProps) {
 
     const [hasError, errorMessage] = useInputError(name, errors);
 
-    const [filterAvatarId, setFilterAvatarId] = useState<string>(defaultAvatarId);
+    const [filterAvatarId, setFilterAvatarId] = useState<string>(defaultAvatarVrcId);
     const [filterName, setFilterName] = useState<string>('');
     const [filterType, setFilterType] = useState<'input' | 'output'>(defaultType);
     const [unknownAvatar, setUnknownAvatar] = useState(true);
@@ -44,7 +44,7 @@ export default function ParameterInput({name, register, setValue, defaultAvatarI
     const [selectParameters, setSelectParameters] = useState<SelectParameters[]>([]);
 
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const [dropdownPosition, setDropdownPosition] = useState<React.CSSProperties>({top: '50px'});
+    const [dropdownPosition, setDropdownPosition] = useState<React.CSSProperties>({ top: '50px' });
     const inputRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +57,7 @@ export default function ParameterInput({name, register, setValue, defaultAvatarI
                 setShowDropdown(false);
             }
         }
+
         document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
@@ -88,7 +89,7 @@ export default function ParameterInput({name, register, setValue, defaultAvatarI
         });
         setSelectParameters(tempSelectParameters);
         // if default avatar id is something we can't find then show unknown avatar option in avatar select filter
-        setUnknownAvatar(filterAvatarId !== '' && !avatars.find(avatar => avatar.id === filterAvatarId))
+        setUnknownAvatar(filterAvatarId !== '' && !avatars.find(avatar => avatar.id === filterAvatarId));
     }, [avatars, filterAvatarId, filterName, filterType]);
 
     useEffect(() => {
@@ -127,13 +128,13 @@ export default function ParameterInput({name, register, setValue, defaultAvatarI
             shouldDirty: true,
         });
         setShowDropdown(false);
-        if (onSelection) onSelection({address: param.address, type: param.valueType});
+        if (onSelection) onSelection({ address: param.address, type: param.valueType });
     }
 
-    return (<div ref={inputRef} style={{position: 'relative'}}>
+    return (<div ref={inputRef} style={{ position: 'relative' }}>
 
         {/* Regular input */}
-        <div style={{display: 'inline-block'}}>
+        <div style={{ display: 'inline-block' }}>
             <ParameterInputStyled type={'text'} {...register(name)} placeholder={placeholder} errors={hasError} readOnly={readOnly} width={width} />
             <InputErrorMessage errorMessage={errorMessage} />
         </div>
@@ -146,7 +147,7 @@ export default function ParameterInput({name, register, setValue, defaultAvatarI
             {/* Avatar filter */}
             <SelectInputStyled value={filterAvatarId} onChange={(event) => setFilterAvatarId(event.target.value)} errors={false} width={'auto'}>
                 <option value={''} key={'any'}>All</option>
-                {unknownAvatar && (<option value={defaultAvatarId} key={defaultAvatarId}>Unknown avatar</option>)}
+                {unknownAvatar && (<option value={defaultAvatarVrcId} key={defaultAvatarVrcId}>Unknown avatar</option>)}
                 {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
             </SelectInputStyled>
 
@@ -165,9 +166,10 @@ export default function ParameterInput({name, register, setValue, defaultAvatarI
                     selectParameters.map(param => (<li key={param.avatar + param.name + param.type} onClick={() => onSelectParameter(param)}>
                         <span className={'avatar'}>{param.avatar}</span>
                         <span className={'name'}>{param.name}</span>
-                        <span className={'type'} style={{color: color(param.type)}}>
-                        {param.type.charAt(0).toUpperCase() + param.type.slice(1)} {icon(param.type)}
-                    </span>
+                        <span className={'valueType'}>{param.valueType}</span>
+                        <span className={'type'} style={{ color: color(param.type) }}>
+                            {param.type.charAt(0).toUpperCase() + param.type.slice(1)} {icon(param.type)}
+                        </span>
                         <span className={'path'}> {param.address}</span>
                     </li>))
                 ) : (
@@ -215,7 +217,7 @@ const SelectionStyled = styled.div`
   margin: 7px;
   padding: 0;
   width: max-content;
-  max-width: 750px;
+  max-width: 900px;
   color: ${props => props.theme.colors.font.text};
   background: ${props => props.theme.colors.ui.appBg};
   border: 2px solid ${props => props.theme.colors.input.border};
@@ -250,6 +252,10 @@ const SelectionStyled = styled.div`
       }
 
       .type {
+      }
+
+      .valueType {
+        color: ${props => props.theme.colors.input.textDisabled};
       }
 
       .avatar, .path {

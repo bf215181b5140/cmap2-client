@@ -14,7 +14,7 @@ export default function DeleteButton({keyword, onClick, disabled, className}: De
 
     const {deleteModal} = useContext(ModalContext);
 
-    return (<DeleteButtonStyled onClick={() => deleteModal(keyword, onClick)} disabled={!!disabled} className={className}>
+    return (<DeleteButtonStyled type={'button'} onClick={() => deleteModal(keyword, onClick)} disabled={!!disabled} className={className}>
         <i className={'ri-delete-bin-6-line'} />
     </DeleteButtonStyled>);
 }
