@@ -74,6 +74,7 @@ const RangeInputStyled = styled.div`
   position: relative;
   cursor: pointer;
   user-select: none;
+  justify-content: flex-start;
 
   :hover {
     background: ${props => props.theme.colors.input.bg};

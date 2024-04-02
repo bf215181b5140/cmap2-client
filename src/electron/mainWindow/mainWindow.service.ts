@@ -82,7 +82,9 @@ export class MainWindowService {
         // and load the index.html of the app.
         if (!app.isPackaged) {
             mainWindow.loadURL('http://localhost:5173/');
-            mainWindow.webContents.openDevTools();
+            setTimeout(() => {
+                mainWindow.webContents.openDevTools({ mode: 'detach' })
+            }, 1000)
         } else {
             mainWindow.loadFile(path.join(__dirname, '../ui/index.html'));
         }
