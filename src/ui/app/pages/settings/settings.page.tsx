@@ -10,6 +10,7 @@ import Input from '../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
 import { generalSettingsSchema, GeneralSettings } from '../../../../shared/types/settings';
 import ButtonInput from '../../shared/components/form/inputs/button.component';
+import InfoTooltipIcon from '../../shared/components/infoTooltipIcon.component';
 
 export default function SettingsPage() {
 
@@ -50,19 +51,21 @@ export default function SettingsPage() {
                 <h2>OSC</h2>
                 <FormTable>
                     <tr>
-                        <th>VRChat lan IP</th>
+                        <th><InfoTooltipIcon title={'Leave on default if you play VRChat on the same PC, otherwise set the IP of the PC that runs VRChat'}>
+                            VRChat IP
+                        </InfoTooltipIcon></th>
                         <td><Input register={register} name={'oscIp'} placeholder={'127.0.0.1'} errors={errors} /></td>
                         <td>Default: 127.0.0.1</td>
                     </tr>
                     <tr>
-                        <th>VRChat osc receiving port</th>
-                        <td><NumberInput register={register} name={'oscInPort'} placeholder={'9000'} errors={errors} /></td>
-                        <td>Default: 9000</td>
-                    </tr>
-                    <tr>
-                        <th>VRChat osc sending port</th>
+                        <th>Recieving on port</th>
                         <td><NumberInput register={register} name={'oscOutPort'} placeholder={'9001'} errors={errors} /></td>
                         <td>Default: 9001</td>
+                    </tr>
+                    <tr>
+                        <th>Sending on port</th>
+                        <td><NumberInput register={register} name={'oscInPort'} placeholder={'9000'} errors={errors} /></td>
+                        <td>Default: 9000</td>
                     </tr>
                 </FormTable>
                 <FormControlBar>
