@@ -13,7 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { OscClockSettings, OscClockSettingsDefaults, OscClockSettingsSchema, OscClockUnit } from '../../../../../electron/osc/clock/types';
 import oscClockChatboxText, { OscClockChatboxFormats } from '../../../../../electron/osc/clock/chatboxText';
 import CheckboxInput from '../../../shared/components/form/inputs/checkbox.component';
-import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
+import ParameterInput from '../../../shared/components/form/inputs/parameterInput/parameterInput.component';
 
 export default function ClockPage() {
 

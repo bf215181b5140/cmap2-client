@@ -14,6 +14,8 @@ import HiddenInput from '../../../../../shared/components/form/inputs/hidden.com
 import Input from '../../../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../../../shared/components/form/inputs/select.component';
 import { AvatarDTO, ControlParametersFormDTO, ControlParametersFormSchema, FieldOption, ControlParameterRole, ReactProps, TierDTO, ParameterValueType, ControlParameterDTO } from 'cmap2-shared';
+import ParameterInput from '../../../../../shared/components/form/inputs/parameterInput/parameterInput.component';
+import DeleteButton from '../../../../../shared/components/buttons/deleteButton.component';
 
 interface ControlParametersProps extends ReactProps {
     selectedAvatar: AvatarDTO;
@@ -25,7 +27,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
 
     const customFetch = useCmapFetch();
     const {deleteModal} = useContext(ModalContext);
-    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}} = useForm<ControlParametersFormDTO>({
+    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}, setValue} = useForm<ControlParametersFormDTO>({
         defaultValues: {
             avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []]
         }, resolver: zodResolver(ControlParametersFormSchema)
@@ -129,14 +131,14 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                     <tr key={index}>
                         <td>
                             <HiddenInput register={register} name={`controlParameters.${index}.id`} />
-                            <Input register={register} name={`controlParameters.${index}.label`} width="180px" errors={errors} />
+                            <Input register={register} name={`controlParameters.${index}.label`} width="150px" errors={errors} />
                         </td>
                         <td>
                             <SelectInput register={register} name={`controlParameters.${index}.role`} width="auto" errors={errors}
                                        options={parameterRoleOptions(index)} />
                         </td>
                         <td>
-                            <Input register={register} name={`controlParameters.${index}.path`} errors={errors} />
+                            <ParameterInput register={register} name={`controlParameters.${index}.path`} errors={errors} setValue={setValue} />
                         </td>
                         <td>
                             <Input register={register} name={`controlParameters.${index}.valuePrimary`} width="75px" errors={errors}
@@ -151,7 +153,7 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
                                        options={valueTypeOptions(watchParameters[index].role)} />
                         </td>
                         <td>
-                            <ButtonInput text="Delete" onClick={() => deleteModal('control parameter', () => onDelete(index))} />
+                            <DeleteButton onClick={() => onDelete(index)} keyword={'control parameter'} />
                         </td>
                     </tr>
                 ))}

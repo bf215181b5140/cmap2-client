@@ -19,7 +19,7 @@ import HiddenInput from '../../../../shared/components/form/inputs/hidden.compon
 import Input from '../../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../../shared/components/form/inputs/select.component';
 import NumberInput from '../../../../shared/components/form/inputs/number.component';
-import ParameterInput from '../../../../shared/components/form/inputs/parameterInput.component';
+import ParameterInput from '../../../../shared/components/form/inputs/parameterInput/parameterInput.component';
 import { VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
 import { ControlParameterDTO } from 'cmap2-shared/src/types/controlParameters';
 import ButtonImageForm from './buttonImageForm.component';

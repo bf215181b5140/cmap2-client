@@ -13,7 +13,7 @@ import ButtonInput from '../../../shared/components/form/inputs/button.component
 import Input from '../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../shared/components/form/inputs/select.component';
 import NumberInput from '../../../shared/components/form/inputs/number.component';
-import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
+import ParameterInput from '../../../shared/components/form/inputs/parameterInput/parameterInput.component';
 
 interface ToyControlProps {
     toyList: Toy[] | undefined;

@@ -8,7 +8,7 @@ import FormControlBar from '../../../shared/components/form/formControlBar.compo
 import SubmitInput from '../../../shared/components/form/inputs/submit.component';
 import ButtonInput from '../../../shared/components/form/inputs/button.component';
 import CheckboxInput from '../../../shared/components/form/inputs/checkbox.component';
-import ParameterInput from '../../../shared/components/form/inputs/parameterInput.component';
+import ParameterInput from '../../../shared/components/form/inputs/parameterInput/parameterInput.component';
 
 export default function Settings() {
     const {register, reset, watch, formState: {errors, isDirty}, handleSubmit, setValue} = useForm<LovenseSettings>({resolver: zodResolver(LovenseSettingsSchema)});

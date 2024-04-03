@@ -1,16 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { globalInputStyle } from '../input.style';
+import { globalInputStyle } from '../../input.style';
 import { ReactProps, theme } from 'cmap2-shared';
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form/dist/types/form';
-import InputErrorMessage from '../inputErrorMessage.component';
-import useInputError from '../hooks/inputError.hook';
-import { FieldErrors } from 'react-hook-form/dist/types/errors';
-import IconButton from '../../buttons/searchButton.component';
-import { VrcOscAvatar, VrcOscAvatarParameterProperties } from '../../../../../../shared/types/osc';
-import { SelectInputStyled } from './select.component';
+import { VrcOscAvatar, VrcOscAvatarParameterProperties } from '../../../../../../../shared/types/osc';
+import { SelectInputStyled } from '../select.component';
 
-interface SelectParameters {
+export interface ParameterDropdownParameter {
     avatar: string;
     name: string;
     address: string;
@@ -18,34 +13,24 @@ interface SelectParameters {
     valueType: 'Int' | 'Float' | 'Bool';
 }
 
-interface ParameterInputProps extends ReactProps {
-    name: string;
-    register: UseFormRegister<any>;
-    setValue: UseFormSetValue<any>;
+interface ParameterDropdownProps extends ReactProps {
+    showDropdown: boolean;
+    setShowDropdown: Dispatch<SetStateAction<boolean>>;
+    onApplyParameter: (param: VrcOscAvatarParameterProperties) => void;
     defaultAvatarVrcId?: string;
     defaultType?: 'input' | 'output';
-    onSelection?: (parameter: VrcOscAvatarParameterProperties) => void;
-    placeholder?: string;
-    errors?: FieldErrors;
-    readOnly?: boolean;
-    width?: string;
+    inputRef: React.RefObject<HTMLDivElement>
 }
 
-export default function ParameterInput({ name, register, setValue, defaultAvatarVrcId = '', defaultType = 'input', onSelection, placeholder, errors, readOnly, width }: ParameterInputProps) {
-
-    const [hasError, errorMessage] = useInputError(name, errors);
+export default function ParameterDropdown({ showDropdown, setShowDropdown, onApplyParameter, defaultAvatarVrcId = '', defaultType = 'input', inputRef }: ParameterDropdownProps) {
 
     const [filterAvatarId, setFilterAvatarId] = useState<string>(defaultAvatarVrcId);
     const [filterName, setFilterName] = useState<string>('');
     const [filterType, setFilterType] = useState<'input' | 'output'>(defaultType);
-    const [unknownAvatar, setUnknownAvatar] = useState(true);
 
     const [avatars, setAvatars] = useState<VrcOscAvatar[]>([]);
-    const [selectParameters, setSelectParameters] = useState<SelectParameters[]>([]);
 
-    const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const [dropdownPosition, setDropdownPosition] = useState<React.CSSProperties>({ top: '50px' });
-    const inputRef = useRef<HTMLDivElement>(null);
+    const [dropdownPosition, setDropdownPosition] = useState<React.CSSProperties | undefined>(undefined);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -65,8 +50,12 @@ export default function ParameterInput({ name, register, setValue, defaultAvatar
         };
     }, []);
 
-    useEffect(() => {
-        const tempSelectParameters: SelectParameters[] = [];
+    // if default avatar id is something we can't find then show unknown avatar option in avatar select filter
+    const unknownAvatar = filterAvatarId !== '' && !avatars.find(avatar => avatar.id === filterAvatarId);
+
+    // Which parameters are shown in the dropdown (based on filters)
+    const dropdownParameters = useMemo(() => {
+        const tempSelectParameters: ParameterDropdownParameter[] = [];
         // Filter avatars
         avatars.forEach(avatar => {
             if (filterAvatarId === '' || filterAvatarId === avatar.id) {
@@ -87,13 +76,12 @@ export default function ParameterInput({ name, register, setValue, defaultAvatar
                 });
             }
         });
-        setSelectParameters(tempSelectParameters);
-        // if default avatar id is something we can't find then show unknown avatar option in avatar select filter
-        setUnknownAvatar(filterAvatarId !== '' && !avatars.find(avatar => avatar.id === filterAvatarId));
+
+        return tempSelectParameters;
     }, [avatars, filterAvatarId, filterName, filterType]);
 
+    // calculate dropdown position, prioritize on bottom of input and expanding towards left
     useEffect(() => {
-        // calculate dropdown position, prioritize on top of input and expanding torwards left
         if (inputRef.current && dropdownRef.current) {
             const inputRect = inputRef.current.getBoundingClientRect();
             const dropdownRect = dropdownRef.current.getBoundingClientRect();
@@ -115,34 +103,9 @@ export default function ParameterInput({ name, register, setValue, defaultAvatar
 
             setDropdownPosition(style);
         }
-    }, [showDropdown, selectParameters]);
+    }, [showDropdown, dropdownParameters]);
 
-    function onToggleDropdown() {
-        setShowDropdown(state => !state);
-    }
-
-    function onSelectParameter(param: SelectParameters) {
-        setValue(name, param.address, {
-            shouldValidate: true,
-            shouldTouch: true,
-            shouldDirty: true,
-        });
-        setShowDropdown(false);
-        if (onSelection) onSelection({ address: param.address, type: param.valueType });
-    }
-
-    return (<div ref={inputRef} style={{ position: 'relative' }}>
-
-        {/* Regular input */}
-        <div style={{ display: 'inline-block' }}>
-            <ParameterInputStyled type={'text'} {...register(name)} placeholder={placeholder} errors={hasError} readOnly={readOnly} width={width} />
-            <InputErrorMessage errorMessage={errorMessage} />
-        </div>
-
-        {/* Toggle dropdown for parameters */}
-        <IconButton icon={'ri-menu-search-line'} onClick={onToggleDropdown} disabled={readOnly} />
-
-        {showDropdown && <SelectionStyled ref={dropdownRef} style={dropdownPosition}>
+    return (<DropdownStyled ref={dropdownRef} style={dropdownPosition}>
 
             {/* Avatar filter */}
             <SelectInputStyled value={filterAvatarId} onChange={(event) => setFilterAvatarId(event.target.value)} errors={false} width={'auto'}>
@@ -162,8 +125,8 @@ export default function ParameterInput({ name, register, setValue, defaultAvatar
 
             {/* List all parameters */}
             <ul>
-                {selectParameters.length > 0 ? (
-                    selectParameters.map(param => (<li key={param.avatar + param.name + param.type} onClick={() => onSelectParameter(param)}>
+                {dropdownParameters.length > 0 ? (
+                    dropdownParameters.map(param => (<li key={param.avatar + param.name + param.type} onClick={() => onApplyParameter({ address: param.address, type: param.valueType })}>
                         <span className={'avatar'}>{param.avatar}</span>
                         <span className={'name'}>{param.name}</span>
                         <span className={'valueType'}>{param.valueType}</span>
@@ -177,9 +140,7 @@ export default function ParameterInput({ name, register, setValue, defaultAvatar
                 )}
             </ul>
 
-        </SelectionStyled>}
-    </div>);
-
+        </DropdownStyled>);
 };
 
 function icon(type: string) {
@@ -202,17 +163,12 @@ function color(type: string) {
     }
 }
 
-const ParameterInputStyled = styled.input<{ errors: boolean, width?: string }>`
-  ${globalInputStyle};
-  margin-right: 0;
-`;
-
 const FilterInputStyled = styled.input`
   ${globalInputStyle};
   width: 200px;
 `;
 
-const SelectionStyled = styled.div`
+const DropdownStyled = styled.div`
   position: absolute;
   margin: 7px;
   padding: 0;
