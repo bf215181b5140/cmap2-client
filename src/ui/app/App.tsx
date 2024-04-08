@@ -15,7 +15,8 @@ import LovensePage from './pages/lovense/lovense.page';
 import WebsitePage from './pages/website/website.page';
 import AvatarsPage from './pages/osc/avatars/avatars.page';
 import OscPage from './pages/osc/osc.page';
-import { LoginTokenDTO } from 'cmap2-shared';
+import UpdaterPage from './pages/updater/updater.page';
+import GuidePage from './pages/guide/guide.page';
 
 export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
     clientCredentials: new ClientCredentials(),
@@ -42,6 +43,8 @@ export default function App() {
                         <Route path="/osc/*" element={<OscPage />} />
                         <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/lovense" element={<LovensePage />} />
+                        <Route path="/updater" element={<UpdaterPage />} />
+                        <Route path="/guide" element={<GuidePage />} />
                         <Route path="*" element={<LaunchPadPage />} />
                     </Routes>
                 </MainWindow>

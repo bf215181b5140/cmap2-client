@@ -9,7 +9,8 @@ export default function NavBar() {
             <NavBarLink to="/website" icon="ri-global-line" />
             <NavBarLink to="/lovense" icon="ri-wireless-charging-fill" />
             <NavBarLink to="/settings" icon="ri-settings-3-fill" />
-            {/* <NavBarLink to="/about" icon="ri-book-open-fill" /> */}
+            <NavBarLink to="/updater" icon="ri-download-2-fill" />
+            <NavBarLink to="/guide" icon="ri-questionnaire-fill" />
     </NavBarStyled>);
 }
 
