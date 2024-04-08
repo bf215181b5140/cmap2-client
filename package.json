@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "electron-vite build",
+    "build": "npm version patch && electron-vite build",
     "package": "electron-builder",
     "postinstall": "npm update cmap2-shared"
   },
