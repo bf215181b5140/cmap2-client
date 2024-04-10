@@ -25,7 +25,6 @@ export default function useUpdateStatus() {
         }
 
         window.electronAPI.get('getAppVersion').then(version => {
-            version = '2.1.6'
             setCurrentVersion(version);
             fetchUpdates(version);
             interval = setInterval(() => fetchUpdates(version), 1800 * 1000)
