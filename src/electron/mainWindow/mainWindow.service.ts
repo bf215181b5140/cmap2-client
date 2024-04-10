@@ -18,6 +18,7 @@ export class MainWindowService {
         if (!settings.startMinimized) this.mainWindow = this.createWindowInternal();
 
         TypedIpcMain.on('setWindowState', (windowState) => this.setWindowState(windowState));
+        TypedIpcMain.handle('getAppVersion', async () => app.getVersion());
 
         this.initialized = true;
     }
@@ -84,7 +85,7 @@ export class MainWindowService {
             mainWindow.loadURL('http://localhost:5173/');
             setTimeout(() => {
                 mainWindow.webContents.openDevTools({ mode: 'detach' })
-            }, 1000)
+            }, 1500)
         } else {
             mainWindow.loadFile(path.join(__dirname, '../ui/index.html'));
         }

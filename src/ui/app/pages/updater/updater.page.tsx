@@ -1,47 +1,34 @@
 import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import useUpdateStatus from '../../shared/hooks/updateStatus.hook';
-import ButtonInput from '../../shared/components/form/inputs/button.component';
-import { useState } from 'react';
-import FormControlBar from '../../shared/components/form/formControlBar.component';
 import styled from 'styled-components';
 import UpdateBox from './components/updateBox.component';
-import UpdaterSettingsForm from './components/updaterSettingsForm.component';
 
 export default function UpdaterPage() {
 
-    const { updateStatus, updateDetail, updateStatusColor, currentVersion, lastCheck, updates } = useUpdateStatus();
-    const [checkDisabled, setCheckDisabled] = useState(false);
+    const { updateStatus, updateDetail, updateStatusColor, currentVersion, updates } = useUpdateStatus();
 
-    return (<Content flexDirection={'column'}>
+    return (<Content flexDirection={'row'}>
         <ContentBox>
             <h2 style={{ color: updateStatusColor }}>{updateStatus}</h2>
 
-            {updateDetail && <p>{updateDetail}</p>}
+            <p>Download and install available updates by clicking on them on the right side.</p>
 
-            {lastCheck && <>Last checked {new Date(Date.now() - lastCheck).getMinutes()} minutes ago.</>}
+            {updateDetail && <p>{updateDetail}</p>}
 
             <h3>Current version</h3>
             <span style={{ display: 'block', margin: '5px' }}>{currentVersion}</span>
+        </ContentBox>
 
-            {updates.length > 0 && <>
-                <h2>Latest available updates</h2>
+        <ContentBox>
+            <h2>Download and install</h2>
+            {updates.length > 0 ? (<>
                 <UpdatesStyled>
                     {updates?.map((update, index) => (<UpdateBox update={update} latest={index === 0} key={update.id} />))}
                 </UpdatesStyled>
-            </>}
-
-
-            <FormControlBar>
-                <ButtonInput text={'Check for updates'} disabled={checkDisabled} onClick={() => {
-                    window.electronAPI.send('checkForUpdate', true);
-                    setCheckDisabled(true);
-                    setTimeout(() => setCheckDisabled(false), 4000);
-                }} />
-            </FormControlBar>
-
+            </>) : (<>
+                <p>No new updates available</p>
+            </>)}
         </ContentBox>
-
-            <UpdaterSettingsForm />
     </Content>);
 }
 
@@ -51,8 +38,4 @@ const UpdatesStyled = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 15px;
-
-  > div {
-    flex-basis: calc(32.8% - (15px / 3));
-  }
 `;

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 interface NavBarLinkProps {
     to: string,
-    icon?: string,
+    icon: string,
     attention?: boolean;
 }
 
@@ -17,7 +17,7 @@ export default function NavBarLink({to, icon, attention = false}: NavBarLinkProp
 
     return (<NavBarLinkStyled to={to} $selected={selected()}>
         {icon && <i className={icon}></i>}
-        {attention && <i id="attention" className="ri-shining-fill"></i>}
+        {attention && <i className="attention ri-shining-fill"></i>}
     </NavBarLinkStyled>);
 }
 
@@ -37,14 +37,13 @@ const NavBarLinkStyled = styled(Link)<{ $selected: boolean }>`
     transition: 0.1s linear;
   }
 
-  #attention {
+  .attention {
     color: ${props => props.theme.colors.attention};
     font-size: 10px;
     position: absolute;
     top: ${props => props.$selected ? '14px' : '8px'};
     right: 8px;
     transition: 0.1s linear;
-
   }
 
   :hover {

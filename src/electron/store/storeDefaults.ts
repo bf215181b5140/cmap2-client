@@ -1,12 +1,10 @@
 import { ClientCredentials } from '../../shared/classes';
 import { Settings } from '../../shared/types/settings';
 import { LovenseSettings, ToyCommandOscMessage, ToyCommandParameter } from '../../shared/lovense';
-import { UpdaterSettings } from '../updater/updater.model';
 
 type Store = {
     clientCredentials: ClientCredentials;
     settings: Settings;
-    updater: UpdaterSettings;
     lovense: {
         settings: LovenseSettings,
         toyCommandOscMessage: ToyCommandOscMessage[],
@@ -33,9 +31,6 @@ const storeDefaults: Store = {
         websocket: {
             autoLogin: true,
         }
-    },
-    updater: {
-        autoCheckUpdates: true,
     },
     lovense: {
         settings: {

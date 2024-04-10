@@ -1,51 +1,64 @@
 import { useEffect, useState } from 'react';
-import { theme } from 'cmap2-shared';
-import { UpdaterData } from '../../../../electron/updater/updater.model';
+import { theme, UpdateDTO, UpdatesDTO } from 'cmap2-shared';
+import semver from 'semver';
+import useCmapFetch from './cmapFetch.hook';
 
 export default function useUpdateStatus() {
 
-    const [updateData, setUpdateData] = useState<UpdaterData | undefined>();
+    const cmapFetch = useCmapFetch();
+    const [currentVersion, setCurrentVersion] = useState<string>('');
+    const [updates, setUpdates] = useState<UpdateDTO[]>([]);
+
+    const newMajor = !!updates?.find(u => semver.major(u.version) > semver.major(currentVersion));
+    const newMinor = !!updates?.find(u => semver.minor(u.version) > semver.minor(currentVersion));
+    const newPatch = !!updates?.find(u => semver.patch(u.version) > semver.patch(currentVersion));
 
     useEffect(() => {
-        const removeListener = window.electronAPI.receive('updateData', (data) => setUpdateData(data));
-        window.electronAPI.get('getUpdateData').then(data => setUpdateData(data));
+        let interval: NodeJS.Timeout | undefined;
+
+        function fetchUpdates(version: string) {
+            cmapFetch<UpdatesDTO>(`/updates?version=${version}`, {
+                method: 'GET',
+            }, (data) => {
+                setUpdates(data.updates);
+            });
+        }
+
+        window.electronAPI.get('getAppVersion').then(version => {
+            version = '2.1.6'
+            setCurrentVersion(version);
+            fetchUpdates(version);
+            interval = setInterval(() => fetchUpdates(version), 1800 * 1000)
+        });
 
         return () => {
-            if (removeListener) removeListener();
-        };
+            if (interval) clearInterval(interval);
+        }
     }, []);
 
     function updateStatus(): string {
-        if (!updateData) return 'No update information';
-        if (!updateData.lastCheck) return 'Updates';
-        if (updateData.newMajor || updateData.newMinor) return 'Update required';
-        if (updateData.newPatch) return 'Update recommended';
+        if (newMajor || newMinor) return 'Update required';
+        if (newPatch) return 'Update available';
         return 'Up to date';
     }
 
     function updateDetail(): string | undefined {
-        if (!updateData) return undefined;
-        if (!updateData.lastCheck) return 'Not checking for available updates.';
-        if (updateData.newMajor) return 'To use website features please update, otherwise things will not work.';
-        if (updateData.newMinor) return 'To use website features please update, otherwise some things will not work.';
-        if (updateData.newPatch) return 'New update has bug fixes and possibly new features.';
-        return 'The application is up to date.';
+        if (newMajor) return 'To use website features please update to the latest version, otherwise things will not work.';
+        if (newMinor) return 'To use website features please update to the latest version, otherwise some things will not work.';
+        return undefined;
     }
 
     function updateStatusColor(): string | undefined {
-        if (!updateData) return undefined;
-        if (!updateData.lastCheck) return undefined;
-        if (updateData.newMajor || updateData.newMinor) return theme.colors.error;
-        if (updateData.newPatch) return theme.colors.warning;
-        return theme.colors.success;
+        if (newMajor || newMinor) return theme.colors.error;
+        if (newPatch) return theme.colors.warning;
+        return undefined;
     }
 
     return {
         updateStatus: updateStatus(),
         updateDetail: updateDetail(),
         updateStatusColor: updateStatusColor(),
-        currentVersion: updateData?.currentVersion || '',
-        lastCheck: updateData?.lastCheck,
-        updates: updateData?.updates || [],
+        currentVersion,
+        updates,
     };
 }

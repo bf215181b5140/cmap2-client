@@ -4,7 +4,6 @@ import { GeneralSettings, Settings, WebsocketSettings } from '../../shared/types
 import storeDefaults from './storeDefaults';
 import TypedIpcMain from '../ipc/typedIpcMain';
 import CmapStore from './cmapStore';
-import { UpdaterSettings } from '../updater/updater.model';
 
 export class StoreService {
     private static started: boolean = false;
@@ -35,10 +34,6 @@ export class StoreService {
         TypedIpcMain.on('setToyCommandParameters', (data) => StoreService.setToyCommandParameters(data));
         TypedIpcMain.handle('getToyCommandOscMessages', async () => StoreService.getToyCommandOscMessages());
         TypedIpcMain.on('setToyCommandOscMessages', (data) => StoreService.setToyCommandOscMessages(data));
-
-        // Updater
-        TypedIpcMain.handle('getUpdaterSettings', async () => StoreService.getUpdaterSettings());
-        TypedIpcMain.on('setUpdaterSettings', (data) => StoreService.setUpdaterSettings(data));
 
         this.started = true;
     }
@@ -97,13 +92,5 @@ export class StoreService {
 
     public static setLovenseSettings(data: LovenseSettings) {
         this.store.set('lovense.settings', data);
-    }
-
-    public static getUpdaterSettings() {
-        return this.store.get('updater');
-    }
-
-    public static setUpdaterSettings(data: UpdaterSettings) {
-        this.store.set('updater', data);
     }
 }

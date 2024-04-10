@@ -7,9 +7,9 @@ import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParamet
 import { GeneralSettings, Settings, WebsocketSettings } from './types/settings';
 import { VrcOscAvatar } from './types/osc';
 import { OscClockSettings } from '../electron/osc/clock/types';
-import { UpdaterData, UpdaterSettings } from '../electron/updater/updater.model';
 
 type IpcGetOptions = {
+    getAppVersion: string;
     getClientCredentials: ClientCredentials | null;
     getConnectionStatus: WebsocketConnection;
     getGeneralSettings: GeneralSettings;
@@ -25,9 +25,6 @@ type IpcGetOptions = {
     getVrcOscAvatars: VrcOscAvatar[];
     // Osc control
     getOscClockSettings: OscClockSettings;
-    // Updater
-    getUpdaterSettings: UpdaterSettings;
-    getUpdateData: UpdaterData;
 };
 
 type IpcSendOptions = {
@@ -50,8 +47,6 @@ type IpcSendOptions = {
     // Osc control
     setOscClockSettings: OscClockSettings;
     // Updater
-    setUpdaterSettings: UpdaterSettings;
-    checkForUpdate: boolean;
     startUpdate: string;
 };
 
@@ -60,16 +55,14 @@ type IpcReceiveOptions = {
     vrcParameter: VrcParameter;
     lovenseStatus: LovenseStatus;
     isVrchatRunning: boolean | null;
-    // Updater
-    updateData: UpdaterData;
 };
 
 export interface IElectronAPI {
-    get: <K extends keyof IpcGetOptions>(channel: K) => Promise<IpcGetOptions[K]>,
-    send: <K extends keyof IpcSendOptions>(channel: K, data?: IpcSendOptions[K]) => void,
-    receive: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => () => void,
-    receiveOnce: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => () => void,
-    removeAllListeners: (channel: keyof IpcReceiveOptions) => void,
+    get: <K extends keyof IpcGetOptions>(channel: K) => Promise<IpcGetOptions[K]>;
+    send: <K extends keyof IpcSendOptions>(channel: K, data?: IpcSendOptions[K]) => void;
+    receive: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => () => void;
+    receiveOnce: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => () => void;
+    removeAllListeners: (channel: keyof IpcReceiveOptions) => void;
 }
 
 declare global {

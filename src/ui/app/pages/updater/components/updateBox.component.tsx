@@ -51,6 +51,10 @@ const UpdateBoxStyled = styled.div`
     color: ${props => props.theme.colors.success};
   }
   
+  p {
+    white-space: pre-line;
+  }
+
   span {
     color: dimgrey;
   }
