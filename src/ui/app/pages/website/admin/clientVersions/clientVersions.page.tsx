@@ -1,6 +1,5 @@
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
-import React, { useContext, useEffect, useState } from 'react';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
+import React, { useContext, useEffect } from 'react';
 import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
 import { FormTableStyled } from '../../../../shared/components/form/formTable.component';
@@ -12,6 +11,7 @@ import { ModalContext } from '../../../../components/mainWindow/mainWindow.compo
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { ClientVersionDTO, ClientVersionFormDTO, ClientVersionFormSchema } from 'cmap2-shared';
+import TextareaInput from '../../../../shared/components/form/inputs/textarea.component';
 
 export default function ClientVersionsPage() {
 
@@ -67,6 +67,7 @@ export default function ClientVersionsPage() {
                         <tr>
                             <th>Version</th>
                             <th>Download link</th>
+                            <th>Description</th>
                             <td></td>
                         </tr>
                     }
@@ -82,6 +83,9 @@ export default function ClientVersionsPage() {
                                 <Input register={register} name={`versions.${index}.download`} errors={errors} />
                             </td>
                             <td>
+                                <TextareaInput register={register} name={`versions.${index}.description`} errors={errors} />
+                            </td>
+                            <td>
                                 <ButtonInput text="Delete" onClick={() => deleteModal('client version', () => onDelete(index))} />
                             </td>
                         </tr>
@@ -94,6 +98,7 @@ export default function ClientVersionsPage() {
                         id: null,
                         version: '',
                         download: '',
+                        description: '',
                     })} />
                     <SubmitInput disabled={!isDirty} />
                     <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />

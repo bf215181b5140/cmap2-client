@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import { GeneralSettings } from '../../shared/types/settings';
 import { Readable } from 'stream';
 import { tmpName } from 'tmp-promise';
-import { VersionDTO } from 'cmap2-shared';
+import { UpdatesDTO } from 'cmap2-shared';
 import { UpdateData } from './update.model';
 
 export default class UpdateService {
@@ -38,27 +38,28 @@ export default class UpdateService {
     }
 
     async checkForUpdates() {
-        const serverData = await fetch(`${WEBSITE_URL}/api/version`, {
+        const currentVersion = app.getVersion();
+
+        const data = await fetch(`${WEBSITE_URL}/api/updates?version=${currentVersion}`, {
             method: 'GET',
         }).then(async res => {
             if (res.ok) {
-                    return await res.json() as VersionDTO;
+                    return await res.json() as UpdatesDTO;
             }
         }).catch(() => {
             console.log('error fetching version check');
             return undefined;
         });
 
-        if (!serverData) return;
-
-        const currentVersion = app.getVersion();
+        if (!data) return;
 
         this.updateData = {
             currentVersion: currentVersion,
-            serverData: serverData,
-            newPatch: semver.patch(serverData.clientVersion) > semver.patch(currentVersion),
-            newMinor: semver.minor(serverData.clientVersion) > semver.minor(currentVersion),
-            newMajor: semver.major(serverData.clientVersion) > semver.major(currentVersion),
+            lastCheck: Date.now(),
+            updates: data.updates,
+            newMajor: !!data.updates.find(u => semver.major(u.version) > semver.major(currentVersion)),
+            newMinor: !!data.updates.find(u => semver.minor(u.version) > semver.minor(currentVersion)),
+            newPatch: !!data.updates.find(u => semver.patch(u.version) > semver.patch(currentVersion)),
         }
 
         TypedIpcMain.emit('updateData', this.updateData)

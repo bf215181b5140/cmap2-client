@@ -47,7 +47,6 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
 }
 
 const AvatarParameterStyled = styled.div`
-  border-left: 2px solid ${props => props.theme.colors.buttonSecondary.border};
   background: ${props => props.theme.colors.buttonSecondary.border};
   border-radius: 8px;
   padding: 10px 15px;

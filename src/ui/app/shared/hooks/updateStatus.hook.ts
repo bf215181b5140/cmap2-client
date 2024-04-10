@@ -42,9 +42,8 @@ export default function useUpdateStatus() {
         updateStatus: updateStatus(),
         updateDetail: updateDetail(),
         updateStatusColor: updateStatusColor(),
-        currentVersion: updateData?.currentVersion,
-        serverVersion: updateData?.serverData.serverVersion,
-        newestVersion: updateData?.serverData.clientVersion,
-        newestDownload: updateData?.serverData.clientDownload,
+        currentVersion: updateData?.currentVersion || '',
+        lastCheck: updateData?.lastCheck,
+        updates: updateData?.updates || [],
     };
 }
