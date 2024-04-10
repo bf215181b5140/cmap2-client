@@ -1,8 +1,12 @@
 import { UpdateDTO } from 'cmap2-shared';
 
-export interface UpdateData {
+export interface UpdaterSettings {
+    autoCheckUpdates: boolean;
+}
+
+export interface UpdaterData {
     currentVersion: string;
-    lastCheck: number;
+    lastCheck: number | undefined;
     updates: UpdateDTO[];
     newMajor: boolean;
     newMinor: boolean;

@@ -13,7 +13,7 @@ export default function OscPage() {
         <Submenu>
             <SubmenuLink to={'/osc/status'} icon={'ri-wifi-fill'} tooltip={'Game status'} />
             <SubmenuLink to={'/osc/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Saved avatars'} />
-            <SubmenuLink to={'/osc/clock'} icon={'ri-time-line'} tooltip={'Clock'} attention={true} />
+            <SubmenuLink to={'/osc/clock'} icon={'ri-time-line'} tooltip={'Clock'} />
         </Submenu>
 
         <div style={{flexBasis: '100%'}}>

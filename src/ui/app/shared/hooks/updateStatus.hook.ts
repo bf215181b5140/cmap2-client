@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { theme } from 'cmap2-shared';
-import { UpdateData } from '../../../../electron/update/update.model';
+import { UpdaterData } from '../../../../electron/updater/updater.model';
 
 export default function useUpdateStatus() {
 
-    const [updateData, setUpdateData] = useState<UpdateData | undefined>();
+    const [updateData, setUpdateData] = useState<UpdaterData | undefined>();
 
     useEffect(() => {
         const removeListener = window.electronAPI.receive('updateData', (data) => setUpdateData(data));
-
-        window.electronAPI.send('checkForUpdate');
+        window.electronAPI.get('getUpdateData').then(data => setUpdateData(data));
 
         return () => {
             if (removeListener) removeListener();
@@ -18,6 +17,7 @@ export default function useUpdateStatus() {
 
     function updateStatus(): string {
         if (!updateData) return 'No update information';
+        if (!updateData.lastCheck) return 'Updates';
         if (updateData.newMajor || updateData.newMinor) return 'Update required';
         if (updateData.newPatch) return 'Update recommended';
         return 'Up to date';
@@ -25,6 +25,7 @@ export default function useUpdateStatus() {
 
     function updateDetail(): string | undefined {
         if (!updateData) return undefined;
+        if (!updateData.lastCheck) return 'Not checking for available updates.';
         if (updateData.newMajor) return 'To use website features please update, otherwise things will not work.';
         if (updateData.newMinor) return 'To use website features please update, otherwise some things will not work.';
         if (updateData.newPatch) return 'New update has bug fixes and possibly new features.';
@@ -33,6 +34,7 @@ export default function useUpdateStatus() {
 
     function updateStatusColor(): string | undefined {
         if (!updateData) return undefined;
+        if (!updateData.lastCheck) return undefined;
         if (updateData.newMajor || updateData.newMinor) return theme.colors.error;
         if (updateData.newPatch) return theme.colors.warning;
         return theme.colors.success;

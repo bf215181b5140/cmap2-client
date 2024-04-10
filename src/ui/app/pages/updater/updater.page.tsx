@@ -5,17 +5,20 @@ import { useState } from 'react';
 import FormControlBar from '../../shared/components/form/formControlBar.component';
 import styled from 'styled-components';
 import UpdateBox from './components/updateBox.component';
+import UpdaterSettingsForm from './components/updaterSettingsForm.component';
 
 export default function UpdaterPage() {
 
-    const { updateStatus, updateDetail, updateStatusColor, currentVersion, updates } = useUpdateStatus();
+    const { updateStatus, updateDetail, updateStatusColor, currentVersion, lastCheck, updates } = useUpdateStatus();
     const [checkDisabled, setCheckDisabled] = useState(false);
 
-    return (<Content>
+    return (<Content flexDirection={'column'}>
         <ContentBox>
             <h2 style={{ color: updateStatusColor }}>{updateStatus}</h2>
 
             {updateDetail && <p>{updateDetail}</p>}
+
+            {lastCheck && <>Last checked {new Date(Date.now() - lastCheck).getMinutes()} minutes ago.</>}
 
             <h3>Current version</h3>
             <span style={{ display: 'block', margin: '5px' }}>{currentVersion}</span>
@@ -27,15 +30,18 @@ export default function UpdaterPage() {
                 </UpdatesStyled>
             </>}
 
+
             <FormControlBar>
                 <ButtonInput text={'Check for updates'} disabled={checkDisabled} onClick={() => {
-                    window.electronAPI.send('checkForUpdate');
+                    window.electronAPI.send('checkForUpdate', true);
                     setCheckDisabled(true);
                     setTimeout(() => setCheckDisabled(false), 4000);
                 }} />
             </FormControlBar>
 
         </ContentBox>
+
+            <UpdaterSettingsForm />
     </Content>);
 }
 

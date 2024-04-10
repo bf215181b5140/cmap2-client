@@ -9,7 +9,7 @@ import { OscController } from './osc/osc.controller';
 import { OscDataStoreService } from './store/oscData/oscDataStore.service';
 import OscClockController from './osc/clock/oscClock.controller';
 import OscControlStore from './store/oscControl/oscControl.store';
-import UpdateService from './update/update.service';
+import UpdaterService from './updater/updater.service';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -36,7 +36,7 @@ app.whenReady().then(() => {
     new LovenseController();
     new VrcDetectorService();
     new OscClockController();
-    new UpdateService();
+    new UpdaterService();
 
     // testing service
     // testing();

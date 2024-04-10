@@ -1,6 +1,5 @@
 import { UpdateDTO } from 'cmap2-shared';
-import styled, { css } from 'styled-components';
-import useModalHook from '../../../components/modal/modal.hook';
+import styled from 'styled-components';
 import { useContext } from 'react';
 import { ModalContext } from '../../../components/mainWindow/mainWindow.componenet';
 
@@ -52,10 +51,6 @@ const UpdateBoxStyled = styled.div`
     color: ${props => props.theme.colors.success};
   }
   
-  p {
-    white-space: pre-line;
-  }
-
   span {
     color: dimgrey;
   }
