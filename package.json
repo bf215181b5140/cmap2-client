@@ -1,6 +1,6 @@
 {
   "name": "cmap-client",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "VRChat utility application for OSC interactions and access to Cmap website features.",
   "private": true,
   "main": "./build/electron/electron.js",
