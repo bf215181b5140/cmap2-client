@@ -2,19 +2,23 @@ import TypedIpcMain from '../ipc/typedIpcMain';
 import { StoreService } from '../store/store.service';
 import { WEBSITE_URL } from '../../shared/const';
 import semver from 'semver';
-import { app, dialog } from 'electron';
+import { app } from 'electron';
 import { spawn } from 'child_process';
 import * as fs from 'fs';
 import { GeneralSettings } from '../../shared/types/settings';
 import { Readable } from 'stream';
 import { tmpName } from 'tmp-promise';
+import { VersionDTO } from 'cmap2-shared';
+import { UpdateData } from './update.model';
 
 export default class UpdateService {
     private intervalId: NodeJS.Timeout | null = null;
+    private updateData: UpdateData | undefined;
 
     constructor() {
-        TypedIpcMain.on('checkForUpdate', (force) => this.checkForUpdates(force));
         TypedIpcMain.on('setGeneralSettings', (data) => this.manageInterval(data));
+        TypedIpcMain.on('checkForUpdate', () => this.checkForUpdates());
+        TypedIpcMain.on('startUpdate', (data) => this.startUpdate(data));
 
         this.manageInterval(StoreService.getGeneralSettings());
     }
@@ -22,43 +26,46 @@ export default class UpdateService {
     manageInterval(settings: GeneralSettings) {
         if (settings.autoCheckUpdates) {
             // Check right away
-            this.checkForUpdates(true);
+            this.checkForUpdates();
             // If interval already exists return
             if (this.intervalId) return;
             // set new interval
-            this.intervalId = setInterval(() => this.checkForUpdates(false), 3600 * 1000);
+            this.intervalId = setInterval(() => this.checkForUpdates(), 3600 * 1000);
         } else {
             // Clear existing interval
             if (this.intervalId) clearInterval(this.intervalId);
         }
     }
 
-    async checkForUpdates(forced: boolean) {
-        if (!forced && !StoreService.getGeneralSettings().autoCheckUpdates) return;
-
-        const version = await fetch(`${WEBSITE_URL}/api/version`, {
+    async checkForUpdates() {
+        const serverData = await fetch(`${WEBSITE_URL}/api/version`, {
             method: 'GET',
         }).then(async res => {
             if (res.ok) {
-                return await res.json();
+                    return await res.json() as VersionDTO;
             }
-        }).catch(() => console.log('error fetching version check'));
-
-        if (typeof version?.clientVersion !== 'string' || typeof version?.clientDownload !== 'string') return;
-
-        if (semver.lte(version.clientVersion, app.getVersion())) return;
-
-        const downloadUrl: string = version.clientDownload;
-        const installerPath: string = await tmpName({ postfix: '.exe' });
-
-        const dialogRes = await dialog.showMessageBox({
-            title: 'New update',
-            message: 'New version is available, it might have new feature and website might not be compatible with old version of the program.',
-            buttons: ['Download and install', 'Not now'],
-            cancelId: 1
+        }).catch(() => {
+            console.log('error fetching version check');
+            return undefined;
         });
 
-        if (dialogRes.response === 1) return;
+        if (!serverData) return;
+
+        const currentVersion = app.getVersion();
+
+        this.updateData = {
+            currentVersion: currentVersion,
+            serverData: serverData,
+            newPatch: semver.patch(serverData.clientVersion) > semver.patch(currentVersion),
+            newMinor: semver.minor(serverData.clientVersion) > semver.minor(currentVersion),
+            newMajor: semver.major(serverData.clientVersion) > semver.major(currentVersion),
+        }
+
+        TypedIpcMain.emit('updateData', this.updateData)
+    }
+
+    async startUpdate(downloadUrl: string) {
+        const installerPath: string = await tmpName({ postfix: '.exe' });
 
         const response = await fetch(downloadUrl);
         // @ts-ignore

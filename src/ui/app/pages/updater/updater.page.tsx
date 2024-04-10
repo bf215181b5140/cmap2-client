@@ -1,26 +1,25 @@
 import { Content, ContentBox } from 'cmap2-shared/dist/react';
-import { useEffect, useState } from 'react';
 import { app } from 'electron';
-import semver from 'semver';
+import useUpdateStatus from '../../shared/hooks/updateStatus.hook';
+import ButtonInput from '../../shared/components/form/inputs/button.component';
 
 export default function UpdaterPage() {
 
-    const [lastestVersion, setLatestVersion] = useState<string | undefined>();
-    const currentVersion = app.getVersion();
-    const isUpToDate = lastestVersion && currentVersion ? semver.lte(lastestVersion, currentVersion) : null;
-
-    useEffect(() => {
-        window.electronAPI.get('latestClientVersion').then(data => setLatestVersion(data));
-    }, []);
+    const { updateStatus, updateDetail, updateStatusColor, currentVersion, serverVersion, newestVersion, newestDownload } = useUpdateStatus();
 
     function onUpdate() {
         window.electronAPI.send('startUpdate');
     }
 
-    return(<Content>
+    return (<Content>
         <ContentBox>
-            <h2>Updater page</h2>
-            Current version: {app.getVersion()}
+            <h2 style={{color: updateStatusColor}}>{updateStatus}</h2>
+            {updateDetail && <p>{updateDetail}</p>}
+            Current version: {currentVersion}
+            Server version: {serverVersion}
+
+            <hr />
+            <ButtonInput text={'Check for updates'} onClick={() => window.electronAPI.send('checkForUpdate')} />
         </ContentBox>
-    </Content>)
+    </Content>);
 }

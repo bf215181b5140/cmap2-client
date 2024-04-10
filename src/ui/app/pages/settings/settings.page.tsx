@@ -37,7 +37,7 @@ export default function SettingsPage() {
                     <tr>
                         <th>Automatically check for updates</th>
                         <td><CheckboxInput register={register} name={'autoCheckUpdates'} errors={errors} /></td>
-                        <td><ButtonInput text={'Check now'} onClick={() => window.electronAPI.send('checkForUpdate', true)} /></td>
+                        <td><ButtonInput text={'Check now'} onClick={() => window.electronAPI.send('checkForUpdate')} /></td>
                     </tr>
                     <tr>
                         <th>Check if Vrchat is running</th>
