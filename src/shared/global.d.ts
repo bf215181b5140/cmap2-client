@@ -7,6 +7,7 @@ import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParamet
 import { GeneralSettings, Settings, WebsocketSettings } from './types/settings';
 import { VrcOscAvatar } from './types/osc';
 import { OscClockSettings } from '../electron/osc/clock/types';
+import { UpdateData } from '../electron/updater/updater.model';
 
 type IpcGetOptions = {
     getAppVersion: string;
@@ -47,6 +48,7 @@ type IpcSendOptions = {
     // Osc control
     setOscClockSettings: OscClockSettings;
     // Updater
+    checkForUpdates: undefined;
     startUpdate: string;
 };
 
@@ -55,6 +57,7 @@ type IpcReceiveOptions = {
     vrcParameter: VrcParameter;
     lovenseStatus: LovenseStatus;
     isVrchatRunning: boolean | null;
+    updateData: UpdateData;
 };
 
 export interface IElectronAPI {

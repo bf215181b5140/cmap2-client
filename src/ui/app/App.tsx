@@ -6,7 +6,6 @@ import TitleBar from './components/titleBar/titleBar.component';
 import NavBar from './components/navBar/navBar.component';
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
-import useWebsocketConnection from './shared/hooks/websocketConnection.hook';
 import useClientCredentials, { ClientCredentialsHook } from './shared/hooks/clientCredentials.hook';
 import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from './pages/settings/settings.page';

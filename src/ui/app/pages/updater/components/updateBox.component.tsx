@@ -37,8 +37,8 @@ const UpdateBoxStyled = styled.div`
   background: ${props => props.theme.colors.buttonSecondary.border};
   border-radius: 8px;
   padding: 10px 15px;
-  height: min-content;
   cursor: pointer;
+  flex-grow: 1;
 
   h2 {
     margin-top: 0;

@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
+import { theme } from 'cmap2-shared';
 
 interface NavBarLinkProps {
     to: string,
     icon: string,
-    attention?: boolean;
+    attentionIcon?: boolean;
+    attentionColor?: string;
 }
 
-export default function NavBarLink({to, icon, attention = false}: NavBarLinkProps) {
+export default function NavBarLink({to, icon, attentionIcon = false, attentionColor = theme.colors.attention}: NavBarLinkProps) {
 
     const pathname = useLocation().pathname;
 
@@ -17,7 +19,7 @@ export default function NavBarLink({to, icon, attention = false}: NavBarLinkProp
 
     return (<NavBarLinkStyled to={to} $selected={selected()}>
         {icon && <i className={icon}></i>}
-        {attention && <i className="attention ri-shining-fill"></i>}
+        {attentionIcon && <i className="attention ri-circle-fill" style={{color: attentionColor}}></i>}
     </NavBarLinkStyled>);
 }
 
@@ -41,8 +43,8 @@ const NavBarLinkStyled = styled(Link)<{ $selected: boolean }>`
     color: ${props => props.theme.colors.attention};
     font-size: 10px;
     position: absolute;
-    top: ${props => props.$selected ? '14px' : '8px'};
-    right: 8px;
+    top: ${props => props.$selected ? '16px' : '10px'};
+    right: 10px;
     transition: 0.1s linear;
   }
 
@@ -56,8 +58,8 @@ const NavBarLinkStyled = styled(Link)<{ $selected: boolean }>`
       color: ${props => props.$selected ? props.theme.colors.navBar.activeIcon : props.theme.colors.navBar.hoverIcon};
     }
 
-    #attention {
-      top: 14px;
+    .attention {
+      top: 16px;
     }
   }
 `;
