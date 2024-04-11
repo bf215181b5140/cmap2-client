@@ -33,7 +33,6 @@ export default function UpdaterPage() {
 }
 
 const UpdatesStyled = styled.div`
-  margin: 10px 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
