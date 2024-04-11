@@ -12,6 +12,7 @@
     "postinstall": "npm update cmap2-shared"
   },
   "dependencies": {
+    "@esbuild/win32-x64": "^0.20.2",
     "@formkit/auto-animate": "^0.8.1",
     "@hookform/resolvers": "^2.9.11",
     "@types/events": "^3.0.3",
