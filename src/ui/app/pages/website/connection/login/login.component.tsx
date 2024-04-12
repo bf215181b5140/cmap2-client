@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { ReactProps } from 'cmap2-shared';
-import { ClientCredentialsContext } from '../../../../App';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import { ContentBox } from 'cmap2-shared/dist/react/';
 import LoginForm from './loginForm.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
+import { ClientCredentialsContext } from '../../../../components/context/appContexts';
 
 interface LoginProps extends ReactProps {
     setShowLogin: Dispatch<SetStateAction<boolean>>;

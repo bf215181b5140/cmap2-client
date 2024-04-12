@@ -6,8 +6,6 @@ import TitleBar from './components/titleBar/titleBar.component';
 import NavBar from './components/navBar/navBar.component';
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
-import useClientCredentials, { ClientCredentialsHook } from './shared/hooks/clientCredentials.hook';
-import { ClientCredentials } from '../../shared/classes';
 import SettingsPage from './pages/settings/settings.page';
 import MainWindow from './components/mainWindow/mainWindow.componenet';
 import LovensePage from './pages/lovense/lovense.page';
@@ -16,24 +14,13 @@ import AvatarsPage from './pages/osc/avatars/avatars.page';
 import OscPage from './pages/osc/osc.page';
 import UpdaterPage from './pages/updater/updater.page';
 import GuidePage from './pages/guide/guide.page';
-
-export const ClientCredentialsContext = React.createContext<ClientCredentialsHook>({
-    clientCredentials: new ClientCredentials(),
-    setClientCredentials: () => {
-    },
-    setClientToken: () => {
-    },
-    clearClientToken: () => {
-    }
-});
+import AppProviders from './components/context/appProviders.component';
 
 export default function App() {
 
-    const clientCredentialsHook = useClientCredentials();
-
     return (
         <AppStyled>
-            <ClientCredentialsContext.Provider value={clientCredentialsHook}>
+            <AppProviders>
                 <TitleBar />
                 <MainWindow>
                     <Routes>
@@ -48,7 +35,7 @@ export default function App() {
                     </Routes>
                 </MainWindow>
                 <NavBar />
-            </ClientCredentialsContext.Provider>
+            </AppProviders>
         </AppStyled>);
 }
 

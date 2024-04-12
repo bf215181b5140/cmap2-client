@@ -1,9 +1,8 @@
 import { useContext, useState } from 'react';
-import { ClientCredentialsContext } from '../../App';
 import { ToastContext } from '../../components/mainWindow/mainWindow.componenet';
 import { WEBSITE_URL } from '../../../../shared/const';
 import { ToastType } from '../../components/toast/toast.hook';
-import { CmapApiErrorDTO } from 'cmap2-shared';
+import { ClientCredentialsContext } from '../../components/context/appContexts';
 
 interface CmapFetchResponse {
     ok: boolean;

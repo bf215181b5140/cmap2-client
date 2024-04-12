@@ -1,7 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useContext } from 'react';
-import { ClientCredentialsContext } from '../../../../App';
 import FormTable from '../../../../shared/components/form/formTable.component';
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
@@ -9,6 +8,7 @@ import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { LoginDTO, LoginSchema, LoginTokenDTO } from 'cmap2-shared';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import { ClientCredentials } from '../../../../../../shared/classes';
+import { ClientCredentialsContext } from '../../../../components/context/appContexts';
 
 export default function LoginForm() {
 

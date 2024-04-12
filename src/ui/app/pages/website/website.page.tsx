@@ -7,11 +7,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import ConnectionPage from './connection/connection.page';
 import Submenu from '../../shared/components/submenu/submenu.component';
 import SubmenuLink from '../../shared/components/submenu/submenuLink.component';
-import { ClientCredentialsContext } from '../../App';
 import { WebsitePageDTO } from 'cmap2-shared';
 import useCmapFetch from '../../shared/hooks/cmapFetch.hook';
 import ApproveFilePage from './admin/approveFile/approveFile.page';
 import ClientVersionsPage from './admin/clientVersions/clientVersions.page';
+import { ClientCredentialsContext } from '../../components/context/appContexts';
 
 export default function WebsitePage() {
 
