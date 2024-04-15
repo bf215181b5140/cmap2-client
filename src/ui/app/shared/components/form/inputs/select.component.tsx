@@ -27,7 +27,7 @@ export default function SelectInput({name, register, options, errors, readOnly, 
     </div>);
 };
 
-export const SelectInputStyled = styled.select<{ errors: boolean, width?: string }>`
+export const SelectInputStyled = styled.select<{ errors?: boolean, width?: string }>`
   ${globalInputStyle};
   cursor: pointer;
 

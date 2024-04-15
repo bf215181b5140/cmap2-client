@@ -12,9 +12,10 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { ClientVersionDTO, ClientVersionFormDTO, ClientVersionFormSchema } from 'cmap2-shared';
 import TextareaInput from '../../../../shared/components/form/inputs/textarea.component';
+import DateInput from '../../../../shared/components/form/inputs/date.component';
+
 
 export default function ClientVersionsPage() {
-
 
     const cmapFetch = useCmapFetch();
     const { deleteModal } = useContext(ModalContext);
@@ -32,13 +33,14 @@ export default function ClientVersionsPage() {
     }, []);
 
     function onSubmit(formData: ClientVersionFormDTO) {
-        cmapFetch<ClientVersionDTO[]>('clientVersions', {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: { 'Content-Type': 'application/json' }
-        }, (data) => {
-            reset({ versions: data });
-        });
+        console.log(formData)
+        // cmapFetch<ClientVersionDTO[]>('clientVersions', {
+        //     method: 'POST',
+        //     body: JSON.stringify(formData),
+        //     headers: { 'Content-Type': 'application/json' }
+        // }, (data) => {
+        //     reset({ versions: data });
+        // });
     }
 
     function onDelete(index: number) {
@@ -86,6 +88,9 @@ export default function ClientVersionsPage() {
                                 <TextareaInput register={register} name={`versions.${index}.description`} errors={errors} />
                             </td>
                             <td>
+                                <DateInput type={'datetime-local'} register={register} control={control} name={`versions.${index}.date`} errors={errors} />
+                            </td>
+                            <td>
                                 <ButtonInput text="Delete" onClick={() => deleteModal('client version', () => onDelete(index))} />
                             </td>
                         </tr>
@@ -99,6 +104,7 @@ export default function ClientVersionsPage() {
                         version: '',
                         download: '',
                         description: '',
+                        date: new Date(),
                     })} />
                     <SubmitInput disabled={!isDirty} />
                     <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
