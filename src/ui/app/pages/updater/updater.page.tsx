@@ -5,7 +5,7 @@ import UpdateBox from './components/updateBox.component';
 
 export default function UpdaterPage() {
 
-    const { updateStatus, updateDetail, updateStatusColor, currentVersion, updates } = useUpdateStatus();
+    const { updateStatus, updateDetail, updateStatusColor, currentVersion, latest } = useUpdateStatus();
 
     return (<Content flexDirection={'row'}>
         <ContentBox>
@@ -21,9 +21,9 @@ export default function UpdaterPage() {
 
         <ContentBox>
             <h2>Download and install</h2>
-            {updates.length > 0 ? (<>
+            {latest ? (<>
                 <UpdatesStyled>
-                    {updates?.map((update, index) => (<UpdateBox update={update} latest={index === 0} key={update.id} />))}
+                    <UpdateBox update={latest} />
                 </UpdatesStyled>
             </>) : (<>
                 <p>No new updates available</p>

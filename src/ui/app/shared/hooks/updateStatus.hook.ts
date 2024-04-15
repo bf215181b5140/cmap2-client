@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { theme } from 'cmap2-shared';
 import { UpdateData } from '../../../../electron/updater/updater.model';
+import semver from 'semver';
 
 export default function useUpdateStatus() {
 
     const [updateData, setUpdateData] = useState<UpdateData>();
+    const newMajor = !!updateData?.latest?.version && semver.major(updateData?.latest?.version) > semver.major(updateData?.currentVersion);
+    const newMinor = !!updateData?.latest?.version && semver.minor(updateData?.latest?.version) > semver.minor(updateData?.currentVersion);
+    const newPatch = !!updateData?.latest?.version && semver.patch(updateData?.latest?.version) > semver.patch(updateData?.currentVersion);
 
     useEffect(() => {
         const removeListener = window.electronAPI.receive('updateData', data => setUpdateData(data));
@@ -18,28 +22,28 @@ export default function useUpdateStatus() {
 
     function updateStatus(): string {
         if (!updateData || !updateData.lastCheck) return 'Checking for updates...'
-        if (updateData.newMajor || updateData.newMinor) return 'Update required';
-        if (updateData.newPatch) return 'Update available';
+        if (newMajor || newMinor) return 'Update required';
+        if (newPatch) return 'Update available';
         return 'Up to date';
     }
 
     function updateDetail(): string | undefined {
         if (!updateData || !updateData.lastCheck) return undefined;
-        if (updateData.newMajor) return 'To use website features please update to the latest version, otherwise things will not work.';
-        if (updateData.newMinor) return 'To use website features please update to the latest version, otherwise some things will not work.';
+        if (newMajor) return 'To use website features please update to the latest version, otherwise things will not work.';
+        if (newMinor) return 'To use website features please update to the latest version, otherwise some things will not work.';
         return undefined;
     }
 
     function updateStatusColor(): string | undefined {
         if (!updateData || !updateData.lastCheck) return undefined;
-        if (updateData.newMajor || updateData.newMinor) return theme.colors.error;
-        if (updateData.newPatch) return theme.colors.warning;
+        if (newMajor || newMinor) return theme.colors.error;
+        if (newPatch) return theme.colors.warning;
         return undefined;
     }
 
     return {
         currentVersion: updateData?.currentVersion,
-        updates: updateData?.updates || [],
+        latest: updateData?.latest,
         updateStatus: updateStatus(),
         updateDetail: updateDetail(),
         updateStatusColor: updateStatusColor()

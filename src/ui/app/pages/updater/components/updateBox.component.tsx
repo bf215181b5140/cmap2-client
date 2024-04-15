@@ -5,7 +5,7 @@ import { ModalContext } from '../../../components/mainWindow/mainWindow.componen
 
 interface UpdateBoxProps {
     update: UpdateDTO;
-    latest: boolean;
+    latest?: boolean;
 }
 
 export default function UpdateBox({ update, latest }: UpdateBoxProps) {
@@ -25,6 +25,8 @@ export default function UpdateBox({ update, latest }: UpdateBoxProps) {
         {latest && <h3>Latest</h3>}
 
         <h2>{update.version}</h2>
+
+        <p>{update.date}</p>
 
         <p>{update.description}</p>
 

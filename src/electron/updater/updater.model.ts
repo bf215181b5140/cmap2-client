@@ -3,8 +3,5 @@ import { UpdateDTO } from 'cmap2-shared';
 export interface UpdateData {
     currentVersion: string;
     lastCheck: number | undefined;
-    updates: UpdateDTO[];
-    newMajor: boolean;
-    newMinor: boolean;
-    newPatch: boolean;
+    latest: UpdateDTO | undefined;
 }

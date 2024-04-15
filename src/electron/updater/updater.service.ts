@@ -1,12 +1,11 @@
 import TypedIpcMain from '../ipc/typedIpcMain';
 import { WEBSITE_URL } from '../../shared/const';
-import semver from 'semver';
 import { app } from 'electron';
 import { spawn } from 'child_process';
 import * as fs from 'fs';
 import { Readable } from 'stream';
 import { tmpName } from 'tmp-promise';
-import { UpdatesDTO } from 'cmap2-shared';
+import { UpdateDTO } from 'cmap2-shared';
 import { UpdateData } from './updater.model';
 
 export default class UpdaterService {
@@ -14,10 +13,7 @@ export default class UpdaterService {
     private updateData: UpdateData = {
         currentVersion: app.getVersion(),
         lastCheck: undefined,
-        updates: [],
-        newMajor: false,
-        newMinor: false,
-        newPatch: false,
+        latest: undefined,
     };
 
     constructor() {
@@ -37,13 +33,11 @@ export default class UpdaterService {
     }
 
     async checkForUpdates() {
-        const currentVersion = app.getVersion();
-
-        let data = await fetch(`${WEBSITE_URL}/api/updates?version=${currentVersion}`, {
+        let data = await fetch(`${WEBSITE_URL}/api/updates`, {
             method: 'GET',
         }).then(async res => {
             if (res.ok) {
-                return await res.json() as UpdatesDTO;
+                return await res.json() as UpdateDTO;
             }
         }).catch(() => {
             console.log('error fetching version check');
@@ -51,12 +45,9 @@ export default class UpdaterService {
         });
 
         this.updateData = {
-            currentVersion: currentVersion,
+            currentVersion: app.getVersion(),
             lastCheck: !!data ? Date.now() : undefined,
-            updates: data?.updates || [],
-            newMajor: !!data?.updates?.find(u => semver.major(u.version) > semver.major(currentVersion)),
-            newMinor: !!data?.updates?.find(u => semver.minor(u.version) > semver.minor(currentVersion)),
-            newPatch: !!data?.updates?.find(u => semver.patch(u.version) > semver.patch(currentVersion)),
+            latest: undefined,
         };
 
         TypedIpcMain.emit('updateData', this.updateData);
