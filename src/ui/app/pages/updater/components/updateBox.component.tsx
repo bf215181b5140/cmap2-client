@@ -26,7 +26,7 @@ export default function UpdateBox({ update, latest }: UpdateBoxProps) {
 
         <h2>{update.version}</h2>
 
-        <p>{update.date}</p>
+        {/*<p>{update.date}</p>*/}
 
         <p>{update.description}</p>
 

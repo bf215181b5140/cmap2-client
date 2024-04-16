@@ -88,7 +88,7 @@ export default function ClientVersionsPage() {
                                 <TextareaInput register={register} name={`versions.${index}.description`} errors={errors} />
                             </td>
                             <td>
-                                <DateInput type={'datetime-local'} register={register} control={control} name={`versions.${index}.date`} errors={errors} />
+                                <DateInput type={'datetime-local'} control={control} name={`versions.${index}.date`} errors={errors} />
                             </td>
                             <td>
                                 <ButtonInput text="Delete" onClick={() => deleteModal('client version', () => onDelete(index))} />
