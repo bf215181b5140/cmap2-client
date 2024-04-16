@@ -14,7 +14,6 @@ import { ClientVersionDTO, ClientVersionFormDTO, ClientVersionFormSchema } from 
 import TextareaInput from '../../../../shared/components/form/inputs/textarea.component';
 import DateInput from '../../../../shared/components/form/inputs/date.component';
 
-
 export default function ClientVersionsPage() {
 
     const cmapFetch = useCmapFetch();
@@ -33,14 +32,13 @@ export default function ClientVersionsPage() {
     }, []);
 
     function onSubmit(formData: ClientVersionFormDTO) {
-        console.log(formData)
-        // cmapFetch<ClientVersionDTO[]>('clientVersions', {
-        //     method: 'POST',
-        //     body: JSON.stringify(formData),
-        //     headers: { 'Content-Type': 'application/json' }
-        // }, (data) => {
-        //     reset({ versions: data });
-        // });
+        cmapFetch<ClientVersionDTO[]>('clientVersions', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: { 'Content-Type': 'application/json' }
+        }, (data) => {
+            reset({ versions: data });
+        });
     }
 
     function onDelete(index: number) {
@@ -79,7 +77,7 @@ export default function ClientVersionsPage() {
                         <tr key={item.id}>
                             <td>
                                 <HiddenInput register={register} name={`versions.${index}.id`} />
-                                <Input register={register} name={`versions.${index}.version`} errors={errors} />
+                                <Input register={register} name={`versions.${index}.version`} width={'85px'} errors={errors} />
                             </td>
                             <td>
                                 <Input register={register} name={`versions.${index}.download`} errors={errors} />

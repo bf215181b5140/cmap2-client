@@ -6,6 +6,8 @@ import semver from 'semver';
 export default function useUpdateStatus() {
 
     const [updateData, setUpdateData] = useState<UpdateData>();
+
+    const newUpdate = !!updateData?.latest?.version && semver.lt(updateData?.currentVersion, updateData?.latest?.version);
     const newMajor = !!updateData?.latest?.version && semver.major(updateData?.latest?.version) > semver.major(updateData?.currentVersion);
     const newMinor = !!updateData?.latest?.version && semver.minor(updateData?.latest?.version) > semver.minor(updateData?.currentVersion);
     const newPatch = !!updateData?.latest?.version && semver.patch(updateData?.latest?.version) > semver.patch(updateData?.currentVersion);
@@ -43,7 +45,7 @@ export default function useUpdateStatus() {
 
     return {
         currentVersion: updateData?.currentVersion,
-        latest: updateData?.latest,
+        latest: newUpdate ? updateData?.latest : undefined,
         updateStatus: updateStatus(),
         updateDetail: updateDetail(),
         updateStatusColor: updateStatusColor()

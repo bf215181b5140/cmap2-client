@@ -11,9 +11,9 @@ export default function UpdaterPage() {
         <ContentBox>
             <h2 style={{ color: updateStatusColor }}>{updateStatus}</h2>
 
-            <p>Download and install available updates by clicking on them on the right side.</p>
-
             {updateDetail && <p>{updateDetail}</p>}
+
+            <p>Download and install available updates by clicking on them on the right side.</p>
 
             <h3>Current version</h3>
             <span style={{ display: 'block', margin: '5px' }}>{currentVersion}</span>

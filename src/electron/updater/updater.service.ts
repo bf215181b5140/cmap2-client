@@ -5,7 +5,7 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import { Readable } from 'stream';
 import { tmpName } from 'tmp-promise';
-import { UpdateDTO } from 'cmap2-shared';
+import { ClientVersionDTO, ClientVersionSchema, UpdateDTO } from 'cmap2-shared';
 import { UpdateData } from './updater.model';
 
 export default class UpdaterService {
@@ -37,7 +37,8 @@ export default class UpdaterService {
             method: 'GET',
         }).then(async res => {
             if (res.ok) {
-                return await res.json() as UpdateDTO;
+                const data = await res.json();
+                return ClientVersionSchema.parse(data);
             }
         }).catch(() => {
             console.log('error fetching version check');
@@ -47,7 +48,7 @@ export default class UpdaterService {
         this.updateData = {
             currentVersion: app.getVersion(),
             lastCheck: !!data ? Date.now() : undefined,
-            latest: undefined,
+            latest: data,
         };
 
         TypedIpcMain.emit('updateData', this.updateData);

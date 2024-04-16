@@ -1,10 +1,10 @@
-import { UpdateDTO } from 'cmap2-shared';
+import { ClientVersionDTO } from 'cmap2-shared';
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { ModalContext } from '../../../components/mainWindow/mainWindow.componenet';
 
 interface UpdateBoxProps {
-    update: UpdateDTO;
+    update: ClientVersionDTO;
     latest?: boolean;
 }
 
@@ -24,9 +24,10 @@ export default function UpdateBox({ update, latest }: UpdateBoxProps) {
     return (<UpdateBoxStyled onClick={onDownload}>
         {latest && <h3>Latest</h3>}
 
-        <h2>{update.version}</h2>
-
-        {/*<p>{update.date}</p>*/}
+        <div className={'updateBoxTitle'}>
+            <h2>{update.version}</h2>
+            <span>{update.date.toLocaleDateString()}</span>
+        </div>
 
         <p>{update.description}</p>
 
@@ -42,6 +43,13 @@ const UpdateBoxStyled = styled.div`
   cursor: pointer;
   flex-grow: 1;
 
+  .updateBoxTitle {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: space-between;
+  }
+
   h2 {
     margin-top: 0;
     font-size: 18px;
@@ -52,7 +60,7 @@ const UpdateBoxStyled = styled.div`
     margin-top: 0;
     color: ${props => props.theme.colors.success};
   }
-  
+
   p {
     white-space: pre-line;
   }
