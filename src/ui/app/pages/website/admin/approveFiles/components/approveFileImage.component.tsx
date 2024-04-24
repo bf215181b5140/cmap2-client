@@ -15,7 +15,7 @@ export default function ApproveFileImage({ file, onApprove, onDecline }: Approve
     const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
-        cmapFetch<Blob>(`file/private?fileId=${file.id}`, {}, (data) => setImageUrl(URL.createObjectURL(data)));
+        cmapFetch<Blob>(`admin/privateFiles?fileId=${file.id}`, {}, (data) => setImageUrl(URL.createObjectURL(data)));
     }, []);
 
     return (<ApproveFileImageStyled>

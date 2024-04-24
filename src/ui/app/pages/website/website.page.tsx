@@ -9,8 +9,8 @@ import Submenu from '../../shared/components/submenu/submenu.component';
 import SubmenuLink from '../../shared/components/submenu/submenuLink.component';
 import { WebsitePageDTO } from 'cmap2-shared';
 import useCmapFetch from '../../shared/hooks/cmapFetch.hook';
-import ApproveFilePage from './admin/approveFile/approveFile.page';
-import ClientVersionsPage from './admin/clientVersions/clientVersions.page';
+import ApproveFilesPage from './admin/approveFiles/approveFiles.page';
+import UpdatesPage from './admin/updates/updates.page';
 import { ClientCredentialsContext } from '../../components/context/appContexts';
 
 export default function WebsitePage() {
@@ -50,8 +50,8 @@ export default function WebsitePage() {
                 <Route path="/tiers" element={<TiersPage />} />
 
                 {/* Admin pages */}
-                <Route path="/approveFiles" element={<ApproveFilePage />} />
-                <Route path="/clientVersions" element={<ClientVersionsPage />} />
+                <Route path="/approveFiles" element={<ApproveFilesPage />} />
+                <Route path="/clientVersions" element={<UpdatesPage />} />
 
                 <Route path="*" element={<Navigate to={'/website/connection'} />} />
             </Routes>

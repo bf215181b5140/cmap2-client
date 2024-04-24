@@ -1,10 +1,10 @@
-import { ClientVersionDTO } from 'cmap2-shared';
+import { UpdateDTO } from 'cmap2-shared';
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { ModalContext } from '../../../components/mainWindow/mainWindow.componenet';
 
 interface UpdateBoxProps {
-    update: ClientVersionDTO;
+    update: UpdateDTO;
     latest?: boolean;
 }
 

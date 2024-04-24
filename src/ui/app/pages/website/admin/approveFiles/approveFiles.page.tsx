@@ -6,18 +6,18 @@ import styled from 'styled-components';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import ApproveFileImage from './components/approveFileImage.component';
 
-export default function ApproveFilePage() {
+export default function ApproveFilesPage() {
 
     const cmapFetch = useCmapFetch();
     const [approveFiles, setApproveFiles] = useState<UploadedFileDTO[]>([]);
     const [parent] = useAutoAnimate();
 
     useEffect(() => {
-        cmapFetch<ApproveFilesDTO>('file/approveFiles', {}, data => setApproveFiles(data.files));
+        cmapFetch<ApproveFilesDTO>('admin/approveFiles', {}, data => setApproveFiles(data.files));
     }, []);
 
     function onApprove(file: UploadedFileDTO) {
-        cmapFetch('file/approveFiles', {
+        cmapFetch('admin/approveFiles', {
             method: 'POST',
             body: JSON.stringify(file),
             headers: { 'Content-Type': 'application/json' }
@@ -25,7 +25,7 @@ export default function ApproveFilePage() {
     }
 
     function onDecline(file: UploadedFileDTO) {
-        cmapFetch('file/approveFiles', {
+        cmapFetch('admin/approveFiles', {
             method: 'DELETE',
             body: JSON.stringify(file),
             headers: { 'Content-Type': 'application/json' }

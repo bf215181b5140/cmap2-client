@@ -5,7 +5,7 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import { Readable } from 'stream';
 import { tmpName } from 'tmp-promise';
-import { ClientVersionDTO, ClientVersionSchema, UpdateDTO } from 'cmap2-shared';
+import { UpdateSchema } from 'cmap2-shared';
 import { UpdateData } from './updater.model';
 
 export default class UpdaterService {
@@ -38,7 +38,7 @@ export default class UpdaterService {
         }).then(async res => {
             if (res.ok) {
                 const data = await res.json();
-                return ClientVersionSchema.parse(data);
+                return UpdateSchema.parse(data);
             }
         }).catch(() => {
             console.log('error fetching version check');

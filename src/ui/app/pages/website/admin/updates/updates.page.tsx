@@ -10,29 +10,29 @@ import SubmitInput from '../../../../shared/components/form/inputs/submit.compon
 import { ModalContext } from '../../../../components/mainWindow/mainWindow.componenet';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { ClientVersionDTO, ClientVersionFormDTO, ClientVersionFormSchema } from 'cmap2-shared';
+import { UpdateDTO, UpdatesFormDTO, UpdatesFormSchema } from 'cmap2-shared';
 import TextareaInput from '../../../../shared/components/form/inputs/textarea.component';
 import DateInput from '../../../../shared/components/form/inputs/date.component';
 
-export default function ClientVersionsPage() {
+export default function UpdatesPage() {
 
     const cmapFetch = useCmapFetch();
     const { deleteModal } = useContext(ModalContext);
-    const { register, control, handleSubmit, watch, reset, formState: { errors, isDirty } } = useForm<ClientVersionFormDTO>({
+    const { register, control, handleSubmit, watch, reset, formState: { errors, isDirty } } = useForm<UpdatesFormDTO>({
         defaultValues: { versions: [] },
-        resolver: zodResolver(ClientVersionFormSchema)
+        resolver: zodResolver(UpdatesFormSchema)
     });
     const { fields, append, remove } = useFieldArray({ control, name: 'versions' });
-    const watchClientVersions = watch('versions')!;
+    const watchVersions = watch('versions')!;
 
     useEffect(() => {
-        cmapFetch<ClientVersionDTO[]>('clientVersions', {}, data => {
+        cmapFetch<UpdateDTO[]>('admin/updates', {}, data => {
             reset({ versions: data });
         });
     }, []);
 
-    function onSubmit(formData: ClientVersionFormDTO) {
-        cmapFetch<ClientVersionDTO[]>('clientVersions', {
+    function onSubmit(formData: UpdatesFormDTO) {
+        cmapFetch<UpdateDTO[]>('admin/updates', {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: { 'Content-Type': 'application/json' }
@@ -42,15 +42,15 @@ export default function ClientVersionsPage() {
     }
 
     function onDelete(index: number) {
-        if (!watchClientVersions) return;
-        const version = watchClientVersions[index];
+        if (!watchVersions) return;
+        const version = watchVersions[index];
         if (version.id) {
-            cmapFetch('clientVersions', {
+            cmapFetch('admin/updates', {
                 method: 'DELETE',
                 body: JSON.stringify(version),
                 headers: { 'Content-Type': 'application/json' }
             }, () => {
-                reset({ versions: watchClientVersions.filter(v => v.id !== version.id!) });
+                reset({ versions: watchVersions.filter(v => v.id !== version.id!) });
             });
         } else {
             remove(index);
@@ -63,7 +63,7 @@ export default function ClientVersionsPage() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormTableStyled>
                     <thead>
-                    {watchClientVersions && watchClientVersions.length > 0 &&
+                    {watchVersions && watchVersions.length > 0 &&
                         <tr>
                             <th>Version</th>
                             <th>Download link</th>
