@@ -10,80 +10,41 @@ export default function useAvatarPage() {
     const navigate = useNavigate();
     const routeParams = useParams();
     const customFetch = useCmapFetch();
+
     const [avatars, avatarDataDispatch] = useReducer(avatarsReducer, []);
     const [clientTier, setClientTier] = useState<TierDTO | null>(null);
     const [clientButtonStyle, setClientButtonStyle] = useState<ButtonStyleDTO | null>(null);
-    const [selectedAvatar, setAvatar] = useState<AvatarDTO | undefined>(undefined);
-    const [selectedLayout, setLayout] = useState<LayoutDTO | undefined>(undefined);
-    const [selectedButton, setButton] = useState<ButtonDTO | undefined>(undefined);
-    const [interactionKeys, setInteractionKeys] = useState<InteractionKeyDTO[] | undefined>(undefined);
+    const [interactionKeys, setInteractionKeys] = useState<InteractionKeyDTO[]>([]);
 
-    useEffect(() => {
-        customFetch<AvatarPageDTO>('avatar', {}, data => {
-            avatarDataDispatch({type: 'setAvatars', avatars: data.avatars});
-            setClientTier(data.tier);
-            setClientButtonStyle(data.buttonStyle);
-            setDefaultOrFirstAvatar(data.avatars);
-            setInteractionKeys(data.interactionKeys);
-        });
-    }, []);
+    const selectedAvatar = selectAvatar();
+    const selectedLayout = selectedAvatar?.layouts?.find(l => l.id === routeParams.layoutId);
+    const selectedButton = selectedLayout?.buttons?.find(b => b.id === routeParams.buttonId);
 
-    function setDefaultOrFirstAvatar(list?: AvatarDTO[]) {
-        const tempList = list ? list : avatars;
-        if (tempList) {
-            const tempAvatar = tempList.find((avatar: AvatarDTO) => avatar.default);
-            if (tempAvatar) {
-                navigate('/website/avatars/' + tempAvatar.id);
-            } else if (tempList[0]?.id) {
-                navigate('/website/avatars/' + tempList[0].id);
-            }
-        }
+    function selectAvatar(): AvatarDTO | undefined {
+        // new AvatarDTO for adding new avatar
+        if (routeParams.avatarId === 'new') return { id: '', vrcId: '', label: '', default: false };
+        // find avatar from route parameter
+        if (routeParams.avatarId) return avatars.find(a => a.id === routeParams.avatarId);
+        // find first default avatar or first avatar in array
+        return avatars.find(a => a.default) || avatars[0];
     }
 
     useEffect(() => {
-        if (routeParams.avatarId) {
-            if (routeParams.avatarId === 'new') {
-                setAvatar({
-                    default: false,
-                    id: '',
-                    label: '',
-                    vrcId: ''
-                });
-            } else {
-                setAvatar(avatars.find(avi => avi.id === routeParams.avatarId));
-            }
-        } else {
-            setDefaultOrFirstAvatar();
-        }
-        if (routeParams.avatarId && routeParams.layoutId) {
-            setLayout(avatars.find(a => a.id === routeParams.avatarId)?.layouts?.find(l => l.id === routeParams.layoutId));
-        } else {
-            setLayout(undefined);
-        }
-        if (routeParams.avatarId && routeParams.layoutId && routeParams.buttonId) {
-            if (routeParams.buttonId === 'new') {
-                setButton({
-                    controlParameter: null,
-                    buttonType: ButtonType.Button,
-                    id: '',
-                    image: null,
-                    imageOrientation: ButtonImageOrientation.Square,
-                    label: '',
-                    order: 0,
-                    path: '',
-                    useCost: null,
-                    value: '',
-                    valueAlt: null,
-                    valueType: ParameterValueType.Int
-                });
-            } else {
-                setButton(avatars.find(a => a.id === routeParams.avatarId)?.layouts?.find(l => l.id === routeParams.layoutId)?.buttons
-                    ?.find(b => b.id === routeParams.buttonId));
-            }
-        } else {
-            setButton(undefined);
-        }
-    }, [routeParams]);
+        customFetch<AvatarPageDTO>('avatar', {}, data => {
+            avatarDataDispatch({ type: 'setAvatars', avatars: data.avatars });
+            setClientTier(data.tier);
+            setClientButtonStyle(data.buttonStyle);
+            setInteractionKeys(data.interactionKeys);
 
-    return {avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle, interactionKeys};
+            // Navigate to default or first avatar in list
+            const defAvatar = data.avatars.find(a => a.default);
+            if (defAvatar) {
+                navigate('/website/avatars/' + defAvatar.id);
+            } else if (data.avatars[0]?.id) {
+                navigate('/website/avatars/' + data.avatars[0].id);
+            }
+        });
+    }, []);
+
+    return { avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle, interactionKeys };
 }

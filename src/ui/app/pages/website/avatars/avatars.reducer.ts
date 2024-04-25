@@ -1,4 +1,4 @@
-import { AvatarDTO, ButtonDTO, ButtonFormDTO, ControlParameterDTO, LayoutDTO, UploadedFileDTO } from 'cmap2-shared';
+import { AvatarDTO, ButtonDTO, ControlParameterDTO, LayoutDTO, StateBadgeDTO, UploadedFileDTO } from 'cmap2-shared';
 
 export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDTO[] } |
     { type: 'addAvatar', avatar: AvatarDTO } |
@@ -6,6 +6,8 @@ export type AvatarReducerAction = { type: 'setAvatars', avatars: AvatarDTO[] } |
     { type: 'removeAvatar', avatar: AvatarDTO } |
     { type: 'saveControlParameters', controlParameters: ControlParameterDTO[], avatarId: string } |
     { type: 'removeControlParameter', controlParameter: ControlParameterDTO, avatarId: string } |
+    { type: 'saveStateBadges', stateBadges: StateBadgeDTO[], avatarId: string } |
+    { type: 'removeStateBadge', stateBadge: StateBadgeDTO, avatarId: string } |
     { type: 'addLayout', layout: LayoutDTO, avatarId: string } |
     { type: 'editLayout', layout: LayoutDTO, avatarId: string } |
     { type: 'removeLayout', layout: LayoutDTO, avatarId: string } |
@@ -35,6 +37,16 @@ export default function avatarsReducer(state: AvatarDTO[], action: AvatarReducer
         case 'removeControlParameter':
             return state.map(avatar => {
                 if (avatar.id === action.avatarId) avatar.controlParameters = avatar.controlParameters?.filter(cp => cp.id !== action.controlParameter.id);
+                return avatar;
+            });
+        case 'saveStateBadges':
+            return state.map(avatar => {
+                if (avatar.id === action.avatarId) avatar.stateBadges = action.stateBadges;
+                return avatar;
+            });
+        case 'removeStateBadge':
+            return state.map(avatar => {
+                if (avatar.id === action.avatarId) avatar.stateBadges = avatar.stateBadges?.filter(b => b.id !== action.stateBadge.id);
                 return avatar;
             });
         case 'addLayout':

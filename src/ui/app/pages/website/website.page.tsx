@@ -30,7 +30,7 @@ export default function WebsitePage() {
 
     return (<WebsitePageStyled>
         <Submenu>
-            <SubmenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Connection status'} />
+            <SubmenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Website connection'} />
             <SubmenuLink to={'/website/profile'} icon={'ri-user-fill'} tooltip={'Website profile'} disabled={!apiToken} />
             <SubmenuLink to={'/website/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Website layout'} disabled={!apiToken} />
             <SubmenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Account tiers'} disabled={!apiToken} />

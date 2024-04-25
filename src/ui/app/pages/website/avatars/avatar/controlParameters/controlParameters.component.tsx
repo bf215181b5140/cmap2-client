@@ -108,7 +108,8 @@ export default function ControlParameters({selectedAvatar, clientTier, avatarDat
         }
     }
 
-    return (<ContentBox title="Control parameters" flexBasis={ContentBoxWidth.Full} show={false}>
+    return (<ContentBox flexBasis={ContentBoxWidth.Full}>
+        <h2>Control parameters</h2>
         <p>Utility parameters that can be used to control avatar. These aren't displayed or interactable, instead they can be used to bind to other actions
             which trigger them.</p>
         <form onSubmit={handleSubmit(onSave)}>

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useContext } from 'react';
 import { ModalContext } from '../../../components/mainWindow/mainWindow.componenet';
 import { globalInputStyle } from '../form/input.style';
@@ -8,27 +8,43 @@ interface DeleteButtonProps {
     onClick: () => void;
     disabled?: boolean;
     className?: string;
+    size?: 'normal' | 'small';
 }
 
-export default function DeleteButton({keyword, onClick, disabled, className}: DeleteButtonProps) {
+export default function DeleteButton({ keyword, onClick, disabled, className, size = 'normal' }: DeleteButtonProps) {
 
-    const {deleteModal} = useContext(ModalContext);
+    const { deleteModal } = useContext(ModalContext);
 
-    return (<DeleteButtonStyled type={'button'} onClick={() => deleteModal(keyword, onClick)} disabled={!!disabled} className={className}>
+    return (<DeleteButtonStyled type={'button'} onClick={() => deleteModal(keyword, onClick)} disabled={!!disabled} className={className} size={size}>
         <i className={'ri-delete-bin-6-line'} />
     </DeleteButtonStyled>);
 }
 
-const DeleteButtonStyled = styled.button`
+const DeleteButtonStyled = styled.button<{ size: 'normal' | 'small' }>`
   ${globalInputStyle};
-  width: 44px;
   cursor: pointer;
   background: indianred;
   border-color: indianred;
   color: lightgray;
-  font-size: 25px;
   vertical-align: top;
 
+  ${props => {
+    switch (props.size) {
+      case 'normal':
+        return css`
+          width: 44px;
+          height: 44px;
+          font-size: 25px;
+        `;
+      case 'small':
+        return css`
+          width: 36px;
+          height: 36px;
+          font-size: 22px;
+        `;
+    }
+  }}
+  
   :hover {
     transform: scale(1.05);
     background: indianred;

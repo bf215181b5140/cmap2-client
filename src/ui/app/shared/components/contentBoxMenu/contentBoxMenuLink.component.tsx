@@ -1,16 +1,16 @@
-import styled, { css } from 'styled-components';
 import { ReactProps } from 'cmap2-shared';
+import styled, { css } from 'styled-components';
 
-interface AvatarsMenuLinkProps extends ReactProps {
+interface ContentBoxMenuLinkProps extends ReactProps {
     onClick: () => void;
     isActive: boolean;
 }
 
-export default function AvatarsMenuLink({onClick, isActive, children}: AvatarsMenuLinkProps) {
+export default function ContentBoxMenuLink({onClick, isActive, children}: ContentBoxMenuLinkProps) {
 
-    return (<AvatarsMenuLinkStyled isActive={isActive} onClick={onClick}>
+    return (<ContentBoxMenuLinkStyled isActive={isActive} onClick={onClick}>
         {children}
-    </AvatarsMenuLinkStyled>);
+    </ContentBoxMenuLinkStyled>);
 }
 
 const highlight = css`
@@ -19,7 +19,7 @@ const highlight = css`
   color: ${props => props.theme.colors.buttonSecondary.hoverBorder};
 `;
 
-const AvatarsMenuLinkStyled = styled.div<{ isActive: boolean }>`
+const ContentBoxMenuLinkStyled = styled.div<{ isActive: boolean }>`
   display: block;
   background-color: ${props => props.theme.colors.buttonSecondary.bg};
   border: 2px solid ${props => props.theme.colors.buttonSecondary.border};

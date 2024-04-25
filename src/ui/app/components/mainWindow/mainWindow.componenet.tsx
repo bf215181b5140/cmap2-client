@@ -36,7 +36,7 @@ export default function MainWindow({children}: ReactProps) {
 const MainWindowStyled = styled.div`
   overflow: hidden;
   width: 100%;
-  background-color: ${props => props.theme.colors.ui.appBg};
+  background-color: ${props => props.theme.colors.ui.appBgOpaque};
   border: 2px solid ${props => props.theme.colors.ui.appBorder};
   border-radius: 10px;
   box-sizing: border-box;

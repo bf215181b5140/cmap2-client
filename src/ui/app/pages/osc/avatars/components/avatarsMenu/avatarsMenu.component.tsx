@@ -1,7 +1,7 @@
 import { VrcOscAvatar } from '../../../../../../../shared/types/osc';
 import { ReactProps } from 'cmap2-shared';
-import AvatarsMenuLink from './avatarsMenuLink.component';
 import styled from 'styled-components';
+import ContentBoxMenuLink from '../../../../../shared/components/contentBoxMenu/contentBoxMenuLink.component';
 
 interface AvatarsMenuProps extends ReactProps {
     avatars: VrcOscAvatar[];
@@ -20,7 +20,7 @@ export default function AvatarMenu({avatars, activeAvatar, setActiveAvatar}: Ava
     }
 
     return (<AvatarsMenuStyled>
-        {avatars.map(avatar => (<AvatarsMenuLink onClick={() => setActive(avatar)} isActive={isActive(avatar)} key={avatar.id}>{avatar.name}</AvatarsMenuLink>))}
+        {avatars.map(avatar => (<ContentBoxMenuLink onClick={() => setActive(avatar)} isActive={isActive(avatar)} key={avatar.id}>{avatar.name}</ContentBoxMenuLink>))}
     </AvatarsMenuStyled>);
 }
 
