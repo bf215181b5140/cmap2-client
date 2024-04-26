@@ -4,11 +4,12 @@ import styled, { css } from 'styled-components';
 interface ContentBoxMenuLinkProps extends ReactProps {
     onClick: () => void;
     isActive: boolean;
+    disabled?: boolean;
 }
 
-export default function ContentBoxMenuLink({onClick, isActive, children}: ContentBoxMenuLinkProps) {
+export default function ContentBoxMenuLink({onClick, isActive, disabled = false, children}: ContentBoxMenuLinkProps) {
 
-    return (<ContentBoxMenuLinkStyled isActive={isActive} onClick={onClick}>
+    return (<ContentBoxMenuLinkStyled isActive={isActive} onClick={onClick} disabled={disabled}>
         {children}
     </ContentBoxMenuLinkStyled>);
 }
@@ -19,7 +20,7 @@ const highlight = css`
   color: ${props => props.theme.colors.buttonSecondary.hoverBorder};
 `;
 
-const ContentBoxMenuLinkStyled = styled.div<{ isActive: boolean }>`
+const ContentBoxMenuLinkStyled = styled.div<{ isActive: boolean, disabled: boolean }>`
   display: block;
   background-color: ${props => props.theme.colors.buttonSecondary.bg};
   border: 2px solid ${props => props.theme.colors.buttonSecondary.border};
@@ -35,5 +36,11 @@ const ContentBoxMenuLinkStyled = styled.div<{ isActive: boolean }>`
 
   :hover {
     ${highlight}
+  }
+
+  &[disabled] {
+    pointer-events: none;
+    color: ${props => props.theme.colors.input.textDisabled};
+    filter: saturate(0%);
   }
 `;

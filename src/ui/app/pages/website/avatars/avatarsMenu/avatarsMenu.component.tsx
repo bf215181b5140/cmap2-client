@@ -38,7 +38,7 @@ export default function AvatarsMenu({ page, setPage, avatars, selectedAvatar, cl
             <hr />
 
             <ContentBoxMenuLink onClick={() => setPage('settings')} isActive={page === 'settings'}>Settings</ContentBoxMenuLink>
-            <ContentBoxMenuLink onClick={() => setPage('layout')} isActive={page === 'layout'}>Layout</ContentBoxMenuLink>
+            <ContentBoxMenuLink onClick={() => setPage('layout')} isActive={page === 'layout'} disabled={!selectedAvatar?.id}>Layout</ContentBoxMenuLink>
 
         </AvatarsMenuStyled>
     </ContentBox>);

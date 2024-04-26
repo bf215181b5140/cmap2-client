@@ -14,6 +14,9 @@ export default function AvatarsPage() {
     const { avatars, avatarDataDispatch, selectedAvatar, selectedLayout, selectedButton, clientTier, clientButtonStyle, interactionKeys } = useAvatarPage();
     const [page, setPage] = useState<'settings' | 'layout'>('settings');
 
+    // if it's new avatar (doesn't have id) then set page to settings
+    if (!selectedAvatar?.id && page !== 'settings') setPage('settings');
+
     // still no data from fetch
     if (!clientTier || !clientButtonStyle || !interactionKeys) return null;
 
