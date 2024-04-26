@@ -1,8 +1,7 @@
 import { AvatarDTO, FieldOption, ReactProps, StateBadgeDTO, StateBadgeKey, StateBadgesDTO, StateBadgesSchema, TierDTO } from 'cmap2-shared';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { AvatarReducerAction } from '../../avatars.reducer';
 import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
-import { ModalContext } from '../../../../../components/mainWindow/mainWindow.componenet';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { ContentBox } from 'cmap2-shared/dist/react';
@@ -16,6 +15,8 @@ import DeleteButton from '../../../../../shared/components/buttons/deleteButton.
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
 import ButtonInput from '../../../../../shared/components/form/inputs/button.component';
 import SubmitInput from '../../../../../shared/components/form/inputs/submit.component';
+import styled from 'styled-components';
+import StateBadge from './components/stateBadge.component';
 
 interface StateBadgesProps extends ReactProps {
     selectedAvatar: AvatarDTO;
@@ -26,7 +27,6 @@ interface StateBadgesProps extends ReactProps {
 export default function StateBadges({ selectedAvatar, clientTier, avatarDataDispatch }: StateBadgesProps) {
 
     const customFetch = useCmapFetch();
-    const { deleteModal } = useContext(ModalContext);
     const { register, control, handleSubmit, watch, reset, formState: { errors, isDirty }, setValue } = useForm<StateBadgesDTO>({
         defaultValues: {
             avatarId: selectedAvatar.id, badges: [...selectedAvatar.stateBadges || []]
@@ -72,9 +72,17 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
 
     return (<ContentBox flexBasis={ContentBoxWidth.Full}>
         <h2>Avatar state badges</h2>
-        <p>Avatar state badges are displayed under your username on your website profile. They are used to show various states such as if you're muted, afk, tracking
-            type or anything else you set up with a Custom badge.</p>
+        <p>Avatar state badges are displayed under your username on your website profile. They are used to show various states such as if you're muted, afk,
+            tracking type or anything else you set up with a Custom badge.</p>
         <p>Custom badges will be displayed if your current avatar parameters match exactly what you specify, otherwise they will not.</p>
+        <p>For icons you can pick any from <b>https://remixicon.com/</b> and just copy their class value.
+            For example the first icon called <b><i className={'ri-arrow-left-up-line'} />arrow-left-up-line</b> you would copy ri-arrow-left-up-line</p>
+        {watchBadges && watchBadges.length > 0 && <>
+            <h3>Preview</h3>
+            <BadgeBox>
+                {watchBadges?.map(badge => (<StateBadge badge={badge} key={Math.random().toString()} />))}
+            </BadgeBox>
+        </>}
         <form onSubmit={handleSubmit(onSave)}>
             <HiddenInput register={register} name={'avatarId'} />
             <FormTableStyled>
@@ -103,7 +111,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                                             defaultType={'output'} defaultAvatarVrcId={selectedAvatar.id} />
                         </td>
                         <td>
-                            <Input register={register} name={`badges.${index}.value`} width={'75px'} readOnly={watchBadges[index].key !== StateBadgeKey.Custom}
+                            <Input register={register} name={`badges.${index}.value`} width={'65px'} readOnly={watchBadges[index].key !== StateBadgeKey.Custom}
                                    errors={errors} />
                         </td>
                         <td>
@@ -111,7 +119,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                                    errors={errors} />
                         </td>
                         <td>
-                            <Input register={register} name={`badges.${index}.icon`} width={'140px'} readOnly={watchBadges[index].key !== StateBadgeKey.Custom}
+                            <Input register={register} name={`badges.${index}.icon`} width={'160px'} readOnly={watchBadges[index].key !== StateBadgeKey.Custom}
                                    errors={errors} />
                         </td>
                         <td>
@@ -137,3 +145,15 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
         </form>
     </ContentBox>);
 }
+
+const BadgeBox = styled.div`
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+  background-color: ${props => props.theme.colors.ui.background4};
+  border-radius: 8px;
+  margin: 0 0 16px 0;
+  padding: 2px 0;
+  min-height: 24px;
+`;
