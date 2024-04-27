@@ -18,7 +18,7 @@ export default function useAvatarPage() {
 
     const selectedAvatar = selectAvatar();
     const selectedLayout = selectedAvatar?.layouts?.find(l => l.id === routeParams.layoutId);
-    const selectedButton = selectedLayout?.buttons?.find(b => b.id === routeParams.buttonId);
+    const selectedButton = selectButton();
 
     function selectAvatar(): AvatarDTO | undefined {
         // new AvatarDTO for adding new avatar
@@ -27,6 +27,27 @@ export default function useAvatarPage() {
         if (routeParams.avatarId) return avatars.find(a => a.id === routeParams.avatarId);
         // find first default avatar or first avatar in array
         return avatars.find(a => a.default) || avatars[0];
+    }
+
+    function selectButton(): ButtonDTO | undefined {
+        // new ButtonDTO for adding new button
+        if (routeParams.buttonId === 'new') return {
+            id: '',
+            label: '',
+            path: '',
+            value: '',
+            valueAlt: null,
+            valueType: ParameterValueType.Int,
+            buttonType: ButtonType.Button,
+            imageOrientation: ButtonImageOrientation.Square,
+            order: 0,
+            useCost: null,
+            image: null,
+            controlParameter: null,
+            interactionKey: null,
+        };
+        // find button from route parameter or undefined
+        if (routeParams.buttonId) return selectedLayout?.buttons?.find(b => b.id === routeParams.buttonId);
     }
 
     useEffect(() => {

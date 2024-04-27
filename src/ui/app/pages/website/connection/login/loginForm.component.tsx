@@ -8,7 +8,7 @@ import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { LoginDTO, LoginSchema, LoginTokenDTO } from 'cmap2-shared';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import { ClientCredentials } from '../../../../../../shared/classes';
-import { ClientCredentialsContext } from '../../../../components/context/appContexts';
+import { ClientCredentialsContext } from '../../../../contexts/contexts';
 
 export default function LoginForm() {
 

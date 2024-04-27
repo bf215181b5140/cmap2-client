@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { globalInputStyle } from '../form/input.style';
+import { globalInputStyle } from '../../form/input.style';
 
 export const ContentBoxMenuSelect = styled.select`
   ${globalInputStyle};

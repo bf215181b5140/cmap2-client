@@ -10,7 +10,7 @@ import Input from '../../../../shared/components/form/inputs/input.component';
 import { ToastType } from '../../../../components/toast/toast.hook';
 import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
-import { ClientCredentialsContext } from '../../../../components/context/appContexts';
+import { ClientCredentialsContext } from '../../../../contexts/contexts';
 
 interface RegisterFormProps extends ReactProps {
     setShowLogin: Dispatch<SetStateAction<boolean>>;

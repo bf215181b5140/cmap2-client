@@ -1,7 +1,7 @@
 import { VrcOscAvatar } from '../../../../../../../shared/types/osc';
 import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
-import ContentBoxMenuLink from '../../../../../shared/components/contentBoxMenu/contentBoxMenuLink.component';
+import ContentBoxMenuLink from '../../../../../shared/components/contentBox/contentBoxMenu/contentBoxMenuLink.component';
 
 interface AvatarsMenuProps extends ReactProps {
     avatars: VrcOscAvatar[];

@@ -11,7 +11,7 @@ import { WebsitePageDTO } from 'cmap2-shared';
 import useCmapFetch from '../../shared/hooks/cmapFetch.hook';
 import ApproveFilesPage from './admin/approveFiles/approveFiles.page';
 import UpdatesPage from './admin/updates/updates.page';
-import { ClientCredentialsContext } from '../../components/context/appContexts';
+import { ClientCredentialsContext } from '../../contexts/contexts';
 
 export default function WebsitePage() {
 

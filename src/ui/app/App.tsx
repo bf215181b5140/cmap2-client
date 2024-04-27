@@ -12,31 +12,30 @@ import LovensePage from './pages/lovense/lovense.page';
 import WebsitePage from './pages/website/website.page';
 import AvatarsPage from './pages/osc/avatars/avatars.page';
 import OscPage from './pages/osc/osc.page';
+import CmapContexts from './contexts/context.component';
 import UpdaterPage from './pages/updater/updater.page';
 import GuidePage from './pages/guide/guide.page';
-import AppProviders from './components/context/appProviders.component';
 
 export default function App() {
 
-    return (
-        <AppStyled>
-            <AppProviders>
-                <TitleBar />
-                <MainWindow>
-                    <Routes>
-                        <Route path="/website/*" element={<WebsitePage />} />
-                        <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
-                        <Route path="/osc/*" element={<OscPage />} />
-                        <Route path="/settings" element={<SettingsPage />} />
-                        <Route path="/lovense" element={<LovensePage />} />
-                        <Route path="/updater" element={<UpdaterPage />} />
-                        <Route path="/guide" element={<GuidePage />} />
-                        <Route path="*" element={<LaunchPadPage />} />
-                    </Routes>
-                </MainWindow>
-                <NavBar />
-            </AppProviders>
-        </AppStyled>);
+    return (<AppStyled>
+        <CmapContexts>
+            <TitleBar />
+            <MainWindow>
+                <Routes>
+                    <Route path="/website/*" element={<WebsitePage />} />
+                    <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
+                    <Route path="/osc/*" element={<OscPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
+                    <Route path="/lovense" element={<LovensePage />} />
+                    <Route path="/updater" element={<UpdaterPage />} />
+                    <Route path="/guide" element={<GuidePage />} />
+                    <Route path="*" element={<LaunchPadPage />} />
+                </Routes>
+            </MainWindow>
+            <NavBar />
+        </CmapContexts>
+    </AppStyled>);
 }
 
 const AppStyled = styled.div`

@@ -4,19 +4,19 @@ import { AvatarReducerAction } from '../../avatars.reducer';
 import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { ContentBox } from 'cmap2-shared/dist/react';
 import { ContentBoxWidth } from 'cmap2-shared/src';
 import HiddenInput from '../../../../../shared/components/form/inputs/hidden.component';
 import { FormTableStyled } from '../../../../../shared/components/form/formTable.component';
 import Input from '../../../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../../../shared/components/form/inputs/select.component';
 import ParameterInput from '../../../../../shared/components/form/inputs/parameterInput/parameterInput.component';
-import DeleteButton from '../../../../../shared/components/buttons/deleteButton.component';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
-import ButtonInput from '../../../../../shared/components/form/inputs/button.component';
-import SubmitInput from '../../../../../shared/components/form/inputs/submit.component';
 import styled from 'styled-components';
 import StateBadge from './components/stateBadge.component';
+import ContentBox from '../../../../../shared/components/contentBox/contentBox.component';
+import copyIconClassExample from '../../../../../shared/images/stateBadges/stateBadges-copyIconClassExample.png';
+import IconButton from '../../../../../shared/components/buttons/iconButton.component';
+import ExternalLink from '../../../../../shared/components/externalLink/externalLink.component';
 
 interface StateBadgesProps extends ReactProps {
     selectedAvatar: AvatarDTO;
@@ -70,13 +70,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
             .map((key: string) => ({ key: StateBadgeKey[key as keyof typeof StateBadgeKey], value: StateBadgeKey[key as keyof typeof StateBadgeKey] }));
     }
 
-    return (<ContentBox flexBasis={ContentBoxWidth.Full}>
-        <h2>Avatar state badges</h2>
-        <p>Avatar state badges are displayed under your username on your website profile. They are used to show various states such as if you're muted, afk,
-            tracking type or anything else you set up with a Custom badge.</p>
-        <p>Custom badges will be displayed if your current avatar parameters match exactly what you specify, otherwise they will not.</p>
-        <p>For icons you can pick any from <b>https://remixicon.com/</b> and just copy their class value.
-            For example the first icon called <b><i className={'ri-arrow-left-up-line'} />arrow-left-up-line</b> you would copy ri-arrow-left-up-line</p>
+    return (<ContentBox flexBasis={ContentBoxWidth.Full} infoContent={StateBadgesInfo()} contentTitle={'State badges'}>
         {watchBadges && watchBadges.length > 0 && <>
             <h3>Preview</h3>
             <BadgeBox>
@@ -123,7 +117,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                                    errors={errors} />
                         </td>
                         <td>
-                            <DeleteButton onClick={() => onDelete(index)} keyword={'badge'} size={'small'} />
+                            <IconButton type={'delete'} onClick={() => onDelete(index)} deleteKeyword={'badge'} size={'small'} />
                         </td>
                     </tr>
                 ))}
@@ -131,7 +125,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <ButtonInput text="Add new" disabled={watchBadges.length >= Math.min(10, clientTier.stateBadges)} onClick={() => append({
+                <IconButton type={'add'} size={'small'} disabled={watchBadges.length >= Math.min(10, clientTier.stateBadges)} onClick={() => append({
                     id: null,
                     key: StateBadgeKey.Custom,
                     parameter: '',
@@ -139,8 +133,9 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                     label: '',
                     icon: ''
                 })} />
-                <SubmitInput disabled={!isDirty} />
-                <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
+                <hr />
+                <IconButton type={'save'} disabled={!isDirty} />
+                <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);
@@ -157,3 +152,16 @@ const BadgeBox = styled.div`
   padding: 2px 0;
   min-height: 24px;
 `;
+
+function StateBadgesInfo() {
+    return (<>
+        <p>State badges are displayed under your username on your website profile. They are used to show various states such as if you're muted, afk,
+            tracking type or anything else you set up with a Custom badge.</p>
+        <p>Custom badges will be displayed if your current avatar parameters match exactly what you specify, otherwise they will not.</p>
+        <p>For icons, you can pick any from <ExternalLink link={'https://remixicon.com/'}>https://remixicon.com/</ExternalLink> and just copy their class value.
+            <br />
+            <b>Example:</b> if you wanted the first icon listed, <b><i className={'ri-arrow-left-up-line'} />arrow-left-up</b>, you would click on it and
+            copy <b>ri-arrow-left-up-line</b></p>
+        <img alt={'Copy icon class example'} src={copyIconClassExample} style={{ textAlign: 'center', margin: '5px auto' }} />
+    </>);
+}

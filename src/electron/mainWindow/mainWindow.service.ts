@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import path from 'path';
 import { WindowState } from '../../shared/enums';
 import TypedIpcMain from '../ipc/typedIpcMain';
@@ -96,6 +96,11 @@ export class MainWindowService {
         });
         mainWindow.on('focus', () => {
             mainWindow.setBackgroundColor('#00000000');
+        });
+
+        mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+            shell.openExternal(url);
+            return { action: 'deny' };
         });
 
         return mainWindow;

@@ -1,12 +1,11 @@
 import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, ButtonFormDTO, ButtonFormSchema, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ControlParameterRole, LayoutDTO, ParameterValueType, ReactProps, TierDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import FileUpload from '../../../../shared/components/fileUpload.component';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
 import ListenForParameter from './listenForParameter.component';
 import FormTable from '../../../../shared/components/form/formTable.component';

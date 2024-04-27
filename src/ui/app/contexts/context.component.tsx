@@ -1,8 +1,8 @@
 import { ReactProps } from 'cmap2-shared';
-import { ClientCredentialsContext } from './appContexts';
-import useClientCredentials from '../../shared/hooks/clientCredentials.hook';
+import useClientCredentials from '../shared/hooks/clientCredentials.hook';
+import { ClientCredentialsContext } from './contexts';
 
-export default function AppProviders({children}: ReactProps) {
+export default function CmapContexts({ children }: ReactProps) {
 
     const clientCredentialsHook = useClientCredentials();
 
@@ -10,5 +10,5 @@ export default function AppProviders({children}: ReactProps) {
         <ClientCredentialsContext.Provider value={clientCredentialsHook}>
                 {children}
         </ClientCredentialsContext.Provider>
-    </>)
+    </>);
 }

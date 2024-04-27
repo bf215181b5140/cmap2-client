@@ -1,5 +1,5 @@
 import { LayoutDTO, LayoutFormSchema, LayoutWidth, ReactProps } from 'cmap2-shared';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { AvatarReducerAction } from '../../../avatars.reducer';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
@@ -7,14 +7,12 @@ import useCmapFetch from '../../../../../../shared/hooks/cmapFetch.hook';
 import FormTable from '../../../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../../../shared/components/form/formControlBar.component';
 import enumToInputOptions from '../../../../../../shared/util/enumToInputOptions.function';
-import { ModalContext } from '../../../../../../components/mainWindow/mainWindow.componenet';
-import SubmitInput from '../../../../../../shared/components/form/inputs/submit.component';
 import HiddenInput from '../../../../../../shared/components/form/inputs/hidden.component';
-import ButtonInput from '../../../../../../shared/components/form/inputs/button.component';
 import SelectInput from '../../../../../../shared/components/form/inputs/select.component';
 import Input from '../../../../../../shared/components/form/inputs/input.component';
 import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
 import { LayoutFormDTO } from 'cmap2-shared/src/types/layout';
+import IconButton from '../../../../../../shared/components/buttons/iconButton.component';
 
 interface LayoutFormComponentProps extends ReactProps {
     layout: LayoutDTO;
@@ -24,44 +22,48 @@ interface LayoutFormComponentProps extends ReactProps {
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function LayoutFormComponent({layout, order, avatarId, interactionKeys, avatarDataDispatch}: LayoutFormComponentProps) {
+export default function LayoutFormComponent({ layout, order, avatarId, interactionKeys, avatarDataDispatch }: LayoutFormComponentProps) {
 
-    const {deleteModal} = useContext(ModalContext);
-    const {register, formState: {errors, isDirty}, reset, handleSubmit} = useForm<LayoutFormDTO>({
+    const { register, formState: { errors, isDirty }, reset, handleSubmit } = useForm<LayoutFormDTO>({
         defaultValues: {
             id: layout.id,
-            label: layout.label,
+            parentId: avatarId,
             order: order,
+            label: layout.label,
             width: layout.width,
-            interactionKeyId: layout.interactionKey?.id,
-            parentId: avatarId
+            interactionKeyId: layout.interactionKey?.id || '',
         }, resolver: zodResolver(LayoutFormSchema)
     });
-    const [inEdit, setEditing] = useState<boolean>(!layout.id);
     const customFetch = useCmapFetch();
 
     useEffect(() => {
-        reset();
+        reset({
+            id: layout.id,
+            parentId: avatarId,
+            order: order,
+            label: layout.label,
+            width: layout.width,
+            interactionKeyId: layout.interactionKey?.id || '',
+        });
     }, [avatarId]);
 
     function onSave(formData: LayoutFormDTO) {
         customFetch<LayoutDTO>('layout', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
-            headers: {'Content-Type': 'application/json'}
-        },  (data, res) => {
+            headers: { 'Content-Type': 'application/json' }
+        }, (data, res) => {
             if (res.code === 201) {
-                avatarDataDispatch({type: 'addLayout', layout: data, avatarId: avatarId});
-                setEditing(false);
+                avatarDataDispatch({ type: 'addLayout', layout: data, avatarId: avatarId });
             } else {
-                avatarDataDispatch({type: 'editLayout', layout: data, avatarId: avatarId});
+                avatarDataDispatch({ type: 'editLayout', layout: data, avatarId: avatarId });
                 reset({
                     id: data.id,
+                    parentId: avatarId,
+                    order: data.order,
                     label: data.label,
-                    order: order,
                     width: data.width,
-                    interactionKeyId: data.interactionKey?.id,
-                    parentId: avatarId
+                    interactionKeyId: data.interactionKey?.id || '',
                 });
             }
         });
@@ -71,19 +73,13 @@ export default function LayoutFormComponent({layout, order, avatarId, interactio
         customFetch('layout', {
             method: 'DELETE',
             body: JSON.stringify(layout),
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         }, () => {
-            avatarDataDispatch({type: 'removeLayout', layout: layout, avatarId: avatarId});
+            avatarDataDispatch({ type: 'removeLayout', layout: layout, avatarId: avatarId });
         });
     }
 
-    return (<>
-        {!inEdit &&
-            <FormControlBar>
-                <ButtonInput text={'Edit'} onClick={() => setEditing(true)} />
-            </FormControlBar>}
-        {inEdit &&
-            <form onSubmit={handleSubmit(onSave)}>
+    return (<form onSubmit={handleSubmit(onSave)}>
                 <HiddenInput register={register} name={'id'} />
                 <HiddenInput register={register} name={'parentId'} />
                 <HiddenInput register={register} name={'order'} />
@@ -110,21 +106,20 @@ export default function LayoutFormComponent({layout, order, avatarId, interactio
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <SubmitInput text={layout.id ? 'Save' : 'Add new'} disabled={!isDirty} />
+                    <IconButton type={'save'} tooltip={layout.id ? 'Save' : 'Save new layout'} disabled={!isDirty} />
                     {layout.id &&
                         <>
-                            <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
-                            <ButtonInput text="Delete" onClick={() => deleteModal('layout', () => onDelete(layout))} />
-                            <ButtonInput text="Cancel" onClick={() => {
-                                reset();
-                                setEditing(false);
-                            }} />
+                            <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                            <hr />
+                            <IconButton type={'delete'} deleteKeyword={'layout'} size={'small'} onClick={() => onDelete(layout)} />
+                            {/* <ButtonInput text="Cancel" onClick={() => { */}
+                            {/*     reset(); */}
+                            {/*     setEditing(false); */}
+                            {/* }} /> */}
                         </>
                     }
                 </FormControlBar>
-            </form>}
-        {layout.id && <hr />}
-    </>);
+            </form>);
 
 }
 

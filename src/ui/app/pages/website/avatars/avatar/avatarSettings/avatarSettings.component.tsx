@@ -1,7 +1,6 @@
 import { AvatarDTO, AvatarFormSchema, ReactProps } from 'cmap2-shared';
 import FormTable from '../../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
-import { ContentBox } from 'cmap2-shared/dist/react';
 import React, { useContext, useEffect } from 'react';
 import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
@@ -12,8 +11,8 @@ import { ModalContext } from '../../../../../components/mainWindow/mainWindow.co
 import HiddenInput from '../../../../../shared/components/form/inputs/hidden.component';
 import CheckboxInput from '../../../../../shared/components/form/inputs/checkbox.component';
 import Input from '../../../../../shared/components/form/inputs/input.component';
-import SubmitInput from '../../../../../shared/components/form/inputs/submit.component';
-import ButtonInput from '../../../../../shared/components/form/inputs/button.component';
+import IconButton from '../../../../../shared/components/buttons/iconButton.component';
+import ContentBox from '../../../../../shared/components/contentBox/contentBox.component';
 
 interface AvatarSettingsProps extends ReactProps {
     selectedAvatar: AvatarDTO;
@@ -68,8 +67,7 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch}: Ava
         });
     }
 
-    return (<ContentBox>
-        <h2>Avatar settings</h2>
+    return (<ContentBox contentTitle={'Avatar settings'}>
         <form onSubmit={handleSubmit(onSave)}>
             <HiddenInput register={register} name={'id'} />
             <FormTable>
@@ -87,9 +85,10 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch}: Ava
                 </tr>
             </FormTable>
             <FormControlBar>
-                <SubmitInput disabled={!isDirty} />
-                <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
-                <ButtonInput text="Delete" onClick={() => deleteModal('avatar', () => onDelete(selectedAvatar))} />
+                <IconButton type={'save'} disabled={!isDirty} />
+                <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                <hr />
+                <IconButton type={'delete'} deleteKeyword={'avatar'} size={'small'} onClick={() => onDelete(selectedAvatar)} />
             </FormControlBar>
         </form>
     </ContentBox>);

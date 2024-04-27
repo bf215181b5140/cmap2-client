@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { ContentBox } from 'cmap2-shared/dist/react';
 import { ContentBoxWidth } from 'cmap2-shared/src';
 import React, { Dispatch, SetStateAction } from 'react';
-import ContentBoxMenuLink from '../../../../shared/components/contentBoxMenu/contentBoxMenuLink.component';
+import ContentBoxMenuLink from '../../../../shared/components/contentBox/contentBoxMenu/contentBoxMenuLink.component';
 import styled from 'styled-components';
-import { ContentBoxMenuSelect } from '../../../../shared/components/contentBoxMenu/contentBoxMenuSelect.component';
-import AddButton from '../../../../shared/components/buttons/addButton.component';
+import { ContentBoxMenuSelect } from '../../../../shared/components/contentBox/contentBoxMenu/contentBoxMenuSelect.component';
+import IconButton from '../../../../shared/components/buttons/iconButton.component';
 
 interface AvatarsMenuProps extends ReactProps {
     page: 'settings' | 'layout';
@@ -31,8 +31,8 @@ export default function AvatarsMenu({ page, setPage, avatars, selectedAvatar, cl
 
             {/* Add new avatar */}
             {(clientTier?.avatars && avatars.length < clientTier.avatars) &&
-                <CustomAddButton onClick={() => navigate('/website/avatars/new')} icon={'ri-user-add-line'}
-                                 disabled={!selectedAvatar?.id || avatars.length >= clientTier.avatars} />
+                <CustomAddButton type={'add'} tooltip={'Add new avatar'} icon={'ri-user-add-line'} onClick={() => navigate('/website/avatars/new')}
+                            disabled={!selectedAvatar?.id || avatars.length >= clientTier.avatars} />
             }
 
             <hr />
@@ -60,8 +60,8 @@ const AvatarsMenuStyled = styled.div`
   }
 `;
 
-const CustomAddButton = styled(AddButton)`
-  height: 40px;
-  width: 40px;
+const CustomAddButton = styled(IconButton)`
+  height: 42px;
+  width: 42px;
   margin: 0;
 `;

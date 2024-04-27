@@ -1,13 +1,15 @@
-import { ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
+import { ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, LayoutDTO, ReactProps, TierDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AvatarReducerAction } from '../../avatars.reducer';
 import { ButtonStyleDTO } from 'cmap2-shared/src';
 import AddNewButton from './addNew.button';
 import LayoutFormComponent from './layoutForm/layoutForm.component';
 import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
+import ContentBox from '../../../../../shared/components/contentBox/contentBox.component';
+import IconButton from '../../../../../shared/components/buttons/iconButton.component';
 
 interface LayoutComponentProps extends ReactProps {
     layout: LayoutDTO;
@@ -19,12 +21,26 @@ interface LayoutComponentProps extends ReactProps {
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function LayoutComponent({layout, order, avatar, avatarDataDispatch, clientTier, buttonStyle, interactionKeys}: LayoutComponentProps) {
+export default function LayoutComponent({ layout, order, avatar, avatarDataDispatch, clientTier, buttonStyle, interactionKeys }: LayoutComponentProps) {
 
     const navigate = useNavigate();
+    const [inEdit, setEditing] = useState<boolean>(!layout.id);
 
-    return (<ContentBox key={layout.id} title={layout.label} flexBasis={layout.width}>
-        <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id!} interactionKeys={interactionKeys} avatarDataDispatch={avatarDataDispatch} />
+    return (<ContentBox key={layout.id} flexBasis={layout.width}>
+
+        {layout.id && <>
+            <FloatIconButton type={'edit'} size={'small'} onClick={() => setEditing(!inEdit)} active={inEdit} />
+            <h2 style={{ marginTop: '0' }}>{layout.label}</h2>
+        </>}
+
+        {inEdit && <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id!} interactionKeys={interactionKeys}
+                                        avatarDataDispatch={avatarDataDispatch} />}
+
+        {layout.id && <>
+            <div style={{ clear: 'both' }} />
+            <hr />
+        </>}
+
         {layout.id &&
             <ButtonsWrapper>
                 {layout.buttons?.map((button: ButtonDTO) => (
@@ -50,4 +66,9 @@ const ButtonsWrapper = styled.div`
   > div {
     margin-bottom: 15px;
   }
+`;
+
+const FloatIconButton = styled(IconButton)`
+  float: right;
+  margin: 0 0 7px 7px;
 `;

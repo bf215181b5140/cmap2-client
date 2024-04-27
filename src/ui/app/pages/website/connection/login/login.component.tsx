@@ -4,7 +4,7 @@ import ButtonInput from '../../../../shared/components/form/inputs/button.compon
 import { ContentBox } from 'cmap2-shared/dist/react/';
 import LoginForm from './loginForm.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
-import { ClientCredentialsContext } from '../../../../components/context/appContexts';
+import { ClientCredentialsContext } from '../../../../contexts/contexts';
 
 interface LoginProps extends ReactProps {
     setShowLogin: Dispatch<SetStateAction<boolean>>;

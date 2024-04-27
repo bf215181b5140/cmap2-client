@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { WebsocketSettings, websocketSettingsSchema } from '../../../../../../shared/types/settings';
 import FormTable from '../../../../shared/components/form/formTable.component';
 import useWebsocketConnection from '../../../../shared/hooks/websocketConnection.hook';
-import { ClientCredentialsContext } from '../../../../components/context/appContexts';
+import { ClientCredentialsContext } from '../../../../contexts/contexts';
 
 export default function WebsocketStatus() {
 
