@@ -1,8 +1,8 @@
-import { ContentBox } from 'cmap2-shared/dist/react';
 import { useEffect, useState } from 'react';
 import { ContentBoxWidth } from 'cmap2-shared';
 import { VrcOscAvatar } from '../../../../../../shared/types/osc';
 import styled from 'styled-components';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 export default function VrcOscStatus() {
 
@@ -47,7 +47,7 @@ export default function VrcOscStatus() {
         return `Unknown avatar with ID ${trackedAvatarId}`;
     }
 
-    return (<ContentBox flexBasis={ContentBoxWidth.Full} title={'Current detected avatar state'}>
+    return (<ContentBox flexBasis={ContentBoxWidth.Full} contentTitle={'Current detected avatar state'}>
         <AvatarNameStyled>
             <i className={'ri-contacts-book-fill'}></i>
             {currentAvatarText()}

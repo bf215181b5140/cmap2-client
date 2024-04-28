@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { ReactProps, RegisterInfoDTO, RegisterRequestDTO } from 'cmap2-shared';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
-import { ContentBox } from 'cmap2-shared/dist/react/';
 import RegisterForm from './registerForm.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 interface RegisterProps extends ReactProps {
     setShowLogin: Dispatch<SetStateAction<boolean>>;
@@ -29,8 +29,7 @@ export default function Register({setShowLogin}: RegisterProps) {
         });
     }, []);
 
-    return (<ContentBox loading={registrationInfo == null}>
-        <h2>Register</h2>
+    return (<ContentBox loading={registrationInfo == null} contentTitle={'Register'}>
         {registrationInfo?.available ? (
             <RegisterForm registrationInfo={registrationInfo} setShowLogin={setShowLogin} />
         ) : (
@@ -42,5 +41,4 @@ export default function Register({setShowLogin}: RegisterProps) {
             <ButtonInput onClick={() => setShowLogin(true)} text="Login" />
         </FormControlBar>
     </ContentBox>);
-
 }

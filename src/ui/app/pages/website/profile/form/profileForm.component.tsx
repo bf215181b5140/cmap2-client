@@ -10,6 +10,7 @@ import FormControlBar from '../../../../shared/components/form/formControlBar.co
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import InfoTooltipIcon from '../../../../shared/components/infoTooltipIcon.component';
+import IconButton from '../../../../shared/components/buttons/iconButton.component';
 
 interface ProfileFormProps {
     client: ClientDTO;
@@ -40,7 +41,6 @@ export default function ProfileForm({ client, setClientInfo }: ProfileFormProps)
     };
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
-        <h2>Edit profile</h2>
         <FormTable>
             <tr>
                 <th>Display name</th>
@@ -63,7 +63,10 @@ export default function ProfileForm({ client, setClientInfo }: ProfileFormProps)
                 <td><CheckboxInput register={register} name={'hidden'} errors={errors} /></td>
             </tr>
         </FormTable>
-        <FormControlBar><SubmitInput disabled={!isDirty} /></FormControlBar>
+        <FormControlBar>
+            <IconButton type={'save'} disabled={!isDirty} />
+            <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+        </FormControlBar>
     </form>);
 }
 

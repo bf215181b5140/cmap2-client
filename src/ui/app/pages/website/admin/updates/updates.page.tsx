@@ -1,23 +1,23 @@
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import React, { useContext, useEffect } from 'react';
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
 import { FormTableStyled } from '../../../../shared/components/form/formTable.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
-import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import { ModalContext } from '../../../../components/mainWindow/mainWindow.componenet';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { UpdateDTO, UpdatesFormDTO, UpdatesFormSchema } from 'cmap2-shared';
 import TextareaInput from '../../../../shared/components/form/inputs/textarea.component';
 import DateInput from '../../../../shared/components/form/inputs/date.component';
+import IconButton from '../../../../shared/components/buttons/iconButton.component';
+import Content from '../../../../shared/components/contentBox/content.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 export default function UpdatesPage() {
 
     const cmapFetch = useCmapFetch();
-    const { deleteModal } = useContext(ModalContext);
     const { register, control, handleSubmit, watch, reset, formState: { errors, isDirty } } = useForm<UpdatesFormDTO>({
         defaultValues: { versions: [] },
         resolver: zodResolver(UpdatesFormSchema)
@@ -58,8 +58,7 @@ export default function UpdatesPage() {
     }
 
     return (<Content>
-        <ContentBox>
-            <h2>Client versions</h2>
+        <ContentBox contentTitle={'Updates'}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormTableStyled>
                     <thead>
@@ -89,7 +88,7 @@ export default function UpdatesPage() {
                                 <DateInput type={'datetime-local'} control={control} name={`versions.${index}.date`} errors={errors} />
                             </td>
                             <td>
-                                <ButtonInput text="Delete" onClick={() => deleteModal('client version', () => onDelete(index))} />
+                                <IconButton type={'delete'} deleteKeyword={'update'} size={'small'} onClick={() => onDelete(index)} />
                             </td>
                         </tr>
                     ))}
@@ -97,15 +96,16 @@ export default function UpdatesPage() {
                 </FormTableStyled>
                 <hr />
                 <FormControlBar>
-                    <ButtonInput text="Add new" onClick={() => append({
+                    <IconButton type={'add'} size={'small'} onClick={() => append({
                         id: null,
                         version: '',
                         download: '',
                         description: '',
                         date: new Date(),
                     })} />
-                    <SubmitInput disabled={!isDirty} />
-                    <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
+                    <hr />
+                    <IconButton type={'save'} disabled={!isDirty} />
+                    <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
                 </FormControlBar>
             </form>
         </ContentBox>

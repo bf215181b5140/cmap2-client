@@ -102,7 +102,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                         </td>
                         <td>
                             <ParameterInput register={register} name={`badges.${index}.parameter`} errors={errors} setValue={setValue}
-                                            defaultType={'output'} defaultAvatarVrcId={selectedAvatar.id} />
+                                            defaultType={'output'} defaultAvatarVrcId={selectedAvatar.vrcId} />
                         </td>
                         <td>
                             <Input register={register} name={`badges.${index}.value`} width={'65px'} readOnly={watchBadges[index].key !== StateBadgeKey.Custom}

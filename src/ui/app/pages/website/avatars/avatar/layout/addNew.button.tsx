@@ -20,14 +20,14 @@ const AddNewButtonStyled = styled.div`
   padding: 0.3em 1.5em 0.5em 1.5em;
   cursor: pointer;
   
-  border: 2px solid ${props => props.theme.colors.buttonSecondary.border};
+  border: 2px solid ${props => props.theme.colors.buttons.secondary.border};
   border-radius: 8px;
   transition: 0.2s linear;
 
   :hover {
     transform: scale(1.02);
-    background: ${props => props.theme.colors.buttonSecondary.hoverBg};
-    border: 2px solid ${props => props.theme.colors.buttonSecondary.hoverBorder};
+    background: ${props => props.theme.colors.buttons.secondary.hoverBg};
+    border: 2px solid ${props => props.theme.colors.buttons.secondary.hoverBorder};
   }
 
 `;

@@ -6,6 +6,7 @@ import DeleteButton from '../../../../shared/components/buttons/deleteButton.com
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import { useEffect, useState } from 'react';
 import ActionButton from '../../../../shared/components/buttons/actionButton.component';
+import IconButton from '../../../../shared/components/buttons/iconButton.component';
 
 interface AvatarProps extends ReactProps {
     avatar: VrcOscAvatar;
@@ -31,8 +32,8 @@ export default function Avatar({avatar, avatarsDispatch}: AvatarProps) {
                 {avatar.id}
             </div>
             <div>
-                {inEdit && <DeleteButton keyword={'avatar'} onClick={deleteAvatar} />}
-                <ActionButton action={() => setInEdit((state) => !state)}>{inEdit ? 'Cancel' : 'Edit'}</ActionButton>
+                {inEdit && <IconButton type={'delete'} size={'small'} deleteKeyword={'avatar'} onClick={deleteAvatar} />}
+                <IconButton type={'edit'} onClick={() => setInEdit((state) => !state)} />
             </div>
         </AvatarInfo>
         {avatar.parameters && <AvatarParameters avatarId={avatar.id} parameters={avatar.parameters} avatarsDispatch={avatarsDispatch} inEdit={inEdit}/>}

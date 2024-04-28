@@ -1,4 +1,3 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import FormTable, { FormTableStyled } from '../../../shared/components/form/formTable.component';
 import Input from '../../../shared/components/form/inputs/input.component';
 import SelectInput from '../../../shared/components/form/inputs/select.component';
@@ -6,23 +5,24 @@ import ButtonInput from '../../../shared/components/form/inputs/button.component
 import FormControlBar from '../../../shared/components/form/formControlBar.component';
 import { FieldOption } from 'cmap2-shared';
 import SubmitInput from '../../../shared/components/form/inputs/submit.component';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { ModalContext } from '../../../components/mainWindow/mainWindow.componenet';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { OscClockSettings, OscClockSettingsDefaults, OscClockSettingsSchema, OscClockUnit } from '../../../../../electron/osc/clock/types';
 import oscClockChatboxText, { OscClockChatboxFormats } from '../../../../../electron/osc/clock/chatboxText';
 import CheckboxInput from '../../../shared/components/form/inputs/checkbox.component';
 import ParameterInput from '../../../shared/components/form/inputs/parameterInput/parameterInput.component';
+import Content from '../../../shared/components/contentBox/content.component';
+import ContentBox from '../../../shared/components/contentBox/contentBox.component';
+import IconButton from '../../../shared/components/buttons/iconButton.component';
 
 export default function ClockPage() {
 
-    const {deleteModal} = useContext(ModalContext);
-    const {register, control, handleSubmit, watch, reset, formState: {errors, isDirty}, setValue} = useForm<OscClockSettings>({
+    const { register, control, handleSubmit, watch, reset, formState: { errors, isDirty }, setValue } = useForm<OscClockSettings>({
         resolver: zodResolver(OscClockSettingsSchema),
         defaultValues: OscClockSettingsDefaults,
     });
-    const {fields, append, remove} = useFieldArray({control, name: 'avatarParameters'});
+    const { fields, append, remove } = useFieldArray({ control, name: 'avatarParameters' });
     const [defaultValues, setDefaultValues] = useState<OscClockSettings>(OscClockSettingsDefaults);
 
     useEffect(() => {
@@ -49,14 +49,14 @@ export default function ClockPage() {
 
     const unitOptions: FieldOption[] = useMemo(() => {
         return Object.keys(OscClockUnit)
-            .map((key: string) => ({key: OscClockUnit[key as keyof typeof OscClockUnit], value: key.charAt(0).toUpperCase() + key.slice(1)}));
+            .map((key: string) => ({ key: OscClockUnit[key as keyof typeof OscClockUnit], value: key.charAt(0).toUpperCase() + key.slice(1) }));
     }, []);
 
     return (<Content>
         <ContentBox>
             <form onSubmit={handleSubmit(onSave)}>
 
-                <h2>Send local time to chatbox</h2>
+                <h2 style={{marginTop: '0'}}>Send local time to chatbox</h2>
                 <FormTable>
                     <tr>
                         <th>Send to chatbox</th>
@@ -70,7 +70,7 @@ export default function ClockPage() {
                     <tr>
                         <th>Format options</th>
                         <td colSpan={2}>
-                            <p style={{margin: 0}}>
+                            <p style={{ margin: 0 }}>
                                 {OscClockChatboxFormats.map(format => (<>{format.format + ' - ' + format.description}<br /></>))}
                             </p>
                         </td>
@@ -80,6 +80,7 @@ export default function ClockPage() {
                 <br />
 
                 <h2>Send local time to parameters</h2>
+                <p>Can be used to have working clock on your avatar</p>
                 <FormTable>
                     <tr>
                         <th>Send to avatar parameters</th>
@@ -108,20 +109,19 @@ export default function ClockPage() {
                                                  errors={errors} options={unitOptions} />
                                 </td>
                                 <td>
-                                    <ButtonInput text="Delete" onClick={() => deleteModal('clock parameter', () => onDelete(index))}
-                                                 disabled={!watch('sendToAvatar')} />
+                                    <IconButton type={'delete'} size={'small'} deleteKeyword={'setting'} onClick={() => onDelete(index)} disabled={!watch('sendToAvatar')} />
                                 </td>
                             </tr>
                         ))}
                         </tbody>
                     </FormTableStyled>
-                    <ButtonInput text="Add new" onClick={() => append({path: '/avatar/parameters/OscLocalTimeSecond', unit: OscClockUnit.Second})}
+                    <IconButton type={'add'} size={'small'} onClick={() => append({ path: '/avatar/parameters/OscLocalTimeSecond', unit: OscClockUnit.Second })}
                                  disabled={!watch('sendToAvatar')} />
                 </>)}
 
                 <FormControlBar>
-                    <SubmitInput disabled={!isDirty} />
-                    <ButtonInput text="Reset" disabled={!isDirty} onClick={onReset} />
+                    <IconButton type={'save'} disabled={!isDirty} />
+                    <IconButton type={'reset'} disabled={!isDirty} onClick={onReset} />
                 </FormControlBar>
 
             </form>

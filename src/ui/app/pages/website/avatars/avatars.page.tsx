@@ -1,4 +1,3 @@
-import { Content } from 'cmap2-shared/dist/react';
 import useAvatarPage from './avatars.hook';
 import ButtonComponent from './button/button.component';
 import AvatarsMenu from './avatarsMenu/avatarsMenu.component';
@@ -8,6 +7,7 @@ import ControlParameters from './avatar/controlParameters/controlParameters.comp
 import { LayoutDTO, LayoutWidth } from 'cmap2-shared';
 import LayoutComponent from './avatar/layout/layout.component';
 import StateBadges from './avatar/stateBadges/stateBadges.component';
+import Content from '../../../shared/components/contentBox/content.component';
 
 export default function AvatarsPage() {
 

@@ -1,4 +1,3 @@
-import { ContentBox } from 'cmap2-shared/dist/react';
 import React, { useEffect, useState } from 'react';
 import { ButtonDTO, ParameterValueType, ReactProps, VrcParameter } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
@@ -6,6 +5,7 @@ import FormTable from '../../../../shared/components/form/formTable.component';
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 interface ListenForParameterProps extends ReactProps {
     applyMessage: (data: ButtonDTO) => void;
@@ -55,8 +55,7 @@ export default function ListenForParameter({applyMessage}: ListenForParameterPro
         reset({path: '', value: '', valueType: ParameterValueType.Int});
     }
 
-    return (<ContentBox flexBasis="100%">
-        <h2>Listen for next VRChat parameter</h2>
+    return (<ContentBox contentTitle={'Listen for next VRChat parameter'} flexBasis="100%">
         <p>Click listen, then use you desired avatar toggle in VRChat. Your parameter will show up here and you can apply it to the button.</p>
         <form onSubmit={handleSubmit(onApply)}>
             <FormTable>

@@ -1,9 +1,10 @@
 import useCmapFetch from '../../../shared/hooks/cmapFetch.hook';
 import { useEffect, useState } from 'react';
 import { TiersDTO, TierDTO, TierType } from 'cmap2-shared';
-import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import styled from 'styled-components';
 import Icon from 'cmap2-shared/src/react/components/icon.component';
+import Content from '../../../shared/components/contentBox/content.component';
+import ContentBox from '../../../shared/components/contentBox/contentBox.component';
 
 export default function TiersPage() {
 

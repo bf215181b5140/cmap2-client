@@ -1,4 +1,4 @@
-import { Content, ContentBox, ParameterButton } from 'cmap2-shared/dist/react';
+import { ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, ButtonFormDTO, ButtonFormSchema, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ControlParameterRole, LayoutDTO, ParameterValueType, ReactProps, TierDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
 import React, { useContext, useState } from 'react';
@@ -24,6 +24,9 @@ import { ControlParameterDTO } from 'cmap2-shared/src/types/controlParameters';
 import ButtonImageForm from './buttonImageForm.component';
 import EventEmitter from 'events';
 import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
+import IconButton from '../../../../shared/components/buttons/iconButton.component';
+import Content from '../../../../shared/components/contentBox/content.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 interface ButtonComponentProps extends ReactProps {
     button: ButtonDTO;
@@ -44,7 +47,11 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
     const [onSaveEmitter] = useState(new EventEmitter());
     const { register, setValue, reset, formState: { errors, isDirty }, watch, handleSubmit } = useForm<ButtonFormDTO>({
         defaultValues: {
-            ...button, order: 0, parentId: layout.id, controlParameterId: button.controlParameter?.id || '', interactionKeyId: button.interactionKey?.id
+            ...button,
+            order: 0,
+            parentId: layout.id,
+            controlParameterId: button.controlParameter?.id || '',
+            interactionKeyId: button.interactionKey?.id || '',
         },
         resolver: zodResolver(ButtonFormSchema)
     });
@@ -65,6 +72,7 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
                 navigate(-1);
             } else {
                 avatarDataDispatch({ type: 'editButton', button: data, avatarId: avatar.id!, layoutId: layout.id! });
+                onSaveEmitter.emit('save', data);
                 navigate(-1);
             }
         });
@@ -136,11 +144,6 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
     }
 
     return (<Content flexDirection="row">
-        <ContentBox flexBasis="100%">
-            <Icon icon="ri-contacts-book-fill" />&nbsp;&nbsp;{avatar.label}&nbsp;
-            <Icon icon="ri-arrow-right-s-line" />&nbsp;{layout.label}&nbsp;
-            <Icon icon="ri-arrow-right-s-line" />&nbsp;{button.id ? button.label : 'new button'}
-        </ContentBox>
         <ContentBox flexGrow={1}>
             <h2>Preview</h2>
             <ParameterButton button={{ ...formWatch, id: button.id, image: previewImage, controlParameter: null }} buttonStyle={buttonStyle} />
@@ -217,10 +220,12 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <SubmitInput disabled={!isDirty} />
-                    <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
-                    <ButtonInput text="Delete" onClick={() => deleteModal('button', () => onDelete(button))} />
-                    <ButtonInput text={isDirty ? 'Cancel' : 'Back'} onClick={() => navigate(-1)} />
+                    <IconButton type={'save'} disabled={!isDirty} />
+                    <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                    <hr />
+                    <IconButton type={'delete'} deleteKeyword={'button'} size={'small'} onClick={() => onDelete(button)} />
+                    <hr />
+                    <ButtonInput text={'Cancel'} onClick={() => navigate(-1)} />
                 </FormControlBar>
             </form>
         </ContentBox>

@@ -28,20 +28,22 @@ export default function LayoutComponent({ layout, order, avatar, avatarDataDispa
 
     return (<ContentBox key={layout.id} flexBasis={layout.width}>
 
+        {!layout.id && <h2 style={{ marginTop: '0' }}>Add new layout</h2>}
+
         {layout.id && <>
             <FloatIconButton type={'edit'} size={'small'} onClick={() => setEditing(!inEdit)} active={inEdit} />
             <h2 style={{ marginTop: '0' }}>{layout.label}</h2>
         </>}
 
+        {/* Edit form */}
         {inEdit && <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id!} interactionKeys={interactionKeys}
                                         avatarDataDispatch={avatarDataDispatch} />}
 
+        {/* Buttons */}
         {layout.id && <>
+            {/* clear: both becuase of floating edit button */}
             <div style={{ clear: 'both' }} />
             <hr />
-        </>}
-
-        {layout.id &&
             <ButtonsWrapper>
                 {layout.buttons?.map((button: ButtonDTO) => (
                     <ParameterButton button={button} key={button.id} buttonStyle={buttonStyle}
@@ -49,7 +51,8 @@ export default function LayoutComponent({ layout, order, avatar, avatarDataDispa
                 ))}
                 {(clientTier.buttons && (!layout.buttons || layout.buttons.length < clientTier.buttons)) &&
                     <AddNewButton onClick={() => navigate('/website/avatars/' + avatar.id + '/' + layout.id + '/new')} />}
-            </ButtonsWrapper>}
+            </ButtonsWrapper>
+        </>}
     </ContentBox>);
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ContentBox } from 'cmap2-shared/dist/react';
 import { ContentBoxWidth, VrcParameter } from 'cmap2-shared';
 import styled from 'styled-components';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 interface VrcParameterWithDate extends VrcParameter {
     date: Date;
@@ -21,7 +21,7 @@ export default function VrcOscHistory() {
         }
     }, []);
 
-    return (<ContentBox flexBasis={ContentBoxWidth.Full} title={'OSC activity history'}>
+    return (<ContentBox flexBasis={ContentBoxWidth.Full} contentTitle={'OSC activity history'}>
         {oscParameterHistory.length > 0 ? (
             <VrcOscHistoryTableStyled>
                 <thead>

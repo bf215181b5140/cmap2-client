@@ -1,10 +1,11 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import React, { useEffect, useState } from 'react';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { ApproveFilesDTO, UploadedFileDTO } from 'cmap2-shared';
 import styled from 'styled-components';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import ApproveFileImage from './components/approveFileImage.component';
+import Content from '../../../../shared/components/contentBox/content.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 export default function ApproveFilesPage() {
 
@@ -33,8 +34,7 @@ export default function ApproveFilesPage() {
     }
 
     return (<Content>
-        <ContentBox>
-            <h2>Unapproved files</h2>
+        <ContentBox contentTitle={'Unapproved files'}>
             <ApproveFilesWrapper ref={parent}>
                 {approveFiles.slice(0, 6).map(file => <ApproveFileImage file={file} onApprove={onApprove} onDecline={onDecline} key={file.id} />)}
             </ApproveFilesWrapper>

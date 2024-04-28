@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form';
-import IconButton from '../../../../shared/components/buttons/searchButton.component';
 import React, { RefObject, useEffect, useImperativeHandle, useRef } from 'react';
 import { ButtonDTO, UploadedFileDTO } from 'cmap2-shared';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
@@ -7,6 +6,7 @@ import styled from 'styled-components';
 import EventEmitter from 'events';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import useFileValidation from '../../../../shared/hooks/fileValidation.hook';
+import IconButton from '../../../../shared/components/buttons/iconButton.component';
 
 interface ButtonImageFormProps {
     button: ButtonDTO;
@@ -28,15 +28,15 @@ export default function ButtonImageForm({ button, onSave, buttonEmitter, onLocal
     useImperativeHandle(ref, () => inputRef.current);
 
     useEffect(() => {
-        function onNewButtonSave(data: ButtonDTO) {
+        function onButtonSave(data: ButtonDTO) {
             button.id = data.id;
             submitRef.current?.click();
         }
 
-        buttonEmitter.on('save', onNewButtonSave);
+        buttonEmitter.on('save', onButtonSave);
 
         return () => {
-            buttonEmitter.removeListener('save', onNewButtonSave);
+            buttonEmitter.removeListener('save', onButtonSave);
         };
     }, []);
 
@@ -88,14 +88,14 @@ export default function ButtonImageForm({ button, onSave, buttonEmitter, onLocal
 
     return (<ButtonImageFormStyled>
         <div style={{ flexBasis: '100%' }}>
-            <span style={{ flexBasis: '100%' }}>{file?.name}</span>
+            <span style={{ flexBasis: '100%' }} className={'fileName'}>{file?.name}</span>
         </div>
         <div>
-            <IconButton icon={browseIcon} onClick={onBrowse} />
+            <IconButton type={'normal'} tooltip={'Browse for file'} icon={browseIcon} onClick={onBrowse} />
         </div>
         <div>
-            <ButtonInput text={'Save'} onClick={() => submitRef.current?.click()} disabled={!file || !button.id} />
-            <ButtonInput text={'Remove'} onClick={onClear} disabled={!file && !button.image} />
+            <IconButton type={'save'} tooltip={'Save image'} onClick={() => submitRef.current?.click()} disabled={!file || !button.id} />
+            <ButtonInput text={'Remove image'} onClick={onClear} disabled={!file && !button.image} />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>
             <input type="file" {...fileRegister} ref={inputRef} />
@@ -110,7 +110,7 @@ const ButtonImageFormStyled = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
 
-  span {
+  span.fileName {
     display: block;
     max-width: 270px;
     white-space: nowrap;

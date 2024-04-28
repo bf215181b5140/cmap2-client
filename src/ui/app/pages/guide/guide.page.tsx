@@ -1,5 +1,6 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import React from 'react';
+import Content from '../../shared/components/contentBox/content.component';
+import ContentBox from '../../shared/components/contentBox/contentBox.component';
 
 export default function GuidePage() {
 

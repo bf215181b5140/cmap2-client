@@ -18,7 +18,7 @@ const PickerOverlayCheckStyled = styled.div<{ selected?: boolean }>`
   position: absolute;
   top: 0.5em;
   right: 0.5em;
-  background: ${props => props.theme.colors.buttonPrimary.bg};
+  background: ${props => props.theme.colors.buttons.primary.bg};
   border-radius: 50%;
   font-size: 1.2em;
   width: 1.5em;

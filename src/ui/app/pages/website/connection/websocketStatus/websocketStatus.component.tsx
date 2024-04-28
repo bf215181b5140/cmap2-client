@@ -1,5 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { ContentBox } from 'cmap2-shared/dist/react/';
+import { useContext, useEffect, useRef } from 'react';
 import CheckboxInput from '../../../../shared/components/form/inputs/checkbox.component';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import { useForm } from 'react-hook-form';
@@ -8,6 +7,7 @@ import { WebsocketSettings, websocketSettingsSchema } from '../../../../../../sh
 import FormTable from '../../../../shared/components/form/formTable.component';
 import useWebsocketConnection from '../../../../shared/hooks/websocketConnection.hook';
 import { ClientCredentialsContext } from '../../../../contexts/contexts';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 export default function WebsocketStatus() {
 
@@ -33,7 +33,7 @@ export default function WebsocketStatus() {
     }
 
     return (<ContentBox>
-        <h2 style={{color: websocketConnectionColor}}>{websocketConnection.displayMessage()}</h2>
+        <h2 style={{color: websocketConnectionColor, marginTop: '0'}}>{websocketConnection.displayMessage()}</h2>
 
         {websocketConnection.message && <span>{websocketConnection.message}</span>}
 

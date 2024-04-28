@@ -93,7 +93,7 @@ const RangeInputStyled = styled.div`
 `;
 
 const RangeInputProgressStyled = styled.div`
-  background: ${props => props.theme.colors.buttonPrimary.hoverBg};
+  background: ${props => props.theme.colors.buttons.primary.hoverBg};
   border-radius: 7px;
   height: 30px;
 `;

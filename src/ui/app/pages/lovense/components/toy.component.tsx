@@ -78,12 +78,12 @@ const LovenseToyStyled = styled.div<{ connected: boolean }>`
 `;
 
 const LovenseToyConnectedStyled = css`
-  border: 2px solid ${props => props.theme.colors.buttonPrimary.hoverBorder};
+  border: 2px solid ${props => props.theme.colors.buttons.primary.hoverBorder};
   cursor: pointer;
   
   :hover {
-    background-color: ${props => props.theme.colors.buttonPrimary.hoverBg};
-    border: 2px solid ${props => props.theme.colors.buttonPrimary.hoverBorder};
+    background-color: ${props => props.theme.colors.buttons.primary.hoverBg};
+    border: 2px solid ${props => props.theme.colors.buttons.primary.hoverBorder};
   }
 `;
 

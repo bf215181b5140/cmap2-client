@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Login from './login/login.component';
-import { Content } from 'cmap2-shared/dist/react';
 import WebsocketStatus from './websocketStatus/websocketStatus.component';
 import Register from './register/register.component';
+import Content from '../../../shared/components/contentBox/content.component';
 
 export default function ConnectionPage() {
 

@@ -70,6 +70,7 @@ const ProfilePictureStyled = styled.div<{ $hasImage: boolean }>`
   }
 
   img {
+    border: none;
     margin: 0;
     padding: 0;
     width: 100%;

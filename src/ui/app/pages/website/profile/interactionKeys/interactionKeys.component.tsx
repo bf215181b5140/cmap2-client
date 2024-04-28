@@ -12,8 +12,8 @@ import Input from '../../../../shared/components/form/inputs/input.component';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
 import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
-import { ContentBox } from 'cmap2-shared/dist/react';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
+import IconButton from '../../../../shared/components/buttons/iconButton.component';
 
 interface InteractionKeysProps {
     client: ClientDTO;
@@ -40,7 +40,7 @@ export default function InteractionKeys({ client, interactionKeys, setInteractio
             headers: { 'Content-Type': 'application/json' }
         }, (data) => {
             setInteractionKeys(data);
-            reset({clientId: client.id, interactionKeys: data})
+            reset({ clientId: client.id, interactionKeys: data });
         });
     }
 
@@ -55,19 +55,14 @@ export default function InteractionKeys({ client, interactionKeys, setInteractio
             }, () => {
                 const filteredKeys = interactionKeys.filter(k => k.id !== key.id!);
                 setInteractionKeys(filteredKeys);
-                reset({clientId: client.id, interactionKeys: filteredKeys})
+                reset({ clientId: client.id, interactionKeys: filteredKeys });
             });
         } else {
             remove(index);
         }
     }
 
-    return (<ContentBox flexBasis={ContentBoxWidth.Full}>
-        <h2>Interaction keys</h2>
-        <p>
-            Here you can edit and manage all your interaction keys. <br />
-            You can lock individual buttons or layouts behind keys, then only website visitors who enter the key will be able to see them.
-        </p>
+    return (<ContentBox contentTitle={'Interaction keys'} infoContent={InteractionKeysInfo()} flexBasis={ContentBoxWidth.Full}>
         <form onSubmit={handleSubmit(onSubmit)}>
             <HiddenInput register={register} name={'clientId'} />
             <FormTableStyled>
@@ -99,14 +94,25 @@ export default function InteractionKeys({ client, interactionKeys, setInteractio
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <ButtonInput text="Add new" disabled={watchInteractionKeys.length >= Math.min(16, client.tier.interactionKeys)} onClick={() => append({
+                <IconButton type={'add'} size={'small'} disabled={watchInteractionKeys.length >= Math.min(16, client.tier.interactionKeys)} onClick={() => append({
                     id: null,
                     label: '',
                     key: '',
                 })} />
-                <SubmitInput disabled={!isDirty} />
-                <ButtonInput text="Reset" disabled={!isDirty} onClick={() => reset()} />
+                <hr />
+                <IconButton type={'save'} disabled={!isDirty} />
+                <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);
+}
+
+function InteractionKeysInfo() {
+    return (<>
+        <p>
+            Interaction keys allow you to lock individual layout or button behind keys.
+            <br />
+            Create a new key here, then when editing layout/button you can select it and that layout/button will only be visible to website users who enter the key.
+        </p>
+    </>);
 }

@@ -32,15 +32,15 @@ const ConnectionBoxStyled = styled.div<{ connected: boolean }>`
   flex-direction: row;
   align-items: center;
   background-color: ${props => props.theme.colors.ui.contentBg};
-  border: 2px solid ${props => props.theme.colors.buttonPrimary.border};
+  border: 2px solid ${props => props.theme.colors.buttons.primary.border};
   border-radius: 8px;
   transition: 0.15s linear;
-  // border-color: ${props => props.connected ? props.theme.colors.buttonPrimary.border : props.theme.colors.error};
+  // border-color: ${props => props.connected ? props.theme.colors.buttons.primary.border : props.theme.colors.error};
   cursor: pointer;
 
   :hover {
-    background-color: ${props => props.theme.colors.buttonPrimary.hoverBg};
-    border-color: ${props => props.theme.colors.buttonPrimary.hoverBorder};
+    background-color: ${props => props.theme.colors.buttons.primary.hoverBg};
+    border-color: ${props => props.theme.colors.buttons.primary.hoverBorder};
   }
 `;
 
@@ -57,16 +57,17 @@ const ChildrenStyled = styled.div`
   flex-direction: column;
   gap: 5px;
 
+  // Need !important because for some reason this doesn't override parent styles (contentBox)
   h1, h2, h3, p {
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   h1 {
-    font-size: 20px;
+    font-size: 20px !important;
   }
 
   h2 {
-    font-size: 16px;
+    font-size: 18px !important;
   }
 `;

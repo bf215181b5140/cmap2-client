@@ -1,12 +1,12 @@
 import { AvatarDTO, ReactProps, TierDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
-import { ContentBox } from 'cmap2-shared/dist/react';
 import { ContentBoxWidth } from 'cmap2-shared/src';
 import React, { Dispatch, SetStateAction } from 'react';
 import ContentBoxMenuLink from '../../../../shared/components/contentBox/contentBoxMenu/contentBoxMenuLink.component';
 import styled from 'styled-components';
 import { ContentBoxMenuSelect } from '../../../../shared/components/contentBox/contentBoxMenu/contentBoxMenuSelect.component';
 import IconButton from '../../../../shared/components/buttons/iconButton.component';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 interface AvatarsMenuProps extends ReactProps {
     page: 'settings' | 'layout';

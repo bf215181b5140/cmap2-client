@@ -6,6 +6,7 @@ import AvatarParameterProperties from './avatarParameterProperties.component';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import DeleteButton from '../../../../shared/components/buttons/deleteButton.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
+import IconButton from '../../../../shared/components/buttons/iconButton.component';
 
 interface AvatarParameterProps extends ReactProps {
     avatarId: string;
@@ -35,7 +36,7 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
         </h4>
 
         <div className={'editOptions'}>
-            {inEdit && <ParameterDeleteButton keyword={'parameter'} onClick={deleteParameter} />}
+            {inEdit && <ParameterDeleteButton type={'delete'} deleteKeyword={'parameter'} onClick={deleteParameter} />}
         </div>
 
         {showProperties && <div className={'properties'}>
@@ -47,7 +48,7 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
 }
 
 const AvatarParameterStyled = styled.div`
-  background: ${props => props.theme.colors.buttonSecondary.border};
+  background: ${props => props.theme.colors.buttons.secondary.border};
   border-radius: 8px;
   padding: 10px 15px;
   display: flex;
@@ -76,7 +77,7 @@ const AvatarParameterStyled = styled.div`
   }
 `;
 
-const ParameterDeleteButton = styled(DeleteButton)`
+const ParameterDeleteButton = styled(IconButton)`
   height: 26px;
   width: 26px;
   font-size: 16px;

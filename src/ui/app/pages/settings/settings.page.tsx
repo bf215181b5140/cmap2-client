@@ -1,4 +1,3 @@
-import { ContentBox, Content } from 'cmap2-shared/dist/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
@@ -10,6 +9,8 @@ import Input from '../../shared/components/form/inputs/input.component';
 import CheckboxInput from '../../shared/components/form/inputs/checkbox.component';
 import { generalSettingsSchema, GeneralSettings } from '../../../../shared/types/settings';
 import InfoTooltipIcon from '../../shared/components/infoTooltipIcon.component';
+import Content from '../../shared/components/contentBox/content.component';
+import ContentBox from '../../shared/components/contentBox/contentBox.component';
 
 export default function SettingsPage() {
 
@@ -25,16 +26,15 @@ export default function SettingsPage() {
     }
 
     return (<Content flexDirection="column">
-        <ContentBox>
+        <ContentBox contentTitle={'Settings'}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <h2>Settings</h2>
                 <FormTable>
                     <tr>
                         <th>Start minimized to tray</th>
                         <td><CheckboxInput register={register} name={'startMinimized'} errors={errors} /></td>
                     </tr>
                     <tr>
-                        <th>Check if Vrchat is running</th>
+                        <th>Check if VRChat is running</th>
                         <td><CheckboxInput name={'enableVrcDetector'} register={register} errors={errors} /></td>
                         <th>every</th>
                         <td><NumberInput name={'vrcDetectorFrequency'} register={register} errors={errors} width={'60px'}

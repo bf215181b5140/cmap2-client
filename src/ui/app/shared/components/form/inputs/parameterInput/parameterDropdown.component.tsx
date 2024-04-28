@@ -183,6 +183,7 @@ const DropdownStyled = styled.div`
   box-shadow: 0 0 10px black;
 
   ul {
+    padding-inline-start: 0;
     margin: 0;
     padding: 5px;
     overflow: auto;

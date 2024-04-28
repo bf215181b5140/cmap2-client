@@ -1,4 +1,3 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import ActionButton from '../../shared/components/buttons/actionButton.component';
 import { Toy } from 'lovense';
 import { LovenseToy } from './components/toy.component';
@@ -9,6 +8,8 @@ import Icon from 'cmap2-shared/src/react/components/icon.component';
 import ToyControl from './components/toyControl.component';
 import OscControl from './components/oscControl.component';
 import Settings from './components/lovenseSettings.component';
+import Content from '../../shared/components/contentBox/content.component';
+import ContentBox from '../../shared/components/contentBox/contentBox.component';
 
 export default function LovensePage() {
 
@@ -46,7 +47,7 @@ export default function LovensePage() {
         <ContentBox>
             <ConnectionFlexbox>
                 <Connection>
-                    <h2>Lovense connection</h2>
+                    <h2 style={{marginTop: '0'}}>Lovense connection</h2>
                     {connectionMessage()}
                     {!lovenseStatus.socketConnection && <ActionButton action={connect}>Connect</ActionButton>}
                     {lovenseStatus.socketConnection && <ActionButton action={disconnect}>Disconnect</ActionButton>}
@@ -62,7 +63,7 @@ export default function LovensePage() {
             </ConnectionFlexbox>
         </ContentBox>
         {lovenseStatus.deviceInformation?.toyList &&
-            <ContentBox title='Toys'>
+            <ContentBox contentTitle={'Toys'}>
                 <ToysStyled>
                     {lovenseStatus.deviceInformation.toyList.map((toy: Toy) => (<LovenseToy toy={toy} key={toy.id} />))}
                 </ToysStyled>

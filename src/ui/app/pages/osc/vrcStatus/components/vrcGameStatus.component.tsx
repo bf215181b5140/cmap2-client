@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ContentBox } from 'cmap2-shared/dist/react';
-import { ContentBoxWidth, theme } from 'cmap2-shared';
+import { ContentBoxWidth } from 'cmap2-shared';
 import timeSinceTimestamp from '../../../../shared/util/timeSinceTimestamp';
 import useVrcConnection from '../../../../shared/hooks/vrcConnection.hook';
+import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
 
 export default function VrcGameStatus() {
 
@@ -28,7 +28,7 @@ export default function VrcGameStatus() {
     }, []);
 
     return (<ContentBox flexBasis={ContentBoxWidth.Full}>
-        <h2 style={{color: vrcStatusColor}}>{vrcStatus}</h2>
+        <h2 style={{color: vrcStatusColor, marginTop: '0'}}>{vrcStatus}</h2>
         <p key={key}>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
     </ContentBox>);
 }

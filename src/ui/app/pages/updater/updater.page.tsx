@@ -1,7 +1,8 @@
-import { Content, ContentBox } from 'cmap2-shared/dist/react';
 import useUpdateStatus from '../../shared/hooks/updateStatus.hook';
 import styled from 'styled-components';
 import UpdateBox from './components/updateBox.component';
+import Content from '../../shared/components/contentBox/content.component';
+import ContentBox from '../../shared/components/contentBox/contentBox.component';
 
 export default function UpdaterPage() {
 
@@ -9,7 +10,7 @@ export default function UpdaterPage() {
 
     return (<Content flexDirection={'row'}>
         <ContentBox>
-            <h2 style={{ color: updateStatusColor }}>{updateStatus}</h2>
+            <h2 style={{ color: updateStatusColor, marginTop: '0' }}>{updateStatus}</h2>
 
             {updateDetail && <p>{updateDetail}</p>}
 
@@ -19,8 +20,7 @@ export default function UpdaterPage() {
             <span style={{ display: 'block', margin: '5px' }}>{currentVersion}</span>
         </ContentBox>
 
-        <ContentBox>
-            <h2>Download and install</h2>
+        <ContentBox contentTitle={'Download and install'}>
             {latest ? (<>
                 <UpdatesStyled>
                     <UpdateBox update={latest} />

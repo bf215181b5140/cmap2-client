@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CONTENT_GAP } from './content.component';
 import { ContentBoxWidth, ReactProps } from 'cmap2-shared';
 import IconButton from '../buttons/iconButton.component';

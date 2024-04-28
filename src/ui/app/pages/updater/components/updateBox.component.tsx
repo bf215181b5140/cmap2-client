@@ -36,8 +36,8 @@ export default function UpdateBox({ update, latest }: UpdateBoxProps) {
 }
 
 const UpdateBoxStyled = styled.div`
-  border: 2px solid ${props => props.theme.colors.buttonSecondary.border};
-  background: ${props => props.theme.colors.buttonSecondary.border};
+  border: 2px solid ${props => props.theme.colors.buttons.secondary.border};
+  background: ${props => props.theme.colors.buttons.secondary.border};
   border-radius: 8px;
   padding: 10px 15px;
   cursor: pointer;
@@ -70,6 +70,6 @@ const UpdateBoxStyled = styled.div`
   }
 
   :hover {
-    border: 2px solid ${props => props.theme.colors.buttonSecondary.hoverBorder};
+    border: 2px solid ${props => props.theme.colors.buttons.secondary.hoverBorder};
   }
 `;

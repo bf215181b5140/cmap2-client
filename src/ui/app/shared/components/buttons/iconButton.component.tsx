@@ -180,43 +180,43 @@ const IconButtonStyled = styled.button<{ styleType: IconButtonType, size: IconBu
 `;
 
 const styleAdd = css`
-  background: #326748;
-  border-color: #3c7a56;
+  background: ${props => props.theme.colors.buttons.add.bg};
+  border-color: ${props => props.theme.colors.buttons.add.border};
 
   :hover, &[data-active='true'] {
-    background: #3b7954;
-    border-color: #5fbe87;
+    background: ${props => props.theme.colors.buttons.add.hoverBg};
+    border-color: ${props => props.theme.colors.buttons.add.hoverBorder};
   }
 `;
 
 const styleDelete = css`
-  background: #ab4c4c;
-  border-color: #b75252;
+  background: ${props => props.theme.colors.buttons.delete.bg};
+  border-color: ${props => props.theme.colors.buttons.delete.border};
 
-  :hover, &[data-active] {
-    background: #bd5555;
-    border-color: #ff8484;
+  :hover, &[data-active='true'] {
+    background: ${props => props.theme.colors.buttons.delete.hoverBg};
+    border-color: ${props => props.theme.colors.buttons.delete.hoverBorder};
   }
 `;
 
 const styleEdit = css`
-  background: #a98934;
-  border-color: #be9a38;
+  background: ${props => props.theme.colors.buttons.edit.bg};
+  border-color: ${props => props.theme.colors.buttons.edit.border};
 
   :hover, &[data-active='true'] {
-    background: #b49138;
-    border-color: #e5ba48;
+    background: ${props => props.theme.colors.buttons.edit.hoverBg};
+    border-color: ${props => props.theme.colors.buttons.edit.hoverBorder};
   }
 `;
 
 const styleSave = css`
-  background: #14798f;
-  border-color: #1688a1;
+  background: ${props => props.theme.colors.buttons.save.bg};
+  border-color: ${props => props.theme.colors.buttons.save.border};
   animation: 750ms ease-in infinite alternate saveBlinking;
 
   :hover, &[data-active='true'] {
-    background: #15829a;
-    border-color: #2fc7e7;
+    background: ${props => props.theme.colors.buttons.save.hoverBg};
+    border-color: ${props => props.theme.colors.buttons.save.hoverBorder};
     animation: none;
   }
 
@@ -235,22 +235,22 @@ const styleSave = css`
 `;
 
 const styleInfo = css`
-  background: #30597c;
-  border-color: #3b6d96;
+  background: ${props => props.theme.colors.buttons.info.bg};
+  border-color: ${props => props.theme.colors.buttons.info.border};
 
   :hover, &[data-active='true'] {
-    background: #38678f;
-    border-color: #5ea9e3;
+    background: ${props => props.theme.colors.buttons.info.hoverBg};
+    border-color: ${props => props.theme.colors.buttons.info.hoverBorder};
   }
 `;
 
 const styleReset = css`
-  background: #af6d37;
-  border-color: #c97b3d;
+  background: ${props => props.theme.colors.buttons.reset.bg};
+  border-color: ${props => props.theme.colors.buttons.reset.border};
 
   :hover, &[data-active='true'] {
-    background: #b67139;
-    border-color: #f6a25a;
+    background: ${props => props.theme.colors.buttons.reset.hoverBg};
+    border-color: ${props => props.theme.colors.buttons.reset.hoverBorder};
   }
 `;
 
