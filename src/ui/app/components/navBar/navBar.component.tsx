@@ -13,7 +13,7 @@ export default function NavBar() {
             <NavBarLink to="/lovense" icon="ri-wireless-charging-fill" tooltip={'Lovense'} />
             <NavBarLink to="/settings" icon="ri-settings-3-fill" tooltip={'Settings'} />
             <NavBarLink to="/updater" icon="ri-download-2-fill" tooltip={'Updates'} attentionIcon={!!updateStatusColor} attentionColor={updateStatusColor} />
-            {/* <NavBarLink to="/guide" icon="ri-questionnaire-fill" tooltip={'Quick start'} /> */}
+            <NavBarLink to="/guide" icon="ri-questionnaire-fill" tooltip={'Quick start'} />
     </NavBarStyled>);
 }
 

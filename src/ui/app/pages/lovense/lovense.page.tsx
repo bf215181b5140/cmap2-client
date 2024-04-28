@@ -49,7 +49,10 @@ export default function LovensePage() {
                 <Connection>
                     <h2 style={{marginTop: '0'}}>Lovense connection</h2>
                     {connectionMessage()}
-                    {!lovenseStatus.socketConnection && <ActionButton action={connect}>Connect</ActionButton>}
+                    {!lovenseStatus.socketConnection && <>
+                        <span id={'lovenseLoginRequired'}>Requires you to be logged in to the website</span>
+                        <ActionButton action={connect}>Connect</ActionButton>
+                    </>}
                     {lovenseStatus.socketConnection && <ActionButton action={disconnect}>Disconnect</ActionButton>}
                 </Connection>
                 <QRCode>
@@ -78,6 +81,12 @@ const ConnectionFlexbox = styled.div`
   display: flex;
   flex-flow: row;
   gap: 15px;
+  
+  #lovenseLoginRequired {
+    display: block;
+    margin: 10px 0;
+    color: dimgrey;
+  }
 `;
 
 const Connection = styled.div`

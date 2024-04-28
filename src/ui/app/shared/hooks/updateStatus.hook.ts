@@ -19,27 +19,33 @@ export default function useUpdateStatus() {
 
         return () => {
             if (removeListener) removeListener();
-        }
+        };
     }, []);
 
     function updateStatus(): string {
-        if (!updateData || !updateData.lastCheck) return 'Checking for updates...'
-        if (newMajor || newMinor) return 'Update required';
-        if (newPatch) return 'Update available';
+        if (!updateData || !updateData.lastCheck) return 'Checking for updates...';
+        if (newUpdate) {
+            if (newMajor || newMinor) return 'Update required';
+            if (newPatch) return 'Update available';
+        }
         return 'Up to date';
     }
 
     function updateDetail(): string | undefined {
         if (!updateData || !updateData.lastCheck) return undefined;
-        if (newMajor) return 'To use website features please update to the latest version, otherwise things will not work.';
-        if (newMinor) return 'To use website features please update to the latest version, otherwise some things will not work.';
+        if (newUpdate) {
+            if (newMajor) return 'To use website features please update to the latest version, otherwise things will not work.';
+            if (newMinor) return 'To use website features please update to the latest version, otherwise some things will not work.';
+        }
         return undefined;
     }
 
     function updateStatusColor(): string | undefined {
         if (!updateData || !updateData.lastCheck) return undefined;
-        if (newMajor || newMinor) return theme.colors.error;
-        if (newPatch) return theme.colors.warning;
+        if (newUpdate) {
+            if (newMajor || newMinor) return theme.colors.error;
+            if (newPatch) return theme.colors.warning;
+        }
         return undefined;
     }
 

@@ -164,6 +164,16 @@ const ContentBoxStyled = styled.div`
       margin: 4px 0;
     }
   }
+  
+  a {
+    text-decoration: none;
+    font-weight: bold;
+    color: ${props => props.theme.colors.font.textActive};
+    
+    :hover {
+      color: ${props => props.theme.colors.font.textBright};
+    }
+  }
 `;
 
 const ContentLoading = styled.div`
