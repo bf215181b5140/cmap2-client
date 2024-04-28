@@ -40,7 +40,7 @@ export default function useAvatarPage() {
             valueType: ParameterValueType.Int,
             buttonType: ButtonType.Button,
             imageOrientation: ButtonImageOrientation.Square,
-            order: 0,
+            order: selectedLayout?.buttons?.length || 0,
             useCost: null,
             image: null,
             controlParameter: null,

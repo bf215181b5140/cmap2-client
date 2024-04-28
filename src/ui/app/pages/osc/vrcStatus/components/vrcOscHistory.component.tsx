@@ -42,7 +42,7 @@ export default function VrcOscHistory() {
                 </tbody>
             </VrcOscHistoryTableStyled>
         ) : (
-            <p>No OSC activity</p>
+            <p>Waiting for OSC activity...</p>
         )}
     </ContentBox>)
 }

@@ -10,6 +10,7 @@ import LayoutFormComponent from './layoutForm/layoutForm.component';
 import { InteractionKeyDTO } from 'cmap2-shared/dist/types/InteractionKey';
 import ContentBox from '../../../../../shared/components/contentBox/contentBox.component';
 import IconButton from '../../../../../shared/components/buttons/iconButton.component';
+import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 
 interface LayoutComponentProps extends ReactProps {
     layout: LayoutDTO;
@@ -24,7 +25,60 @@ interface LayoutComponentProps extends ReactProps {
 export default function LayoutComponent({ layout, order, avatar, avatarDataDispatch, clientTier, buttonStyle, interactionKeys }: LayoutComponentProps) {
 
     const navigate = useNavigate();
+    const cmapFetch = useCmapFetch();
     const [inEdit, setEditing] = useState<boolean>(!layout.id);
+    const buttons = layout?.buttons?.sort((a, b) => a.order - b.order) || [];
+
+    function reorderButtons(button: ButtonDTO, change: number) {
+        const oldPos = button.order;
+        const newPos = Math.min(Math.max(button.order + change, 0), (buttons.length || 1) - 1);
+        let newButtonOrder: ButtonDTO[] = [];
+
+        if (change < 0) {
+            newButtonOrder = buttons.map((b, index) => {
+                if (b.id === button.id) {
+                    b.order = newPos;
+                    return b;
+                } else {
+                    if (index >= newPos && index < oldPos) {
+                        b.order = index + 1;
+                    } else {
+                        b.order = index;
+                    }
+                }
+                return b;
+            });
+        } else if (change > 0) {
+            newButtonOrder = buttons.map((b, index) => {
+                if (b.id === button.id) {
+                    b.order = newPos;
+                    return b;
+                } else {
+                    if (b.order <= newPos && b.order > oldPos) {
+                        b.order = index - 1;
+                    } else {
+                        b.order = index;
+                    }
+                }
+                return b;
+            });
+        } else {
+            return;
+        }
+
+        cmapFetch('button/order', {
+            method: 'POST',
+            body: JSON.stringify(newButtonOrder),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }, (data, res) => {
+            if (res.code === 200) {
+                avatarDataDispatch({ type: 'setButtonOrder', buttons: newButtonOrder, avatarId: avatar.id!, layoutId: layout.id! });
+            }
+        });
+
+    }
 
     return (<ContentBox key={layout.id} flexBasis={layout.width}>
 
@@ -45,11 +99,23 @@ export default function LayoutComponent({ layout, order, avatar, avatarDataDispa
             <div style={{ clear: 'both' }} />
             <hr />
             <ButtonsWrapper>
-                {layout.buttons?.map((button: ButtonDTO) => (
-                    <ParameterButton button={button} key={button.id} buttonStyle={buttonStyle}
-                                     onClick={() => navigate('/website/avatars/' + avatar.id + '/' + layout.id + '/' + button.id)} />
-                ))}
-                {(clientTier.buttons && (!layout.buttons || layout.buttons.length < clientTier.buttons)) &&
+                {buttons.map((button: ButtonDTO, index) => (
+                    <div key={button.id} style={{ breakInside: 'avoid-column' }}>
+                        {/* Edit bar for buttons */}
+                        {inEdit && <ButtonEditBarStyled>
+                            <IconButton type={'normal'} size={'small'} icon={'ri-arrow-left-s-line'} onClick={() => reorderButtons(button, -1)}
+                                        disabled={index - 1 < 0} />
+                            Order
+                            <IconButton type={'normal'} size={'small'} icon={'ri-arrow-right-s-line'} onClick={() => reorderButtons(button, 1)}
+                                        disabled={index + 1 >= buttons.length} />
+                        </ButtonEditBarStyled>}
+
+                        {/* Buttons */}
+                        <ParameterButton button={button} buttonStyle={buttonStyle}
+                                         onClick={() => navigate('/website/avatars/' + avatar.id + '/' + layout.id + '/' + button.id)} />
+
+                    </div>))}
+                {(clientTier.buttons && buttons.length < clientTier.buttons) &&
                     <AddNewButton onClick={() => navigate('/website/avatars/' + avatar.id + '/' + layout.id + '/new')} />}
             </ButtonsWrapper>
         </>}
@@ -74,4 +140,11 @@ const ButtonsWrapper = styled.div`
 const FloatIconButton = styled(IconButton)`
   float: right;
   margin: 0 0 7px 7px;
+`;
+
+const ButtonEditBarStyled = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;

@@ -22,7 +22,6 @@ interface AvatarSettingsProps extends ReactProps {
 export default function AvatarSettings({selectedAvatar, avatarDataDispatch}: AvatarSettingsProps) {
 
     const customFetch = useCmapFetch();
-    const {deleteModal} = useContext(ModalContext);
     const {register, reset, formState: {errors, isDirty}, handleSubmit, setValue} = useForm({resolver: zodResolver(AvatarFormSchema)});
     const navigate = useNavigate();
 

@@ -154,7 +154,7 @@ const IconButtonStyled = styled.button<{ styleType: IconButtonType, size: IconBu
 
   :hover {
     span {
-      animation: slideUp 200ms;
+      animation: iconButtonTooltip 150ms;
       display: block;
     }
   }
@@ -167,7 +167,7 @@ const IconButtonStyled = styled.button<{ styleType: IconButtonType, size: IconBu
     filter: saturate(0%);
   }
 
-  @keyframes slideUp {
+  @keyframes iconButtonTooltip {
     from {
       top: -15px;
       opacity: 0;

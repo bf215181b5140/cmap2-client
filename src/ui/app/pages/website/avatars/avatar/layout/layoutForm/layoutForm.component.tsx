@@ -55,6 +55,7 @@ export default function LayoutFormComponent({ layout, order, avatarId, interacti
         }, (data, res) => {
             if (res.code === 201) {
                 avatarDataDispatch({ type: 'addLayout', layout: data, avatarId: avatarId });
+                reset();
             } else {
                 avatarDataDispatch({ type: 'editLayout', layout: data, avatarId: avatarId });
                 reset({

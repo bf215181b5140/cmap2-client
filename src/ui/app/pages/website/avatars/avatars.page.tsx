@@ -39,7 +39,7 @@ export default function AvatarsPage() {
                     <ControlParameters selectedAvatar={selectedAvatar} clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} />
                 </>)}
             </>) : (<>
-                {selectedAvatar.id && selectedAvatar.layouts?.map((layout: LayoutDTO, index: number) => (
+                {selectedAvatar.id && selectedAvatar.layouts?.sort((a, b) => a.order - b.order)?.map((layout: LayoutDTO, index: number) => (
                     <LayoutComponent layout={layout} avatar={selectedAvatar} order={index + 1} key={index} clientTier={clientTier}
                                      interactionKeys={interactionKeys} avatarDataDispatch={avatarDataDispatch} buttonStyle={clientButtonStyle} />))
                 }
@@ -47,7 +47,7 @@ export default function AvatarsPage() {
                     <LayoutComponent layout={{
                         id: '',
                         label: '',
-                        order: 0,
+                        order: selectedAvatar.layouts?.length || 0,
                         width: LayoutWidth.None
                     }} avatar={selectedAvatar} order={(selectedAvatar.layouts?.length || 0) + 1} interactionKeys={interactionKeys}
                                      clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} buttonStyle={clientButtonStyle} />

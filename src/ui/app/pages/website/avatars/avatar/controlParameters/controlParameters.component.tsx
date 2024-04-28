@@ -24,7 +24,6 @@ interface ControlParametersProps extends ReactProps {
 export default function ControlParameters({ selectedAvatar, clientTier, avatarDataDispatch }: ControlParametersProps) {
 
     const customFetch = useCmapFetch();
-    const { deleteModal } = useContext(ModalContext);
     const { register, control, handleSubmit, watch, reset, formState: { errors, isDirty }, setValue } = useForm<ControlParametersFormDTO>({
         defaultValues: {
             avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []]

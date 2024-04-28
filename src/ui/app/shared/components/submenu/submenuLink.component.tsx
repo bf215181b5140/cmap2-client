@@ -9,7 +9,7 @@ interface SubmenuLinkProps {
     attention?: boolean;
 }
 
-export default function SubmenuLink({to, icon, disabled = false, tooltip, attention = false}: SubmenuLinkProps) {
+export default function SubmenuLink({ to, icon, disabled = false, tooltip, attention = false }: SubmenuLinkProps) {
 
     const pathname = useLocation().pathname;
 
@@ -20,8 +20,8 @@ export default function SubmenuLink({to, icon, disabled = false, tooltip, attent
     return (<>
         <SubmenuLinkStyled to={to} $active={isCurrentPath()} disabled={disabled}>
             <i className={icon} />
-            {tooltip && <div id="tooltip">{tooltip}</div>}
-            {attention && <i id="attention" className="ri-shining-fill"></i>}
+            {tooltip && <div className="tooltip">{tooltip}</div>}
+            {attention && <i className="ri-circle-fill attention"></i>}
         </SubmenuLinkStyled>
     </>);
 }
@@ -54,15 +54,18 @@ const SubmenuLinkStyled = styled(Link)<{ $active: boolean, disabled: boolean }>`
     color: ${props => props.theme.colors.submenu.icon};
   }
 
-  #tooltip {
-    color: ${props => props.theme.colors.submenu.hoverIcon};
+  .tooltip {
     display: none;
     position: fixed;
     left: 76px;
     text-shadow: 0 0 5px ${props => props.theme.colors.ui.appBgOpaque};
+    background: #111;
+    padding: 4px 12px;
+    border-radius: 8px;
+    color: ${props => props.theme.colors.font.text};
   }
 
-  #attention {
+  .attention {
     color: ${props => props.theme.colors.attention};
     font-size: 10px;
     position: absolute;
@@ -75,13 +78,29 @@ const SubmenuLinkStyled = styled(Link)<{ $active: boolean, disabled: boolean }>`
   :hover {
     ${highlight};
 
-    #tooltip {
+    .tooltip {
+      animation: submenuLinkTooltip 150ms;
       display: block;
+    }
+
+    .attention {
+      color: ${props => props.theme.colors.attention};
     }
   }
 
   &[disabled] {
     pointer-events: none;
     filter: saturate(0%);
+  }
+
+  @keyframes submenuLinkTooltip {
+    from {
+      left: 40px;
+      opacity: 0;
+    }
+    to {
+      left: 76px;
+      opacity: 1;
+    }
   }
 `;

@@ -11,8 +11,6 @@ import ListenForParameter from './listenForParameter.component';
 import FormTable from '../../../../shared/components/form/formTable.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
 import enumToInputOptions from '../../../../shared/util/enumToInputOptions.function';
-import { ModalContext } from '../../../../components/mainWindow/mainWindow.componenet';
-import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
 import ButtonInput from '../../../../shared/components/form/inputs/button.component';
 import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
 import Input from '../../../../shared/components/form/inputs/input.component';
@@ -43,12 +41,10 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
 
     const navigate = useNavigate();
     const customFetch = useCmapFetch();
-    const { deleteModal } = useContext(ModalContext);
     const [onSaveEmitter] = useState(new EventEmitter());
     const { register, setValue, reset, formState: { errors, isDirty }, watch, handleSubmit } = useForm<ButtonFormDTO>({
         defaultValues: {
             ...button,
-            order: 0,
             parentId: layout.id,
             controlParameterId: button.controlParameter?.id || '',
             interactionKeyId: button.interactionKey?.id || '',
