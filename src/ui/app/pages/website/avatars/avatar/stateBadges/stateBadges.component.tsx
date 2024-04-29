@@ -17,6 +17,7 @@ import ContentBox from '../../../../../shared/components/contentBox/contentBox.c
 import copyIconClassExample from '../../../../../shared/images/stateBadges/stateBadges-copyIconClassExample.png';
 import IconButton from '../../../../../shared/components/buttons/iconButton.component';
 import ExternalLink from '../../../../../shared/components/externalLink/externalLink.component';
+import NumberInput from '../../../../../shared/components/form/inputs/number.component';
 
 interface StateBadgesProps extends ReactProps {
     selectedAvatar: AvatarDTO;
@@ -29,14 +30,14 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
     const customFetch = useCmapFetch();
     const { register, control, handleSubmit, watch, reset, formState: { errors, isDirty }, setValue } = useForm<StateBadgesDTO>({
         defaultValues: {
-            avatarId: selectedAvatar.id, badges: [...selectedAvatar.stateBadges || []]
+            avatarId: selectedAvatar.id, badges: [...selectedAvatar.stateBadges?.sort((a, b) => a.order - b.order) || []]
         }, resolver: zodResolver(StateBadgesSchema)
     });
     const { fields, append, remove } = useFieldArray({ control, name: 'badges' });
     const watchBadges = watch('badges')!;
 
     useEffect(() => {
-        reset({ avatarId: selectedAvatar.id, badges: [...selectedAvatar.stateBadges || []] });
+        reset({ avatarId: selectedAvatar.id, badges: [...selectedAvatar.stateBadges?.sort((a, b) => a.order - b.order) || []] });
     }, [selectedAvatar, selectedAvatar.stateBadges]);
 
     function onSave(formData: StateBadgesDTO) {
@@ -88,6 +89,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                         <th>Value</th>
                         <th>Label</th>
                         <th>Icon</th>
+                        <th>Order</th>
                         <td></td>
                     </tr>
                 }
@@ -101,7 +103,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                                          options={stateBadgeKeyOption()} />
                         </td>
                         <td>
-                            <ParameterInput register={register} name={`badges.${index}.parameter`} errors={errors} setValue={setValue}
+                            <ParameterInput register={register} name={`badges.${index}.parameter`} width={'230px'} errors={errors} setValue={setValue}
                                             defaultType={'output'} defaultAvatarVrcId={selectedAvatar.vrcId} />
                         </td>
                         <td>
@@ -109,12 +111,15 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                                    errors={errors} />
                         </td>
                         <td>
-                            <Input register={register} name={`badges.${index}.label`} width={'140px'} readOnly={watchBadges[index].key !== StateBadgeKey.Custom}
+                            <Input register={register} name={`badges.${index}.label`} width={'130px'} readOnly={watchBadges[index].key !== StateBadgeKey.Custom}
                                    errors={errors} />
                         </td>
                         <td>
                             <Input register={register} name={`badges.${index}.icon`} width={'160px'} readOnly={watchBadges[index].key !== StateBadgeKey.Custom}
                                    errors={errors} />
+                        </td>
+                        <td>
+                            <NumberInput register={register} name={`badges.${index}.order`} width={'50px'} errors={errors} />
                         </td>
                         <td>
                             <IconButton type={'delete'} onClick={() => onDelete(index)} deleteKeyword={'badge'} size={'small'} />
@@ -131,7 +136,8 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                     parameter: '',
                     value: '',
                     label: '',
-                    icon: ''
+                    icon: '',
+                    order: watchBadges.reduce((max, b) => Math.max(max, b.order) + 1, 0)
                 })} />
                 <hr />
                 <IconButton type={'save'} disabled={!isDirty} />
