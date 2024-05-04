@@ -20,9 +20,10 @@ interface LayoutComponentProps extends ReactProps {
     buttonStyle: ButtonStyleDTO;
     interactionKeys: InteractionKeyDTO[];
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
+    changeOrder?: (layout: LayoutDTO, change: number) => void;
 }
 
-export default function LayoutComponent({ layout, order, avatar, avatarDataDispatch, clientTier, buttonStyle, interactionKeys }: LayoutComponentProps) {
+export default function LayoutComponent({ layout, order, avatar, avatarDataDispatch, clientTier, buttonStyle, interactionKeys, changeOrder }: LayoutComponentProps) {
 
     const navigate = useNavigate();
     const cmapFetch = useCmapFetch();
@@ -77,7 +78,6 @@ export default function LayoutComponent({ layout, order, avatar, avatarDataDispa
                 avatarDataDispatch({ type: 'setButtonOrder', buttons: newButtonOrder, avatarId: avatar.id!, layoutId: layout.id! });
             }
         });
-
     }
 
     return (<ContentBox key={layout.id} flexBasis={layout.width}>
@@ -88,6 +88,19 @@ export default function LayoutComponent({ layout, order, avatar, avatarDataDispa
             <FloatIconButton type={'edit'} size={'small'} onClick={() => setEditing(!inEdit)} active={inEdit} />
             <h2 style={{ marginTop: '0' }}>{layout.label}</h2>
         </>}
+
+        {/* Edit layout order */}
+        {inEdit && changeOrder && <OrderEditBarStyled>
+            <IconButton type={'normal'} size={'small'} icon={'ri-arrow-left-s-line'} disabled={layout.order - 1 < 0} onClick={() => {
+                changeOrder(layout, -1);
+                setEditing(false);
+            }} />
+            Order
+            <IconButton type={'normal'} size={'small'} icon={'ri-arrow-right-s-line'} disabled={layout.order + 1 >= buttons.length} onClick={() => {
+                changeOrder(layout, 1);
+                setEditing(false);
+            }} />
+        </OrderEditBarStyled>}
 
         {/* Edit form */}
         {inEdit && <LayoutFormComponent layout={layout} order={order} avatarId={avatar.id!} interactionKeys={interactionKeys}
@@ -102,13 +115,13 @@ export default function LayoutComponent({ layout, order, avatar, avatarDataDispa
                 {buttons.map((button: ButtonDTO, index) => (
                     <div key={button.id} style={{ breakInside: 'avoid-column' }}>
                         {/* Edit bar for buttons */}
-                        {inEdit && <ButtonEditBarStyled>
+                        {inEdit && <OrderEditBarStyled>
                             <IconButton type={'normal'} size={'small'} icon={'ri-arrow-left-s-line'} onClick={() => reorderButtons(button, -1)}
                                         disabled={index - 1 < 0} />
                             Order
                             <IconButton type={'normal'} size={'small'} icon={'ri-arrow-right-s-line'} onClick={() => reorderButtons(button, 1)}
                                         disabled={index + 1 >= buttons.length} />
-                        </ButtonEditBarStyled>}
+                        </OrderEditBarStyled>}
 
                         {/* Buttons */}
                         <ParameterButton button={button} buttonStyle={buttonStyle}
@@ -142,7 +155,7 @@ const FloatIconButton = styled(IconButton)`
   margin: 0 0 7px 7px;
 `;
 
-const ButtonEditBarStyled = styled.div`
+const OrderEditBarStyled = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;

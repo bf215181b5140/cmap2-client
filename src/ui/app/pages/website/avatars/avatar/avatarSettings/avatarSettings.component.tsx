@@ -19,10 +19,10 @@ interface AvatarSettingsProps extends ReactProps {
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
 }
 
-export default function AvatarSettings({selectedAvatar, avatarDataDispatch}: AvatarSettingsProps) {
+export default function AvatarSettings({ selectedAvatar, avatarDataDispatch }: AvatarSettingsProps) {
 
     const customFetch = useCmapFetch();
-    const {register, reset, formState: {errors, isDirty}, handleSubmit, setValue} = useForm({resolver: zodResolver(AvatarFormSchema)});
+    const { register, reset, formState: { errors, isDirty }, handleSubmit, setValue } = useForm({ resolver: zodResolver(AvatarFormSchema) });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,13 +38,13 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch}: Ava
         customFetch<AvatarDTO>('avatar', {
             method: formData.id ? 'POST' : 'PUT',
             body: JSON.stringify(formData),
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         }, (data, res) => {
             if (res.code === 201) {
-                avatarDataDispatch({type: 'addAvatar', avatar: data});
+                avatarDataDispatch({ type: 'addAvatar', avatar: data });
                 navigate('/website/avatars/' + data.id);
             } else {
-                avatarDataDispatch({type: 'editAvatar', avatar: formData});
+                avatarDataDispatch({ type: 'editAvatar', avatar: formData });
                 reset({
                     id: formData?.id ? formData?.id : null,
                     vrcId: formData?.vrcId,
@@ -59,9 +59,9 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch}: Ava
         customFetch('avatar', {
             method: 'DELETE',
             body: JSON.stringify(avatar),
-            headers: {'Content-Type': 'application/json'}
+            headers: { 'Content-Type': 'application/json' }
         }, () => {
-            avatarDataDispatch({type: 'removeAvatar', avatar: avatar});
+            avatarDataDispatch({ type: 'removeAvatar', avatar: avatar });
             navigate('/website/avatars');
         });
     }
@@ -86,8 +86,10 @@ export default function AvatarSettings({selectedAvatar, avatarDataDispatch}: Ava
             <FormControlBar>
                 <IconButton type={'save'} disabled={!isDirty} />
                 <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
-                <hr />
-                <IconButton type={'delete'} deleteKeyword={'avatar'} size={'small'} onClick={() => onDelete(selectedAvatar)} />
+                {selectedAvatar.id && <>
+                    <hr />
+                    <IconButton type={'delete'} deleteKeyword={'avatar'} size={'small'} onClick={() => onDelete(selectedAvatar)} />
+                </>}
             </FormControlBar>
         </form>
     </ContentBox>);
