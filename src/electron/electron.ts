@@ -51,6 +51,8 @@ app.whenReady().then(() => {
                 mainWindow.createWindow();
             }
         }, {
+            type: 'separator',
+        }, {
             label: 'Exit', type: 'normal', click: () => {
                 tray.destroy();
                 app.quit();
@@ -59,6 +61,10 @@ app.whenReady().then(() => {
     ]);
     tray.setContextMenu(contextMenu);
     tray.setToolTip('Cmap');
+    tray.on('double-click', () => {
+        mainWindow.createWindow();
+        mainWindow.focus();
+    });
 
     app.on('window-all-closed', (event: any) => {
         // prevent terminating main process

@@ -84,8 +84,8 @@ export class MainWindowService {
         if (!app.isPackaged) {
             mainWindow.loadURL('http://localhost:5173/');
             setTimeout(() => {
-                mainWindow.webContents.openDevTools({ mode: 'detach' })
-            }, 1500)
+                mainWindow.webContents.openDevTools({ mode: 'detach' });
+            }, 1500);
         } else {
             mainWindow.loadFile(path.join(__dirname, '../ui/index.html'));
         }
@@ -106,4 +106,7 @@ export class MainWindowService {
         return mainWindow;
     }
 
+    public focus() {
+        this.mainWindow?.show();
+    }
 }
