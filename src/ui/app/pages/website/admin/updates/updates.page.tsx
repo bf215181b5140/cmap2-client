@@ -88,7 +88,7 @@ export default function UpdatesPage() {
                                 <DateInput type={'datetime-local'} control={control} name={`versions.${index}.date`} errors={errors} />
                             </td>
                             <td>
-                                <IconButton type={'delete'} deleteKeyword={'update'} size={'small'} onClick={() => onDelete(index)} />
+                                <IconButton style={'delete'} deleteKeyword={'update'} size={'small'} onClick={() => onDelete(index)} />
                             </td>
                         </tr>
                     ))}
@@ -96,7 +96,7 @@ export default function UpdatesPage() {
                 </FormTableStyled>
                 <hr />
                 <FormControlBar>
-                    <IconButton type={'add'} size={'small'} onClick={() => append({
+                    <IconButton style={'add'} size={'small'} onClick={() => append({
                         id: null,
                         version: '',
                         download: '',
@@ -104,8 +104,8 @@ export default function UpdatesPage() {
                         date: new Date(),
                     })} />
                     <hr />
-                    <IconButton type={'save'} disabled={!isDirty} />
-                    <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                    <IconButton style={'save'} disabled={!isDirty} />
+                    <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
                 </FormControlBar>
             </form>
         </ContentBox>

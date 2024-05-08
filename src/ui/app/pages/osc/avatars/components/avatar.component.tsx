@@ -32,8 +32,8 @@ export default function Avatar({avatar, avatarsDispatch}: AvatarProps) {
                 {avatar.id}
             </div>
             <div>
-                {inEdit && <IconButton type={'delete'} size={'small'} deleteKeyword={'avatar'} onClick={deleteAvatar} />}
-                <IconButton type={'edit'} onClick={() => setInEdit((state) => !state)} />
+                {inEdit && <IconButton style={'delete'} size={'small'} deleteKeyword={'avatar'} onClick={deleteAvatar} />}
+                <IconButton style={'edit'} onClick={() => setInEdit((state) => !state)} />
             </div>
         </AvatarInfo>
         {avatar.parameters && <AvatarParameters avatarId={avatar.id} parameters={avatar.parameters} avatarsDispatch={avatarsDispatch} inEdit={inEdit}/>}

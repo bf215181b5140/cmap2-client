@@ -54,7 +54,7 @@ export default function ParameterInput({ name, register, setValue, defaultAvatar
         </div>
 
         {/* Toggle dropdown for parameters */}
-        <IconButton type={'normal'} tooltip={'Search parameters'} icon={'ri-menu-search-line'} onClick={onToggleDropdown} disabled={readOnly} />
+        <IconButton style={'normal'} tooltip={'Search parameters'} icon={'ri-menu-search-line'} onClick={onToggleDropdown} disabled={readOnly} />
 
         {/* Show dropdown parameter picker */}
         {showDropdown && <ParameterDropdown showDropdown={showDropdown} setShowDropdown={setShowDropdown} onApplyParameter={onApplyParameter}

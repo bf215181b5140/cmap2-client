@@ -94,14 +94,14 @@ export default function InteractionKeys({ client, interactionKeys, setInteractio
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <IconButton type={'add'} size={'small'} disabled={watchInteractionKeys.length >= Math.min(16, client.tier.interactionKeys)} onClick={() => append({
+                <IconButton style={'add'} size={'small'} disabled={watchInteractionKeys.length >= Math.min(16, client.tier.interactionKeys)} onClick={() => append({
                     id: null,
                     label: '',
                     key: '',
                 })} />
                 <hr />
-                <IconButton type={'save'} disabled={!isDirty} />
-                <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                <IconButton style={'save'} disabled={!isDirty} />
+                <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);

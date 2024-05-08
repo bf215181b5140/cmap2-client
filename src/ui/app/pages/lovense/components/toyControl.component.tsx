@@ -85,7 +85,7 @@ export default function ToyControl({ toyList }: ToyControlProps) {
                             <Input name={`toyCommandParameters.${index}.toy`} register={register} errors={errors} />
                         </td>
                         <td>
-                            <IconButton type={'delete'} size={'small'} deleteKeyword={'setting'} onClick={() => remove(index)} />
+                            <IconButton style={'delete'} size={'small'} deleteKeyword={'setting'} onClick={() => remove(index)} />
                         </td>
                     </tr>
                 ))}
@@ -93,10 +93,10 @@ export default function ToyControl({ toyList }: ToyControlProps) {
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <IconButton type={'add'} size={'small'} onClick={onAdd} />
+                <IconButton style={'add'} size={'small'} onClick={onAdd} />
                 <hr />
-                <IconButton type={'save'} disabled={!isDirty} />
-                <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                <IconButton style={'save'} disabled={!isDirty} />
+                <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);

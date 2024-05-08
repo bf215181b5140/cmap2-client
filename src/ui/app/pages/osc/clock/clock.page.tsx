@@ -109,19 +109,19 @@ export default function ClockPage() {
                                                  errors={errors} options={unitOptions} />
                                 </td>
                                 <td>
-                                    <IconButton type={'delete'} size={'small'} deleteKeyword={'setting'} onClick={() => onDelete(index)} disabled={!watch('sendToAvatar')} />
+                                    <IconButton style={'delete'} size={'small'} deleteKeyword={'setting'} onClick={() => onDelete(index)} disabled={!watch('sendToAvatar')} />
                                 </td>
                             </tr>
                         ))}
                         </tbody>
                     </FormTableStyled>
-                    <IconButton type={'add'} size={'small'} onClick={() => append({ path: '/avatar/parameters/OscLocalTimeSecond', unit: OscClockUnit.Second })}
-                                 disabled={!watch('sendToAvatar')} />
+                    <IconButton style={'add'} size={'small'} onClick={() => append({ path: '/avatar/parameters/OscLocalTimeSecond', unit: OscClockUnit.Second })}
+                                disabled={!watch('sendToAvatar')} />
                 </>)}
 
                 <FormControlBar>
-                    <IconButton type={'save'} disabled={!isDirty} />
-                    <IconButton type={'reset'} disabled={!isDirty} onClick={onReset} />
+                    <IconButton style={'save'} disabled={!isDirty} />
+                    <IconButton style={'reset'} disabled={!isDirty} onClick={onReset} />
                 </FormControlBar>
 
             </form>

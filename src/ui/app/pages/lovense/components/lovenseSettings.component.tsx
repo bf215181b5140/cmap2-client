@@ -40,8 +40,8 @@ export default function Settings() {
                 </tr>
             </FormTable>
             <FormControlBar>
-                <IconButton type={'save'} disabled={!isDirty} />
-                <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                <IconButton style={'save'} disabled={!isDirty} />
+                <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);

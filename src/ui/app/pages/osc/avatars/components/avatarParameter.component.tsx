@@ -36,7 +36,7 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
         </h4>
 
         <div className={'editOptions'}>
-            {inEdit && <ParameterDeleteButton type={'delete'} deleteKeyword={'parameter'} onClick={deleteParameter} />}
+            {inEdit && <ParameterDeleteButton style={'delete'} deleteKeyword={'parameter'} onClick={deleteParameter} />}
         </div>
 
         {showProperties && <div className={'properties'}>

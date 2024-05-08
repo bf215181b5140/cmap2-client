@@ -5,10 +5,10 @@ import { ModalContext } from '../../../components/mainWindow/mainWindow.componen
 
 type IconButtonSize = 'normal' | 'small' | 'tiny';
 
-type IconButtonType = 'normal' | 'add' | 'delete' | 'edit' | 'save' | 'info' | 'reset';
+type IconButtonStyle = 'normal' | 'add' | 'delete' | 'edit' | 'save' | 'info' | 'reset';
 
 interface IconButtonProps {
-    type: IconButtonType;
+    style: IconButtonStyle;
     onClick?: () => void;
     icon?: string;
     tooltip?: string | false;
@@ -17,14 +17,16 @@ interface IconButtonProps {
     size?: IconButtonSize;
     deleteKeyword?: string;
     className?: string;
+    name?: string;
+    type?: 'submit' | 'button';
 }
 
-export default function IconButton({ type, onClick, icon, tooltip, disabled, active, size = 'normal', deleteKeyword, className }: IconButtonProps) {
+export default function IconButton({ style, onClick, icon, tooltip, disabled, active, size = 'normal', deleteKeyword, className, name, type }: IconButtonProps) {
 
     const { deleteModal } = useContext(ModalContext);
 
     if (!icon) {
-        switch (type) {
+        switch (style) {
             case 'normal':
                 icon = 'ri-link-m';
                 break;
@@ -50,7 +52,7 @@ export default function IconButton({ type, onClick, icon, tooltip, disabled, act
     }
 
     if (tooltip === undefined) {
-        switch (type) {
+        switch (style) {
             case 'add':
                 tooltip = 'Add new';
                 break;
@@ -72,10 +74,18 @@ export default function IconButton({ type, onClick, icon, tooltip, disabled, act
         }
     }
 
+    if (type === undefined) {
+        if (style === 'save') {
+            type = 'submit';
+        } else {
+            type = 'button';
+        }
+    }
+
     function onClickInternal() {
         if (!onClick) return;
 
-        switch (type) {
+        switch (style) {
             case 'delete':
                 deleteModal(deleteKeyword || 'item', onClick);
                 break;
@@ -84,26 +94,14 @@ export default function IconButton({ type, onClick, icon, tooltip, disabled, act
         }
     }
 
-    return (<IconButtonStyled type={type === 'save' ? 'submit' : 'button'} styleType={type} size={size} disabled={!!disabled} data-active={active}
-                              onClick={() => onClickInternal()} className={className}>
+    return (<IconButtonStyled type={type} styleType={style} size={size} disabled={!!disabled} data-active={active}
+                              onClick={() => onClickInternal()} className={className} name={name}>
         <i className={icon} />
         {tooltip && <span>{tooltip}</span>}
     </IconButtonStyled>);
 }
 
-// <IconButton type={'add'} tooltip={false} size={'tiny'} onClick={() => {}} />
-// <IconButton type={'add'} tooltip={'Custom tooltip'} size={'small'} onClick={() => {}} />
-// <IconButton type={'add'} size={'normal'} onClick={() => {}} />
-//
-// <IconButton type={'edit'} size={'normal'} onClick={() => {}} />
-// <IconButton type={'delete'} size={'normal'} onClick={() => {}} />
-// <IconButton type={'save'} size={'normal'} onClick={() => {}} />
-// <IconButton type={'reset'} size={'normal'} onClick={() => {}} />
-// <IconButton type={'info'} size={'normal'} onClick={() => {}} />
-// <IconButton type={'normal'} size={'normal'} onClick={() => {}} />
-// <IconButton type={'normal'} tooltip={'With tooltip'} size={'normal'} onClick={() => {}} />
-
-const IconButtonStyled = styled.button<{ styleType: IconButtonType, size: IconButtonSize }>`
+const IconButtonStyled = styled.button<{ styleType: IconButtonStyle, size: IconButtonSize }>`
   ${globalInputStyle};
   cursor: pointer;
   vertical-align: top;

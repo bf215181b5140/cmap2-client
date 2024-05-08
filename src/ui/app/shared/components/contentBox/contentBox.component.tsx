@@ -75,7 +75,7 @@ export default function ContentBox({ contentTitle, toggleTitle = '', infoContent
                 </ContentLoading>
             ) : (
                 <>
-                    {infoContent && <FloatIconButton type={'info'} size={'small'} active={infoShown} onClick={() => setInfoShown(!infoShown)}/>}
+                    {infoContent && <FloatIconButton style={'info'} size={'small'} active={infoShown} onClick={() => setInfoShown(!infoShown)}/>}
                     {contentTitle && <h2 style={{ marginTop: 0 }}>{contentTitle}</h2>}
                     {infoShown && infoContent}
                     {children}

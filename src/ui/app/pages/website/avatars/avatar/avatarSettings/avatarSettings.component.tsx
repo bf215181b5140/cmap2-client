@@ -84,11 +84,11 @@ export default function AvatarSettings({ selectedAvatar, avatarDataDispatch }: A
                 </tr>
             </FormTable>
             <FormControlBar>
-                <IconButton type={'save'} disabled={!isDirty} />
-                <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                <IconButton style={'save'} disabled={!isDirty} />
+                <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
                 {selectedAvatar.id && <>
                     <hr />
-                    <IconButton type={'delete'} deleteKeyword={'avatar'} size={'small'} onClick={() => onDelete(selectedAvatar)} />
+                    <IconButton style={'delete'} deleteKeyword={'avatar'} size={'small'} onClick={() => onDelete(selectedAvatar)} />
                 </>}
             </FormControlBar>
         </form>
