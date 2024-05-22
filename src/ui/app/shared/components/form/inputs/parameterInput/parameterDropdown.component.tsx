@@ -115,7 +115,7 @@ export default function ParameterDropdown({ showDropdown, setShowDropdown, onApp
             </SelectInputStyled>
 
             {/* Parameter name filter */}
-            <FilterInputStyled placeholder={'Search by name'} value={filterName} onChange={(event) => setFilterName(event.target.value)} />
+            <FilterInputStyled autoFocus placeholder={'Search by name'} value={filterName} onChange={(event) => setFilterName(event.target.value)} />
 
             {/* Parameter type filter */}
             <SelectInputStyled value={filterType} onChange={(event) => setFilterType(event.target.value as 'input' | 'output')} errors={false} width={'100px'}>
