@@ -36,7 +36,7 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
         </h4>
 
         <div className={'editOptions'}>
-            {inEdit && <ParameterDeleteButton style={'delete'} deleteKeyword={'parameter'} onClick={deleteParameter} />}
+            {inEdit && <IconButton style={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={deleteParameter} />}
         </div>
 
         {showProperties && <div className={'properties'}>
@@ -74,15 +74,5 @@ const AvatarParameterStyled = styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
-`;
-
-const ParameterDeleteButton = styled(IconButton)`
-  height: 26px;
-  width: 26px;
-  font-size: 16px;
-
-  :hover {
-    transform: scale(1.1);
   }
 `;
