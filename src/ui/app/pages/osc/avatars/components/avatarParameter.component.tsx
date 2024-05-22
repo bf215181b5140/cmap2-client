@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import AvatarParameterProperties from './avatarParameterProperties.component';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import DeleteButton from '../../../../shared/components/buttons/deleteButton.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import IconButton from '../../../../shared/components/buttons/iconButton.component';
 
@@ -36,7 +35,7 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
         </h4>
 
         <div className={'editOptions'}>
-            {inEdit && <IconButton style={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={deleteParameter} />}
+            {inEdit && <IconButton role={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={deleteParameter} />}
         </div>
 
         {showProperties && <div className={'properties'}>

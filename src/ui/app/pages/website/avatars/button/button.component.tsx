@@ -216,10 +216,10 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <IconButton type={'save'} disabled={!isDirty} />
-                    <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                    <IconButton role={'save'} disabled={!isDirty} />
+                    <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
                     <hr />
-                    <IconButton type={'delete'} deleteKeyword={'button'} size={'small'} onClick={() => onDelete(button)} />
+                    <IconButton role={'delete'} deleteKeyword={'button'} size={'small'} onClick={() => onDelete(button)} />
                     <hr />
                     <ButtonInput text={'Cancel'} onClick={() => navigate(-1)} />
                 </FormControlBar>

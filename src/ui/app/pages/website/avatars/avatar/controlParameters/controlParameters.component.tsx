@@ -150,7 +150,7 @@ export default function ControlParameters({ selectedAvatar, clientTier, avatarDa
                                          options={valueTypeOptions(watchParameters[index].role)} />
                         </td>
                         <td>
-                            <IconButton style={'delete'} onClick={() => onDelete(index)} deleteKeyword={'control parameter'} size={'small'} />
+                            <IconButton role={'delete'} onClick={() => onDelete(index)} deleteKeyword={'control parameter'} size={'small'} />
                         </td>
                     </tr>
                 ))}
@@ -158,7 +158,7 @@ export default function ControlParameters({ selectedAvatar, clientTier, avatarDa
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <IconButton style={'add'} size={'small'} disabled={watchParameters.length >= Math.min(8, clientTier.controlParameters)} onClick={() => append({
+                <IconButton role={'add'} size={'small'} disabled={watchParameters.length >= Math.min(8, clientTier.controlParameters)} onClick={() => append({
                     id: null,
                     label: '',
                     path: '',
@@ -168,8 +168,8 @@ export default function ControlParameters({ selectedAvatar, clientTier, avatarDa
                     valueSecondary: null
                 })} />
                 <hr />
-                <IconButton style={'save'} disabled={!isDirty} />
-                <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                <IconButton role={'save'} disabled={!isDirty} />
+                <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);

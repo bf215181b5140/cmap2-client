@@ -122,7 +122,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                             <NumberInput register={register} name={`badges.${index}.order`} width={'50px'} errors={errors} />
                         </td>
                         <td>
-                            <IconButton style={'delete'} onClick={() => onDelete(index)} deleteKeyword={'badge'} size={'small'} />
+                            <IconButton role={'delete'} onClick={() => onDelete(index)} deleteKeyword={'badge'} size={'small'} />
                         </td>
                     </tr>
                 ))}
@@ -130,7 +130,7 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
             </FormTableStyled>
             <hr />
             <FormControlBar>
-                <IconButton style={'add'} size={'small'} disabled={watchBadges.length >= Math.min(10, clientTier.stateBadges)} onClick={() => append({
+                <IconButton role={'add'} size={'small'} disabled={watchBadges.length >= Math.min(10, clientTier.stateBadges)} onClick={() => append({
                     id: null,
                     key: StateBadgeKey.Custom,
                     parameter: '',
@@ -140,8 +140,8 @@ export default function StateBadges({ selectedAvatar, clientTier, avatarDataDisp
                     order: watchBadges.reduce((max, b) => Math.max(max, b.order) + 1, 0)
                 })} />
                 <hr />
-                <IconButton style={'save'} disabled={!isDirty} />
-                <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                <IconButton role={'save'} disabled={!isDirty} />
+                <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>
         </form>
     </ContentBox>);

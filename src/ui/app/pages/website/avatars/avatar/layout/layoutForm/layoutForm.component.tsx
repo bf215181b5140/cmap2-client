@@ -107,12 +107,12 @@ export default function LayoutFormComponent({ layout, order, avatarId, interacti
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <IconButton style={'save'} tooltip={layout.id ? 'Save' : 'Save new layout'} disabled={!isDirty} />
+                    <IconButton role={'save'} tooltip={layout.id ? 'Save' : 'Save new layout'} disabled={!isDirty} />
                     {layout.id &&
                         <>
-                            <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
+                            <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
                             <hr />
-                            <IconButton style={'delete'} deleteKeyword={'layout'} size={'small'} onClick={() => onDelete(layout)} />
+                            <IconButton role={'delete'} deleteKeyword={'layout'} size={'small'} onClick={() => onDelete(layout)} />
                             {/* <ButtonInput text="Cancel" onClick={() => { */}
                             {/*     reset(); */}
                             {/*     setEditing(false); */}

@@ -64,8 +64,8 @@ export default function ProfileForm({ client, setClientInfo }: ProfileFormProps)
             </tr>
         </FormTable>
         <FormControlBar>
-            <IconButton style={'save'} disabled={!isDirty} />
-            <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
+            <IconButton role={'save'} disabled={!isDirty} />
+            <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
         </FormControlBar>
     </form>);
 }

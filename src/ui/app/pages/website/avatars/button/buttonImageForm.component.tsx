@@ -91,10 +91,10 @@ export default function ButtonImageForm({ button, onSave, buttonEmitter, onLocal
             <span style={{ flexBasis: '100%' }} className={'fileName'}>{file?.name}</span>
         </div>
         <div>
-            <IconButton style={'normal'} tooltip={'Browse for file'} icon={browseIcon} onClick={onBrowse} />
+            <IconButton role={'normal'} tooltip={'Browse for file'} icon={browseIcon} onClick={onBrowse} />
         </div>
         <div>
-            <IconButton style={'save'} tooltip={'Save image'} onClick={() => submitRef.current?.click()} disabled={!file || !button.id} />
+            <IconButton role={'save'} tooltip={'Save image'} onClick={() => submitRef.current?.click()} disabled={!file || !button.id} />
             <ButtonInput text={'Remove image'} onClick={onClear} disabled={!file && !button.image} />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>

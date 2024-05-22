@@ -85,18 +85,18 @@ export default function LayoutComponent({ layout, order, avatar, avatarDataDispa
         {!layout.id && <h2 style={{ marginTop: '0' }}>Add new layout</h2>}
 
         {layout.id && <>
-            <FloatIconButton style={'edit'} size={'small'} onClick={() => setEditing(!inEdit)} active={inEdit} />
+            <FloatIconButton role={'edit'} size={'small'} onClick={() => setEditing(!inEdit)} active={inEdit} />
             <h2 style={{ marginTop: '0' }}>{layout.label}</h2>
         </>}
 
         {/* Edit layout order */}
         {inEdit && changeOrder && <OrderEditBarStyled>
-            <IconButton style={'normal'} size={'small'} icon={'ri-arrow-left-s-line'} disabled={layout.order - 1 < 0} onClick={() => {
+            <IconButton role={'normal'} size={'small'} icon={'ri-arrow-left-s-line'} disabled={layout.order - 1 < 0} onClick={() => {
                 changeOrder(layout, -1);
                 setEditing(false);
             }} />
             Order
-            <IconButton style={'normal'} size={'small'} icon={'ri-arrow-right-s-line'} disabled={layout.order + 1 >= buttons.length} onClick={() => {
+            <IconButton role={'normal'} size={'small'} icon={'ri-arrow-right-s-line'} disabled={layout.order + 1 >= buttons.length} onClick={() => {
                 changeOrder(layout, 1);
                 setEditing(false);
             }} />
@@ -116,10 +116,10 @@ export default function LayoutComponent({ layout, order, avatar, avatarDataDispa
                     <div key={button.id} style={{ breakInside: 'avoid-column' }}>
                         {/* Edit bar for buttons */}
                         {inEdit && <OrderEditBarStyled>
-                            <IconButton style={'normal'} size={'small'} icon={'ri-arrow-left-s-line'} onClick={() => reorderButtons(button, -1)}
+                            <IconButton role={'normal'} size={'small'} icon={'ri-arrow-left-s-line'} onClick={() => reorderButtons(button, -1)}
                                         disabled={index - 1 < 0} />
                             Order
-                            <IconButton style={'normal'} size={'small'} icon={'ri-arrow-right-s-line'} onClick={() => reorderButtons(button, 1)}
+                            <IconButton role={'normal'} size={'small'} icon={'ri-arrow-right-s-line'} onClick={() => reorderButtons(button, 1)}
                                         disabled={index + 1 >= buttons.length} />
                         </OrderEditBarStyled>}
 

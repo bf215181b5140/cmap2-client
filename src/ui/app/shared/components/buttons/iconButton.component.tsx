@@ -5,10 +5,10 @@ import { ModalContext } from '../../../components/mainWindow/mainWindow.componen
 
 type IconButtonSize = 'normal' | 'small' | 'tiny';
 
-type IconButtonStyle = 'normal' | 'add' | 'delete' | 'edit' | 'save' | 'info' | 'reset';
+type IconButtonRole = 'normal' | 'add' | 'delete' | 'edit' | 'save' | 'info' | 'reset';
 
 interface IconButtonProps {
-    style: IconButtonStyle;
+    role: IconButtonRole;
     onClick?: () => void;
     icon?: string;
     tooltip?: string | false;
@@ -21,12 +21,12 @@ interface IconButtonProps {
     type?: 'submit' | 'button';
 }
 
-export default function IconButton({ style, onClick, icon, tooltip, disabled, active, size = 'normal', deleteKeyword, className, name, type }: IconButtonProps) {
+export default function IconButton({ role, onClick, icon, tooltip, disabled, active, size = 'normal', deleteKeyword, className, name, type }: IconButtonProps) {
 
     const { deleteModal } = useContext(ModalContext);
 
     if (!icon) {
-        switch (style) {
+        switch (role) {
             case 'normal':
                 icon = 'ri-link-m';
                 break;
@@ -52,7 +52,7 @@ export default function IconButton({ style, onClick, icon, tooltip, disabled, ac
     }
 
     if (tooltip === undefined) {
-        switch (style) {
+        switch (role) {
             case 'add':
                 tooltip = 'Add new';
                 break;
@@ -75,7 +75,7 @@ export default function IconButton({ style, onClick, icon, tooltip, disabled, ac
     }
 
     if (type === undefined) {
-        if (style === 'save') {
+        if (role === 'save') {
             type = 'submit';
         } else {
             type = 'button';
@@ -85,7 +85,7 @@ export default function IconButton({ style, onClick, icon, tooltip, disabled, ac
     function onClickInternal() {
         if (!onClick) return;
 
-        switch (style) {
+        switch (role) {
             case 'delete':
                 deleteModal(deleteKeyword || 'item', onClick);
                 break;
@@ -94,14 +94,14 @@ export default function IconButton({ style, onClick, icon, tooltip, disabled, ac
         }
     }
 
-    return (<IconButtonStyled type={type} styleType={style} size={size} disabled={!!disabled} data-active={active}
+    return (<IconButtonStyled type={type} role={role} size={size} disabled={!!disabled} data-active={active}
                               onClick={() => onClickInternal()} className={className} name={name}>
         <i className={icon} />
         {tooltip && <span>{tooltip}</span>}
     </IconButtonStyled>);
 }
 
-const IconButtonStyled = styled.button<{ styleType: IconButtonStyle, size: IconButtonSize }>`
+const IconButtonStyled = styled.button<{ role: IconButtonRole, size: IconButtonSize }>`
   ${globalInputStyle};
   cursor: pointer;
   vertical-align: top;
@@ -110,7 +110,7 @@ const IconButtonStyled = styled.button<{ styleType: IconButtonStyle, size: IconB
 
   // Style type
   ${props => {
-    switch (props.styleType) {
+    switch (props.role) {
       case 'normal':
         return null;
       case 'add':
