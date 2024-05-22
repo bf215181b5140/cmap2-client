@@ -1,7 +1,7 @@
 import { ParameterButton } from 'cmap2-shared/dist/react';
 import { AvatarDTO, ButtonDTO, ButtonFormDTO, ButtonFormSchema, ButtonImageOrientation, ButtonStyleDTO, ButtonType, ControlParameterRole, LayoutDTO, ParameterValueType, ReactProps, TierDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useNavigate } from 'react-router-dom';
-import React, { BaseSyntheticEvent, FormEvent, useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { AvatarReducerAction } from '../avatars.reducer';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
@@ -54,14 +54,6 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
     const [previewImage, setPreviewImage] = useState<UploadedFileDTO | null>(button.image);
     const formWatch = watch();
 
-    function onSubmit(formData: ButtonFormDTO, event: any) {
-        if (event?.nativeEvent?.submitter?.name === 'saveAsCopy') {
-            onSaveAsCopy(formData);
-        } else {
-            onSave(formData);
-        }
-    }
-
     function onSave(formData: ButtonFormDTO) {
         customFetch<ButtonDTO>('button', {
             method: formData.id ? 'POST' : 'PUT',
@@ -71,28 +63,14 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
             }
         }, (data, res) => {
             if (res.code === 201) {
-                avatarDataDispatch({ type: 'addButton', button: data, avatarId: avatar.id!, layoutId: formData.parentId });
+                avatarDataDispatch({ type: 'addButton', button: data, avatarId: avatar.id!, layoutId: layout.id! });
                 onSaveEmitter.emit('save', data);
                 navigate(-1);
             } else {
-                avatarDataDispatch({ type: 'editButton', button: data, avatarId: avatar.id!, layoutId: layout.id! }); // todo handle button parent change
+                avatarDataDispatch({ type: 'editButton', button: data, avatarId: avatar.id!, layoutId: layout.id! });
                 onSaveEmitter.emit('save', data);
                 navigate(-1);
             }
-        });
-    }
-
-    function onSaveAsCopy(formData: ButtonFormDTO) {
-        customFetch<ButtonDTO>('button/copy', {
-            method: 'PUT',
-            body: JSON.stringify(formData),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }, (data) => {
-                avatarDataDispatch({ type: 'addButton', button: data, avatarId: avatar.id!, layoutId: formData.parentId });
-                onSaveEmitter.emit('save', data);
-                navigate(-1);
         });
     }
 
@@ -170,14 +148,11 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
             <ButtonImageForm button={button} onSave={setButtonPicture} onLocalFile={setLocalButtonPicture} buttonEmitter={onSaveEmitter} />
         </ContentBox>
         <ContentBox>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSave)}>
                 <HiddenInput register={register} name={'id'} />
+                <HiddenInput register={register} name={'parentId'} />
                 <HiddenInput register={register} name={'order'} />
                 <FormTable>
-                    <tr>
-                        <th>Layout</th>
-                        <td><SelectInput options={avatar.layouts?.map(l => ({ key: l.id!, value: l.label })) || []} register={register} name={'parentId'} errors={errors} /></td>
-                    </tr>
                     <tr>
                         <th>Label</th>
                         <td><Input register={register} name={'label'} errors={errors} /></td>
@@ -241,12 +216,10 @@ export default function ButtonComponent({ button, avatarDataDispatch, avatar, la
                     </tr>
                 </FormTable>
                 <FormControlBar>
-                    <IconButton style={'normal'} type={'submit'} tooltip={'Save as copy'} name={'saveAsCopy'} />
+                    <IconButton type={'save'} disabled={!isDirty} />
+                    <IconButton type={'reset'} disabled={!isDirty} onClick={() => reset()} />
                     <hr />
-                    <IconButton style={'save'} disabled={!isDirty} />
-                    <IconButton style={'reset'} disabled={!isDirty} onClick={() => reset()} />
-                    <hr />
-                    <IconButton style={'delete'} deleteKeyword={'button'} size={'small'} onClick={() => onDelete(button)} />
+                    <IconButton type={'delete'} deleteKeyword={'button'} size={'small'} onClick={() => onDelete(button)} />
                     <hr />
                     <ButtonInput text={'Cancel'} onClick={() => navigate(-1)} />
                 </FormControlBar>
