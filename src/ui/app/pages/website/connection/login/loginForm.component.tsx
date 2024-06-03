@@ -38,6 +38,7 @@ export default function LoginForm() {
     }
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
+        <p>To use website feature you need to log in to or register a new website account.</p>
         <FormTable>
             <tr>
                 <th>Username</th>

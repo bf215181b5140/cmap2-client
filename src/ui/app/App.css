@@ -24,6 +24,10 @@ p {
     padding: 5px 0;
 }
 
+span.grey {
+    color: dimgrey;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 16px;

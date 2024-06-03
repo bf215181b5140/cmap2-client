@@ -12,6 +12,7 @@ import useCmapFetch from '../../shared/hooks/cmapFetch.hook';
 import ApproveFilesPage from './admin/approveFiles/approveFiles.page';
 import UpdatesPage from './admin/updates/updates.page';
 import { ClientCredentialsContext } from '../../contexts/contexts';
+import StatePage from './state/state.page';
 
 export default function WebsitePage() {
 
@@ -33,6 +34,7 @@ export default function WebsitePage() {
             <SubmenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Website connection'} />
             <SubmenuLink to={'/website/profile'} icon={'ri-user-fill'} tooltip={'Website profile'} disabled={!apiToken} />
             <SubmenuLink to={'/website/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Website layout'} disabled={!apiToken} />
+            <SubmenuLink to={'/website/state'} icon={'ri-medal-fill'} tooltip={'Website state'} disabled={!apiToken} />
             <SubmenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Account tiers'} disabled={!apiToken} />
 
             {pageData?.isAdmin && (<>
@@ -47,6 +49,7 @@ export default function WebsitePage() {
                 <Route path="/connection" element={<ConnectionPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} />
+                <Route path="/state" element={<StatePage />} />
                 <Route path="/tiers" element={<TiersPage />} />
 
                 {/* Admin pages */}

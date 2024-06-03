@@ -25,7 +25,6 @@ export default function RegisterForm({setShowLogin, registrationInfo}: RegisterF
         resolver: zodResolver(registrationInfo.keyRequired ? RegisterFormSchema.innerType().merge(RegisterKeySchema) : RegisterFormSchema)
     });
 
-    const navigate = useNavigate();
     const toastsDispatch = useContext(ToastContext);
 
     useEffect(() => {
@@ -61,6 +60,7 @@ export default function RegisterForm({setShowLogin, registrationInfo}: RegisterF
     }
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
+        <p>Create a new account for the website.</p>
         <HiddenInput register={register} name={'fingerprint'} />
         <FormTable thAlign={'right'}>
             <tr>
