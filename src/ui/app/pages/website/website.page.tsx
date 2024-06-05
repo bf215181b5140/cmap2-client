@@ -34,7 +34,7 @@ export default function WebsitePage() {
             <SubmenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Website connection'} />
             <SubmenuLink to={'/website/profile'} icon={'ri-user-fill'} tooltip={'Website profile'} disabled={!apiToken} />
             <SubmenuLink to={'/website/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Website layout'} disabled={!apiToken} />
-            <SubmenuLink to={'/website/state'} icon={'ri-medal-fill'} tooltip={'Website state'} disabled={!apiToken} />
+            <SubmenuLink to={'/website/state'} icon={'ri-archive-stack-line'} tooltip={'Website state'} disabled={!apiToken} />
             <SubmenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Account tiers'} disabled={!apiToken} />
 
             {pageData?.isAdmin && (<>

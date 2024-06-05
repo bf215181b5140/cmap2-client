@@ -27,11 +27,7 @@ export class ClientSocketService {
 
         BridgeService.on('isVrchatRunning', (data) => this.sendData('isVrchatRunning', data));
         BridgeService.on('vrcParameter', (vrcParameter: VrcParameter) => {
-            if (vrcParameter.path.indexOf('/avatar/change') !== -1) {
-                this.sendParameter('avatar', vrcParameter);
-            } else {
-                this.sendParameter('parameter', vrcParameter);
-            }
+            this.sendParameter(vrcParameter);
         });
 
         if (StoreService.getWebsocketSettings().autoLogin) this.connect(StoreService.getClientCredentials());
@@ -94,9 +90,9 @@ export class ClientSocketService {
      * @param parameter
      * @private
      */
-    private sendParameter(event: 'parameter' | 'avatar', parameter: VrcParameter) {
+    private sendParameter(parameter: VrcParameter) {
         if (this.socket) {
-            this.socket.emit(event, parameter);
+            this.socket.emit('parameter', parameter);
         }
     }
 

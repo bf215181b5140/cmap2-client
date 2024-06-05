@@ -27,6 +27,7 @@ export class OscController extends OscService {
         });
         TypedIpcMain.handle('getLastOscActivity', async () => this.lastActivity);
         TypedIpcMain.handle('getTrackedParameters', async () => this.trackedParameters);
+        TypedIpcMain.on('setTrackedParameters', parameters => this.trackedParameters = parameters);
 
         BridgeService.on('sendOscMessage', (message: Message) => this.send(message));
 

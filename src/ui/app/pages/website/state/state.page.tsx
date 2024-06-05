@@ -1,9 +1,13 @@
 import Content from '../../../shared/components/contentBox/content.component';
-import WebsiteState from './websiteState/websiteState.component';
+import ParametersState from './parametersState/parametersState.component';
+import ParameterEditForm from './parametersState/components/parameterEditForm.component';
+import React from 'react';
 
 export default function StatePage() {
 
     return (<Content flexDirection={'row'}>
-        <WebsiteState />
+        <ParametersState />
+
+        <ParameterEditForm parameter={''} />
     </Content>);
 }

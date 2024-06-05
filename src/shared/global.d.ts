@@ -43,6 +43,8 @@ type IpcSendOptions = {
     setToyCommandParameters: ToyCommandParameter[];
     setToyCommandOscMessages: ToyCommandOscMessage[];
     getIsVrchatRunning: undefined;
+    // Osc status
+    setTrackedParameters: Map<string, boolean | number | string>;
     // VrcOscData
     setVrcOscAvatars: VrcOscAvatar[];
     // Osc control
