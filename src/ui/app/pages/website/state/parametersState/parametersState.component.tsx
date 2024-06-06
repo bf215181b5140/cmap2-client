@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { VrcOscAvatar } from '../../../../../../shared/types/osc';
 import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
-import { ContentBoxWidth, ClientStateParamsDTO } from 'cmap2-shared';
+import { ContentBoxWidth, ClientStateParamsDTO, ClientStateParamDTO } from 'cmap2-shared';
 import styled from 'styled-components';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import IconButton from '../../../../shared/components/buttons/iconButton.component';
@@ -24,8 +24,6 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
     const avatarId = websiteParameters.get('/avatar/change');
     const avatar = knownAvatars.find(a => a.id === avatarId);
 
-    const [editingParameter, setEditingParameter] = useState<string | undefined>(undefined);
-
     useEffect(() => {
         refreshStateData();
 
@@ -33,12 +31,28 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
             setKnownAvatars(data);
         });
 
-        const newParametersListener = (parameters: ClientStateParamsDTO) => setWebsiteParameters(new Map(parameters));
-        statePageEmitter.on('parameters', newParametersListener);
+        const setParameterListener = (parameter: ClientStateParamDTO) => {
+            setWebsiteParameters(state => new Map(state.set(parameter.path, parameter.value)));
+            setLocalParameters(state => new Map(state.set(parameter.path, parameter.value)));
+        };
+        statePageEmitter.on('setParameter', setParameterListener);
+
+        const deleteParameterListener = (parameter: ClientStateParamDTO) => {
+            setWebsiteParameters(state => {
+                state.delete(parameter.path);
+                return new Map(state);
+            });
+            setLocalParameters(state => {
+                state.delete(parameter.path);
+                return new Map(state);
+            });
+        };
+        statePageEmitter.on('deleteParameter', deleteParameterListener);
 
         return () => {
-            statePageEmitter.removeListener('parameters', newParametersListener);
-        }
+            statePageEmitter.removeListener('setParameter', setParameterListener);
+            statePageEmitter.removeListener('deleteParameter', deleteParameterListener);
+        };
     }, []);
 
     function refreshStateData() {
@@ -84,12 +98,6 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
         return <span className={className}>{localValue?.toString()}</span>;
     }
 
-    function setEditParameter(parameter: string) {
-        const newEditingParameter = parameter === editingParameter ? undefined : parameter;
-        statePageEmitter.emit('selectedParameter', newEditingParameter)
-        setEditingParameter(newEditingParameter);
-    }
-
     return (<ContentBox flexBasis={ContentBoxWidth.Full} contentTitle={'Parameters state'} infoContent={WebsiteStateInfo()}>
 
         <StateControlBarStyled>
@@ -124,7 +132,7 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
                 </thead>
                 <tbody>
                 {allParameters.map((parameter) => (
-                    <tr key={parameter} onClick={() => setEditParameter(parameter)}>
+                    <tr key={parameter} onClick={() => statePageEmitter.emit('selectedParameter', parameter)}>
                         <td>{parameter}</td>
                         <td>{websiteParameters.get(parameter)?.toString()}</td>
                         <td>{localValueCell(parameter)}</td>

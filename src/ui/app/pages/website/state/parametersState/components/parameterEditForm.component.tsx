@@ -1,6 +1,6 @@
 import FormTable from '../../../../../shared/components/form/formTable.component';
 import IconButton from '../../../../../shared/components/buttons/iconButton.component';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Input from '../../../../../shared/components/form/inputs/input.component';
 import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
@@ -14,10 +14,11 @@ interface ParameterEditForm {
     statePageEmitter: EventEmitter;
 }
 
-export default function ParameterEditForm({statePageEmitter}: ParameterEditForm) {
+export default function ParameterEditForm({ statePageEmitter }: ParameterEditForm) {
 
     const cmapFetch = useCmapFetch();
-    const {register, watch, reset, formState: {errors, isDirty}, handleSubmit} = useForm<ClientStateParamDTO>({
+    const scrollRef = useRef<HTMLFormElement>(null);
+    const { register, watch, reset, formState: { errors, isDirty }, handleSubmit } = useForm<ClientStateParamDTO>({
         resolver: zodResolver(ClientStateParamFormSchema),
         defaultValues: {
             path: '',
@@ -26,29 +27,30 @@ export default function ParameterEditForm({statePageEmitter}: ParameterEditForm)
     });
 
     useEffect(() => {
-        const resetListener = (parameter: string | undefined) => {
+        const resetListener = (parameter: string) => {
             reset({
-                path: parameter || '',
+                path: parameter,
                 value: ''
-            })
+            });
+            scrollRef.current?.scrollIntoView();
         };
 
-        statePageEmitter.on('selectedParameter', resetListener)
+        statePageEmitter.on('selectedParameter', resetListener);
 
         return () => {
-            statePageEmitter.removeListener('selectedParameter', resetListener)
-        }
-    }, [])
+            statePageEmitter.removeListener('selectedParameter', resetListener);
+        };
+    }, []);
 
     function onSubmit(formData: ClientStateParamDTO) {
         cmapFetch<ClientStateParamsDTO>('clientState/parameter', {
             method: 'POST',
             body: JSON.stringify(formData),
-            headers: {'Content-Type': 'application/json'}
-        }, (parameters) => {
-            statePageEmitter.emit('parameters', parameters);
+            headers: { 'Content-Type': 'application/json' }
+        }, () => {
+            statePageEmitter.emit('setParameter', formData);
             window.electronAPI.send('setTrackedParameter', formData);
-            reset();
+            reset(formData);
         });
     }
 
@@ -56,13 +58,13 @@ export default function ParameterEditForm({statePageEmitter}: ParameterEditForm)
         const deleteParameter: ClientStateParamDTO = {
             path: watch('path'),
             value: true,
-        }
+        };
         cmapFetch<ClientStateParamsDTO>('clientState/parameter', {
             method: 'DELETE',
             body: JSON.stringify(deleteParameter),
-            headers: {'Content-Type': 'application/json'}
-        }, (parameters) => {
-            statePageEmitter.emit('parameters', parameters);
+            headers: { 'Content-Type': 'application/json' }
+        }, () => {
+            statePageEmitter.emit('deleteParameter', deleteParameter);
             window.electronAPI.send('deleteTrackedParameter', deleteParameter);
             reset({
                 path: '',
@@ -72,8 +74,7 @@ export default function ParameterEditForm({statePageEmitter}: ParameterEditForm)
     }
 
     return (<ContentBox flexBasis={ContentBoxWidth.Full} contentTitle={'Edit parameter'}>
-        <h2>Editing parameter</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} ref={scrollRef}>
             <FormTable>
                 <tr>
                     <td><Input register={register} name={'path'} errors={errors} width={'450px'} /></td>
@@ -83,7 +84,7 @@ export default function ParameterEditForm({statePageEmitter}: ParameterEditForm)
                             <IconButton role={'save'} disabled={!isDirty} />
                             <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
                             <hr />
-                            <IconButton role={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={() => onDelete()} />
+                            <IconButton role={'delete'} disabled={!watch('path')} size={'small'} deleteKeyword={'parameter'} onClick={() => onDelete()} />
                         </FormControlBar>
                     </td>
                 </tr>
