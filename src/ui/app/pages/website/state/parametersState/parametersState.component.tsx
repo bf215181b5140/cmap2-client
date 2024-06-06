@@ -6,8 +6,13 @@ import styled from 'styled-components';
 import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
 import IconButton from '../../../../shared/components/buttons/iconButton.component';
 import FormControlBar from '../../../../shared/components/form/formControlBar.component';
+import { EventEmitter } from 'events';
 
-export default function ParametersState() {
+interface ParametersStateProps {
+    statePageEmitter: EventEmitter;
+}
+
+export default function ParametersState({ statePageEmitter }: ParametersStateProps) {
 
     const cmapFetch = useCmapFetch();
 
@@ -27,6 +32,13 @@ export default function ParametersState() {
         window.electronAPI.get('getVrcOscAvatars').then(data => {
             setKnownAvatars(data);
         });
+
+        const newParametersListener = (parameters: ClientStateParamsDTO) => setWebsiteParameters(new Map(parameters));
+        statePageEmitter.on('parameters', newParametersListener);
+
+        return () => {
+            statePageEmitter.removeListener('parameters', newParametersListener);
+        }
     }, []);
 
     function refreshStateData() {
@@ -73,7 +85,9 @@ export default function ParametersState() {
     }
 
     function setEditParameter(parameter: string) {
-        setEditingParameter(parameter === editingParameter ? undefined : parameter);
+        const newEditingParameter = parameter === editingParameter ? undefined : parameter;
+        statePageEmitter.emit('selectedParameter', newEditingParameter)
+        setEditingParameter(newEditingParameter);
     }
 
     return (<ContentBox flexBasis={ContentBoxWidth.Full} contentTitle={'Parameters state'} infoContent={WebsiteStateInfo()}>

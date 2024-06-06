@@ -1,13 +1,16 @@
 import Content from '../../../shared/components/contentBox/content.component';
 import ParametersState from './parametersState/parametersState.component';
 import ParameterEditForm from './parametersState/components/parameterEditForm.component';
-import React from 'react';
+import React, { useState } from 'react';
+import { EventEmitter } from 'events';
 
 export default function StatePage() {
 
-    return (<Content flexDirection={'row'}>
-        <ParametersState />
+    const [statePageEmitter] = useState(new EventEmitter());
 
-        <ParameterEditForm parameter={''} />
+    return (<Content flexDirection={'row'}>
+        <ParametersState statePageEmitter={statePageEmitter} />
+
+        <ParameterEditForm statePageEmitter={statePageEmitter} />
     </Content>);
 }

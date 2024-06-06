@@ -1,7 +1,7 @@
 import { WindowState } from './enums';
 import { WebsocketConnection } from './webSocket';
 import { ClientCredentials } from './classes';
-import { VrcParameter } from 'cmap2-shared';
+import { ClientStateParamDTO, VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
 import { GeneralSettings, Settings, WebsocketSettings } from './types/settings';
@@ -45,6 +45,8 @@ type IpcSendOptions = {
     getIsVrchatRunning: undefined;
     // Osc status
     setTrackedParameters: Map<string, boolean | number | string>;
+    setTrackedParameter: ClientStateParamDTO;
+    deleteTrackedParameter: ClientStateParamDTO;
     // VrcOscData
     setVrcOscAvatars: VrcOscAvatar[];
     // Osc control
