@@ -1,8 +1,8 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from './global';
+import { ParameterType, IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from './global';
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    get: <K extends keyof IpcGetOptions>(channel: K) => ipcRenderer.invoke(channel).then((result: IpcGetOptions[K]) => result),
+    get: <K extends keyof IpcGetOptions>(channel: K, data?: ParameterType<IpcGetOptions[K]>) => ipcRenderer.invoke(channel, data).then((result: ReturnType<IpcGetOptions[K]>) => result),
     send: <K extends keyof IpcSendOptions>(channel: K, data?: IpcSendOptions[K]) => ipcRenderer.send(channel, data),
     receive: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => {
         // strip event

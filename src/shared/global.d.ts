@@ -4,28 +4,30 @@ import { ClientCredentials } from './classes';
 import { VrcParameter } from 'cmap2-shared';
 import { ToyCommand } from 'lovense';
 import { LovenseSettings, LovenseStatus, ToyCommandOscMessage, ToyCommandParameter } from './lovense';
-import { GeneralSettings, Settings, WebsocketSettings } from './types/settings';
+import { GeneralSettings, WebsocketSettings } from './types/settings';
 import { VrcOscAvatar } from './types/osc';
 import { OscClockSettings } from '../electron/osc/clock/types';
 import { UpdateData } from '../electron/updater/updater.model';
 
+export type ParameterType<T extends (args: any) => any> = T extends (args: infer P) => any ? P : never;
+
 type IpcGetOptions = {
-    getAppVersion: string;
-    getClientCredentials: ClientCredentials | null;
-    getConnectionStatus: WebsocketConnection;
-    getGeneralSettings: GeneralSettings;
-    getWebsocketSettings: WebsocketSettings;
-    getLovenseSettings: LovenseSettings;
-    getToyCommandParameters: ToyCommandParameter[];
-    getToyCommandOscMessages: ToyCommandOscMessage[];
-    getFingerprint: string;
-    getLastOscActivity: number;
+    getAppVersion: () => string;
+    getClientCredentials: () => ClientCredentials | null;
+    getConnectionStatus: () => WebsocketConnection;
+    getGeneralSettings: () => GeneralSettings;
+    getWebsocketSettings: () => WebsocketSettings;
+    getLovenseSettings: () => LovenseSettings;
+    getToyCommandParameters: () => ToyCommandParameter[];
+    getToyCommandOscMessages: () => ToyCommandOscMessage[];
+    getFingerprint: () => string;
+    getLastOscActivity: () => number;
     // Osc status
-    getTrackedParameters: Map<string, boolean | number | string>;
+    getTrackedParameters: () => Map<string, boolean | number | string>;
     // VrcOscData
-    getVrcOscAvatars: VrcOscAvatar[];
+    getVrcOscAvatars: () => VrcOscAvatar[];
     // Osc control
-    getOscClockSettings: OscClockSettings;
+    getOscClockSettings: () => OscClockSettings;
 };
 
 type IpcSendOptions = {
@@ -61,7 +63,7 @@ type IpcReceiveOptions = {
 };
 
 export interface IElectronAPI {
-    get: <K extends keyof IpcGetOptions>(channel: K) => Promise<IpcGetOptions[K]>;
+    get: <K extends keyof IpcGetOptions>(channel: K, data?: ParameterType<IpcGetOptions[K]>) => Promise<ReturnType<IpcGetOptions[K]>>;
     send: <K extends keyof IpcSendOptions>(channel: K, data?: IpcSendOptions[K]) => void;
     receive: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => () => void;
     receiveOnce: <K extends keyof IpcReceiveOptions>(channel: K, func: (data: IpcReceiveOptions[K]) => void) => () => void;
