@@ -8,8 +8,8 @@ export default defineConfig({
             outDir: './build/electron',
             copyPublicDir: false,
             lib: {
-                entry: 'src/electron/electron.ts',
-                fileName: 'electron.js'
+                entry: 'src/electron/main.ts',
+                fileName: 'main.js'
             }
         },
         plugins: [externalizeDepsPlugin()]

@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from '../electron/ipc/typedIpc.model';
+import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from './global';
 
 contextBridge.exposeInMainWorld('electronAPI', {
     get: <K extends keyof IpcGetOptions>(channel: K) => ipcRenderer.invoke(channel).then((result: IpcGetOptions[K]) => result),
