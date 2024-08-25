@@ -6,21 +6,22 @@ export default defineConfig({
     main: {
         build: {
             outDir: './build/electron',
-            copyPublicDir: false,
             lib: {
                 entry: 'src/electron/main.ts',
-                fileName: 'main.js'
-            }
+            },
         },
         plugins: [externalizeDepsPlugin()]
     },
     preload: {
         build: {
             outDir: './build/shared',
-            copyPublicDir: false,
             lib: {
                 entry: 'src/shared/preload.ts',
-                fileName: 'preload.js'
+            },
+            rollupOptions: {
+                output: {
+                    format: 'cjs'
+                }
             }
         },
         plugins: [externalizeDepsPlugin()]

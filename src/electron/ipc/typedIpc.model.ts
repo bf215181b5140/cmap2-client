@@ -1,8 +1,11 @@
-import { WindowSize, WindowState } from '../../shared/enums';
+import { WindowState } from '../../shared/enums';
+import { AppSettings } from '../../shared/schemas/settings.schema';
+import { Credentials } from '../../shared/types';
 
 export type IpcGetOptions = {
     getAppVersion: string;
-    // getClientCredentials: ClientCredentials | null;
+    getAppSettings: AppSettings;
+    getCredentials: Credentials;
     // getConnectionStatus: WebsocketConnection;
     // getGeneralSettings: GeneralSettings;
     // getWebsocketSettings: WebsocketSettings;
@@ -21,8 +24,8 @@ export type IpcGetOptions = {
 
 export type IpcSendOptions = {
     setWindowState: WindowState;
-    setWindowSize: WindowSize;
-    // setClientCredentials: ClientCredentials;
+    setAppSettings: AppSettings;
+    setCredentials: Credentials;
     // connectSocket: undefined;
     // disconnectSocket: undefined;
     // setGeneralSettings: GeneralSettings;

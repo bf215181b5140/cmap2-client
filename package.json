@@ -8,17 +8,17 @@
   "scripts": {
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "npm version patch && electron-vite build",
+    "build": "electron-vite build",
     "package": "electron-builder",
     "postinstall": "npm update cmap2-shared"
   },
   "dependencies": {
-    "@esbuild/win32-x64": "^0.23.0",
     "@formkit/auto-animate": "^0.8.2",
     "@hookform/resolvers": "^3.9.0",
     "@types/events": "^3.0.3",
     "@types/socket.io": "^2.1.13",
     "@types/socket.io-client": "^1.4.36",
+    "electron-context-menu": "^4.0.2",
     "electron-log": "^5.1.7",
     "events": "^3.3.0",
     "node-osc": "^9.1.3",
@@ -40,7 +40,7 @@
     "cmap2-shared": "git://github.com/bf215181b5140/cmap2-shared.git#version/3.0.0",
     "electron": "^31.3.1",
     "electron-builder": "^24.13.3",
-    "electron-store": "^8.1.0",
+    "electron-store": "^10.0.0",
     "electron-vite": "^2.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

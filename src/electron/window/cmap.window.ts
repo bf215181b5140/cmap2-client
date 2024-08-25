@@ -1,33 +1,34 @@
 import { app, BrowserWindow, shell } from 'electron';
-import path from 'path';
 import { WindowSize, WindowState } from '../../shared/enums';
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
 import { IpcReceiveOptions } from '../ipc/typedIpc.model';
+import { fileURLToPath } from 'url';
+import { SETTINGS } from '../store/settings/settings.store';
 
 export class CmapWindow {
     private window: BrowserWindow | undefined;
     private defaultOptions: Electron.BrowserWindowConstructorOptions = {
-        width: 1124,
-        height: 768,
-        frame: true,
+        frame: false,
         transparent: true,
         resizable: false,
         skipTaskbar: false,
         show: false,
         webPreferences: {
-            preload: path.join(__dirname, '../shared/preload.js')
+            preload: fileURLToPath(new URL('../shared/preload.cjs', import.meta.url))
         }
     };
 
     constructor() {
-        // todo if settings store open on startup then create window and set size from settings
-        this.createWindow();
+        if (!SETTINGS.getAppSettings().startInBackground) {// todo if settings store open on startup then create window and set size from settings
+            this.createWindow();
+        }
 
         IPC.cmapWindow = this;
 
-        IPC.on('setWindowState', (windowState) => this.setWindowState(windowState)); // todo this will be settings
-        IPC.on('setWindowSize', (windowSize) => this.setSize(windowSize)); // todo this will be settings
+        IPC.on('setWindowState', (windowState) => this.setWindowState(windowState));
+
+        IPC.on('setAppSettings', (data) => this.setSize(data.windowSize));
 
         BRIDGE.on('setWindowState', (windowState) => this.setWindowState(windowState));
         BRIDGE.on('setWindowSize', (windowSize) => this.setSize(windowSize));
@@ -87,7 +88,7 @@ export class CmapWindow {
     }
 
     private createWindow() {
-        this.window = new BrowserWindow(this.defaultOptions);
+        this.window = new BrowserWindow({ ...this.defaultOptions, ...this.getSizeProperties(SETTINGS.getAppSettings().windowSize) });
 
         this.window.on('ready-to-show', () => this.window?.show());
 
@@ -95,7 +96,7 @@ export class CmapWindow {
             this.window.loadURL('http://localhost:5173/');
             setTimeout(() => this.window?.webContents.openDevTools({ mode: 'detach' }), 1500);
         } else {
-            this.window.loadFile(path.join(__dirname, '../ui/index.html'));
+            this.window.loadFile(fileURLToPath(new URL('../ui/index.html', import.meta.url)));
         }
 
         // workaround for a bug
