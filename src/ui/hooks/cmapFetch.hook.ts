@@ -1,7 +1,7 @@
 import { z, ZodError } from 'zod';
 import { useContext, useState } from 'react';
 import { ClientCredentialsContext } from './src/ui/app/contexts/contexts';
-import { ToastContext } from './src/ui/app/components/mainWindow/mainWindow.componenet';
+import { ToastContext } from './src/ui/app/components/content/content.componenet';
 import { WEBSITE_URL } from './src/shared/const';
 import { ToastType } from './src/ui/app/components/toast/toast.hook';
 import log from 'electron-log/renderer';

@@ -1,7 +1,6 @@
 import { IPC } from '../../ipc/typedIpc.service';
 import CmapStore from '../cmapStore';
 import { settingsDefaults, StoreSettings } from './settings.model';
-import { AppSettings } from '../../../shared/schemas/settings.schema';
 import { BRIDGE } from '../../bridge/bridge.service';
 import { app } from 'electron';
 import { Options } from 'electron-store';
@@ -24,10 +23,6 @@ class SettingsStore extends CmapStore<StoreSettings>{
 
         // change window size
         BRIDGE.on('setWindowSize', (data) => this.set('app.windowSize', data));
-    }
-
-    public getAppSettings(): AppSettings {
-        return this.get('app');
     }
 }
 

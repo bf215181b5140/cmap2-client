@@ -20,7 +20,7 @@ export class CmapWindow {
     };
 
     constructor() {
-        if (!SETTINGS.getAppSettings().startInBackground) {// todo if settings store open on startup then create window and set size from settings
+        if (!SETTINGS.get('app').startInBackground) {
             this.createWindow();
         }
 
@@ -88,7 +88,10 @@ export class CmapWindow {
     }
 
     private createWindow() {
-        this.window = new BrowserWindow({ ...this.defaultOptions, ...this.getSizeProperties(SETTINGS.getAppSettings().windowSize) });
+        this.window = new BrowserWindow({
+            ...this.defaultOptions,
+            ...this.getSizeProperties(SETTINGS.get('app').windowSize)
+        });
 
         this.window.on('ready-to-show', () => this.window?.show());
 

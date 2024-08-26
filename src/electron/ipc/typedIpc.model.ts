@@ -1,11 +1,12 @@
 import { WindowState } from '../../shared/enums';
-import { AppSettings } from '../../shared/schemas/settings.schema';
+import { AppSettings, VrcDetectorSettings } from '../../shared/schemas/settings.schema';
 import { Credentials } from '../../shared/types';
 
 export type IpcGetOptions = {
     getAppVersion: string;
-    getAppSettings: AppSettings;
     getCredentials: Credentials;
+    getAppSettings: AppSettings;
+    getVrcDetectorSettings: VrcDetectorSettings;
     // getConnectionStatus: WebsocketConnection;
     // getGeneralSettings: GeneralSettings;
     // getWebsocketSettings: WebsocketSettings;
@@ -24,8 +25,10 @@ export type IpcGetOptions = {
 
 export type IpcSendOptions = {
     setWindowState: WindowState;
-    setAppSettings: AppSettings;
     setCredentials: Credentials;
+    setAppSettings: AppSettings;
+    setVrcDetectorSettings: VrcDetectorSettings;
+    checkIsVrcDetected: void;
     // connectSocket: undefined;
     // disconnectSocket: undefined;
     // setGeneralSettings: GeneralSettings;
@@ -52,9 +55,9 @@ export type IpcSendOptions = {
 };
 
 export type IpcReceiveOptions = {
+    isVrcDetected: boolean | null;
     // updateConnectionStatus: WebsocketConnection;
     // vrcParameter: VrcParameter;
     // lovenseStatus: LovenseStatus;
-    // isVrchatRunning: boolean | null;
     // updateData: UpdateData;
 };

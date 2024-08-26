@@ -1,8 +1,9 @@
-import { app } from 'electron';
+import { app, session } from 'electron';
 import { CmapWindow } from './window/cmap.window';
 import { CmapTray } from './tray/cmap.tray';
 import log from 'electron-log';
 import contextMenu from 'electron-context-menu';
+import VrcDetectorController from './vrcDetector/vrcDetector.controller';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -16,6 +17,7 @@ app.whenReady().then(() => {
     log.eventLogger.startLogging();
 
     // start services
+    new VrcDetectorController();
 
     // create window
     new CmapWindow();

@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { WindowState } from '../../../shared/enums';
 import IconButton from '../buttons/iconButton.component';
+import useVrcDetector from '../../hooks/vrcDetector.hook';
 
 export default function TitleBar() {
 
     // const {websocketConnectionColor} = useWebsocketConnection();
     // const {vrcStatusColor} = useVrcConnection();
+    const { vrcStatusColor } = useVrcDetector();
 
     function setWindowState(state: WindowState) {
         window.IPC.send('setWindowState', state);
@@ -13,8 +15,8 @@ export default function TitleBar() {
 
     return (<TitleBarStyled>
         <StatusStyled>
-            <i className={'ri-gamepad-line'} ></i>
-            <i className={'ri-global-line'} ></i>
+            <i className={'ri-gamepad-line'} style={{ color: vrcStatusColor }} />
+            <i className={'ri-global-line'} />
         </StatusStyled>
         <ButtonsStyled>
             <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState(WindowState.Minimize)} icon={'ri-subtract-fill'} />
@@ -48,7 +50,8 @@ const StatusStyled = styled.div`
 `;
 
 const ButtonsStyled = styled.div`
-    align-content: center;
+    display: flex;
+    align-items: center;
     margin-right: 8px;
     -webkit-app-region: none;
 `;

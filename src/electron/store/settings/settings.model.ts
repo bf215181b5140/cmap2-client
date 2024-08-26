@@ -1,31 +1,50 @@
 import { WindowSize } from '../../../shared/enums';
 import { Credentials } from '../../../shared/types';
+import { AppSettings, VrcDetectorSettings } from '../../../shared/schemas/settings.schema';
 
-export const settingsDefaults = {
+export interface StoreSettings {
+    credentials: Credentials;
+    app: AppSettings;
+    vrcDetector: VrcDetectorSettings;
+    // osc: {
+    //     ip: string;
+    //     inPort: number;
+    //     outPort: number;
+    // };
+    // socket: {
+    //     autoConnect: boolean;
+    // };
+    // lovense: {
+    //     sendConnectionOscMessage: boolean;
+    //     connectionOscMessagePath: string;
+    //     toyCommandOscMessage: [];
+    //     toyCommandParameter: [];
+    // };
+}
+
+export const settingsDefaults: StoreSettings = {
     credentials: new Credentials(),
     app: {
         startOnBoot: false,
         startInBackground: false,
         windowSize: WindowSize.Medium,
     },
-    osc: {
-        ip: '127.0.0.1',
-        inPort: 9000,
-        outPort: 9001
-    },
     vrcDetector: {
-        detectVrchat: true,
+        detect: true,
         frequency: 10,
     },
-    socket: {
-        autoConnect: true,
-    },
-    lovense: {
-        sendConnectionOscMessage: false,
-        connectionOscMessagePath: '',
-        toyCommandOscMessage: [],
-        toyCommandParameter: []
-    },
+    // osc: {
+    //     ip: '127.0.0.1',
+    //     inPort: 9000,
+    //     outPort: 9001
+    // },
+    // socket: {
+    //     autoConnect: true,
+    // },
+    // lovense: {
+    //     sendConnectionOscMessage: false,
+    //     connectionOscMessagePath: '',
+    //     toyCommandOscMessage: [],
+    //     toyCommandParameter: []
+    // },
 };
-
-export type StoreSettings = typeof settingsDefaults;

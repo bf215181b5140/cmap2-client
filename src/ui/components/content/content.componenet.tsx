@@ -6,21 +6,21 @@ import { ModalContext } from '../context/modal.context';
 import { ToastContext } from '../context/toast.context';
 import { ToastComponent } from '../toast/toast.component';
 
-export default function MainWindow({ children }: ReactProps) {
+export default function Content({ children }: ReactProps) {
 
     const { toasts, toastsDispatch } = useContext(ToastContext);
     const { modal, clearModal } = useContext(ModalContext);
 
-    return (<MainWindowStyled>
-        <MainWindowOverflow>
-            <ModalComponent modal={modal} clearModal={clearModal} />
+    return (<ContentStyled>
+        <ContentOverflow>
             {children}
-        </MainWindowOverflow>
+        </ContentOverflow>
+        <ModalComponent modal={modal} clearModal={clearModal} />
         <ToastComponent toasts={toasts} dispatch={toastsDispatch} />
-    </MainWindowStyled>);
+    </ContentStyled>);
 }
 
-const MainWindowStyled = styled.div`
+const ContentStyled = styled.div`
     overflow: hidden;
     width: 100%;
     background-color: ${props => props.theme.colors.ui.appBgOpaque};
@@ -31,7 +31,7 @@ const MainWindowStyled = styled.div`
     position: relative;
 `;
 
-const MainWindowOverflow = styled.div`
+const ContentOverflow = styled.div`
     overflow: auto;
     width: 100%;
     height: 100%;
