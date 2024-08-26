@@ -6,7 +6,7 @@ import { IpcReceiveOptions } from '../ipc/typedIpc.model';
 import { fileURLToPath } from 'url';
 import { SETTINGS } from '../store/settings/settings.store';
 
-export class CmapWindow {
+export class WindowController {
     private window: BrowserWindow | undefined;
     private defaultOptions: Electron.BrowserWindowConstructorOptions = {
         frame: false,
@@ -40,7 +40,7 @@ export class CmapWindow {
      * Sends data to electron renderer
      */
     public sendToRenderer<K extends keyof IpcReceiveOptions>(channel: K, data: IpcReceiveOptions[K]) {
-        if (this.window) this.window.webContents.send(channel, data);
+        if (this.window && !this.window?.isDestroyed()) this.window.webContents.send(channel, data);
     }
 
     private getSizeProperties(windowSize: WindowSize) {

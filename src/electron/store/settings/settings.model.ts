@@ -11,9 +11,9 @@ export interface StoreSettings {
     //     inPort: number;
     //     outPort: number;
     // };
-    // socket: {
-    //     autoConnect: boolean;
-    // };
+    socket: {
+        autoConnect: boolean;
+    };
     // lovense: {
     //     sendConnectionOscMessage: boolean;
     //     connectionOscMessagePath: string;
@@ -38,9 +38,9 @@ export const settingsDefaults: StoreSettings = {
     //     inPort: 9000,
     //     outPort: 9001
     // },
-    // socket: {
-    //     autoConnect: true,
-    // },
+    socket: {
+        autoConnect: true,
+    },
     // lovense: {
     //     sendConnectionOscMessage: false,
     //     connectionOscMessagePath: '',

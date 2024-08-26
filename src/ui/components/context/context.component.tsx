@@ -1,5 +1,5 @@
 import { ReactProps } from 'cmap2-shared';
-import useCredentials from '../../hooks/clientCredentials.hook';
+import useCredentials from '../../hooks/credentials.hook';
 import { CredentialsContext } from './credentials.context';
 import { ModalContext } from './modal.context';
 import useModalHook from '../modal/modal.hook';

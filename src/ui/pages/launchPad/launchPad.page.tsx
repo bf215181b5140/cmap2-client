@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { PageLayout } from '../../components/page/page.component';
 import Segment from '../../components/segment/segment.component';
 import VrcConnection from './components/vrcConnection.component';
+import WebsiteConnection from './components/websiteConnection.component';
 
 export default function LaunchPadPage() {
 
@@ -9,7 +10,7 @@ export default function LaunchPadPage() {
         <Segment>
             <LaunchPadStyled>
                 <VrcConnection />
-                {/* <WebsiteConnection /> */}
+                <WebsiteConnection />
                 {/* <LovenseConnection /> */}
             </LaunchPadStyled>
         </Segment>

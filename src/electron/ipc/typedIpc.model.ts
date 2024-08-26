@@ -7,7 +7,7 @@ export type IpcGetOptions = {
     getCredentials: Credentials;
     getAppSettings: AppSettings;
     getVrcDetectorSettings: VrcDetectorSettings;
-    // getConnectionStatus: WebsocketConnection;
+    getSocketConnected: boolean;
     // getGeneralSettings: GeneralSettings;
     // getWebsocketSettings: WebsocketSettings;
     // getLovenseSettings: LovenseSettings;
@@ -29,8 +29,8 @@ export type IpcSendOptions = {
     setAppSettings: AppSettings;
     setVrcDetectorSettings: VrcDetectorSettings;
     checkIsVrcDetected: void;
-    // connectSocket: undefined;
-    // disconnectSocket: undefined;
+    connectSocket: undefined;
+    disconnectSocket: undefined;
     // setGeneralSettings: GeneralSettings;
     // setWebsocketSettings: WebsocketSettings;
     // setLovenseSettings: LovenseSettings;
@@ -56,7 +56,7 @@ export type IpcSendOptions = {
 
 export type IpcReceiveOptions = {
     isVrcDetected: boolean | null;
-    // updateConnectionStatus: WebsocketConnection;
+    socketConnected: boolean;
     // vrcParameter: VrcParameter;
     // lovenseStatus: LovenseStatus;
     // updateData: UpdateData;

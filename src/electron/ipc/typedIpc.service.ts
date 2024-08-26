@@ -1,15 +1,15 @@
 import { ipcMain, IpcMainEvent } from 'electron';
 import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from './typedIpc.model';
-import type { CmapWindow } from '../window/cmap.window';
+import type { WindowController } from '../window/window.controller';
 
 class TypedIpcService {
-    private _cmapWindow: CmapWindow | undefined;
+    private _cmapWindow: WindowController | undefined;
 
     constructor() {
         // this.handle('getFingerprint', async () => await getFingerprint());
     }
 
-    set cmapWindow(cmapWindow: CmapWindow) {
+    set cmapWindow(cmapWindow: WindowController) {
         this._cmapWindow = cmapWindow;
     }
 

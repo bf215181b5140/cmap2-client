@@ -56,17 +56,17 @@ const ChildrenStyled = styled.div`
     flex-direction: column;
     gap: 5px;
 
-    // Might need !important if this doesn't override App styles
+    // Need !important because for some reason this doesn't override parent styles (App)
     h1, h2, h3, p {
-        margin: 0;
-        padding: 0;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     h1 {
-        font-size: 20px;
+        font-size: 20px !important;
     }
 
     h2 {
-        font-size: 18px;
+        font-size: 18px !important;
     }
 `;

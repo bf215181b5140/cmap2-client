@@ -1,9 +1,10 @@
-import { app, session } from 'electron';
-import { CmapWindow } from './window/cmap.window';
-import { CmapTray } from './tray/cmap.tray';
+import { app } from 'electron';
+import { WindowController } from './window/window.controller';
+import { TrayController } from './tray/tray.controller';
 import log from 'electron-log';
 import contextMenu from 'electron-context-menu';
 import VrcDetectorController from './vrcDetector/vrcDetector.controller';
+import { SocketController } from './socket/socket.controller';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -16,20 +17,19 @@ app.whenReady().then(() => {
     log.info('Application started');
     log.eventLogger.startLogging();
 
-    // start services
+    // start functions
     new VrcDetectorController();
+    new SocketController();
 
-    // create window
-    new CmapWindow();
-
-    // create tray
-    new CmapTray();
+    // create window and tray
+    new WindowController();
+    new TrayController();
 
     // Context menu for development
     if (!app.isPackaged) contextMenu();
 
     app.on('window-all-closed', (event: any) => {
-        // prevent terminating main process
+        // prevent terminating main process so program can run in background
         event.preventDefault();
     });
 

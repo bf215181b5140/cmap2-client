@@ -2,7 +2,7 @@ import { app, Menu, Tray } from 'electron';
 import { BRIDGE } from '../bridge/bridge.service';
 import { WindowSize, WindowState } from '../../shared/enums';
 
-export class CmapTray extends Tray {
+export class TrayController extends Tray {
 
     constructor() {
         super('resources/icon.png');

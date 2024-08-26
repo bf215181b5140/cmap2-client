@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import { WindowState } from '../../../shared/enums';
 import IconButton from '../buttons/iconButton.component';
 import useVrcDetector from '../../hooks/vrcDetector.hook';
+import useSocketConnection from '../../hooks/socketConnection.hook';
 
 export default function TitleBar() {
 
-    // const {websocketConnectionColor} = useWebsocketConnection();
+    const { color: color } = useSocketConnection();
     // const {vrcStatusColor} = useVrcConnection();
     const { vrcStatusColor } = useVrcDetector();
 
@@ -16,7 +17,7 @@ export default function TitleBar() {
     return (<TitleBarStyled>
         <StatusStyled>
             <i className={'ri-gamepad-line'} style={{ color: vrcStatusColor }} />
-            <i className={'ri-global-line'} />
+            <i className={'ri-global-line'} style={{ color: color }} />
         </StatusStyled>
         <ButtonsStyled>
             <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState(WindowState.Minimize)} icon={'ri-subtract-fill'} />
