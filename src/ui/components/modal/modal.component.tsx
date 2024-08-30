@@ -32,12 +32,10 @@ export default function ModalComponent({ modal, clearModal }: ModalComponentProp
                 <h2>{modal.title || 'Confirmation required'}</h2>
                 <span onClick={onClose}><Icon icon={'ri-close-line'} /></span>
             </ModalTitle>
-            <ModalContent>
-                <p>{modal.message || 'Confirm your action'}</p>
-                <div id="confirmation">
-                    <TextButton text={modal.confirmValue || 'Confirm'} onClick={onConfirm} />
-                </div>
-            </ModalContent>
+            <p>{modal.message || 'Confirm your action'}</p>
+            <div id="confirmation">
+                <TextButton text={modal.confirmValue || 'Confirm'} onClick={onConfirm} />
+            </div>
         </ModalStyled>
     </ModalWrapper>);
 }
@@ -59,23 +57,28 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalStyled = styled.div`
-    background-color: ${props => props.theme.colors.ui.contentBg};
-    border: 2px solid ${props => props.theme.colors.ui.appBg};
+    background-color: ${props => props.theme.colors.ui.background3};
+    // border: 2px solid ${props => props.theme.colors.ui.appBg};
     border-radius: 8px;
     min-width: 350px;
     max-width: 600px;
     min-height: 125px;
     max-height: 400px;
+    padding: 15px;
+    box-shadow: 0 0 16px #00000055;
+
+    #confirmation {
+        margin-top: 10px;
+        text-align: end;
+    }
 `;
 
 const ModalTitle = styled.div`
-    background-color: ${props => props.theme.colors.input.bg};
-    border-bottom: 1px solid ${props => props.theme.colors.ui.appBorder};
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 8px;
+    margin-bottom: 15px;
     gap: 10px;
 
     h2 {
@@ -92,7 +95,7 @@ const ModalTitle = styled.div`
 `;
 
 const ModalContent = styled.div`
-    padding: 10px;
+    //padding: 10px;
 
     #confirmation {
         margin-top: 10px;

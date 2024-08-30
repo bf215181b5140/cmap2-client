@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { PageLayout } from '../../components/page/page.component';
+import { Page } from '../../components/page/page.component';
 import Segment from '../../components/segment/segment.component';
 import VrcConnection from './components/vrcConnection.component';
 import WebsiteConnection from './components/websiteConnection.component';
 
 export default function LaunchPadPage() {
 
-    return (<PageLayout flexDirection="column">
+    return (<Page flexDirection="column">
         <Segment>
             <LaunchPadStyled>
                 <VrcConnection />
@@ -14,7 +14,7 @@ export default function LaunchPadPage() {
                 {/* <LovenseConnection /> */}
             </LaunchPadStyled>
         </Segment>
-    </PageLayout>);
+    </Page>);
 }
 
 const LaunchPadStyled = styled.div`

@@ -1,14 +1,16 @@
 import { IPC } from '../../ipc/typedIpc.service';
 import CmapStore from '../cmapStore';
-import { settingsDefaults, StoreSettings } from './settings.model';
+import { settingsStoreDefaults, SettingsStoreData } from './settings.model';
 import { BRIDGE } from '../../bridge/bridge.service';
 import { app } from 'electron';
-import { Options } from 'electron-store';
 
-class SettingsStore extends CmapStore<StoreSettings>{
+class SettingsStore extends CmapStore<SettingsStoreData>{
 
-    constructor(options: Options<StoreSettings>) {
-        super(options);
+    constructor() {
+        super({
+            name: 'settings',
+            defaults: settingsStoreDefaults
+        });
 
         // Credentials
         IPC.handle('getCredentials', async () => this.get('credentials'));
@@ -26,7 +28,4 @@ class SettingsStore extends CmapStore<StoreSettings>{
     }
 }
 
-export const SETTINGS = new SettingsStore({
-    encryptionKey: 'client-settings',
-    defaults: settingsDefaults
-});
+export const SETTINGS = new SettingsStore();

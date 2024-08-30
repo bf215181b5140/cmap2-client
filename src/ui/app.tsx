@@ -5,9 +5,10 @@ import './style/style.css';
 import 'remixicon/fonts/remixicon.css';
 import TitleBar from './components/titleBar/titleBar.component';
 import Content from './components/content/content.componenet';
-import NavBar from './components/navBar/navBar.component';
+import AppMenu from './components/menu/appMenu/appMenu.component';
 import Context from './components/context/context.component';
 import LaunchPadPage from './pages/launchPad/launchPad.page';
+import OscPage from './pages/osc/osc.page';
 
 export default function App() {
 
@@ -16,9 +17,9 @@ export default function App() {
             <TitleBar />
             <Content>
                 <Routes>
+                    <Route path="/osc/*" element={<OscPage />} />
                     {/* <Route path="/website/*" element={<WebsitePage />} /> */}
                     {/* <Route path="/avatars/:avatarId?" element={<AvatarsPage />} /> */}
-                    {/* <Route path="/osc/*" element={<OscPage />} /> */}
                     {/* <Route path="/settings" element={<SettingsPage />} /> */}
                     {/* <Route path="/lovense" element={<LovensePage />} /> */}
                     {/* <Route path="/updater" element={<UpdaterPage />} /> */}
@@ -27,7 +28,7 @@ export default function App() {
                     <Route path="*" element={<LaunchPadPage />} />
                 </Routes>
             </Content>
-            <NavBar />
+            <AppMenu />
         </Context>
     </AppStyled>);
 }

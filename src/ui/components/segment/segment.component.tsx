@@ -20,7 +20,6 @@ export default function Segment({ segmentTitle, toggleTitle, infoContent, flexGr
     const [infoShown, setInfoShown] = useState<boolean>(false);
 
     function getFlexBasis(): string | undefined {
-        console.log('calculating getFlexBasis');
         if (!flexBasis) return undefined;
         switch (flexBasis) {
             case SegmentWidth.None:

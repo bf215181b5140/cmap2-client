@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   font-family: Dosis-Bold, sans-serif;
@@ -40,3 +40,15 @@ export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
     filter: saturate(0%);
   }
 `;
+
+export const SelectInputStyled = styled.select<{ errors?: boolean, width?: string }>`
+  ${globalInputStyle};
+  cursor: pointer;
+
+  &.readOnly {
+    pointer-events: none;
+    color: ${props => props.theme.colors.input.textDisabled};
+    filter: saturate(0%);
+  }
+`;
+

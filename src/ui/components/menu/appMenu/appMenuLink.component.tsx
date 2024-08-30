@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { theme } from 'cmap2-shared';
 import React from 'react';
 
-interface NavBarLinkProps {
+interface AppMenuLinkProps {
     to: string,
     icon: string,
     tooltip?: string;
@@ -11,7 +11,7 @@ interface NavBarLinkProps {
     attentionColor?: string;
 }
 
-export default function NavBarLink({ to, icon, tooltip, attentionIcon = false, attentionColor = theme.colors.attention }: NavBarLinkProps) {
+export default function AppMenuLink({ to, icon, tooltip, attentionIcon = false, attentionColor = theme.colors.attention }: AppMenuLinkProps) {
 
     const pathname = useLocation().pathname;
 
@@ -19,14 +19,14 @@ export default function NavBarLink({ to, icon, tooltip, attentionIcon = false, a
         return (pathname.indexOf(to) === 0 && to !== '/') || (pathname === to);
     }
 
-    return (<NavBarLinkStyled to={to} selected={selected()}>
+    return (<AppMenuLinkStyled to={to} selected={selected()}>
         {icon && <i className={icon}></i>}
-        {attentionIcon && <i className="attention ri-circle-fill" style={{ color: attentionColor }}></i>}
+        {attentionIcon && <i className={'attention ri-circle-fill'} style={{ color: attentionColor }}></i>}
         {tooltip && <span className={'tooltip'}>{tooltip}</span>}
-    </NavBarLinkStyled>);
+    </AppMenuLinkStyled>);
 }
 
-const NavBarLinkStyled = styled(Link)<{ selected: boolean }>`
+const AppMenuLinkStyled = styled(Link)<{ selected: boolean }>`
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -76,7 +76,7 @@ const NavBarLinkStyled = styled(Link)<{ selected: boolean }>`
         }
 
         .tooltip {
-            animation: navbarLinkTooltip 150ms;
+            animation: AppMenuLinkTooltip 150ms;
             display: block;
         }
 
@@ -86,7 +86,7 @@ const NavBarLinkStyled = styled(Link)<{ selected: boolean }>`
     }
 
 
-    @keyframes navbarLinkTooltip {
+    @keyframes AppMenuLinkTooltip {
         from {
             top: -10px;
             opacity: 0;

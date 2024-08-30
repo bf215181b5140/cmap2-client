@@ -5,6 +5,7 @@ import log from 'electron-log';
 import contextMenu from 'electron-context-menu';
 import VrcDetectorController from './vrcDetector/vrcDetector.controller';
 import { SocketController } from './socket/socket.controller';
+import { AVATARS } from './store/avatars/avatars.store';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -16,6 +17,8 @@ app.whenReady().then(() => {
     // Start logging (electron events)
     log.info('Application started');
     log.eventLogger.startLogging();
+
+    AVATARS;
 
     // start functions
     new VrcDetectorController();

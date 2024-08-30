@@ -2,7 +2,7 @@ import { WindowSize } from '../../../shared/enums';
 import { Credentials } from '../../../shared/types';
 import { AppSettings, VrcDetectorSettings } from '../../../shared/schemas/settings.schema';
 
-export interface StoreSettings {
+export interface SettingsStoreData {
     credentials: Credentials;
     app: AppSettings;
     vrcDetector: VrcDetectorSettings;
@@ -22,7 +22,7 @@ export interface StoreSettings {
     // };
 }
 
-export const settingsDefaults: StoreSettings = {
+export const settingsStoreDefaults: SettingsStoreData = {
     credentials: new Credentials(),
     app: {
         startOnBoot: false,

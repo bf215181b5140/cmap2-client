@@ -26,7 +26,6 @@ const ContentStyled = styled.div`
     background-color: ${props => props.theme.colors.ui.appBgOpaque};
     border: 2px solid ${props => props.theme.colors.ui.appBorder};
     border-radius: 10px;
-    box-sizing: border-box;
     flex: 1;
     position: relative;
 `;
@@ -36,5 +35,5 @@ const ContentOverflow = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 `;

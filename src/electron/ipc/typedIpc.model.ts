@@ -1,6 +1,7 @@
 import { WindowState } from '../../shared/enums';
 import { AppSettings, VrcDetectorSettings } from '../../shared/schemas/settings.schema';
 import { Credentials } from '../../shared/types';
+import { VrcOscAvatar } from '../../shared/schemas/avatars.schema';
 
 export type IpcGetOptions = {
     getAppVersion: string;
@@ -8,6 +9,7 @@ export type IpcGetOptions = {
     getAppSettings: AppSettings;
     getVrcDetectorSettings: VrcDetectorSettings;
     getSocketConnected: boolean;
+    getAvatars: VrcOscAvatar[];
     // getGeneralSettings: GeneralSettings;
     // getWebsocketSettings: WebsocketSettings;
     // getLovenseSettings: LovenseSettings;
@@ -18,7 +20,6 @@ export type IpcGetOptions = {
     // // Osc status
     // getTrackedParameters: Map<string, boolean | number | string>;
     // // VrcOscData
-    // getVrcOscAvatars: VrcOscAvatar[];
     // // Osc control
     // getOscClockSettings: OscClockSettings;
 };
@@ -31,6 +32,7 @@ export type IpcSendOptions = {
     checkIsVrcDetected: void;
     connectSocket: undefined;
     disconnectSocket: undefined;
+    setAvatars: VrcOscAvatar[];
     // setGeneralSettings: GeneralSettings;
     // setWebsocketSettings: WebsocketSettings;
     // setLovenseSettings: LovenseSettings;
@@ -46,7 +48,6 @@ export type IpcSendOptions = {
     // setTrackedParameter: ClientStateParamDTO;
     // deleteTrackedParameter: ClientStateParamDTO;
     // // VrcOscData
-    // setVrcOscAvatars: VrcOscAvatar[];
     // // Osc control
     // setOscClockSettings: OscClockSettings;
     // // Updater

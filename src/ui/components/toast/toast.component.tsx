@@ -26,6 +26,7 @@ const ToastComponentStyled = styled.div`
     left: 50px;
     right: 50px;
     pointer-events: none;
+    z-index: 101;
 `;
 
 const ToastStyled = styled.div<{ type: ToastType }>`
