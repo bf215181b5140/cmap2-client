@@ -18,7 +18,7 @@ export default function useModalHook() {
     function deleteModal(keyword: string, confirmFunction: () => void) {
         setModal({
             title: `Delete ${keyword}`,
-            message: `Are you sure you want to delete this ${keyword}?`,
+            message: `Are you sure you want to delete ${keyword}?`,
             confirmValue: 'Delete',
             confirmFunction: confirmFunction
         });

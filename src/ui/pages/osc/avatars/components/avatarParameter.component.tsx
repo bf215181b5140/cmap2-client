@@ -12,10 +12,9 @@ interface AvatarParameterProps extends ReactProps {
     parameter: VrcOscAvatarParameter;
     avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
     forceShowProperties: boolean;
-    inEdit: boolean;
 }
 
-export default function AvatarParameter({avatarId, parameter, avatarsDispatch, forceShowProperties, inEdit}: AvatarParameterProps) {
+export default function AvatarParameter({ avatarId, parameter, avatarsDispatch, forceShowProperties }: AvatarParameterProps) {
 
     const [showProperties, setShowProperties] = useState<boolean>(forceShowProperties);
     const [parent] = useAutoAnimate();
@@ -25,7 +24,7 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
     }, [forceShowProperties]);
 
     function deleteParameter() {
-        avatarsDispatch({type: 'removeParameter', avatarId: avatarId, parameter: parameter});
+        avatarsDispatch({ type: 'removeParameter', avatarId: avatarId, parameter: parameter });
     }
 
     return (<AvatarParameterStyled ref={parent}>
@@ -35,7 +34,7 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
         </h4>
 
         <div className={'editOptions'}>
-            {inEdit && <IconButton role={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={deleteParameter} />}
+            <IconButton role={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={deleteParameter} />
         </div>
 
         {showProperties && <div className={'properties'}>
@@ -47,31 +46,31 @@ export default function AvatarParameter({avatarId, parameter, avatarsDispatch, f
 }
 
 const AvatarParameterStyled = styled.div`
-  background: ${props => props.theme.colors.buttons.secondary.border};
-  border-radius: 8px;
-  padding: 10px 15px 10px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  height: min-content;
-
-  h4 {
-    font-size: 1em;
-    color: ${props => props.theme.colors.font.h4};
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-  }
-  
-  .editOptions {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-
-  .properties {
+    background: ${props => props.theme.colors.buttons.secondary.border};
+    border-radius: 8px;
+    padding: 10px 15px 10px 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
+    height: min-content;
+
+    h4 {
+        font-size: 1em;
+        color: ${props => props.theme.colors.font.h4};
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .editOptions {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .properties {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 `;

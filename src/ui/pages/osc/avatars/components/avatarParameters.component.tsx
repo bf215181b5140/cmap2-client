@@ -12,16 +12,15 @@ interface AvatarParametersProps extends ReactProps {
     avatarId: string;
     parameters: VrcOscAvatarParameter[];
     avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
-    inEdit: boolean;
 }
 
 const sortOrder = [
-    {key: 'none', value: 'None'},
-    {key: 'asc', value: 'Ascending'},
-    {key: 'desc', value: 'Descending'}
+    { key: 'none', value: 'None' },
+    { key: 'asc', value: 'Ascending' },
+    { key: 'desc', value: 'Descending' }
 ];
 
-export default function AvatarParameters({avatarId, parameters, avatarsDispatch, inEdit}: AvatarParametersProps) {
+export default function AvatarParameters({ avatarId, parameters, avatarsDispatch }: AvatarParametersProps) {
 
     const [filter, setFilter] = useState<string>('');
     const [sort, setSort] = useState<string>('none');
@@ -66,42 +65,42 @@ export default function AvatarParameters({avatarId, parameters, avatarsDispatch,
         </FiltersStyled>
 
         <AvatarParametersStyled ref={parent}>
-            {filteredParameters().map(parameter => (<AvatarParameter avatarId={avatarId} parameter={parameter} avatarsDispatch={avatarsDispatch} inEdit={inEdit}
+            {filteredParameters().map(parameter => (<AvatarParameter avatarId={avatarId} parameter={parameter} avatarsDispatch={avatarsDispatch}
                                                                      forceShowProperties={showProperties} key={parameter.name} />))}
         </AvatarParametersStyled>
     </div>);
 }
 
 const FiltersStyled = styled.div`
-  margin: 8px 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    margin: 8px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 `;
 
 const AvatarParametersStyled = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 15px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
 
-  > div {
-    flex-basis: calc(50% - (15px / 2));
-  }
+    > div {
+        flex-basis: calc(50% - (15px / 2));
+    }
 `;
 
 const FilterInputStyled = styled.input`
-  ${globalInputStyle};
-  width: 200px;
+    ${globalInputStyle};
+    width: 200px;
 `;
 
 const CollapseCheckboxStyled = styled.div<{ checked: boolean }>`
-  ${globalInputStyle};
-  cursor: pointer;
-  width: 44px;
-  font-size: 35px;
+    ${globalInputStyle};
+    cursor: pointer;
+    width: 44px;
+    font-size: 35px;
 
-  i {
-    visibility: ${props => props.checked ? 'visible' : 'hidden'};
-  }
+    i {
+        visibility: ${props => props.checked ? 'visible' : 'hidden'};
+    }
 `;

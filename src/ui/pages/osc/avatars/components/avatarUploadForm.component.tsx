@@ -8,6 +8,7 @@ import { VrcOscAvatar, VrcOscAvatarSchema } from '../../../../../shared/schemas/
 import IconButton from '../../../../components/buttons/iconButton.component';
 import FormControlBar from '../../../../components/form/formControlBar.component';
 import Icon from '../../../../components/icon/icon.component';
+import { useNavigate } from 'react-router-dom';
 
 interface AvatarUploadFormProps {
     avatars: VrcOscAvatar[];
@@ -20,6 +21,7 @@ interface AvatarUploadForm {
 
 export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUploadFormProps) {
 
+    const navigate = useNavigate();
     const { toastsDispatch } = useContext(ToastContext);
     const { setModal } = useContext(ModalContext);
     const { register, reset, handleSubmit } = useForm<AvatarUploadForm>({ defaultValues: { file: undefined } });
@@ -66,6 +68,7 @@ export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUpl
         avatarsDispatch({ type: 'addAvatar', avatar: avatar });
         toastsDispatch({ type: 'add', toast: { message: 'Avatar saved', type: ToastType.SUCCESS } });
         clearForm();
+        navigate('/osc/avatars/' + avatar.id)
     }
 
     function clearForm() {
@@ -94,12 +97,12 @@ export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUpl
         </>)}
 
         <FormControlBar>
-            {fileAvatar ? (<>
+            {fileAvatar && <>
                 <IconButton role={'save'} onClick={save} icon={'ri-file-check-line'} />
                 <IconButton role={'reset'} tooltip={'Clear'} onClick={clearForm} icon={'ri-file-close-line'} />
-            </>) : (
-                <IconButton role={'normal'} tooltip={'Open file'} onClick={browse} icon={'ri-file-search-line'} />
-            )}
+                <hr />
+            </>}
+            <IconButton role={'normal'} tooltip={'Open file'} onClick={browse} icon={'ri-file-search-line'} />
         </FormControlBar>
 
     </form>);

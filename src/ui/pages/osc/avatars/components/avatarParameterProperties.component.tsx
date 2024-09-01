@@ -68,6 +68,7 @@ const AvatarParameterPropertiesStyled = styled.div`
     
     p {
         padding: 0;
+        line-break: anywhere;
     }
 `;
 

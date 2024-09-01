@@ -1,12 +1,12 @@
-import AvatarsMenu from './components/avatarsMenu/avatarsMenu.component';
 import Avatar from './components/avatar.component';
 import AvatarUploadForm from './components/avatarUploadForm.component';
 import { SegmentWidth } from 'cmap2-shared';
 import { Page } from '../../../components/page/page.component';
 import Segment from '../../../components/segment/segment.component';
 import { useParams } from 'react-router-dom';
-import { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import VrcOscAvatarsReducer from './avatars.reducer';
+import AvatarMenu from './components/avatarsMenu/avatarsMenu.component';
 
 export default function AvatarsPage() {
 
@@ -31,13 +31,9 @@ export default function AvatarsPage() {
             <AvatarUploadForm avatars={avatars} avatarsDispatch={avatarsDispatch} />
         </Segment>
 
-        {avatars.length > 0 && <Segment flexBasis={SegmentWidth.Full}>
-            <AvatarsMenu avatars={avatars} activeAvatar={activeAvatar} />
-        </Segment>}
+        {avatars.length > 0 && <AvatarMenu avatars={avatars} activeAvatar={activeAvatar} avatarsDispatch={avatarsDispatch} />}
 
-        {activeAvatar && <Segment flexBasis={SegmentWidth.Full}>
-            <Avatar avatar={activeAvatar} avatarsDispatch={avatarsDispatch} />
-        </Segment>}
+        {activeAvatar && <Avatar avatar={activeAvatar} avatarsDispatch={avatarsDispatch} />}
 
     </Page>);
 }
