@@ -59,7 +59,7 @@ export function useToast() {
             }, 7000);
         }
         internalDispatch(action);
-    };
+    }
 
     return { toasts, toastsDispatch };
 }

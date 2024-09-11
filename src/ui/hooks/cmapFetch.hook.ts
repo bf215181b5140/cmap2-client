@@ -1,9 +1,9 @@
 import { z, ZodError } from 'zod';
 import { useContext, useState } from 'react';
-import { ClientCredentialsContext } from './src/ui/app/contexts/contexts';
-import { ToastContext } from './src/ui/app/components/content/content.componenet';
-import { WEBSITE_URL } from './src/shared/const';
-import { ToastType } from './src/ui/app/components/toast/toast.hook';
+import { CredentialsContext } from '../components/context/credentials.context';
+import { ToastContext } from '../components/context/toast.context';
+import { WEBSITE_URL } from '../../shared/const';
+import { ToastType } from '../components/toast/toast.hook';
 import log from 'electron-log/renderer';
 
 interface ResponseWithData {
@@ -15,16 +15,16 @@ type OnSuccess<T extends z.ZodTypeAny> = (data: T extends z.ZodObject<any> ? z.i
 
 export default function useCmapFetch() {
 
-    const { clientCredentials, clearClientToken } = useContext(ClientCredentialsContext);
-    const toastsDispatch = useContext(ToastContext);
+    const { credentials, clearLoginToken } = useContext(CredentialsContext);
+    const { toastsDispatch } = useContext(ToastContext);
     const [inUse, setInUse] = useState<boolean>(false);
 
     function GET<T extends z.ZodTypeAny>(urlSuffix: string, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
         cmapFetch(urlSuffix, {}, schema, onSuccess, onError);
     }
 
-    async function POST<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void): Promise<void> {
+    function POST<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
+        onError?: () => void) {
         const init = {
             method: 'POST',
             body: JSON.stringify(data),
@@ -34,8 +34,8 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, init, schema, onSuccess, onError);
     }
 
-    async function PUT<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void): Promise<void> {
+    function PUT<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
+        onError?: () => void) {
         const init = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -45,8 +45,8 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, init, schema, onSuccess, onError);
     }
 
-    async function PATCH<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void): Promise<void> {
+    function PATCH<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
+        onError?: () => void) {
         const init = {
             method: 'PATCH',
             body: JSON.stringify(data),
@@ -56,8 +56,8 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, init, schema, onSuccess, onError);
     }
 
-    async function DELETE<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void): Promise<void> {
+    function DELETE<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
+        onError?: () => void) {
         const init = {
             method: 'DELETE',
             body: JSON.stringify(data),
@@ -67,20 +67,20 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, init, schema, onSuccess, onError);
     }
 
-    async function cmapFetch<T extends z.ZodTypeAny>(urlSuffix: string, init: RequestInit, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void): Promise<void> {
+    function cmapFetch<T extends z.ZodTypeAny>(urlSuffix: string, init: RequestInit, schema: T | undefined, onSuccess: OnSuccess<T>,
+        onError?: () => void) {
         if (inUse) return;
         setInUse(true);
 
         if (init.headers) {
-            init.headers = { ...init.headers, Authorization: '' + clientCredentials.apiToken };
+            init.headers = { ...init.headers, Authorization: '' + credentials.apiToken };
         } else {
-            init = { ...init, headers: { Authorization: '' + clientCredentials.apiToken } };
+            init = { ...init, headers: { Authorization: '' + credentials.apiToken } };
         }
 
         const url = WEBSITE_URL + '/api/' + urlSuffix;
 
-        return await fetch(url, init)
+        fetch(url, init)
             // Process server response data
             .then(async res => {
                 const result: ResponseWithData = { response: res, data: null };
@@ -111,10 +111,10 @@ export default function useCmapFetch() {
             })
             // Check response status and throw error on not ok
             .then(cmapRes => {
-                if (cmapRes.response.ok === true) return cmapRes;
+                if (cmapRes.response.ok) return cmapRes;
 
                 // clear client token if we're unauthorized
-                if (cmapRes.response.status === 401) clearClientToken();
+                if (cmapRes.response.status === 401) clearLoginToken();
 
                 // check for string error message and throw error
                 if (typeof cmapRes.data === 'string') {

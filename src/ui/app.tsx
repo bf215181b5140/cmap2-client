@@ -9,6 +9,7 @@ import AppMenu from './components/menu/appMenu/appMenu.component';
 import Context from './components/context/context.component';
 import LaunchPadPage from './pages/launchPad/launchPad.page';
 import OscPage from './pages/osc/osc.page';
+import WebsitePage from './pages/website/website.page';
 
 export default function App() {
 
@@ -18,7 +19,7 @@ export default function App() {
             <Content>
                 <Routes>
                     <Route path="/osc/*" element={<OscPage />} />
-                    {/* <Route path="/website/*" element={<WebsitePage />} /> */}
+                    <Route path="/website/*" element={<WebsitePage />} />
                     {/* <Route path="/avatars/:avatarId?" element={<AvatarsPage />} /> */}
                     {/* <Route path="/settings" element={<SettingsPage />} /> */}
                     {/* <Route path="/lovense" element={<LovensePage />} /> */}
