@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { ContentBoxWidth } from 'cmap2-shared';
-import timeSinceTimestamp from '../../../../shared/util/timeSinceTimestamp';
-import useVrcConnection from '../../../../shared/hooks/vrcConnection.hook';
-import ContentBox from '../../../../shared/components/contentBox/contentBox.component';
+import { SegmentWidth } from 'cmap2-shared';
+import Segment from '../../../../components/segment/segment.component';
+import useVrcDetector from '../../../../hooks/vrcDetector.hook';
+import timeSinceTimestamp from '../../../../util/timeSinceTimestamp';
 
-export default function VrcGameStatus() {
+export default function VrcStatus() {
 
-    const { vrcStatus, vrcStatusColor } = useVrcConnection();
-    const [lastOscActivity, setLastOscActivity] = useState<number | null>(null);
+    const { vrcStatus, vrcStatusColor } = useVrcDetector();
+    const [lastOscActivity, setLastOscActivity] = useState<number | undefined>();
     const [key, setKey] = useState(0);
 
     useEffect(() => {
@@ -27,10 +27,10 @@ export default function VrcGameStatus() {
         };
     }, []);
 
-    return (<ContentBox flexBasis={ContentBoxWidth.Full}>
-        <h2 style={{color: vrcStatusColor, marginTop: '0'}}>{vrcStatus}</h2>
+    return (<Segment flexBasis={SegmentWidth.Full}>
+        <h2 style={{ color: vrcStatusColor, marginTop: '0' }}>{vrcStatus}</h2>
         <p key={key}>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
-    </ContentBox>);
+    </Segment>);
 }
 
 

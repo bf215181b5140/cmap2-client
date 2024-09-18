@@ -11,7 +11,7 @@ class AvatarsStore extends CmapStore<AvatarStoreData>{
         });
 
         IPC.handle('getAvatars', async () => this.get('avatars'));
-        IPC.on('setAvatars', (data) => this.set('avatars', data));
+        IPC.on('saveAvatars', (data) => this.set('avatars', data));
     }
 }
 

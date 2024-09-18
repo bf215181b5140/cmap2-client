@@ -46,6 +46,7 @@ span.grey {
 ::-webkit-scrollbar-thumb {
     background: #1c222a;
     border-radius: 8px;
+    cursor: grab;
 }
 
 /* Handle on hover */

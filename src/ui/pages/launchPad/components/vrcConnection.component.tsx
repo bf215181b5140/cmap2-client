@@ -6,19 +6,19 @@ import useVrcDetector from '../../../hooks/vrcDetector.hook';
 export default function VrcConnection() {
 
     const { isVrcDetected, vrcStatus, vrcStatusColor } = useVrcDetector();
-    const [lastOscActivity, setLastOscActivity] = useState<number | null>(null);
+    const [lastOscActivity, setLastOscActivity] = useState<number | undefined>();
 
     useEffect(() => {
-        // function getLastOscActivity() {
-        //     window.IPC.get('getLastOscActivity').then(data => setLastOscActivity(data));
-        // }
-        //
-        // getLastOscActivity();
-        // const activityInterval = setInterval(getLastOscActivity, 4500);
-        //
-        // return () => {
-        //     if (activityInterval) clearInterval(activityInterval);
-        // };
+        function getLastOscActivity() {
+            window.IPC.get('getLastOscActivity').then(data => setLastOscActivity(data));
+        }
+
+        getLastOscActivity();
+        const activityInterval = setInterval(getLastOscActivity, 4500);
+
+        return () => {
+            if (activityInterval) clearInterval(activityInterval);
+        };
     }, []);
 
     return (<ConnectionBox icon={'ri-gamepad-line'} connected={isVrcDetected === true} redirectPath={'/osc'}>

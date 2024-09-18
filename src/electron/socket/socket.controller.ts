@@ -10,6 +10,7 @@ import log from 'electron-log';
 
 export class SocketController {
     private socket: SocketIOClient.Socket | undefined;
+    private parameterBlacklist: Set<string> = new Set();
 
     constructor() {
         IPC.on('setCredentials', (data) => {
@@ -21,9 +22,13 @@ export class SocketController {
         IPC.on('connectSocket', () => this.connect(SETTINGS.get('credentials')));
         IPC.on('disconnectSocket', () => this.socket?.close());
         IPC.handle('getSocketConnected', async () => !!this.socket?.connected);
+        IPC.on('saveSocketParameterBlacklist', data => this.parameterBlacklist = new Set(data));
 
         BRIDGE.on('isVrcDetected', (data) => this.sendData('isVrcDetected', data));
-        BRIDGE.on('vrcParameter', (vrcParameter: VrcParameter) => this.sendParameter(vrcParameter));
+        BRIDGE.on('vrcParameter', (vrcParameter: VrcParameter) => {
+            if (this.parameterBlacklist.has(vrcParameter.path)) return;
+            this.sendParameter(vrcParameter);
+        });
 
         if (SETTINGS.get('socket').autoConnect) this.connect(SETTINGS.get('credentials'));
     }

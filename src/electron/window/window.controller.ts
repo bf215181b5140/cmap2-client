@@ -28,7 +28,7 @@ export class WindowController {
 
         IPC.on('setWindowState', (windowState) => this.setWindowState(windowState));
 
-        IPC.on('setAppSettings', (data) => this.setSize(data.windowSize));
+        IPC.on('saveAppSettings', (data) => this.setSize(data.windowSize));
 
         BRIDGE.on('setWindowState', (windowState) => this.setWindowState(windowState));
         BRIDGE.on('setWindowSize', (windowSize) => this.setSize(windowSize));

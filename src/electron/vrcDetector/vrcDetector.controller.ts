@@ -8,11 +8,12 @@ export default class VrcDetectorController {
     private intervalId: NodeJS.Timeout | null = null;
     private processName: string = 'vrchat.exe';
     private detecting: boolean = false;
+    private lastDetectedVrc: number | undefined;
 
     constructor() {
         this.resetInterval(SETTINGS.get('vrcDetector'));
 
-        IPC.on('setVrcDetectorSettings', (data) => this.resetInterval(data));
+        IPC.on('saveVrcDetectorSettings', (data) => this.resetInterval(data));
         IPC.on('checkIsVrcDetected', () => this.detectVrchat());
     }
 
@@ -28,6 +29,7 @@ export default class VrcDetectorController {
             if (err) return;
 
             const detected = stdout.toLowerCase().includes(this.processName.toLowerCase());
+            this.lastDetectedVrc = Date.now();
             IPC.emit('isVrcDetected', detected);
             BRIDGE.emit('isVrcDetected', detected);
         });

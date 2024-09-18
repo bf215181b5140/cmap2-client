@@ -1,40 +1,41 @@
 import { WindowState } from '../../shared/enums';
-import { AppSettings, VrcDetectorSettings } from '../../shared/schemas/settings.schema';
+import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../shared/schemas/settings.schema';
 import { Credentials } from '../../shared/types';
 import { VrcOscAvatar } from '../../shared/schemas/avatars.schema';
+import { VrcParameter } from 'cmap2-shared';
 
 export type IpcGetOptions = {
     getAppVersion: string;
     getCredentials: Credentials;
     getAppSettings: AppSettings;
     getVrcDetectorSettings: VrcDetectorSettings;
+    getOscSettings: OscSettings;
+    getSocketSettings: SocketSettings;
     getSocketConnected: boolean;
     getAvatars: VrcOscAvatar[];
-    // getGeneralSettings: GeneralSettings;
-    // getWebsocketSettings: WebsocketSettings;
+    getLastOscActivity: number | undefined;
+    getTrackedParameters: Map<string, boolean | number | string>;
+
     // getLovenseSettings: LovenseSettings;
     // getToyCommandParameters: ToyCommandParameter[];
     // getToyCommandOscMessages: ToyCommandOscMessage[];
+
     // getFingerprint: string;
-    // getLastOscActivity: number;
-    // // Osc status
-    // getTrackedParameters: Map<string, boolean | number | string>;
-    // // VrcOscData
-    // // Osc control
-    // getOscClockSettings: OscClockSettings;
 };
 
 export type IpcSendOptions = {
     setWindowState: WindowState;
     setCredentials: Credentials;
-    setAppSettings: AppSettings;
-    setVrcDetectorSettings: VrcDetectorSettings;
+    saveAppSettings: AppSettings;
+    saveVrcDetectorSettings: VrcDetectorSettings;
+    saveOscSettings: OscSettings;
+    saveSocketSettings: SocketSettings;
+    saveSocketParameterBlacklist: SocketParameterBlacklist;
     checkIsVrcDetected: void;
     connectSocket: undefined;
     disconnectSocket: undefined;
-    setAvatars: VrcOscAvatar[];
-    // setGeneralSettings: GeneralSettings;
-    // setWebsocketSettings: WebsocketSettings;
+    saveAvatars: VrcOscAvatar[];
+
     // setLovenseSettings: LovenseSettings;
     // getLovenseStatus: undefined;
     // lovenseConnect: undefined;
@@ -42,15 +43,11 @@ export type IpcSendOptions = {
     // sendLovenseToyCommand: ToyCommand;
     // setToyCommandParameters: ToyCommandParameter[];
     // setToyCommandOscMessages: ToyCommandOscMessage[];
-    // getIsVrchatRunning: undefined;
-    // // Osc status
+
     // setTrackedParameters: Map<string, boolean | number | string>;
     // setTrackedParameter: ClientStateParamDTO;
     // deleteTrackedParameter: ClientStateParamDTO;
-    // // VrcOscData
-    // // Osc control
-    // setOscClockSettings: OscClockSettings;
-    // // Updater
+
     // checkForUpdates: undefined;
     // startUpdate: string;
 };
@@ -58,7 +55,8 @@ export type IpcSendOptions = {
 export type IpcReceiveOptions = {
     isVrcDetected: boolean | null;
     socketConnected: boolean;
-    // vrcParameter: VrcParameter;
+    vrcParameter: VrcParameter;
+
     // lovenseStatus: LovenseStatus;
     // updateData: UpdateData;
 };

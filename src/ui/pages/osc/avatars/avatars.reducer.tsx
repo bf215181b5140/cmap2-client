@@ -21,11 +21,11 @@ export default function VrcOscAvatarsReducer(state: VrcOscAvatar[], action: VrcO
                 return avatar;
             });
             if (!exists) newAvatars.push(action.avatar);
-            window.IPC.send('setAvatars', newAvatars);
+            window.IPC.send('saveAvatars', newAvatars);
             return newAvatars;
         case 'removeAvatar':
             newAvatars = state.filter(avatar => avatar.id !== action.avatar.id);
-            window.IPC.send('setAvatars', newAvatars);
+            window.IPC.send('saveAvatars', newAvatars);
             return newAvatars;
         case 'removeParameter':
             newAvatars = state.map(avatar => {
@@ -34,7 +34,7 @@ export default function VrcOscAvatarsReducer(state: VrcOscAvatar[], action: VrcO
                 }
                 return avatar;
             })
-            window.IPC.send('setAvatars', newAvatars);
+            window.IPC.send('saveAvatars', newAvatars);
             return newAvatars;
         default:
             return state;

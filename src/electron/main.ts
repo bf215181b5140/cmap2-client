@@ -6,6 +6,7 @@ import contextMenu from 'electron-context-menu';
 import VrcDetectorController from './vrcDetector/vrcDetector.controller';
 import { SocketController } from './socket/socket.controller';
 import { AVATARS } from './store/avatars/avatars.store';
+import { OscController } from './osc/osc.controller';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -23,6 +24,7 @@ app.whenReady().then(() => {
     // start functions
     new VrcDetectorController();
     new SocketController();
+    new OscController();
 
     // create window and tray
     new WindowController();
@@ -31,9 +33,7 @@ app.whenReady().then(() => {
     // Context menu for development
     if (!app.isPackaged) contextMenu();
 
-    app.on('window-all-closed', (event: any) => {
-        // prevent terminating main process so program can run in background
-        event.preventDefault();
-    });
+    // prevent terminating main process so program can run in background
+    app.on('window-all-closed', (event: any) => event.preventDefault());
 
 }).catch(e => log.error('Application failed to start', e));
