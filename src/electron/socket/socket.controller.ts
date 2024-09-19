@@ -39,7 +39,7 @@ export class SocketController {
 
         if (typeof credentials.apiToken !== 'string') return;
 
-        this.socket = io(WEBSITE_URL + '/clientSocket', {
+        this.socket = io(WEBSITE_URL + '/client', {
             query: {
                 apiToken: credentials.apiToken
             },

@@ -1,6 +1,5 @@
-import { theme } from 'cmap2-shared/src/react/theme';
-import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from '../electron/ipc/typedIpc.model';
 import { IPC } from '../shared/preload';
+import { theme } from './style/theme';
 
 type ThemeType = typeof theme;
 

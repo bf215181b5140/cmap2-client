@@ -4,6 +4,7 @@ import React, { useContext } from 'react';
 import ContentMenu from '../../components/menu/contentMenu/contentMenu.component';
 import ContentMenuLink from '../../components/menu/contentMenu/contentMenuLink.component';
 import { CredentialsContext } from '../../components/context/credentials.context';
+import ConnectionPage from './connection/connection.page';
 
 export default function WebsitePage() {
 
@@ -25,7 +26,7 @@ export default function WebsitePage() {
         </ContentMenu>
 
             <Routes>
-                {/* <Route path="/connection" element={<ConnectionPage />} /> */}
+                <Route path="/connection" element={<ConnectionPage />} />
                 {/* <Route path="/profile" element={<ProfilePage />} /> */}
                 {/* <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} /> */}
                 {/* <Route path="/state" element={<StatePage />} /> */}

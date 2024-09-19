@@ -23,8 +23,7 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, {}, schema, onSuccess, onError);
     }
 
-    function POST<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void) {
+    function POST<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
         const init = {
             method: 'POST',
             body: JSON.stringify(data),
@@ -34,8 +33,7 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, init, schema, onSuccess, onError);
     }
 
-    function PUT<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void) {
+    function PUT<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
         const init = {
             method: 'PUT',
             body: JSON.stringify(data),
@@ -45,8 +43,7 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, init, schema, onSuccess, onError);
     }
 
-    function PATCH<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void) {
+    function PATCH<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
         const init = {
             method: 'PATCH',
             body: JSON.stringify(data),
@@ -56,8 +53,7 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, init, schema, onSuccess, onError);
     }
 
-    function DELETE<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void) {
+    function DELETE<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
         const init = {
             method: 'DELETE',
             body: JSON.stringify(data),
@@ -67,8 +63,7 @@ export default function useCmapFetch() {
         cmapFetch(urlSuffix, init, schema, onSuccess, onError);
     }
 
-    function cmapFetch<T extends z.ZodTypeAny>(urlSuffix: string, init: RequestInit, schema: T | undefined, onSuccess: OnSuccess<T>,
-        onError?: () => void) {
+    function cmapFetch<T extends z.ZodTypeAny>(urlSuffix: string, init: RequestInit, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
         if (inUse) return;
         setInUse(true);
 
