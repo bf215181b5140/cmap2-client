@@ -1,4 +1,4 @@
-import { FieldErrors } from 'react-hook-form/dist/types/errors';
+import { FieldErrors } from 'react-hook-form';
 
 export default function useInputError(name?: string, errors?: FieldErrors) {
 

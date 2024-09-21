@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SegmentWidth, VrcParameter } from 'cmap2-shared';
 import Segment from '../../../../components/segment/segment.component';
-import { SegmentTable } from '../../../../components/segment/segmentTable.component';
+import SegmentTable from '../../../../components/segment/segmentTable.component';
 
 interface VrcParameterWithDate extends VrcParameter {
     date: Date;

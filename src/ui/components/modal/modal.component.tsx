@@ -1,16 +1,12 @@
-import React from 'react';
-import { ReactProps } from 'cmap2-shared';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import { Modal } from './modal.hook';
 import Icon from '../icon/icon.component';
 import TextButton from '../buttons/textButton.component';
+import { ModalContext } from '../context/modal.context';
 
-export interface ModalComponentProps extends ReactProps {
-    modal: Modal | null;
-    clearModal: () => void;
-}
+export default function ModalComponent() {
 
-export default function ModalComponent({ modal, clearModal }: ModalComponentProps) {
+    const { modal, clearModal } = useContext(ModalContext);
 
     function onClose() {
         modal?.cancelFunction?.apply(null);

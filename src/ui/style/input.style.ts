@@ -41,6 +41,10 @@ export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   }
 `;
 
+export const InputStyled = styled.input<{ errors?: boolean, width?: string }>`
+  ${globalInputStyle};
+`;
+
 export const SelectInputStyled = styled.select<{ errors?: boolean, width?: string }>`
   ${globalInputStyle};
   cursor: pointer;

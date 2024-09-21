@@ -1,39 +1,66 @@
 import styled from 'styled-components';
+import { ReactProps } from 'cmap2-shared';
 
-export const SegmentTable = styled.table<{ maxHeight?: string }>`
-    display: block;
-    border-collapse: collapse;
+interface SegmentTableProps extends ReactProps {
+    maxHeight?: string;
+}
+
+export default function SegmentTable({ maxHeight, children }: SegmentTableProps) {
+    return (<SegmentTableStyled maxHeight={maxHeight}>
+        <div>
+            <table>
+                {children}
+            </table>
+        </div>
+    </SegmentTableStyled>);
+}
+
+export const SegmentTableStyled = styled.div<{ maxHeight?: string }>`
+    padding: 6px;
     background: ${props => props.theme.colors.ui.background5};
     border-radius: 8px;
-    padding: 6px;
-    max-height: ${props => props.maxHeight || '300px'};
-    overflow: auto;
-    
-    td, th {
-        padding: 3px 6px;
-        text-align: left;
-    }
+    position: relative;
 
-    thead th {
-        padding-left: 10px;
-        font-size: 18px;
-        color: ${props => props.theme.colors.font.h2};
-        text-shadow: 0 0 3px #000000cc;
-    }
+    div {
+        overflow: auto;
+        max-height: ${props => props.maxHeight || '300px'};
 
-    tbody {
-        font-family: Noto-Sans-Regular, serif;
-    }
+        table {
+            border-collapse: collapse;
+            width: 100%;
 
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-        background: #303C47;
-        border-radius: 8px;
-    }
+            td, th {
+                padding: 3px 6px;
+                text-align: left;
+            }
 
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: #3D4853;
-    }
+            thead {
+                position: sticky;
+                top: 0;
+                background: ${props => props.theme.colors.ui.background5};
+            }
 
+            thead th {
+                padding-left: 10px;
+                font-size: 18px;
+                color: ${props => props.theme.colors.font.h2};
+                text-shadow: 0 0 3px #000000cc;
+            }
+
+            tbody {
+                font-family: Noto-Sans-Regular, serif;
+            }
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #303C47;
+            border-radius: 8px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3D4853;
+        }
+    }
 `;

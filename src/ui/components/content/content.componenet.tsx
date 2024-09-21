@@ -1,22 +1,19 @@
 import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
-import React, { useContext } from 'react';
+import React from 'react';
 import ModalComponent from '../modal/modal.component';
-import { ModalContext } from '../context/modal.context';
-import { ToastContext } from '../context/toast.context';
 import { ToastComponent } from '../toast/toast.component';
+import { FetchStatusComponent } from '../fetchStatus/fetchStatus.component';
 
 export default function Content({ children }: ReactProps) {
-
-    const { toasts, toastsDispatch } = useContext(ToastContext);
-    const { modal, clearModal } = useContext(ModalContext);
 
     return (<ContentStyled>
         <ContentOverflow>
             {children}
         </ContentOverflow>
-        <ModalComponent modal={modal} clearModal={clearModal} />
-        <ToastComponent toasts={toasts} dispatch={toastsDispatch} />
+        <ModalComponent />
+        <ToastComponent />
+        <FetchStatusComponent />
     </ContentStyled>);
 }
 

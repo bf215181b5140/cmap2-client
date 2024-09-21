@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { ReactProps } from 'cmap2-shared';
-import { UseFormRegister } from 'react-hook-form/dist/types/form';
-import { FieldErrors } from 'react-hook-form/dist/types/errors';
+import { UseFormRegister } from 'react-hook-form';
+import { FieldErrors } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import Icon from '../icon/icon.component';
 import InputErrorMessage from './inputErrorMessage.component';

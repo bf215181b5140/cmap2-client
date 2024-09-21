@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { VrcOscAvatar } from '../../../../../shared/schemas/avatars.schema';
 import Segment from '../../../../components/segment/segment.component';
 import { SegmentWidth } from 'cmap2-shared';
-import { SegmentTable } from '../../../../components/segment/segmentTable.component';
+import SegmentTable from '../../../../components/segment/segmentTable.component';
 
 export default function OscStatus() {
 

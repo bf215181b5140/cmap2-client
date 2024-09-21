@@ -13,8 +13,9 @@ export default function AppMenu() {
         <AppMenuLink to="/lovense" icon="ri-wireless-charging-fill" tooltip={'Lovense'} />
         <AppMenuLink to="/settings" icon="ri-settings-3-fill" tooltip={'Settings'} />
         {/* <NavBarLink to="/updater" icon="ri-download-2-fill" tooltip={'Updates'} attentionIcon={!!updateStatusColor} attentionColor={updateStatusColor} /> */}
+        <AppMenuLink to="/notifications" icon="ri-discuss-line" tooltip={'Notifications'} />
         <AppMenuLink to="/guide" icon="ri-questionnaire-fill" tooltip={'Quick start'} />
-        {IS_DEV && <AppMenuLink to="/testing" icon="ri-questionnaire-fill" tooltip={'Testing page'} />}
+        {IS_DEV && <AppMenuLink to="/testing" icon="ri-flask-line" tooltip={'Testing page'} />}
     </AppMenuStyled>);
 }
 

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { CredentialsContext } from '../../../../../../components/context/credentials.context';
 import { LoginFormDTO, LoginFormSchema, LoginTokenSchema } from 'cmap2-shared';
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Credentials } from '../../../../../../../shared/types';
 import TextButton from '../../../../../../components/buttons/textButton.component';
 import FormTable from '../../../../../../components/form/formTable.component';

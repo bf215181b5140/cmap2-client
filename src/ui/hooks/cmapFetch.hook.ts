@@ -3,8 +3,10 @@ import { useContext, useState } from 'react';
 import { CredentialsContext } from '../components/context/credentials.context';
 import { ToastContext } from '../components/context/toast.context';
 import { WEBSITE_URL } from '../../shared/const';
-import { ToastType } from '../components/toast/toast.hook';
 import log from 'electron-log/renderer';
+import { FetchStatusContext } from '../components/context/fetchStatus.context';
+import { nanoid } from 'nanoid';
+import { useNotifications } from './useNotifications.hook';
 
 interface ResponseWithData {
     response: Response;
@@ -16,11 +18,13 @@ type OnSuccess<T extends z.ZodTypeAny> = (data: T extends z.ZodObject<any> ? z.i
 export default function useCmapFetch() {
 
     const { credentials, clearLoginToken } = useContext(CredentialsContext);
-    const { toastsDispatch } = useContext(ToastContext);
-    const [inUse, setInUse] = useState<boolean>(false);
+    const { addNotification } = useNotifications();
+    const { fetchStatusDispatch } = useContext(FetchStatusContext);
+    const [fetchBusy, setFetchBusy] = useState<boolean>(false);
+    const [fetchId] = useState<string>(nanoid(8));
 
     function GET<T extends z.ZodTypeAny>(urlSuffix: string, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
-        cmapFetch(urlSuffix, {}, schema, onSuccess, onError);
+        cmapFetch(urlSuffix, { method: 'GET' }, schema, onSuccess, onError);
     }
 
     function POST<T extends z.ZodTypeAny>(urlSuffix: string, data: any, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
@@ -64,8 +68,15 @@ export default function useCmapFetch() {
     }
 
     function cmapFetch<T extends z.ZodTypeAny>(urlSuffix: string, init: RequestInit, schema: T | undefined, onSuccess: OnSuccess<T>, onError?: () => void) {
-        if (inUse) return;
-        setInUse(true);
+        if (fetchBusy) return;
+        setFetchBusy(true);
+        fetchStatusDispatch({
+            type: 'add',
+            request: {
+                type: init.method === 'GET' ? 'download' : 'upload',
+                id: fetchId
+            }
+        });
 
         if (init.headers) {
             init.headers = { ...init.headers, Authorization: '' + credentials.apiToken };
@@ -138,20 +149,23 @@ export default function useCmapFetch() {
 
                 log.error(err.message);
 
-                toastsDispatch({
-                    type: 'add',
-                    toast: {
-                        message: message,
-                        type: ToastType.ERROR,
-                        group: 'cmapFetchError'
-                    }
-                });
+                addNotification('error', message, 'cmapFetch');
 
                 if (onError) onError();
             })
             // release fetch from inUse
-            .finally(() => setInUse(false));
+            .finally(() => {
+                setFetchBusy(false);
+                fetchStatusDispatch({
+                    type: 'remove',
+                    request: {
+                        type: 'upload',
+                        id: fetchId
+                    }
+                });
+
+            });
     }
 
-    return { GET, POST, PUT, PATCH, DELETE };
+    return { GET, POST, PUT, PATCH, DELETE, fetchBusy, fetchId };
 }

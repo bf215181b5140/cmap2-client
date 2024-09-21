@@ -1,14 +1,12 @@
 import React, { ChangeEvent, useContext, useState } from 'react';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import { useForm } from 'react-hook-form';
-import { ToastType } from '../../../../components/toast/toast.hook';
-import { ToastContext } from '../../../../components/context/toast.context';
 import { ModalContext } from '../../../../components/context/modal.context';
 import { VrcOscAvatar, VrcOscAvatarSchema } from '../../../../../shared/schemas/avatars.schema';
 import IconButton from '../../../../components/buttons/iconButton.component';
 import FormControlBar from '../../../../components/form/formControlBar.component';
-import Icon from '../../../../components/icon/icon.component';
 import { useNavigate } from 'react-router-dom';
+import { useNotifications } from '../../../../hooks/useNotifications.hook';
 
 interface AvatarUploadFormProps {
     avatars: VrcOscAvatar[];
@@ -22,7 +20,7 @@ interface AvatarUploadForm {
 export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUploadFormProps) {
 
     const navigate = useNavigate();
-    const { toastsDispatch } = useContext(ToastContext);
+    const { addNotification } = useNotifications();
     const { setModal } = useContext(ModalContext);
     const { register, reset, handleSubmit } = useForm<AvatarUploadForm>({ defaultValues: { file: undefined } });
     const [fileAvatar, setFileAvatar] = useState<VrcOscAvatar | undefined>(undefined);
@@ -37,7 +35,7 @@ export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUpl
                         VrcOscAvatarSchema.parse(tempFileAvatar);
                         setFileAvatar(tempFileAvatar);
                     } catch (e) {
-                        toastsDispatch({ type: 'add', toast: { message: 'Not recognized as a VRChat avatar file', type: ToastType.ERROR } });
+                        addNotification('error', 'Not recognized as a VRChat avatar file');
                         setFileAvatar(undefined);
                     }
                 }
@@ -66,7 +64,7 @@ export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUpl
 
     function addAvatar(avatar: VrcOscAvatar) {
         avatarsDispatch({ type: 'addAvatar', avatar: avatar });
-        toastsDispatch({ type: 'add', toast: { message: 'Avatar saved', type: ToastType.SUCCESS } });
+        addNotification('success', 'Avatar saved');
         clearForm();
         navigate('/osc/avatars/' + avatar.id)
     }

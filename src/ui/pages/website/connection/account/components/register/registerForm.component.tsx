@@ -1,66 +1,45 @@
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
-import { ReactProps, RegisterFormDTO, RegisterKeySchema, RegisterDTO, RegisterInfoDTO, RegisterFormSchema } from 'cmap2-shared';
-import { useNavigate } from 'react-router-dom';
-import { ToastContext } from '../../../../components/mainWindow/mainWindow.componenet';
-import FormTable from '../../../../shared/components/form/formTable.component';
-import SubmitInput from '../../../../shared/components/form/inputs/submit.component';
-import Input from '../../../../shared/components/form/inputs/input.component';
-import { ToastType } from '../../../../../../components/toast/toast.hook';
-import HiddenInput from '../../../../shared/components/form/inputs/hidden.component';
-import useCmapFetch from '../../../../shared/hooks/cmapFetch.hook';
-import { ClientCredentialsContext } from '../../../../contexts/contexts';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useContext } from 'react';
+import { RegisterFormDTO, RegisterInfoDTO, RegisterFormSchema, RegisterWithKeyFormSchema } from 'cmap2-shared';
+import { CredentialsContext } from '../../../../../../components/context/credentials.context';
+import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
+import { Credentials } from '../../../../../../../shared/types';
+import FormTable from '../../../../../../components/form/formTable.component';
+import Input from '../../../../../../components/input/input.component';
+import TextButton from '../../../../../../components/buttons/textButton.component';
+import HiddenInput from '../../../../../../components/input/hidden.component';
+import { useNotifications } from '../../../../../../hooks/useNotifications.hook';
 
-interface RegisterFormProps extends ReactProps {
-    setShowLogin: Dispatch<SetStateAction<boolean>>;
-    registrationInfo: RegisterInfoDTO;
+interface RegisterFormProps {
+    registrationInfo: RegisterInfoDTO | undefined;
+    fingerprint: string;
 }
 
-export default function RegisterForm({setShowLogin, registrationInfo}: RegisterFormProps) {
+export default function RegisterForm({ registrationInfo, fingerprint }: RegisterFormProps) {
 
-    const cmapFetch = useCmapFetch();
-    const {clientCredentials, setClientCredentials} = useContext(ClientCredentialsContext);
-    const {register, setValue, formState: {errors}, handleSubmit} = useForm<RegisterFormDTO>({
-        resolver: zodResolver(registrationInfo.keyRequired ? RegisterFormSchema.innerType().merge(RegisterKeySchema) : RegisterFormSchema)
+    const { PUT } = useCmapFetch();
+    const { addNotification } = useNotifications();
+    const { setCredentials } = useContext(CredentialsContext);
+    const { register, formState: { errors }, handleSubmit, reset } = useForm<RegisterFormDTO>({
+        resolver: zodResolver(registrationInfo?.keyRequired ? RegisterWithKeyFormSchema : RegisterFormSchema),
+        defaultValues: {
+            fingerprint: fingerprint
+        }
     });
 
-    const toastsDispatch = useContext(ToastContext);
-
-    useEffect(() => {
-        window.electronAPI.get('getFingerprint').then(data => setValue('fingerprint', data));
-    }, []);
-
     async function onSubmit(formData: RegisterFormDTO) {
-        const requestDto: RegisterDTO = {
-            username: formData.username,
-            password: formData.passwordOne,
-            fingerprint: formData.fingerprint,
-            registrationKey: formData.registrationKey
-        };
-
-        cmapFetch('register', {
-            method: 'PUT',
-            body: JSON.stringify(requestDto),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }, () => {
-            toastsDispatch({
-                type: 'add',
-                toast: {message: 'Account registered!', type: ToastType.SUCCESS}
-            });
-            setClientCredentials({
-                ...clientCredentials,
+        PUT('register', formData, undefined, () => {
+            addNotification('success', 'Account registered!');
+            setCredentials({
+                ...new Credentials(),
                 username: formData.username,
-                password: ''
             });
-            setShowLogin(true);
+            reset();
         });
     }
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
-        <p>Create a new account for the website.</p>
         <HiddenInput register={register} name={'fingerprint'} />
         <FormTable thAlign={'right'}>
             <tr>
@@ -69,21 +48,20 @@ export default function RegisterForm({setShowLogin, registrationInfo}: RegisterF
             </tr>
             <tr>
                 <th>Password</th>
-                <td><Input type="password" register={register} name={'passwordOne'} errors={errors} /></td>
+                <td><Input type="password" register={register} name={'password'} errors={errors} /></td>
             </tr>
             <tr>
                 <th>Confirm password</th>
-                <td><Input type="password" register={register} name={'passwordTwo'} errors={errors} /></td>
+                <td><Input type="password" register={register} name={'passwordRepeat'} errors={errors} /></td>
             </tr>
-            {registrationInfo.keyRequired &&
-                <tr>
-                    <th>Registration key</th>
-                    <td><Input register={register} name={'registrationKey'} errors={errors} /></td>
-                </tr>}
+            <tr>
+                <th>Registration key</th>
+                <td><Input register={register} name={'registrationKey'} errors={errors} /></td>
+            </tr>
             <tr>
                 <td></td>
-                <td style={{textAlign: 'center'}}>
-                    <SubmitInput text={'Register'} />
+                <td style={{ textAlign: 'center' }}>
+                    <TextButton type={'submit'} text={'Register'} />
                 </td>
             </tr>
         </FormTable>

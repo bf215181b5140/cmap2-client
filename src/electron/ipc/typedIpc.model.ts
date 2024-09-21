@@ -3,6 +3,7 @@ import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, Vrc
 import { Credentials } from '../../shared/types';
 import { VrcOscAvatar } from '../../shared/schemas/avatars.schema';
 import { VrcParameter } from 'cmap2-shared';
+import { Notification } from '../store/notifications/notifications.model';
 
 export type IpcGetOptions = {
     getAppVersion: string;
@@ -15,12 +16,13 @@ export type IpcGetOptions = {
     getAvatars: VrcOscAvatar[];
     getLastOscActivity: number | undefined;
     getTrackedParameters: Map<string, boolean | number | string>;
+    getFingerprint: string;
+    getNotifications: Notification[];
 
     // getLovenseSettings: LovenseSettings;
     // getToyCommandParameters: ToyCommandParameter[];
     // getToyCommandOscMessages: ToyCommandOscMessage[];
 
-    // getFingerprint: string;
 };
 
 export type IpcSendOptions = {
@@ -35,6 +37,9 @@ export type IpcSendOptions = {
     connectSocket: undefined;
     disconnectSocket: undefined;
     saveAvatars: VrcOscAvatar[];
+    saveNotification: Notification;
+    deleteNotification: Notification;
+    clearNotifications: void;
 
     // setLovenseSettings: LovenseSettings;
     // getLovenseStatus: undefined;

@@ -1,21 +1,21 @@
-import React from 'react';
-import { ReactProps } from 'cmap2-shared';
-import styled, { css } from 'styled-components';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { Toast, ToastReducerAction, ToastType } from './toast.hook';
+import { ToastContext } from '../context/toast.context';
+import { useNotifications } from '../../hooks/useNotifications.hook';
 
-interface ToastProps extends ReactProps {
-    toasts: Toast[];
-    dispatch: (action: ToastReducerAction) => void;
-}
-
-export function ToastComponent(props: ToastProps) {
+export function ToastComponent() {
 
     const [parent] = useAutoAnimate();
+    const { toasts } = useContext(ToastContext);
+    const { notificationColor, notificationIcon } = useNotifications();
 
     return (<ToastComponentStyled ref={parent}>
-        {props.toasts.map(toast => (
-            <ToastStyled type={toast.type} key={toast.id}>{toast.message}</ToastStyled>
+        {toasts.map(toast => (
+            <ToastStyled key={toast.id} background={notificationColor(toast.type).background} border={notificationColor(toast.type).border}>
+                <i className={notificationIcon(toast.type)} />
+                {toast.message}
+            </ToastStyled>
         ))}
     </ToastComponentStyled>);
 };
@@ -25,41 +25,30 @@ const ToastComponentStyled = styled.div`
     bottom: 20px;
     left: 50px;
     right: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
     pointer-events: none;
     z-index: 101;
 `;
 
-const ToastStyled = styled.div<{ type: ToastType }>`
-    margin: 10px;
-    background-color: ${props => props.theme.colors.ui.background3};
-    border: 1px solid;
-    padding: 10px 20px;
+const ToastStyled = styled.div<{ background: string, border: string }>`
+    margin: 0;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
     border-radius: 8px;
-    filter: opacity(0.9);
+    background: ${props => props.background};
+    border: 1px solid ${props => props.border};
+    filter: opacity(0.90);
     pointer-events: none;
+    min-width: 200px;
+    max-width: 600px;
 
-    ${(props) => {
-        switch (props.type) {
-            case ToastType.ERROR:
-                return css`
-                    border-color: ${props => props.theme.colors.error};
-                `;
-            case ToastType.INFO:
-                return css`
-                    border-color: ${props => props.theme.colors.info};
-                `;
-            case ToastType.SUCCESS:
-                return css`
-                    border-color: ${props => props.theme.colors.success};
-                `;
-            case ToastType.WARNING:
-                return css`
-                    border-color: ${props => props.theme.colors.warning};
-                `;
-            case ToastType.ATTENTION:
-                return css`
-                    border-color: ${props => props.theme.colors.attention};
-                `;
-        }
-    }}
+    i {
+        font-size: 20px;
+    }
 `;

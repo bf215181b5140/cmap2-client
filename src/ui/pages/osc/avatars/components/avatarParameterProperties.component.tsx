@@ -1,9 +1,9 @@
 import { ReactProps, theme } from 'cmap2-shared';
 import styled from 'styled-components';
 import React, { useContext } from 'react';
-import { ToastType } from '../../../../components/toast/toast.hook';
 import { VrcOscAvatarParameterProperties } from '../../../../../shared/schemas/avatars.schema';
 import { ToastContext } from '../../../../components/context/toast.context';
+import { useNotifications } from '../../../../hooks/useNotifications.hook';
 
 interface AvatarParameterPropertiesProps extends ReactProps {
     type: 'input' | 'output';
@@ -12,18 +12,11 @@ interface AvatarParameterPropertiesProps extends ReactProps {
 
 export default function AvatarParameterProperties({type, properties}: AvatarParameterPropertiesProps) {
 
-    const { toastsDispatch } = useContext(ToastContext);
+    const { addNotification } = useNotifications();
 
     function copyPath(path: string) {
         navigator.clipboard.writeText(path).then(() => {
-            toastsDispatch({
-                type: 'add',
-                toast: {
-                    message: `Copied parameter to clipboard: ${path}`,
-                    type: ToastType.INFO,
-                    group: 'copyToClipboard'
-                }
-            });
+            addNotification('info', `Copied parameter to clipboard: ${path}`, 'copyToClipboard')
         });
     }
 

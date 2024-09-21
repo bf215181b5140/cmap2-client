@@ -10,6 +10,8 @@ import Context from './components/context/context.component';
 import LaunchPadPage from './pages/launchPad/launchPad.page';
 import OscPage from './pages/osc/osc.page';
 import WebsitePage from './pages/website/website.page';
+import TestingPage from './pages/testing/testing.page';
+import NotificationsPage from './pages/notifications/notifications.page';
 
 export default function App() {
 
@@ -25,7 +27,8 @@ export default function App() {
                     {/* <Route path="/lovense" element={<LovensePage />} /> */}
                     {/* <Route path="/updater" element={<UpdaterPage />} /> */}
                     {/* <Route path="/guide" element={<GuidePage />} /> */}
-                    {/* <Route path="/testing" element={<TestingPage />} /> */}
+                    <Route path="/notifications" element={<NotificationsPage />} />
+                    <Route path="/testing" element={<TestingPage />} />
                     <Route path="*" element={<LaunchPadPage />} />
                 </Routes>
             </Content>

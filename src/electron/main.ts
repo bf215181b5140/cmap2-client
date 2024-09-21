@@ -7,6 +7,8 @@ import VrcDetectorController from './vrcDetector/vrcDetector.controller';
 import { SocketController } from './socket/socket.controller';
 import { AVATARS } from './store/avatars/avatars.store';
 import { OscController } from './osc/osc.controller';
+import { UtilityController } from './utility/utility.controller';
+import { NotificationsStore } from './store/notifications/notifications.store';
 
 if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -16,15 +18,19 @@ if (!app.requestSingleInstanceLock()) {
 app.whenReady().then(() => {
 
     // Start logging (electron events)
+    log.initialize();
     log.info('Application started');
     log.eventLogger.startLogging();
 
+    // Stores
+    new NotificationsStore();
     AVATARS;
 
     // start functions
     new VrcDetectorController();
     new SocketController();
     new OscController();
+    new UtilityController();
 
     // create window and tray
     new WindowController();

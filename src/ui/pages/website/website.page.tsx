@@ -13,9 +13,9 @@ export default function WebsitePage() {
     return (<>
         <ContentMenu>
             <ContentMenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Website connection'} />
-            <ContentMenuLink to={'/website/profile'} icon={'ri-user-fill'} tooltip={'Website profile'} disabled={!apiToken} />
-            <ContentMenuLink to={'/website/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Website layout'} disabled={!apiToken} />
-            <ContentMenuLink to={'/website/state'} icon={'ri-archive-stack-line'} tooltip={'Website state'} disabled={!apiToken} />
+            <ContentMenuLink to={'/website/profile'} icon={'ri-profile-fill'} tooltip={'Website profile'} disabled={!apiToken} />
+            <ContentMenuLink to={'/website/avatars'} icon={'ri-layout-masonry-fill'} tooltip={'Website layout'} disabled={!apiToken} />
+            <ContentMenuLink to={'/website/state'} icon={'ri-archive-stack-fill'} tooltip={'Website state'} disabled={!apiToken} />
             <ContentMenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Account tiers'} disabled={!apiToken} />
 
             {isAdmin && (<>

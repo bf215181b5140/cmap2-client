@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { CredentialsContext } from '../../../../components/context/credentials.context';
 import Segment from '../../../../components/segment/segment.component';
 import useSocketConnection from '../../../../hooks/socketConnection.hook';
