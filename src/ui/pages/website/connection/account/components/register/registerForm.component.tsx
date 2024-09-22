@@ -14,14 +14,15 @@ import { useNotifications } from '../../../../../../hooks/useNotifications.hook'
 interface RegisterFormProps {
     registrationInfo: RegisterInfoDTO | undefined;
     fingerprint: string;
+    loginSegment: () => void;
 }
 
-export default function RegisterForm({ registrationInfo, fingerprint }: RegisterFormProps) {
+export default function RegisterForm({ registrationInfo, fingerprint, loginSegment }: RegisterFormProps) {
 
     const { PUT } = useCmapFetch();
     const { addNotification } = useNotifications();
     const { setCredentials } = useContext(CredentialsContext);
-    const { register, formState: { errors }, handleSubmit, reset } = useForm<RegisterFormDTO>({
+    const { register, formState: { errors }, handleSubmit } = useForm<RegisterFormDTO>({
         resolver: zodResolver(registrationInfo?.keyRequired ? RegisterWithKeyFormSchema : RegisterFormSchema),
         defaultValues: {
             fingerprint: fingerprint
@@ -35,9 +36,11 @@ export default function RegisterForm({ registrationInfo, fingerprint }: Register
                 ...new Credentials(),
                 username: formData.username,
             });
-            reset();
+            loginSegment();
         });
     }
+
+    console.log(errors);
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
         <HiddenInput register={register} name={'fingerprint'} />

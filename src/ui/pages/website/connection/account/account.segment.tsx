@@ -23,6 +23,6 @@ export default function AccountSegment() {
         </SegmentMenu>
         {segment === 'welcome' && <Welcome />}
         {segment === 'login' && <Login />}
-        {segment === 'register' && <Register />}
+        {segment === 'register' && <Register loginSegment={() => setSegment('login')} />}
     </Segment>);
 }

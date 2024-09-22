@@ -1,7 +1,6 @@
 import { z, ZodError } from 'zod';
 import { useContext, useState } from 'react';
 import { CredentialsContext } from '../components/context/credentials.context';
-import { ToastContext } from '../components/context/toast.context';
 import { WEBSITE_URL } from '../../shared/const';
 import log from 'electron-log/renderer';
 import { FetchStatusContext } from '../components/context/fetchStatus.context';

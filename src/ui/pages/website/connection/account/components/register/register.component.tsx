@@ -5,7 +5,11 @@ import LoadingSpinner from '../../../../../../components/loadingSpinner/loadingS
 import RegisterForm from './registerForm.component';
 import SpanNotification from '../../../../../../components/spanNotification/spanNotification.component';
 
-export default function Register() {
+interface RegisterProps {
+    loginSegment: () => void;
+}
+
+export default function Register({ loginSegment }: RegisterProps) {
 
     const { GET } = useCmapFetch();
     const [registrationInfo, setRegistrationInfo] = useState<RegisterInfoDTO | undefined>();
@@ -18,10 +22,16 @@ export default function Register() {
 
     if (!registrationInfo || !fingerprint) return <LoadingSpinner />;
 
+    if (!registrationInfo.available) {
+        return (<>
+            <SpanNotification type={'error'}>Website is currently not accepting new registrations.</SpanNotification>
+            {registrationInfo.message && <SpanNotification type={'info'}>{registrationInfo.message}</SpanNotification>}
+        </>);
+    }
+
     return (<>
-        {!registrationInfo.available && <SpanNotification type={'error'}>Registrations are currently not available.</SpanNotification>}
-        {registrationInfo.keyRequired && <SpanNotification type={'warning'}>Currently it's required to use a registration key when creating a new account.</SpanNotification>}
+        {registrationInfo.keyRequired && <SpanNotification type={'warning'}>Registration is currently only available if you have a registration key.</SpanNotification>}
         {registrationInfo.message && <SpanNotification type={'info'}>{registrationInfo.message}</SpanNotification>}
-        {registrationInfo.available && <RegisterForm registrationInfo={registrationInfo} fingerprint={fingerprint} />}
+        <RegisterForm registrationInfo={registrationInfo} fingerprint={fingerprint} loginSegment={loginSegment} />
     </>);
 }
