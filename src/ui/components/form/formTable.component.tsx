@@ -18,12 +18,8 @@ export const FormTableStyled = styled.table<{ width?: string, thAlign?: string }
   border-collapse: collapse;
   width: ${props => props.width ? props.width : 'auto'};
 
-  thead th {
-    padding-left: 10px;
-    text-align: left;
-  }
-
   tbody th {
+      font-weight: normal;
     text-align: ${props => props.thAlign ? props.thAlign : 'left'};
   }
 `;

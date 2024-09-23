@@ -41,7 +41,7 @@ export default function WebsocketStatusSegment() {
             <FormTable>
                 <tr>
                     <th>Connect automatically</th>
-                    <td><CheckboxInput name={'autoLogin'} register={register} errors={errors} onChange={() => submitRef.current?.click()} /></td>
+                    <td><CheckboxInput name={'autoConnect'} register={register} errors={errors} onChange={() => submitRef.current?.click()} /></td>
                 </tr>
             </FormTable>
             <input type={'submit'} ref={submitRef} style={{ display: 'none' }} />

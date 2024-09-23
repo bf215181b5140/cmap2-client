@@ -5,6 +5,7 @@ import ContentMenu from '../../components/menu/contentMenu/contentMenu.component
 import ContentMenuLink from '../../components/menu/contentMenu/contentMenuLink.component';
 import { CredentialsContext } from '../../components/context/credentials.context';
 import ConnectionPage from './connection/connection.page';
+import ProfilePage from './profile/profile.page';
 
 export default function WebsitePage() {
 
@@ -25,26 +26,18 @@ export default function WebsitePage() {
             </>)}
         </ContentMenu>
 
-            <Routes>
-                <Route path="/connection" element={<ConnectionPage />} />
-                {/* <Route path="/profile" element={<ProfilePage />} /> */}
-                {/* <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} /> */}
-                {/* <Route path="/state" element={<StatePage />} /> */}
-                {/* <Route path="/tiers" element={<TiersPage />} /> */}
+        <Routes>
+            <Route path="/connection" element={<ConnectionPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            {/* <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} /> */}
+            {/* <Route path="/state" element={<StatePage />} /> */}
+            {/* <Route path="/tiers" element={<TiersPage />} /> */}
 
-                {/* /!* Admin pages *!/ */}
-                {/* <Route path="/approveFiles" element={<ApproveFilesPage />} /> */}
-                {/* <Route path="/clientVersions" element={<UpdatesPage />} /> */}
+            {/* /!* Admin pages *!/ */}
+            {/* <Route path="/approveFiles" element={<ApproveFilesPage />} /> */}
+            {/* <Route path="/clientVersions" element={<UpdatesPage />} /> */}
 
-                <Route path="*" element={<Navigate to={'/website/connection'} />} />
-            </Routes>
-        </>);
+            <Route path="*" element={<Navigate to={'/website/connection'} />} />
+        </Routes>
+    </>);
 }
-
-const WebsitePageStyled = styled.div`
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-`;

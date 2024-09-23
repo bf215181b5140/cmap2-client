@@ -103,4 +103,19 @@ const AppStyled = styled.div`
             color: ${props => props.theme.colors.font.textBright};
         }
     }
+
+
+    fieldset {
+        margin: 8px 0;
+        padding: 6px 16px;
+        border-width: 2px;
+        border-style: solid;
+        border-color: ${props => props.theme.colors.input.bg};
+        border-radius: 8px;
+
+        legend {
+            padding: 0 10px;
+        }
+    }
+
 `;

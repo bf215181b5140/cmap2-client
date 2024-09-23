@@ -11,7 +11,7 @@ interface RegisterProps {
 
 export default function Register({ loginSegment }: RegisterProps) {
 
-    const { GET } = useCmapFetch();
+    const { GET, fetchBusy } = useCmapFetch();
     const [registrationInfo, setRegistrationInfo] = useState<RegisterInfoDTO | undefined>();
     const [fingerprint, setFingerprint] = useState<string | undefined>();
 
@@ -20,7 +20,9 @@ export default function Register({ loginSegment }: RegisterProps) {
         GET('register', RegisterInfoSchema, data => setRegistrationInfo(data));
     }, []);
 
-    if (!registrationInfo || !fingerprint) return <LoadingSpinner />;
+    if (fetchBusy || !fingerprint) return <LoadingSpinner />;
+
+    if (!registrationInfo) return undefined;
 
     if (!registrationInfo.available) {
         return (<>

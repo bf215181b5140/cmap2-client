@@ -20,8 +20,8 @@ const ContentMenuStyled = styled.div`
     z-index: 10;
 
     hr {
-        border: 1px solid ${props => props.theme.colors.submenu.bg};
-        margin: 3px 5px;
-        padding: 0;
+        border: 1px solid ${props => props.theme.colors.submenu.bg} !important;
+        margin: 3px 5px !important;
+        padding: 0 !important;
     }
 `;

@@ -14,7 +14,7 @@ class SettingsStore extends CmapStore<SettingsStoreData> {
 
         // Credentials
         IPC.handle('getCredentials', async () => this.get('credentials'));
-        IPC.on('saveAppSettings', data => this.set('credentials', data));
+        IPC.on('setCredentials', data => this.set('credentials', data));
 
         // App settings
         IPC.handle('getAppSettings', async () => this.get('app'));
