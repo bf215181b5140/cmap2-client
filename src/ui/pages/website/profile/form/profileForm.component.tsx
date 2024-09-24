@@ -1,4 +1,4 @@
-import { ClientDTO, ClientVisibilityOptions, CmapSelectOption, OfflineDisplay, OfflineDisplayOptions, ProfileFormSchema, UnknownAvatarDisplayOptions } from 'cmap2-shared';
+import { ClientDTO, ClientVisibilityOptions, CmapSelectOption, ProfileFormSchema } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
@@ -11,7 +11,6 @@ import NotificationIcon from '../../../../components/notifications/icon/notifica
 import TextareaInput from '../../../../components/input/textarea.component';
 import Segment from '../../../../components/segment/segment.component';
 import SelectInput from '../../../../components/input/select.component';
-import { UnknownAvatarDisplay } from 'cmap2-shared/src/types/enums/client';
 
 interface ProfileFormProps {
     client: ClientDTO;
@@ -21,7 +20,7 @@ interface ProfileFormProps {
 export default function ProfileForm({ client, setProfileInfo }: ProfileFormProps) {
 
     const { POST } = useCmapFetch();
-    const { register, reset, formState: { errors, isDirty }, handleSubmit, watch } = useForm({
+    const { register, reset, formState: { errors, isDirty }, handleSubmit } = useForm({
         defaultValues: client,
         resolver: zodResolver(ProfileFormSchema)
     });
@@ -53,46 +52,30 @@ export default function ProfileForm({ client, setProfileInfo }: ProfileFormProps
                     <th>Profile visibility</th>
                     <td><SelectInput register={register} name={'visibility'} width={'auto'} options={ClientVisibilityOptions} errors={errors} /></td>
                 </tr>
-                <tr>
-                    <th>Default layout</th>
-                    <td><SelectInput register={register} name={'defaultLayoutId'} width={defaultLayoutOptions.length === 0 ? '150px' : 'auto'}  errors={errors}
-                                     readOnly={defaultLayoutOptions.length === 0}
-                                     options={defaultLayoutOptions} /></td>
-                </tr>
             </FormTable>
             <fieldset>
                 <legend>Unknown avatar</legend>
-                <p>What should be displayed on your profile when you're using an unknown avatar?</p>
+                <p>When using an avatar that isn't set on any layout you can display a specific default layout.</p>
+                <p>If no default layout is selected then a simple message is displayed that you are using unsupported avatar, or you can enter a custom message.</p>
                 <FormTable>
                     <tr>
-                        <th style={{width: '120px'}}>Show</th>
-                        <td style={{width: '180px'}}>
-                            <SelectInput register={register} name={'unknownAvatarDisplay'} width={'auto'} options={UnknownAvatarDisplayOptions} errors={errors} />
-                        </td>
-                        <td><p>{UnknownAvatarDisplayOptions.find(o => o.key === watch('unknownAvatarDisplay'))?.description}</p></td>
+                        <th>Default layout</th>
+                        <td><SelectInput register={register} name={'defaultLayoutId'} width={defaultLayoutOptions.length === 0 ? '150px' : 'auto'} errors={errors}
+                                         readOnly={defaultLayoutOptions.length === 0} options={defaultLayoutOptions} /></td>
                     </tr>
                     <tr>
                         <th>Custom message</th>
-                        <td colSpan={2}><TextareaInput register={register} name={'unknownAvatarMessage'} errors={errors} width={'385px'} rows={2}
-                                           readOnly={watch('unknownAvatarDisplay') !== UnknownAvatarDisplay.CustomMessage} /></td>
+                        <td><TextareaInput register={register} name={'unknownAvatarMessage'} errors={errors} width={'385px'} rows={2} /></td>
                     </tr>
                 </FormTable>
             </fieldset>
             <fieldset>
                 <legend>Offline</legend>
-                <p>What should be displayed on your profile when you're offline?</p>
+                <p>When you are offline a simple message is displayed that you are offline, or you can enter a custom message.</p>
                 <FormTable>
                     <tr>
-                        <th style={{width: '120px'}}>Show</th>
-                        <td style={{width: '180px'}}>
-                            <SelectInput register={register} name={'offlineDisplay'} width={'auto'} options={OfflineDisplayOptions} errors={errors} />
-                        </td>
-                        <td><p>{OfflineDisplayOptions.find(o => o.key === watch('offlineDisplay'))?.description}</p></td>
-                    </tr>
-                    <tr>
                         <th>Custom message</th>
-                        <td colSpan={2}><TextareaInput register={register} name={'offlineMessage'} errors={errors} width={'385px'} rows={2}
-                                           readOnly={watch('offlineDisplay') !== OfflineDisplay.CustomMessage} /></td>
+                        <td colSpan={2}><TextareaInput register={register} name={'offlineMessage'} errors={errors} width={'385px'} rows={2} /></td>
                     </tr>
                 </FormTable>
             </fieldset>

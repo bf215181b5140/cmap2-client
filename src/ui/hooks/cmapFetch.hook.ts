@@ -166,5 +166,5 @@ export default function useCmapFetch() {
             });
     }
 
-    return { GET, POST, PUT, PATCH, DELETE, fetchBusy, fetchId };
+    return { GET, POST, PUT, PATCH, DELETE, cmapFetch, fetchBusy, fetchId };
 }
