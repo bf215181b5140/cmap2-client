@@ -7,21 +7,25 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { useNavigate } from 'react-router-dom';
 import { AvatarReducerAction } from '../../avatars.reducer';
-import { ModalContext } from '../../../../../components/mainWindow/mainWindow.componenet';
+import { ModalContext, ToastContext } from '../../../../../components/mainWindow/mainWindow.componenet';
 import HiddenInput from '../../../../../shared/components/form/inputs/hidden.component';
 import CheckboxInput from '../../../../../shared/components/form/inputs/checkbox.component';
 import Input from '../../../../../shared/components/form/inputs/input.component';
 import IconButton from '../../../../../shared/components/buttons/iconButton.component';
 import ContentBox from '../../../../../shared/components/contentBox/contentBox.component';
+import { ToastType } from '../../../../../components/toast/toast.hook';
 
 interface AvatarSettingsProps extends ReactProps {
     selectedAvatar: AvatarDTO;
     avatarDataDispatch: React.Dispatch<AvatarReducerAction>;
+    canCreateCopy: boolean;
 }
 
-export default function AvatarSettings({ selectedAvatar, avatarDataDispatch }: AvatarSettingsProps) {
+export default function AvatarSettings({ selectedAvatar, avatarDataDispatch, canCreateCopy }: AvatarSettingsProps) {
 
     const customFetch = useCmapFetch();
+    const { setModal } = useContext(ModalContext);
+    const toastsDispatch = useContext(ToastContext);
     const { register, reset, formState: { errors, isDirty }, handleSubmit, setValue } = useForm({ resolver: zodResolver(AvatarFormSchema) });
     const navigate = useNavigate();
 
@@ -62,7 +66,31 @@ export default function AvatarSettings({ selectedAvatar, avatarDataDispatch }: A
             headers: { 'Content-Type': 'application/json' }
         }, () => {
             avatarDataDispatch({ type: 'removeAvatar', avatar: avatar });
-            navigate('/website/avatars');
+        });
+    }
+
+    function createCopy() {
+        setModal({
+            title: 'Copying avatar',
+            message: 'You are about to make a copy of this avatar.',
+            confirmValue: 'Create copy',
+            confirmFunction: () => {
+                customFetch('avatar/copy', {
+                    method: 'PUT',
+                    body: JSON.stringify({ id: selectedAvatar.id }),
+                    headers: { 'Content-Type': 'application/json' }
+                }, avatar => {
+                    avatarDataDispatch({ type: 'addAvatar', avatar: avatar });
+                    toastsDispatch({
+                        type: 'add',
+                        toast: {
+                            message: 'Avatar copy created!',
+                            type: ToastType.SUCCESS,
+                            group: 'avatarCopy'
+                        }
+                    });
+                });
+            }
         });
     }
 
@@ -84,6 +112,8 @@ export default function AvatarSettings({ selectedAvatar, avatarDataDispatch }: A
                 </tr>
             </FormTable>
             <FormControlBar>
+                <IconButton role={'normal'} icon={'ri-file-copy-line'} disabled={!canCreateCopy} onClick={() => createCopy()} />
+                <hr />
                 <IconButton role={'save'} disabled={!isDirty} />
                 <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
                 {selectedAvatar.id && <>
