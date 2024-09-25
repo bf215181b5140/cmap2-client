@@ -112,7 +112,7 @@ export default function AvatarSettings({ selectedAvatar, avatarDataDispatch, can
                 </tr>
             </FormTable>
             <FormControlBar>
-                <IconButton role={'normal'} icon={'ri-file-copy-line'} disabled={!canCreateCopy} onClick={() => createCopy()} />
+                <IconButton role={'normal'} tooltip={'Create a copy'} icon={'ri-file-copy-line'} disabled={!canCreateCopy} onClick={() => createCopy()} />
                 <hr />
                 <IconButton role={'save'} disabled={!isDirty} />
                 <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
