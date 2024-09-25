@@ -87,7 +87,7 @@ export default function AvatarsPage() {
 
         {selectedAvatar && (<>
             {page === 'settings' ? (<>
-                <AvatarSettings selectedAvatar={selectedAvatar} avatarDataDispatch={avatarDataDispatch} canCreateCopy={selectedAvatar.layouts.length < clientTier.layouts} />
+                <AvatarSettings selectedAvatar={selectedAvatar} avatarDataDispatch={avatarDataDispatch} canCreateCopy={!!selectedAvatar.layouts && selectedAvatar.layouts?.length < clientTier.layouts} />
                 {selectedAvatar.id && (<>
                     <StateBadges selectedAvatar={selectedAvatar} clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} />
                     <ControlParameters selectedAvatar={selectedAvatar} clientTier={clientTier} avatarDataDispatch={avatarDataDispatch} />
