@@ -75,7 +75,7 @@ export default function AvatarSettings({ selectedAvatar, avatarDataDispatch, can
             message: 'You are about to make a copy of this avatar.',
             confirmValue: 'Create copy',
             confirmFunction: () => {
-                customFetch('avatar/copy', {
+                customFetch<AvatarDTO>('avatar/copy', {
                     method: 'PUT',
                     body: JSON.stringify({ id: selectedAvatar.id }),
                     headers: { 'Content-Type': 'application/json' }
