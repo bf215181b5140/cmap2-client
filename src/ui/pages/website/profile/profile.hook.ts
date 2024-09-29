@@ -1,38 +1,54 @@
 import { useEffect, useState } from 'react';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
-import { ClientDTO, ClientSchema, InteractionKeyDTO, ProfileFormDTO, UploadedFileDTO } from 'cmap2-shared';
+import { BackgroundDTO, ProfilePageSchema, ProfilePageDTO, InteractionKeyDTO, StyleDTO, UploadedFileDTO, BasicInfoFormDTO } from 'cmap2-shared';
+import { useParams } from 'react-router-dom';
 
 export default function useProlfilePage() {
 
     const { GET } = useCmapFetch();
-    const [client, setClient] = useState<ClientDTO | undefined>();
+    const [profile, setProfile] = useState<ProfilePageDTO | undefined>();
+    const page = useParams().page ?? 'settings';
 
     useEffect(() => {
-        GET('profile', ClientSchema, data => {
-            setClient(data);
+        GET('profile', ProfilePageSchema, data => {
+            setProfile(data);
         });
     }, []);
 
-    function setProfileInfo(profileForm: ProfileFormDTO) {
-        setClient(prevState => {
+    function setBasicInfo(basicInfo: BasicInfoFormDTO) {
+        setProfile(prevState => {
             if (!prevState) return undefined;
-            return { ...prevState, ...profileForm };
+            return { ...prevState, ...basicInfo };
         });
     }
 
-    function setClientPicture(file: UploadedFileDTO) {
-        setClient(prevState => {
+    function setImage(file: UploadedFileDTO) {
+        setProfile(prevState => {
             if (!prevState) return undefined;
             return { ...prevState, image: file };
         });
     }
 
     function setInteractionKeys(interactionKeys: InteractionKeyDTO[]) {
-        setClient(prevState => {
+        setProfile(prevState => {
             if (!prevState) return undefined;
-            return { ...prevState, interactionkeys: interactionKeys };
+            return { ...prevState, interactionKeys: interactionKeys };
         });
     }
 
-    return { client, setProfileInfo, setClientPicture, setInteractionKeys };
+    function setBackground(background: BackgroundDTO) {
+        setProfile(prevState => {
+            if (!prevState) return undefined;
+            return { ...prevState, background: background };
+        });
+    }
+
+    function setStyle(style: StyleDTO) {
+        setProfile(prevState => {
+            if (!prevState) return undefined;
+            return { ...prevState, style: style };
+        });
+    }
+
+    return { page, profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setStyle };
 }

@@ -32,7 +32,7 @@ export default function Register({ loginSegment }: RegisterProps) {
     }
 
     return (<>
-        {registrationInfo.keyRequired && <SpanNotification type={'warning'}>Registration is currently only available if you have a registration key.</SpanNotification>}
+        {registrationInfo.keyRequired && <SpanNotification type={'warning'}>Registration is currently only available if you have an account key.</SpanNotification>}
         {registrationInfo.message && <SpanNotification type={'info'}>{registrationInfo.message}</SpanNotification>}
         <RegisterForm registrationInfo={registrationInfo} fingerprint={fingerprint} loginSegment={loginSegment} />
     </>);

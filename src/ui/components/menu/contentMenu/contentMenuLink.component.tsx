@@ -61,6 +61,7 @@ const ContentMenuLinkStyled = styled(Link)<{ $isActive: boolean, disabled: boole
         padding: 4px 12px;
         border-radius: 8px;
         color: ${props => props.theme.colors.font.text};
+        font-weight: normal;
     }
 
     .attention {

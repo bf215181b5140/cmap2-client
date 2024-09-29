@@ -5,11 +5,12 @@ interface PageMenuLinkProps extends ReactProps {
     onClick: () => void;
     isActive: boolean;
     disabled?: boolean;
+    className?: string;
 }
 
-export default function PageMenuLink({ onClick, isActive, disabled = false, children }: PageMenuLinkProps) {
+export default function PageMenuLink({ onClick, isActive, disabled = false, className, children }: PageMenuLinkProps) {
 
-    return (<PageMenuLinkStyled isActive={isActive} onClick={onClick} disabled={disabled}>
+    return (<PageMenuLinkStyled isActive={isActive} onClick={onClick} disabled={disabled} className={className}>
         {children}
     </PageMenuLinkStyled>);
 }
@@ -17,7 +18,6 @@ export default function PageMenuLink({ onClick, isActive, disabled = false, chil
 const highlight = css`
     background-color: ${props => props.theme.colors.buttons.secondary.hoverBg};
     border-color: ${props => props.theme.colors.buttons.secondary.hoverBorder};
-    color: ${props => props.theme.colors.buttons.secondary.hoverBorder};
 `;
 
 const PageMenuLinkStyled = styled.div<{ isActive: boolean, disabled: boolean }>`

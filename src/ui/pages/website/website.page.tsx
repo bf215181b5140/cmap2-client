@@ -6,6 +6,7 @@ import ContentMenuLink from '../../components/menu/contentMenu/contentMenuLink.c
 import { CredentialsContext } from '../../components/context/credentials.context';
 import ConnectionPage from './connection/connection.page';
 import ProfilePage from './profile/profile.page';
+import TiersPage from './tiers/tiers.page';
 
 export default function WebsitePage() {
 
@@ -28,10 +29,10 @@ export default function WebsitePage() {
 
         <Routes>
             <Route path="/connection" element={<ConnectionPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/:page?" element={<ProfilePage />} />
             {/* <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} /> */}
             {/* <Route path="/state" element={<StatePage />} /> */}
-            {/* <Route path="/tiers" element={<TiersPage />} /> */}
+            <Route path="/tiers" element={<TiersPage />} />
 
             {/* /!* Admin pages *!/ */}
             {/* <Route path="/approveFiles" element={<ApproveFilesPage />} /> */}

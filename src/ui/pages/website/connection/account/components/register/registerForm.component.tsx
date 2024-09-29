@@ -40,8 +40,6 @@ export default function RegisterForm({ registrationInfo, fingerprint, loginSegme
         });
     }
 
-    console.log(errors);
-
     return (<form onSubmit={handleSubmit(onSubmit)}>
         <HiddenInput register={register} name={'fingerprint'} />
         <FormTable thAlign={'right'}>
@@ -58,8 +56,8 @@ export default function RegisterForm({ registrationInfo, fingerprint, loginSegme
                 <td><Input type="password" register={register} name={'passwordRepeat'} errors={errors} /></td>
             </tr>
             <tr>
-                <th>Registration key</th>
-                <td><Input register={register} name={'registrationKey'} errors={errors} /></td>
+                <th>Account key</th>
+                <td><Input register={register} name={'accountKey'} errors={errors} /></td>
             </tr>
             <tr>
                 <td></td>

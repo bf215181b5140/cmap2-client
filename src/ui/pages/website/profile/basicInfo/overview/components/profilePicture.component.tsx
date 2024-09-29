@@ -1,23 +1,24 @@
 import styled from 'styled-components';
 import { UploadedFileDTO, UploadedFileSchema } from 'cmap2-shared';
 import React, { RefObject, useEffect, useRef } from 'react';
-import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
+import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
-import { WEBSITE_URL } from '../../../../../../shared/const';
-import useFileValidation from '../../../../../hooks/fileValidation.hook';
+import { WEBSITE_URL } from '../../../../../../../shared/const';
+import useFileValidation from '../../../../../../hooks/fileValidation.hook';
 
 interface ProfilePictureProps {
     image: UploadedFileDTO | undefined | null;
-    setClientPicture: (file: UploadedFileDTO) => void;
+    setImage: (file: UploadedFileDTO) => void;
 }
 
-export default function ProfilePicture({ image, setClientPicture }: ProfilePictureProps) {
+export default function ProfilePicture({ image, setImage }: ProfilePictureProps) {
 
     const { cmapFetch } = useCmapFetch();
     const { validateImage } = useFileValidation();
     const { register, watch, reset, handleSubmit } = useForm<{ file: FileList }>();
     const submitRef: RefObject<HTMLInputElement> = useRef(null);
     const file = watch('file')?.item(0);
+    const imageUrl = image ? WEBSITE_URL + '/' + image.urlPath : undefined;
 
     useEffect(() => {
         if (file && submitRef?.current) {
@@ -34,7 +35,7 @@ export default function ProfilePicture({ image, setClientPicture }: ProfilePictu
                 method: 'POST',
                 body: postData
             }, UploadedFileSchema, data => {
-                setClientPicture(data);
+                setImage(data);
                 reset();
             });
         }
@@ -45,38 +46,30 @@ export default function ProfilePicture({ image, setClientPicture }: ProfilePictu
         if (input) input.click();
     }
 
-    return (<ProfilePictureStyled $hasImage={!!image} onClick={onBrowse}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+    return (<ProfilePictureStyled hasImage={!!imageUrl} onClick={onBrowse} style={{ backgroundImage: `url(${imageUrl})` }}>
+
+        <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>
             <input type="file" id="fileInput" {...register('file')} />
             <input type="submit" ref={submitRef} />
         </form>
-        {image && <img src={WEBSITE_URL + '/' + image.urlPath} alt={image.fileName} />}
+
         <div />
         <i className={image ? 'ri-image-edit-line' : 'ri-image-add-line'} />
+
     </ProfilePictureStyled>);
 }
 
-const ProfilePictureStyled = styled.div<{ $hasImage: boolean }>`
+const ProfilePictureStyled = styled.div<{ hasImage: boolean }>`
     border: 3px solid ${props => props.theme.colors.ui.element3};
     border-radius: 8px;
     position: relative;
-    width: 100%;
-    height: ${props => props.$hasImage ? 'auto' : '200px'};
     cursor: pointer;
     transition: 0.1s linear;
-
-    form {
-        display: none;
-    }
-
-    img {
-        border: none;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        border-radius: 5px;
-        display: block;
-    }
+    width: 100%;
+    aspect-ratio: 16/9;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 
     div {
         position: absolute;
@@ -115,6 +108,5 @@ const ProfilePictureStyled = styled.div<{ $hasImage: boolean }>`
             transform: translate(-50%, -50%);
         }
     }
-
 `;
 

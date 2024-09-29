@@ -12,7 +12,7 @@ interface ResponseWithData {
     data: unknown;
 }
 
-type OnSuccess<T extends z.ZodTypeAny> = (data: T extends z.ZodObject<any> ? z.infer<T> : unknown, res: Response) => void
+type OnSuccess<T extends z.ZodTypeAny> = (data: T extends z.ZodType ? z.infer<T> : unknown, res: Response) => void
 
 export default function useCmapFetch() {
 

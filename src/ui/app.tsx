@@ -103,8 +103,7 @@ const AppStyled = styled.div`
             color: ${props => props.theme.colors.font.textBright};
         }
     }
-
-
+    
     fieldset {
         margin: 8px 0;
         padding: 6px 16px;

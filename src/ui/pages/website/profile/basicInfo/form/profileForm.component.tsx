@@ -1,34 +1,34 @@
-import { ClientDTO, ClientVisibilityOptions, CmapSelectOption, ProfileFormSchema } from 'cmap2-shared';
+import { BasicInfoFormDTO, BasicInfoFormSchema, ClientVisibilityOptions, CmapSelectOption, ProfilePageDTO } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
-import useCmapFetch from '../../../../hooks/cmapFetch.hook';
-import FormTable from '../../../../components/form/formTable.component';
-import Input from '../../../../components/input/input.component';
-import FormControlBar from '../../../../components/form/formControlBar.component';
-import IconButton from '../../../../components/buttons/iconButton.component';
-import NotificationIcon from '../../../../components/notifications/icon/notificationIcon.component';
-import TextareaInput from '../../../../components/input/textarea.component';
-import Segment from '../../../../components/segment/segment.component';
-import SelectInput from '../../../../components/input/select.component';
+import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
+import FormTable from '../../../../../components/form/formTable.component';
+import Input from '../../../../../components/input/input.component';
+import FormControlBar from '../../../../../components/form/formControlBar.component';
+import IconButton from '../../../../../components/buttons/iconButton.component';
+import NotificationIcon from '../../../../../components/notifications/icon/notificationIcon.component';
+import TextareaInput from '../../../../../components/input/textarea.component';
+import Segment from '../../../../../components/segment/segment.component';
+import SelectInput from '../../../../../components/input/select.component';
 
 interface ProfileFormProps {
-    client: ClientDTO;
-    setProfileInfo: (client: ClientDTO) => void;
+    profile: ProfilePageDTO;
+    setBasicInfo: (basicInfo: BasicInfoFormDTO) => void;
 }
 
-export default function ProfileForm({ client, setProfileInfo }: ProfileFormProps) {
+export default function ProfileForm({ profile, setBasicInfo }: ProfileFormProps) {
 
     const { POST } = useCmapFetch();
-    const { register, reset, formState: { errors, isDirty }, handleSubmit } = useForm({
-        defaultValues: client,
-        resolver: zodResolver(ProfileFormSchema)
+    const { register, reset, formState: { errors, isDirty }, handleSubmit } = useForm<BasicInfoFormDTO>({
+        defaultValues: profile,
+        resolver: zodResolver(BasicInfoFormSchema)
     });
-    const defaultLayoutOptions: CmapSelectOption[] = client.layouts?.map(l => ({key: l.id, value: l.label })) || [];
+    const defaultLayoutOptions: CmapSelectOption[] = profile.layouts.map(l => ({key: l.id, value: l.label }));
 
-    const onSubmit = (formData: any) => {
-        POST('profile', formData, undefined, () => {
-            setProfileInfo(formData);
+    const onSubmit = (formData: BasicInfoFormDTO) => {
+        POST('profile/basicInfo', formData, undefined, () => {
+            setBasicInfo(formData);
             reset(formData);
         });
     };

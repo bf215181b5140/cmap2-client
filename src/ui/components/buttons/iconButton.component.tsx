@@ -260,7 +260,7 @@ const sizeNormal = css`
     font-size: 28px;
 
     :hover {
-        transform: scale(1.05);
+        transform: scale(1.08);
     }
 `;
 
@@ -270,7 +270,7 @@ const sizeSmall = css`
     font-size: 22px;
 
     :hover {
-        transform: scale(1.08);
+        transform: scale(1.1);
     }
 `;
 
@@ -280,6 +280,6 @@ const sizeTiny = css`
     font-size: 18px;
 
     :hover {
-        transform: scale(1.12);
+        transform: scale(1.15);
     }
 `;

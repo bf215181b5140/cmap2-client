@@ -22,6 +22,6 @@ const TextButtonStyled = styled.input`
   cursor: pointer;
 
   :hover {
-    transform: scale(1.05);
+    transform: scale(1.08);
   }
 `;
