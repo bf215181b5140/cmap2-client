@@ -35,6 +35,6 @@ export default function TiersPage() {
     return (<Page flexDirection={'column'}>
         <Tiers clientTier={clientTier} tiers={tiers} />
         {minRank < clientTier.rank && <GenerateAccountKey tiers={tiers} clientTier={clientTier} generatedAccountKeys={generatedKeys} addGeneratedAccountKey={addGeneratedAccountKey} />}
-        <UseAccountKey />
+        <UseAccountKey setClientTier={setClientTier} />
     </Page>);
 }

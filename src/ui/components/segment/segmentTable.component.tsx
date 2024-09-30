@@ -42,6 +42,7 @@ export const SegmentTableStyled = styled.div<{ maxHeight?: string }>`
 
             thead th {
                 padding-left: 10px;
+                padding-bottom: 6px;
                 font-size: 18px;
                 color: ${props => props.theme.colors.font.h2};
                 text-shadow: 0 0 3px #000000cc;

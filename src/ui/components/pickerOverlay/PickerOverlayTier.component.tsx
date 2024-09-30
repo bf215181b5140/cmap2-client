@@ -5,17 +5,18 @@ import Icon from '../icon/icon.component';
 
 interface PickerOverlayTierProps extends ReactProps {
     tier: TierDTO;
+    valid?: boolean;
 }
 
-export default function PickerOverlayTier({ tier }: PickerOverlayTierProps) {
+export default function PickerOverlayTier({ tier, valid = true }: PickerOverlayTierProps) {
 
-    return (<PickerOverlayTierStyled>
+    return (<PickerOverlayTierStyled valid={valid}>
         <Icon icon='ri-medal-fill' color={tier.color} />
         {tier.label}
     </PickerOverlayTierStyled>);
 }
 
-const PickerOverlayTierStyled = styled.div`
+const PickerOverlayTierStyled = styled.div<{ valid?: boolean }>`
   position: absolute;
   top: 8px;
   left: 8px;
@@ -25,4 +26,5 @@ const PickerOverlayTierStyled = styled.div`
   border-radius: 5px;
   border: 1px solid ${props => props.theme.colors.buttons.primary.border};
   text-transform: capitalize;
+    color: ${props => props.valid ? props.theme.colors.font.text : props.theme.colors.error};
 `;

@@ -36,7 +36,7 @@ export default function BackgroundPicker({ profile, setBackground }: BackgroundP
             {backgrounds?.map(background => (
                 <BackgroundPickerStyled color={background.tier.color} validPick={profile.tier.rank >= background.tier.rank} onClick={() => saveSelected(background)} key={background.id}>
                     <Background background={background} />
-                    <PickerOverlayTier tier={background.tier} />
+                    <PickerOverlayTier tier={background.tier} valid={background.tier.rank <= profile.tier.rank} />
                     <PickerOverlayCheck selected={profile.background.id === background.id} />
                 </BackgroundPickerStyled>
             ))}

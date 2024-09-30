@@ -49,7 +49,7 @@ export default function StylePicker({ profile, setStyle }: StylePickerProps) {
             {styles?.map(style => (
                 <ButtonStylePickerStyled color={style.tier.color} validPick={profile.tier.rank >= style.tier.rank} onClick={() => saveSelected(style)} key={style.id}>
                     <ParameterButton style={style} button={exampleButton} />
-                    <PickerOverlayTier tier={style.tier} />
+                    <PickerOverlayTier tier={style.tier} valid={style.tier.rank <= profile.tier.rank} />
                     <PickerOverlayCheck selected={profile.style.id === style.id} />
                 </ButtonStylePickerStyled>
             ))}
