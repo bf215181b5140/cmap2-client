@@ -28,7 +28,7 @@ export default function WebsitePage() {
 
         <Routes>
             <Route path="/connection" element={<ConnectionPage />} />
-            <Route path="/profile/:page?" element={<ProfilePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             {/* <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} /> */}
             {/* <Route path="/state" element={<StatePage />} /> */}
             <Route path="/tiers" element={<TiersPage />} />

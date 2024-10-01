@@ -32,7 +32,7 @@ export default function UseAccountKey({ setClientTier }: UseAccountKeyProps) {
         }, () => reset());
     };
 
-    return(<Segment segmentTitle={'Use account key'}>
+    return(<Segment segmentTitle={'Use account key'} infoContent={segmentInfo}>
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormTable>
                 <tr>
@@ -43,3 +43,7 @@ export default function UseAccountKey({ setClientTier }: UseAccountKeyProps) {
         </form>
     </Segment>)
 }
+
+const segmentInfo = <>
+    <p>If you received an account key for a higher tier than your current account, use it here to upgrade your account.</p>
+</>;

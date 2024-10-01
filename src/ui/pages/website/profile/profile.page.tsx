@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useProlfilePage from './profile.hook';
 import { Page } from '../../../components/page/page.component';
-import { useNavigate, useParams } from 'react-router-dom';
 import ProfileOverview from './basicInfo/overview/profileOverview.component';
 import ProfileForm from './basicInfo/form/profileForm.component';
 import PageMenuLink from '../../../components/menu/pageMenu/pageMenuLink.component';
@@ -13,12 +12,13 @@ import BackgroundPicker from './background/backgroundPicker.component';
 import StylePicker from './style/stylePicker.component';
 import ProfilePreview from './components/profilePreview.component';
 
+type ProfilePageSections = 'basicInfo' | 'interactionKeys' | 'background' | 'style';
+
 export default function ProfilePage() {
 
     const { profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setStyle } = useProlfilePage();
-    const navigate = useNavigate();
-    const page = useParams().page ?? 'basic';
-    const pageFlexDirection = page === 'basic' ? 'row' : 'column';
+    const [section, setSection] = useState<ProfilePageSections>('basicInfo')
+    const pageFlexDirection = section === 'basicInfo' ? 'row' : 'column';
 
     if (!profile) return;
 
@@ -26,31 +26,31 @@ export default function ProfilePage() {
 
         <ProfilePageMenu noMarginTop={true}>
             <div>
-                <PageMenuLink onClick={() => navigate('/website/profile/basic')} isActive={page === 'basic'}>Basic info</PageMenuLink>
-                <PageMenuLink onClick={() => navigate('/website/profile/interactionKeys')} isActive={page === 'interactionKeys'}>Interaction keys</PageMenuLink>
-                <PageMenuLink onClick={() => navigate('/website/profile/background')} isActive={page === 'background'}>Background</PageMenuLink>
-                <PageMenuLink onClick={() => navigate('/website/profile/style')} isActive={page === 'style'}>Style</PageMenuLink>
+                <PageMenuLink onClick={() => setSection('basicInfo')} isActive={section === 'basicInfo'}>Basic info</PageMenuLink>
+                <PageMenuLink onClick={() => setSection('interactionKeys')} isActive={section === 'interactionKeys'}>Interaction keys</PageMenuLink>
+                <PageMenuLink onClick={() => setSection('background')} isActive={section === 'background'}>Background</PageMenuLink>
+                <PageMenuLink onClick={() => setSection('style')} isActive={section === 'style'}>Style</PageMenuLink>
             </div>
             <div>
                 <a id={'viewOnWebsiteLink'} href={WEBSITE_URL + '/' + profile.username} target={'_blank'}>View profile on website <i className={'ri-external-link-line'} /></a>
             </div>
         </ProfilePageMenu>
 
-        {page === 'basic' && <>
+        {section === 'basicInfo' && <>
             <ProfileOverview profile={profile} setImage={setImage} />
             <ProfileForm profile={profile} setBasicInfo={setBasicInfo} />
         </>}
 
-        {page === 'interactionKeys' && <>
+        {section === 'interactionKeys' && <>
             <InteractionKeys profile={profile} setInteractionKeys={setInteractionKeys} />
         </>}
 
-        {page === 'background' && <>
+        {section === 'background' && <>
             <BackgroundPicker profile={profile} setBackground={setBackground} />
             <ProfilePreview profile={profile} />
         </>}
 
-        {page === 'style' && <>
+        {section === 'style' && <>
             <StylePicker profile={profile} setStyle={setStyle} />
             <ProfilePreview profile={profile} />
         </>}
