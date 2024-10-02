@@ -6,6 +6,7 @@ import log from 'electron-log/renderer';
 import { FetchStatusContext } from '../components/context/fetchStatus.context';
 import { nanoid } from 'nanoid';
 import { useNotifications } from './useNotifications.hook';
+import { ApiError, ApiResponseSchema, NotificationType } from 'cmap2-shared';
 
 interface ResponseWithData {
     response: Response;
@@ -121,6 +122,12 @@ export default function useCmapFetch() {
                 // clear client token if we're unauthorized
                 if (cmapRes.response.status === 401) clearLoginToken();
 
+                // check if it's apiResponse object
+                const apiResponse = ApiResponseSchema.safeParse(cmapRes.data);
+                if (apiResponse.success) {
+                    throw new ApiError(apiResponse.data.type, apiResponse.data.message)
+                }
+
                 // check for string error message and throw error
                 if (typeof cmapRes.data === 'string') {
                     throw new Error(cmapRes.data);
@@ -138,17 +145,21 @@ export default function useCmapFetch() {
             })
             // Catch errors and display toast with error message, run error callback if provided
             .catch(err => {
+                let notificationType: NotificationType = 'error';
                 let message = 'Unknown cmapFetch error';
 
-                if (err instanceof ZodError) {
+                if (err instanceof ApiError) {
+                    notificationType = err.type;
+                    message = err.message;
+                } else if (err instanceof ZodError) {
                     message = 'Server returned unsupported data, please try updating the program';
                 } else if (err instanceof Error || typeof err?.message === 'string') {
                     message = err.message;
                 }
 
-                log.error(err.message);
+                log.error(message);
 
-                addNotification('error', message, 'cmapFetch');
+                addNotification(notificationType, message, 'cmapFetch');
 
                 if (onError) onError();
             })

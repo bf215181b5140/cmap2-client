@@ -6,12 +6,12 @@ interface AddCounterProps extends ReactProps {
 }
 
 export default function AddCounter({ canAddMore, children }: AddCounterProps) {
-    return(<AddCounterStyled canAddMore={canAddMore}>
+    return (<AddCounterStyled canAddMore={canAddMore}>
         {children}
-    </AddCounterStyled>)
+    </AddCounterStyled>);
 }
 
-const AddCounterStyled = styled.div<{ canAddMore: boolean }>`
-margin: 5px;
+const AddCounterStyled = styled.span<{ canAddMore: boolean }>`
+    margin: 5px;
     color: ${props => props.canAddMore ? props.theme.colors.font.text : props.theme.colors.error};
 `;

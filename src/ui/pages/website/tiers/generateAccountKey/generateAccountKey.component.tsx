@@ -8,6 +8,7 @@ import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import { theme } from '../../../../style/theme';
 import { ModalContext } from '../../../../components/context/modal.context';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';
+import AddCounter from '../../../../components/addCounter/addCounter.component';
 
 interface GenerateAccountKeyProps {
     tiers: TierDTO[];
@@ -22,6 +23,7 @@ export default function GenerateAccountKey({ generatedAccountKeys, tiers, client
     const { setModal } = useContext(ModalContext);
     const { addNotification } = useNotifications();
     const [selectedTierId, setSelectedTierId] = useState<string>(tiers.at(0)?.id || '');
+    const canAddMore = generatedAccountKeys.length < clientTier.accountKeys;
 
     function usedText(key: GeneratedAccountKeyDTO) {
         return key.used ? 'Used' : 'Available';
@@ -37,7 +39,7 @@ export default function GenerateAccountKey({ generatedAccountKeys, tiers, client
             message: `Are you sure you want to generate a new account key of tier ${tiers.find(t => t.id === selectedTierId)?.label}?`,
             confirmValue: 'Generate',
             confirmFunction: () => generateKey()
-        })
+        });
     }
 
     function generateKey() {
@@ -73,10 +75,11 @@ export default function GenerateAccountKey({ generatedAccountKeys, tiers, client
             </tbody>
         </SegmentTable>
         <h2>Generate new key</h2>
-        <SelectInputStyled value={selectedTierId} onChange={(event) => setSelectedTierId(event.target.value)} width={'150px'}>
+        <SelectInputStyled value={selectedTierId} disabled={!canAddMore} onChange={(event) => setSelectedTierId(event.target.value)} width={'150px'}>
             {tiers.filter(tier => tier.rank < clientTier.rank).map((tier) => (<option value={tier.id} key={tier.id}>{tier.label}</option>))}
         </SelectInputStyled>
-        <IconButton role={'add'} tooltip={'Generate new key'} onClick={() => confirmGenerateKey()} />
+        <IconButton role={'add'} tooltip={'Generate new key'} disabled={!canAddMore} onClick={() => confirmGenerateKey()} />
+        <AddCounter canAddMore={canAddMore}>{generatedAccountKeys.length}/{clientTier.accountKeys}</AddCounter>
     </Segment>);
 }
 
