@@ -159,10 +159,12 @@ export default function useCmapFetch() {
             .catch(err => {
                 let notificationType: NotificationType = 'error';
                 let message = 'Unknown error connecting to server.';
+                let id: string = fetchId;
 
                 if (err instanceof ApiError) {
                     notificationType = err.type;
                     message = err.message;
+                    id = err.id;
                 } else if (err instanceof ZodError) {
                     message = 'Server returned unsupported data, please try updating the program';
                 } else if (err instanceof Error || typeof err?.message === 'string') {
@@ -171,7 +173,7 @@ export default function useCmapFetch() {
 
                 log.error(message);
 
-                addNotification(notificationType, message, 'cmapFetch');
+                addNotification(notificationType, message, { id: id, group: 'cmapFetch' });
 
                 if (onError) onError();
             })

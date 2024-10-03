@@ -3,20 +3,26 @@ import { Notification, NotificationType } from '../../electron/store/notificatio
 import { nanoid } from 'nanoid';
 import { ToastContext } from '../components/context/toast.context';
 
+interface AddNotificationOptions {
+    id?: string;
+    group?: string;
+    showToast?: boolean;
+}
+
 export function useNotifications() {
 
     const { toastsDispatch } = useContext(ToastContext);
 
-    function addNotification(type: NotificationType, message: string, group?: string, showToast: boolean = true) {
+    function addNotification(type: NotificationType, message: string, options?: AddNotificationOptions) {
         const notification: Notification = {
-            id: nanoid(),
+            id: options?.id ?? nanoid(8),
             type,
             message,
-            group,
+            group: options?.group,
             dateTime: new Date().toLocaleString(),
         };
         window.IPC.send('saveNotification', notification);
-        if (showToast) {
+        if (options?.showToast !== false) {
             toastsDispatch({
                 type: 'add',
                 toast: notification,

@@ -58,6 +58,7 @@ export default function NotificationsPage() {
                     <tr>
                         <th>Time</th>
                         <th>Type</th>
+                        <th>Id</th>
                         <th>Message</th>
                         <th></th>
                     </tr>
@@ -67,8 +68,11 @@ export default function NotificationsPage() {
                         <td style={{whiteSpace: 'nowrap', width: '180px'}}>
                             {notification.dateTime}
                         </td>
-                        <td style={{textAlign: 'center', width: '50px'}}>
+                        <td style={{textAlign: 'center', width: '55px'}}>
                             <NotificationIcon className={notificationIcon(notification.type)} color={notificationColor(notification.type).border} />
+                        </td>
+                        <td style={{width: '100px'}}>
+                            {notification.id}
                         </td>
                         <td>
                             {notification.message}
