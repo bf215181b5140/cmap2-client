@@ -6,7 +6,7 @@ import log from 'electron-log/renderer';
 import { FetchStatusContext } from '../components/context/fetchStatus.context';
 import { nanoid } from 'nanoid';
 import { useNotifications } from './useNotifications.hook';
-import { ApiError, ApiResponseSchema, NotificationType } from 'cmap2-shared';
+import { ApiResponseSchema, NotificationType } from 'cmap2-shared';
 
 interface ResponseWithData {
     response: Response;
@@ -14,6 +14,18 @@ interface ResponseWithData {
 }
 
 type OnSuccess<T extends z.ZodTypeAny> = (data: T extends z.ZodType ? z.infer<T> : unknown, res: Response) => void
+
+export class ApiError extends Error {
+    name: string = 'ApiResponse';
+    type: NotificationType;
+    id: string;
+
+    constructor(type: NotificationType, message: string, id: string) {
+        super(message);
+        this.type = type;
+        this.id = id;
+    }
+}
 
 export default function useCmapFetch() {
 
@@ -125,7 +137,7 @@ export default function useCmapFetch() {
                 // check if it's apiResponse object
                 const apiResponse = ApiResponseSchema.safeParse(cmapRes.data);
                 if (apiResponse.success) {
-                    throw new ApiError(apiResponse.data.type, apiResponse.data.message)
+                    throw new ApiError(apiResponse.data.type, apiResponse.data.message, apiResponse.data.id);
                 }
 
                 // check for string error message and throw error
@@ -146,7 +158,7 @@ export default function useCmapFetch() {
             // Catch errors and display toast with error message, run error callback if provided
             .catch(err => {
                 let notificationType: NotificationType = 'error';
-                let message = 'Unknown cmapFetch error';
+                let message = 'Unknown error connecting to server.';
 
                 if (err instanceof ApiError) {
                     notificationType = err.type;
