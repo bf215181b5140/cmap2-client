@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SegmentWidth, VrcParameter } from 'cmap2-shared';
+import { VrcParameter } from 'cmap2-shared';
 import Segment from '../../../../components/segment/segment.component';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
 
@@ -21,7 +21,7 @@ export default function OscHistory() {
         };
     }, []);
 
-    return (<Segment flexBasis={SegmentWidth.Full} segmentTitle={'OSC activity history'}>
+    return (<Segment flexBasis={'Full'} segmentTitle={'OSC activity history'}>
         {oscParameterHistory.length > 0 ? (
             <SegmentTable>
                 <thead>

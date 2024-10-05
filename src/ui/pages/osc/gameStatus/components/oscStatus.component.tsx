@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { VrcOscAvatar } from '../../../../../shared/schemas/avatars.schema';
 import Segment from '../../../../components/segment/segment.component';
-import { SegmentWidth } from 'cmap2-shared';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
 
 export default function OscStatus() {
@@ -31,7 +30,7 @@ export default function OscStatus() {
         return `Unknown avatar with ID ${trackedAvatarId}`;
     }
 
-    return (<Segment flexBasis={SegmentWidth.Full} segmentTitle={'Current detected avatar state'}>
+    return (<Segment flexBasis={'Full'} segmentTitle={'Current detected avatar state'}>
         <AvatarNameStyled>
             <i className={'ri-contacts-book-fill'}></i>
             {currentAvatarText()}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { InteractionKeyDTO, InteractionKeySchema, InteractionKeysFormDTO, InteractionKeysFormSchema, ProfilePageDTO, SegmentWidth } from 'cmap2-shared';
+import { InteractionKeyDTO, InteractionKeySchema, InteractionKeysFormDTO, InteractionKeysFormSchema, ProfilePageDTO } from 'cmap2-shared';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Segment from '../../../../components/segment/segment.component';
@@ -44,7 +44,7 @@ export default function InteractionKeys({ profile, setInteractionKeys }: Interac
         });
     }
 
-    return (<Segment segmentTitle={'Interaction keys'} infoContent={segmentInfo} flexBasis={SegmentWidth.Full}>
+    return (<Segment segmentTitle={'Interaction keys'} infoContent={segmentInfo} flexBasis={'Full'}>
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormTableStyled>
                 <thead>

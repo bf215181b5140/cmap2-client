@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { theme } from 'cmap2-shared';
+import { theme } from '../style/theme';
 
 export default function useVrcDetector() {
 

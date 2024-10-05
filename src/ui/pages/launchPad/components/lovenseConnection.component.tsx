@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { LovenseStatus } from '../../../../../shared/lovense';
 import ConnectionBox from './launchPadBox.component';
-import { theme } from 'cmap2-shared';
+import { theme } from '../../../style/theme';
 
 export default function LovenseConnection() {
 

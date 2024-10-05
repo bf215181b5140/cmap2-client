@@ -46,11 +46,11 @@ export class WindowController {
 
     private getSizeProperties(windowSize: WindowSize) {
         switch (windowSize) {
-            case WindowSize.Big:
+            case 'Big':
                 return { width: 1448, height: 936 };
-            case WindowSize.Medium:
+            case 'Medium':
                 return { width: 1124, height: 768 };
-            case WindowSize.Small:
+            case 'Small':
                 return { width: 800, height: 600 };
         }
     }
@@ -67,20 +67,20 @@ export class WindowController {
 
     private setWindowState(windowState: WindowState) {
         switch (windowState) {
-            case WindowState.Open:
+            case 'Open':
                 if (this.window && !this.window?.isDestroyed()) {
                     this.window?.show();
                 } else {
                     this.createWindow();
                 }
                 break;
-            case WindowState.Minimize:
+            case 'Minimize':
                 if (this.window && !this.window?.isDestroyed()) this.window?.minimize();
                 break;
-            case WindowState.Tray:
+            case 'Tray':
                 if (this.window && !this.window?.isDestroyed()) this.window?.close();
                 break;
-            case WindowState.Exit:
+            case 'Exit':
                 app.quit();
                 break;
             default:

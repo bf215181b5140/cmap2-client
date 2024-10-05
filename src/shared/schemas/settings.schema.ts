@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { WindowSize } from '../enums/windowSize';
+import { WindowSizeSchema } from '../enums/windowSize';
 
 export const AppSettingsSchema = z.object({
     startOnBoot: z.boolean(),
     startInBackground: z.boolean(),
-    windowSize: z.nativeEnum(WindowSize),
+    windowSize: WindowSizeSchema,
 });
 
 export type AppSettings = z.infer<typeof AppSettingsSchema>;

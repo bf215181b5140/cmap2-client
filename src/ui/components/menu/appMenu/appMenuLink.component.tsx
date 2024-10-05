@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { theme } from 'cmap2-shared';
 import React from 'react';
+import { theme } from '../../../style/theme';
 
 interface AppMenuLinkProps {
     to: string,

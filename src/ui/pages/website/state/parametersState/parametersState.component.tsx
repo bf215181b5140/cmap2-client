@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ClientStateParameterFormDTO, GroupWidth } from 'cmap2-shared';
+import { ClientStateParameterFormDTO } from 'cmap2-shared';
 import styled from 'styled-components';
 import { EventEmitter } from 'events';
 import Segment from '../../../../components/segment/segment.component';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
-import { VrcOscAvatar } from 'shared';
 
 interface ParametersStateProps {
     statePageEmitter: EventEmitter;
@@ -96,7 +95,7 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
         return <span className={className}>{localValue?.toString()}</span>;
     }
 
-    return (<Segment flexBasis={SegmentWidth.Full} segmentTitle={'Parameters state'} infoContent={segmentInfo}>
+    return (<Segment flexBasis={'Full'} segmentTitle={'Parameters state'} infoContent={segmentInfo}>
 
         <StateControlBarStyled>
 

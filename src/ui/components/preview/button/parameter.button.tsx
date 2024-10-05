@@ -98,31 +98,31 @@ const ParameterLayoutStyled = styled.div<{ disabled: boolean }>`
   overflow: hidden;
   position: relative;
 
-  // &.layoutStyle-1 {
-  //   background: ${colors['button-bg']};
-  //   border: 2px solid ${colors['button-border']};
-  //   border-radius: 8px;
-  //   transition: 0.2s linear;
-  //
-  //   :hover, &.active {
-  //     transform: scale(1.02) perspective(1px);
-  //     background: ${colors['button-hover-bg']};
-  //     border: 2px solid ${colors['button-hover-border']};
-  //   }
-  // }
-  //
-  // &.layoutStyle-2 {
-  //   background: ${colors['button-2-bg']};
-  //   border: 2px solid ${colors['button-2-border']};
-  //   border-radius: 8px;
-  //   transition: 0.2s linear;
-  //
-  //   :hover, &.active {
-  //     transform: scale(1.02) perspective(1px);
-  //     background: ${colors['button-2-hover-bg']};
-  //     border: 2px solid ${colors['button-2-hover-border']};
-  //   }
-  // }
+  &.vrcGreen {
+    background: ${props => props.theme.colors.buttons.primary.bg};
+    border: 2px solid ${props => props.theme.colors.buttons.primary.border};
+    border-radius: 8px;
+    transition: 0.2s linear;
+
+    :hover, &.active {
+      transform: scale(1.02) perspective(1px);
+      background: ${props => props.theme.colors.buttons.primary.hoverBg};
+      border: 2px solid ${props => props.theme.colors.buttons.primary.hoverBorder};
+    }
+  }
+
+  &.vrcGrey {
+    background: ${props => props.theme.colors.buttons.secondary.bg};
+    border: 2px solid ${props => props.theme.colors.buttons.secondary.border};
+    border-radius: 8px;
+    transition: 0.2s linear;
+
+    :hover, &.active {
+      transform: scale(1.02) perspective(1px);
+      background: ${props => props.theme.colors.buttons.secondary.hoverBg};
+      border: 2px solid ${props => props.theme.colors.buttons.secondary.hoverBorder};
+    }
+  }
 
   ${props => props.disabled ? disabledParamStyle : null};
 `;

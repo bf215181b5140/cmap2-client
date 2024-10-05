@@ -1,7 +1,5 @@
 import { app, Menu, Tray } from 'electron';
 import { BRIDGE } from '../bridge/bridge.service';
-import { WindowSize } from '../../shared/enums/windowSize';
-import { WindowState } from '../../shared/enums/windowState';
 
 export class TrayController extends Tray {
 
@@ -11,15 +9,15 @@ export class TrayController extends Tray {
         this.setToolTip('Change my avatar params');
 
         this.setContextMenu(Menu.buildFromTemplate([
-            { label: 'Open', click: () => BRIDGE.emit('setWindowState', WindowState.Open) },
-            { label: 'Minimize', click: () => BRIDGE.emit('setWindowState', WindowState.Minimize) },
-            { label: 'Tray', click: () => BRIDGE.emit('setWindowState', WindowState.Tray) },
+            { label: 'Open', click: () => BRIDGE.emit('setWindowState', 'Open') },
+            { label: 'Minimize', click: () => BRIDGE.emit('setWindowState', 'Minimize') },
+            { label: 'Tray', click: () => BRIDGE.emit('setWindowState', 'Tray') },
             { type: 'separator', },
             {
                 label: 'Resize', type: 'submenu', submenu: [
-                    { label: 'Big', click: () => BRIDGE.emit('setWindowSize', WindowSize.Big) },
-                    { label: 'Medium', click: () => BRIDGE.emit('setWindowSize', WindowSize.Medium) },
-                    { label: 'Small', click: () => BRIDGE.emit('setWindowSize', WindowSize.Small) },
+                    { label: 'Big', click: () => BRIDGE.emit('setWindowSize', 'Big') },
+                    { label: 'Medium', click: () => BRIDGE.emit('setWindowSize', 'Medium') },
+                    { label: 'Small', click: () => BRIDGE.emit('setWindowSize', 'Small') },
                 ]
             },
             { type: 'separator', },
@@ -32,7 +30,7 @@ export class TrayController extends Tray {
         ]));
 
         this.on('double-click', () => {
-            BRIDGE.emit('setWindowState', WindowState.Open);
+            BRIDGE.emit('setWindowState', 'Open');
         });
     }
 }

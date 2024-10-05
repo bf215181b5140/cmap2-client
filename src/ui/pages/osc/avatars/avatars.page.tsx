@@ -1,6 +1,5 @@
 import Avatar from './components/avatar.component';
 import AvatarUploadForm from './components/avatarUploadForm.component';
-import { SegmentWidth } from 'cmap2-shared';
 import { Page } from '../../../components/page/page.component';
 import Segment from '../../../components/segment/segment.component';
 import { useParams } from 'react-router-dom';
@@ -20,13 +19,13 @@ export default function AvatarsPage() {
 
     return (<Page flexDirection={'row'}>
 
-        <Segment segmentTitle={'Saved avatars'} flexBasis={SegmentWidth.Third}>
+        <Segment segmentTitle={'Saved avatars'} flexBasis={'Third'}>
             <p>Import, view or edit your avatar information.</p>
             <p>This can help you keep track of parameters on your avatar, let you set up OSC interactions faster and help you come up with creative ways of
                 interacting with VRChat.</p>
         </Segment>
 
-        <Segment segmentTitle={'Upload OSC file'} flexBasis={SegmentWidth.Half}>
+        <Segment segmentTitle={'Upload OSC file'} flexBasis={'Half'}>
             <p>Upload your avatar file found in: C:\ Users \ [USER] \ AppData \ LocalLow \ VRChat \ VRChat \ OSC \ [USER] \ Avatars</p>
             <AvatarUploadForm avatars={avatars} avatarsDispatch={avatarsDispatch} />
         </Segment>

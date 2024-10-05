@@ -1,4 +1,3 @@
-import { WindowSize } from '../../../shared/enums/windowSize';
 import { Credentials } from '../../../shared/objects/credentials';
 import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../../shared/schemas/settings.schema';
 
@@ -22,7 +21,7 @@ export const settingsStoreDefaults: SettingsStoreData = {
     app: {
         startOnBoot: false,
         startInBackground: false,
-        windowSize: WindowSize.Medium,
+        windowSize: 'Medium',
     },
     vrcDetector: {
         detect: true,

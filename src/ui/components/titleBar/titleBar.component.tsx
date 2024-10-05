@@ -19,9 +19,9 @@ export default function TitleBar() {
             <i className={'ri-global-line'} style={{ color: color }} />
         </StatusStyled>
         <ButtonsStyled>
-            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState(WindowState.Tray)} icon={'ri-arrow-right-down-line'} />
-            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState(WindowState.Minimize)} icon={'ri-subtract-fill'} />
-            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState(WindowState.Exit)} icon={'ri-close-fill'} />
+            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Tray')} icon={'ri-arrow-right-down-line'} />
+            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Minimize')} icon={'ri-subtract-fill'} />
+            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Exit')} icon={'ri-close-fill'} />
         </ButtonsStyled>
     </TitleBarStyled>);
 }
