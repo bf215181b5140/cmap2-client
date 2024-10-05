@@ -1,4 +1,3 @@
-import { ReactProps } from 'cmap2-shared';
 import { VrcOscAvatar } from '../../../../../../shared/schemas/avatars.schema';
 import { useNavigate } from 'react-router-dom';
 import { PageMenuSelect } from '../../../../../components/menu/pageMenu/pageMenuSelect.component';
@@ -8,7 +7,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { VrcOscAvatarsReducerAction } from '../../avatars.reducer';
 
-interface AvatarsMenuProps extends ReactProps {
+interface AvatarsMenuProps {
     avatars: VrcOscAvatar[];
     activeAvatar: VrcOscAvatar | undefined;
     avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
@@ -29,7 +28,7 @@ export default function AvatarMenu({ avatars, activeAvatar, avatarsDispatch }: A
             {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
         </PageMenuSelect>
         <PageMenuLeftBar>
-        <CustomIconButton role={'delete'} size={'small'} deleteKeyword={'avatar "' + activeAvatar?.name + '"'} onClick={deleteAvatar} />
+            <CustomIconButton role={'delete'} size={'small'} deleteKeyword={'avatar "' + activeAvatar?.name + '"'} onClick={deleteAvatar} />
         </PageMenuLeftBar>
     </PageMenu>);
 }

@@ -1,15 +1,16 @@
 import React from 'react';
-import { CmapSelectOption, ReactProps } from 'cmap2-shared';
 import { UseFormRegister } from 'react-hook-form';
 import { FieldErrors } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
 import { SelectInputStyled } from '../../style/input.style';
+import { ReactProps } from '../../types';
+import { KeyValueDTO } from 'cmap2-shared';
 
 interface SelectInputProps extends ReactProps {
     name: string;
     register: UseFormRegister<any>;
-    options: CmapSelectOption[];
+    options: KeyValueDTO[];
     errors?: FieldErrors;
     readOnly?: boolean;
     width?: string;

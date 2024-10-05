@@ -4,7 +4,7 @@ import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { CredentialsContext } from '../../../../../../components/context/credentials.context';
 import { LoginFormDTO, LoginFormSchema, LoginTokenSchema } from 'cmap2-shared';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Credentials } from '../../../../../../../shared/types';
+import { Credentials } from '../../../../../../../shared/objects/credentials';
 import TextButton from '../../../../../../components/buttons/textButton.component';
 import FormTable from '../../../../../../components/form/formTable.component';
 import Input from '../../../../../../components/input/input.component';

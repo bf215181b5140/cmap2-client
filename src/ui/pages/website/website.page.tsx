@@ -6,6 +6,7 @@ import { CredentialsContext } from '../../components/context/credentials.context
 import ConnectionPage from './connection/connection.page';
 import ProfilePage from './profile/profile.page';
 import TiersPage from './tiers/tiers.page';
+import StatePage from './state/state.page';
 
 export default function WebsitePage() {
 
@@ -30,7 +31,7 @@ export default function WebsitePage() {
             <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             {/* <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} /> */}
-            {/* <Route path="/state" element={<StatePage />} /> */}
+            <Route path="/state" element={<StatePage />} />
             <Route path="/tiers" element={<TiersPage />} />
 
             {/* /!* Admin pages *!/ */}

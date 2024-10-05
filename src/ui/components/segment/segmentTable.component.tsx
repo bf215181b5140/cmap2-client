@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactProps } from 'cmap2-shared';
+import { ReactProps } from '../../types';
 
 interface SegmentTableProps extends ReactProps {
     maxHeight?: string;
@@ -54,12 +54,14 @@ export const SegmentTableStyled = styled.div<{ maxHeight?: string }>`
         }
 
         /* Handle */
+
         ::-webkit-scrollbar-thumb {
             background: #303C47;
             border-radius: 8px;
         }
 
         /* Handle on hover */
+
         ::-webkit-scrollbar-thumb:hover {
             background: #3D4853;
         }

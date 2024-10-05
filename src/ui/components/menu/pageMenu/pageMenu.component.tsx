@@ -1,6 +1,6 @@
-import { ReactProps } from 'cmap2-shared';
 import styled, { css } from 'styled-components';
 import { PAGE_ELEMENT_GAP } from '../../page/page.component';
+import { ReactProps } from '../../../types';
 
 interface PageMenuProps extends ReactProps {
     noMarginTop?: boolean;

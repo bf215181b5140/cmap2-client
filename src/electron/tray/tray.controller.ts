@@ -1,6 +1,7 @@
 import { app, Menu, Tray } from 'electron';
 import { BRIDGE } from '../bridge/bridge.service';
-import { WindowSize, WindowState } from '../../shared/enums';
+import { WindowSize } from '../../shared/enums/windowSize';
+import { WindowState } from '../../shared/enums/windowState';
 
 export class TrayController extends Tray {
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactProps } from 'cmap2-shared';
 import { UseFormRegister } from 'react-hook-form';
 import { FieldErrors } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
 import { globalInputStyle } from '../../style/input.style';
+import { ReactProps } from '../../types';
 
 interface HiddenInputProps extends ReactProps {
     name: string;

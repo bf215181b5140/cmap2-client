@@ -1,6 +1,6 @@
 import { LoginTokenDTO } from 'cmap2-shared';
 import { useEffect, useState } from 'react';
-import { Credentials } from '../../shared/types';
+import { Credentials } from '../../shared/objects/credentials';
 
 export default function useCredentials() {
 

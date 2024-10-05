@@ -4,7 +4,7 @@ import { WEBSITE_URL } from '../../shared/const';
 import { BRIDGE } from '../bridge/bridge.service';
 import { Message } from 'node-osc';
 import { IPC } from '../ipc/typedIpc.service';
-import { Credentials } from '../../shared/types';
+import { Credentials } from '../../shared/objects/credentials';
 import { SETTINGS } from '../store/settings/settings.store';
 import log from 'electron-log';
 

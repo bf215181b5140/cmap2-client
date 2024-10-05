@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { WindowSize } from '../enums';
+import { WindowSize } from '../enums/windowSize';
 
 export const AppSettingsSchema = z.object({
     startOnBoot: z.boolean(),

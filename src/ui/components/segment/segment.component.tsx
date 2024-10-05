@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
-import { ReactProps, SegmentWidth } from 'cmap2-shared';
 import IconButton from '../buttons/iconButton.component';
 import { PAGE_ELEMENT_GAP } from '../page/page.component';
 import LoadingSpinner from '../loadingSpinner/loadingSpinner.component';
+import { ReactProps } from '../../types';
+import { GroupWidth } from 'cmap2-shared';
 
 interface SegmentProps extends ReactProps {
     segmentTitle?: string;
     toggleTitle?: string;
     infoContent?: React.JSX.Element;
     flexGrow?: number | string;
-    flexBasis?: string | SegmentWidth;
+    flexBasis?: string | GroupWidth;
     loading?: boolean;
 }
 
@@ -22,13 +23,13 @@ export default function Segment({ segmentTitle, toggleTitle, infoContent, flexGr
     function getFlexBasis(): string | undefined {
         if (!flexBasis) return undefined;
         switch (flexBasis) {
-            case SegmentWidth.None:
+            case 'None':
                 return '0';
-            case SegmentWidth.Third:
+            case 'Third':
                 return `calc(100% * (1 / 3) - ${PAGE_ELEMENT_GAP})`;
-            case SegmentWidth.Half:
+            case 'Half':
                 return `calc(100% * (1 / 2) - ${PAGE_ELEMENT_GAP})`;
-            case SegmentWidth.Full:
+            case 'Full':
                 return `calc(100%)`;
             default:
                 return flexBasis;

@@ -1,9 +1,9 @@
-import { WindowState } from '../../shared/enums';
 import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../shared/schemas/settings.schema';
-import { Credentials } from '../../shared/types';
+import { Credentials } from '../../shared/objects/credentials';
 import { VrcOscAvatar } from '../../shared/schemas/avatars.schema';
-import { VrcParameter } from 'cmap2-shared';
+import { ClientStateParameterDTO, VrcParameter } from 'cmap2-shared';
 import { Notification } from '../store/notifications/notifications.model';
+import { WindowState } from '../../shared/enums/windowState';
 
 export type IpcGetOptions = {
     getAppVersion: string;
@@ -49,9 +49,9 @@ export type IpcSendOptions = {
     // setToyCommandParameters: ToyCommandParameter[];
     // setToyCommandOscMessages: ToyCommandOscMessage[];
 
-    // setTrackedParameters: Map<string, boolean | number | string>;
-    // setTrackedParameter: ClientStateParamDTO;
-    // deleteTrackedParameter: ClientStateParamDTO;
+    setTrackedParameters: Map<string, boolean | number | string>;
+    setTrackedParameter: ClientStateParameterDTO;
+    deleteTrackedParameter: ClientStateParameterDTO;
 
     // checkForUpdates: undefined;
     // startUpdate: string;

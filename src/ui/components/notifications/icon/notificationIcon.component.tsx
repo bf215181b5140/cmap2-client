@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactProps } from 'cmap2-shared';
 import { NotificationType } from '../../../../electron/store/notifications/notifications.model';
 import { useNotifications } from '../../../hooks/useNotifications.hook';
+import { ReactProps } from '../../../types';
 
 interface NotificationIconProps extends ReactProps {
-  type: NotificationType,
-  message: string,
+    type: NotificationType,
+    message: string,
 }
 
 export default function NotificationIcon({ type, message, children }: NotificationIconProps) {
@@ -20,11 +20,11 @@ export default function NotificationIcon({ type, message, children }: Notificati
 }
 
 const NotificationIconStyled = styled.span<{ color: string }>`
-    cursor:help;
-  
-  i {
-    font-size: 20px;
-    color: ${props => props.color};
-    margin-left: 5px;
-  }
+    cursor: help;
+
+    i {
+        font-size: 20px;
+        color: ${props => props.color};
+        margin-left: 5px;
+    }
 `;

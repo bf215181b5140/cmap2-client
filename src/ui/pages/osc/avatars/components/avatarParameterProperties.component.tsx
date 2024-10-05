@@ -1,22 +1,21 @@
-import { ReactProps, theme } from 'cmap2-shared';
 import styled from 'styled-components';
-import React, { useContext } from 'react';
+import React from 'react';
 import { VrcOscAvatarParameterProperties } from '../../../../../shared/schemas/avatars.schema';
-import { ToastContext } from '../../../../components/context/toast.context';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';
+import { theme } from '../../../../style/theme';
 
-interface AvatarParameterPropertiesProps extends ReactProps {
+interface AvatarParameterPropertiesProps {
     type: 'input' | 'output';
     properties?: VrcOscAvatarParameterProperties;
 }
 
-export default function AvatarParameterProperties({type, properties}: AvatarParameterPropertiesProps) {
+export default function AvatarParameterProperties({ type, properties }: AvatarParameterPropertiesProps) {
 
     const { addNotification } = useNotifications();
 
     function copyPath(path: string) {
         navigator.clipboard.writeText(path).then(() => {
-            addNotification('info', `Copied parameter to clipboard: ${path}`, 'copyToClipboard')
+            addNotification('info', `Copied parameter to clipboard: ${path}`, { group: 'copyToClipboard' });
         });
     }
 
@@ -55,10 +54,10 @@ function color(type: string) {
 }
 
 const AvatarParameterPropertiesStyled = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-    
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+
     p {
         padding: 0;
         line-break: anywhere;
@@ -66,19 +65,19 @@ const AvatarParameterPropertiesStyled = styled.div`
 `;
 
 const TypeStyled = styled.div<{ color: string }>`
-  display: flex;
-  flex-direction: row;
-  width: 75px;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 5px;
-  border-right: 2px solid;
-  border-color: ${props => props.color};
+    display: flex;
+    flex-direction: row;
+    width: 75px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    border-right: 2px solid;
+    border-color: ${props => props.color};
 
-  i {
-    color: ${props => props.color};
-    font-size: 20px;
-  }
+    i {
+        color: ${props => props.color};
+        font-size: 20px;
+    }
 `;
 
 const ParameterPathStyled = styled.div<{ color: string }>`

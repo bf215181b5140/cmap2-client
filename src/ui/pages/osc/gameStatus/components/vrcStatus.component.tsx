@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { SegmentWidth } from 'cmap2-shared';
 import Segment from '../../../../components/segment/segment.component';
 import useVrcDetector from '../../../../hooks/vrcDetector.hook';
-import timeSinceTimestamp from '../../../../util/timeSinceTimestamp';
+import useCmapUtil from '../../../../hooks/cmapUtil.hook';
 
 export default function VrcStatus() {
 
     const { vrcStatus, vrcStatusColor } = useVrcDetector();
+    const { timeSinceTimestamp } = useCmapUtil();
     const [lastOscActivity, setLastOscActivity] = useState<number | undefined>();
     const [key, setKey] = useState(0);
 
@@ -27,7 +27,7 @@ export default function VrcStatus() {
         };
     }, []);
 
-    return (<Segment flexBasis={SegmentWidth.Full}>
+    return (<Segment flexBasis={'Full'}>
         <h2 style={{ color: vrcStatusColor, marginTop: '0' }}>{vrcStatus}</h2>
         <p key={key}>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
     </Segment>);

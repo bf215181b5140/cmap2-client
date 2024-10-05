@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { ButtonDTO, ButtonImageOrientation, ButtonType, ProfilePageDTO, ReactProps, StyleDTO, StylesDTO, StylesSchema } from 'cmap2-shared';
+import { ButtonDTO, ProfilePageDTO, StyleDTO, StylesDTO, StylesSchema } from 'cmap2-shared';
 import styled from 'styled-components';
 import Segment from '../../../../components/segment/segment.component';
 import PickerOverlayTier from '../../../../components/pickerOverlay/PickerOverlayTier.component';
 import PickerOverlayCheck from '../../../../components/pickerOverlay/PickerOverlayCheck.component';
-import ParameterButton from 'cmap2-shared/dist/react/components/parameter.button';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
+import ParameterButton from '../../../../components/preview/button/parameter.button';
 
-interface StylePickerProps extends ReactProps {
+interface StylePickerProps {
     profile: ProfilePageDTO;
     setStyle: (style: StyleDTO) => void;
 }
@@ -37,8 +37,8 @@ export default function StylePicker({ profile, setStyle }: StylePickerProps) {
         path: '',
         value: '',
         valueAlt: '',
-        buttonType: ButtonType.Button,
-        imageOrientation: ButtonImageOrientation.Square,
+        buttonType: 'Button',
+        imageOrientation: 'Square',
         order: 0,
         useCost: null,
         interactionKeyId: null,

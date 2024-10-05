@@ -1,8 +1,9 @@
 import { EventEmitter } from 'events';
 import TypedEmitter from 'typed-emitter/rxjs';
-import { WindowSize, WindowState } from '../../shared/enums';
+import { WindowSize } from '../../shared/enums/windowSize';
 import { VrcParameter } from 'cmap2-shared';
 import { Message } from 'node-osc';
+import { WindowState } from '../../shared/enums/windowState';
 
 type MessageEvents = {
     setWindowState: (windowState: WindowState) => void;

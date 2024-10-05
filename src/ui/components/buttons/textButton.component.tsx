@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactProps } from 'cmap2-shared';
 import { globalInputStyle } from '../../style/input.style';
+import { ReactProps } from '../../types';
 
 interface TextButtonProps extends ReactProps {
     type?: 'button' | 'submit';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BackgroundDTO, BackgroundsDTO, BackgroundsSchema, ProfilePageDTO, ReactProps } from 'cmap2-shared';
+import { BackgroundDTO, BackgroundsDTO, BackgroundsSchema, ProfilePageDTO } from 'cmap2-shared';
 import styled from 'styled-components';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import Segment from '../../../../components/segment/segment.component';
@@ -7,7 +7,7 @@ import Background from '../../../../components/background/background.component';
 import PickerOverlayCheck from '../../../../components/pickerOverlay/PickerOverlayCheck.component';
 import PickerOverlayTier from '../../../../components/pickerOverlay/PickerOverlayTier.component';
 
-interface BackgroundPickerProps extends ReactProps {
+interface BackgroundPickerProps {
     profile: ProfilePageDTO;
     setBackground: (background: BackgroundDTO) => void;
 }

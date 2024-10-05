@@ -1,7 +1,7 @@
-import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../../../components/icon/icon.component';
+import { ReactProps } from '../../../types';
 
 interface LaunchPadBoxProps extends ReactProps {
     icon: string;
@@ -57,6 +57,7 @@ const ChildrenStyled = styled.div`
     gap: 5px;
 
     // Need !important because for some reason this doesn't override parent styles (App)
+
     h1, h2, h3, p {
         margin: 0 !important;
         padding: 0 !important;

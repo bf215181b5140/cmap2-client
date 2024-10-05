@@ -1,4 +1,3 @@
-import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import AvatarParameter from './avatarParameter.component';
@@ -8,7 +7,7 @@ import { VrcOscAvatarParameter } from '../../../../../shared/schemas/avatars.sch
 import { globalInputStyle, SelectInputStyled } from '../../../../style/input.style';
 import Icon from '../../../../components/icon/icon.component';
 
-interface AvatarParametersProps extends ReactProps {
+interface AvatarParametersProps {
     avatarId: string;
     parameters: VrcOscAvatarParameter[];
     avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;

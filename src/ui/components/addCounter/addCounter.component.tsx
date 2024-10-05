@@ -1,5 +1,5 @@
-import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
+import { ReactProps } from '../../types';
 
 interface AddCounterProps extends ReactProps {
     canAddMore: boolean;

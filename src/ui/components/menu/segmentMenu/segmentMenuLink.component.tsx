@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactProps } from 'cmap2-shared';
+import { ReactProps } from '../../../types';
 
 interface SegmentMenuLinkProps extends ReactProps {
     onClick: () => void;

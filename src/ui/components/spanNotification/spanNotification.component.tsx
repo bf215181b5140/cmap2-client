@@ -1,7 +1,7 @@
-import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import { useNotifications } from '../../hooks/useNotifications.hook';
 import { NotificationType } from '../../../electron/store/notifications/notifications.model';
+import { ReactProps } from '../../types';
 
 interface NotificationProps extends ReactProps {
     type: NotificationType;
@@ -13,10 +13,10 @@ export default function SpanNotification({ type, children }: NotificationProps) 
     const icon = notificationIcon(type);
     const colors = notificationColor(type);
 
-    return(<SpanNotificationStyled background={colors.background} border={colors.border}>
+    return (<SpanNotificationStyled background={colors.background} border={colors.border}>
         <i className={icon} />
         {children}
-    </SpanNotificationStyled>)
+    </SpanNotificationStyled>);
 }
 
 const SpanNotificationStyled = styled.div<{ background: string, border: string }>`

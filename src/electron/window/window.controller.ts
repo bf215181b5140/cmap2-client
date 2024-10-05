@@ -1,10 +1,11 @@
 import { app, BrowserWindow, shell } from 'electron';
-import { WindowSize, WindowState } from '../../shared/enums';
+import { WindowSize } from '../../shared/enums/windowSize';
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
 import { IpcReceiveOptions } from '../ipc/typedIpc.model';
 import { fileURLToPath } from 'url';
 import { SETTINGS } from '../store/settings/settings.store';
+import { WindowState } from '../../shared/enums/windowState';
 
 export class WindowController {
     private window: BrowserWindow | undefined;

@@ -1,5 +1,5 @@
-import { WindowSize } from '../../../shared/enums';
-import { Credentials } from '../../../shared/types';
+import { WindowSize } from '../../../shared/enums/windowSize';
+import { Credentials } from '../../../shared/objects/credentials';
 import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../../shared/schemas/settings.schema';
 
 export interface SettingsStoreData {

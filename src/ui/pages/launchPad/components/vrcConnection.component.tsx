@@ -1,11 +1,12 @@
 import ConnectionBox from './launchPadBox.component';
 import { useEffect, useState } from 'react';
-import timeSinceTimestamp from '../../../util/timeSinceTimestamp';
 import useVrcDetector from '../../../hooks/vrcDetector.hook';
+import useCmapUtil from '../../../hooks/cmapUtil.hook';
 
 export default function VrcConnection() {
 
     const { isVrcDetected, vrcStatus, vrcStatusColor } = useVrcDetector();
+    const { timeSinceTimestamp } = useCmapUtil();
     const [lastOscActivity, setLastOscActivity] = useState<number | undefined>();
 
     useEffect(() => {

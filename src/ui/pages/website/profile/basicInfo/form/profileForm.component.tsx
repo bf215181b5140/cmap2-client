@@ -1,4 +1,4 @@
-import { BasicInfoFormDTO, BasicInfoFormSchema, ClientVisibilityOptions, CmapSelectOption, ProfilePageDTO } from 'cmap2-shared';
+import { BasicInfoFormDTO, BasicInfoFormSchema, ClientVisibilitySchema, KeyValueDTO, ProfilePageDTO } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
@@ -24,7 +24,7 @@ export default function ProfileForm({ profile, setBasicInfo }: ProfileFormProps)
         defaultValues: profile,
         resolver: zodResolver(BasicInfoFormSchema)
     });
-    const defaultLayoutOptions: CmapSelectOption[] = profile.layouts.map(l => ({key: l.id, value: l.label }));
+    const defaultLayoutOptions: KeyValueDTO[] = profile.layouts.map(l => ({ key: l.id, value: l.label }));
 
     const onSubmit = (formData: BasicInfoFormDTO) => {
         POST('profile/basicInfo', formData, undefined, () => {
@@ -50,7 +50,10 @@ export default function ProfileForm({ profile, setBasicInfo }: ProfileFormProps)
                 </tr>
                 <tr>
                     <th>Profile visibility</th>
-                    <td><SelectInput register={register} name={'visibility'} width={'auto'} options={ClientVisibilityOptions} errors={errors} /></td>
+                    <td>
+                        <SelectInput register={register} name={'visibility'} width={'auto'} errors={errors}
+                                     options={ClientVisibilitySchema.options.map(value => ({ key: value, value: value }))} />
+                    </td>
                 </tr>
             </FormTable>
             <fieldset>

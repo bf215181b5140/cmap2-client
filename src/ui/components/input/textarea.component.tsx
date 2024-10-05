@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactProps } from 'cmap2-shared';
 import { UseFormRegister } from 'react-hook-form';
 import { FieldErrors } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
 import { globalInputStyle } from '../../style/input.style';
 
-interface TextareaInputProps extends ReactProps {
+interface TextareaInputProps {
     name: string;
     register: UseFormRegister<any>;
     rows?: number;
@@ -17,7 +16,7 @@ interface TextareaInputProps extends ReactProps {
     width?: string;
 }
 
-export default function TextareaInput({name, register, rows, placeholder, errors, readOnly, width}: TextareaInputProps) {
+export default function TextareaInput({ name, register, rows, placeholder, errors, readOnly, width }: TextareaInputProps) {
     const [hasError, errorMessage] = useInputError(name, errors);
 
     return (<div>

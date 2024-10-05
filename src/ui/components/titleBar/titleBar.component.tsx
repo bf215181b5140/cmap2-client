@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { WindowState } from '../../../shared/enums';
+import { WindowState } from '../../../shared/enums/windowState';
 import IconButton from '../buttons/iconButton.component';
 import useVrcDetector from '../../hooks/vrcDetector.hook';
 import useSocketConnection from '../../hooks/socketConnection.hook';

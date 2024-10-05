@@ -1,5 +1,5 @@
-import { ReactProps } from 'cmap2-shared';
 import styled, { css } from 'styled-components';
+import { ReactProps } from '../../../types';
 
 interface PageMenuLinkProps extends ReactProps {
     onClick: () => void;

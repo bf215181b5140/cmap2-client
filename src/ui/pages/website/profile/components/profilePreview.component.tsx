@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { ProfilePageDTO, ReactProps, SegmentWidth } from 'cmap2-shared';
+import { ProfilePageDTO } from 'cmap2-shared';
 import React from 'react';
 import Segment from '../../../../components/segment/segment.component';
 import { Page } from '../../../../components/page/page.component';
 import Background from '../../../../components/background/background.component';
 
-interface ProfilePreviewProps extends ReactProps {
+interface ProfilePreviewProps {
     profile: ProfilePageDTO;
 }
 
@@ -24,13 +24,13 @@ export default function ProfilePreview({ profile }: ProfilePreviewProps) {
 
             {/* TODO: these have to be LayoutComponent, GroupComponent, ButtonComponent */}
             <Page>
-                <Segment segmentTitle={'Group'} flexBasis={SegmentWidth.Third}>
+                <Segment segmentTitle={'Group'} flexBasis={'Third'}>
 
                 </Segment>
-                <Segment segmentTitle={'Group'} flexBasis={SegmentWidth.Half}>
+                <Segment segmentTitle={'Group'} flexBasis={'Half'}>
 
                 </Segment>
-                <Segment segmentTitle={'Group'} flexBasis={SegmentWidth.Full}>
+                <Segment segmentTitle={'Group'} flexBasis={'Full'}>
 
                 </Segment>
             </Page>
