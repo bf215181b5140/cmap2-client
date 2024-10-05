@@ -82,12 +82,8 @@ const AppStyled = styled.div`
     }
 
     ul, ol {
-        margin: 6px 0;
-        padding-inline-start: 26px;
-
-        li {
-            margin: 4px 0;
-        }
+        margin: 5px 0;
+        padding-inline-start: 25px;
     }
 
     a {

@@ -43,7 +43,7 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
     }, []);
 
     function refreshStateData() {
-        GET('clientState', ClientStateParametersSchema, data => {
+        GET('state', ClientStateParametersSchema, data => {
             setWebsiteParameters(new Map(data));
         });
 
@@ -66,7 +66,7 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
     }
 
     function clearWebsiteState() {
-        DELETE('clientState', undefined, ClientStateParametersSchema, parameters => {
+        DELETE('state', undefined, ClientStateParametersSchema, parameters => {
             setWebsiteParameters(new Map(parameters));
         });
     }
@@ -115,8 +115,8 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
                 <thead>
                 <tr>
                     <th>Parameter</th>
-                    <th>Value (on website)</th>
-                    <th>Value (this program)</th>
+                    <th>Website value</th>
+                    <th>Program value</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -147,13 +147,13 @@ const segmentInfo = <>
         There are many reason website parameters state can become out of sync with this program or VRChat, so here are some options to help
         you control parameters
         state. None of these actions have affect on your parameters in VRChat.
+    </p>
         <ul>
             <li><b>Refresh</b>: refreshes the list</li>
             <li><b>Save to local state</b>: takes parameters from the website and saves them to this program</li>
             <li><b>Upload to website state</b>: takes parameters from this program and saves them to the website</li>
             <li><b>Clear state</b>: clears all parameters from the website</li>
         </ul>
-    </p>
 </>;
 
 const StateControlBarStyled = styled.div`

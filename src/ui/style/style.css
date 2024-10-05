@@ -18,7 +18,7 @@ body {
     color: #b8b9b9;
 }
 
-p {
+p, ul, ol {
     font-family: Noto-Sans-Regular, serif;
     font-size: 14px;
     padding: 5px 0;

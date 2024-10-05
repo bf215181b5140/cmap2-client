@@ -43,7 +43,7 @@ export default function ParameterEditForm({ statePageEmitter }: ParameterEditFor
     }, []);
 
     function onSubmit(formData: ClientStateParameterFormDTO) {
-        POST('clientState/parameter', formData, undefined, () => {
+        POST('state/parameter', formData, undefined, () => {
             statePageEmitter.emit('setParameter', formData);
             // window.IPC.send('setTrackedParameter', formData);
             reset(formData);
