@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import AvatarParameterProperties from './avatarParameterProperties.component';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
-import { VrcOscAvatarParameter } from '../../../../../shared/schemas/avatars.schema';
+import { VrcOscAvatarParameter } from '../../../../../shared/objects/vrcOscAvatar';
 import IconButton from '../../../../components/buttons/iconButton.component';
 
 interface AvatarParameterProps {

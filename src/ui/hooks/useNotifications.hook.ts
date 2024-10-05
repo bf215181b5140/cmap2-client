@@ -1,7 +1,8 @@
 import { useContext } from 'react';
-import { Notification, NotificationType } from '../../electron/store/notifications/notifications.model';
+import { Notification } from '../../shared/objects/notification';
 import { nanoid } from 'nanoid';
 import { ToastContext } from '../components/context/toast.context';
+import { NotificationType } from 'cmap2-shared';
 
 interface AddNotificationOptions {
     id?: string;

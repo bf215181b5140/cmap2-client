@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { VrcOscAvatarParameterProperties } from '../../../../../shared/schemas/avatars.schema';
+import { VrcOscAvatarParameterProperties } from '../../../../../shared/objects/vrcOscAvatar';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';
 import { theme } from '../../../../style/theme';
 

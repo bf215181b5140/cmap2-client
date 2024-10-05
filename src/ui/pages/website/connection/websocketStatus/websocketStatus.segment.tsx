@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CredentialsContext } from '../../../../components/context/credentials.context';
 import Segment from '../../../../components/segment/segment.component';
 import useSocketConnection from '../../../../hooks/socketConnection.hook';
-import { SocketSettings, SocketSettingsSchema } from '../../../../../shared/schemas/settings.schema';
+import { SocketSettings, SocketSettingsSchema } from '../../../../../shared/objects/settings';
 import FormTable from '../../../../components/form/formTable.component';
 import TextButton from '../../../../components/buttons/textButton.component';
 import CheckboxInput from '../../../../components/input/checkbox.component';

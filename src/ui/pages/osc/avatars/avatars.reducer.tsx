@@ -1,4 +1,4 @@
-import { VrcOscAvatar, VrcOscAvatarParameter } from '../../../../shared/schemas/avatars.schema';
+import { VrcOscAvatar, VrcOscAvatarParameter } from '../../../../shared/objects/vrcOscAvatar';
 
 export type VrcOscAvatarsReducerAction = { type: 'setAvatars', avatars: VrcOscAvatar[] } |
     { type: 'addAvatar', avatar: VrcOscAvatar } |

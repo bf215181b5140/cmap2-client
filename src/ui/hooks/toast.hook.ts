@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { Notification } from '../../electron/store/notifications/notifications.model';
+import { Notification } from '../../shared/objects/notification';
 
 export interface Toast extends Notification {
     timeoutId?: NodeJS.Timeout;

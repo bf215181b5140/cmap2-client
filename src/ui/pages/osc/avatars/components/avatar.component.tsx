@@ -1,6 +1,6 @@
 import AvatarParameters from './avatarParameters.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
-import { VrcOscAvatar } from '../../../../../shared/schemas/avatars.schema';
+import { VrcOscAvatar } from '../../../../../shared/objects/vrcOscAvatar';
 import Segment from '../../../../components/segment/segment.component';
 import { ReactProps } from '../../../../types';
 

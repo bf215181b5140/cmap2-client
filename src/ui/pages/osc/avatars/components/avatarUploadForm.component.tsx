@@ -2,7 +2,7 @@ import React, { ChangeEvent, useContext, useState } from 'react';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import { useForm } from 'react-hook-form';
 import { ModalContext } from '../../../../components/context/modal.context';
-import { VrcOscAvatar, VrcOscAvatarSchema } from '../../../../../shared/schemas/avatars.schema';
+import { VrcOscAvatar, VrcOscAvatarSchema } from '../../../../../shared/objects/vrcOscAvatar';
 import IconButton from '../../../../components/buttons/iconButton.component';
 import FormControlBar from '../../../../components/form/formControlBar.component';
 import { useNavigate } from 'react-router-dom';

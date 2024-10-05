@@ -1,4 +1,4 @@
-import { VrcOscAvatar } from '../../../../../../shared/schemas/avatars.schema';
+import { VrcOscAvatar } from '../../../../../../shared/objects/vrcOscAvatar';
 import { useNavigate } from 'react-router-dom';
 import { PageMenuSelect } from '../../../../../components/menu/pageMenu/pageMenuSelect.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';

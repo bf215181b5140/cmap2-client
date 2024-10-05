@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import AvatarParameter from './avatarParameter.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { VrcOscAvatarParameter } from '../../../../../shared/schemas/avatars.schema';
+import { VrcOscAvatarParameter } from '../../../../../shared/objects/vrcOscAvatar';
 import { globalInputStyle, SelectInputStyled } from '../../../../style/input.style';
 import Icon from '../../../../components/icon/icon.component';
 

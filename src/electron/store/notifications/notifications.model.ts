@@ -1,14 +1,4 @@
-export type NotificationType = 'info' | 'success' | 'warning' | 'error';
-
-export const notificationTypes: NotificationType[] = ['info', 'success', 'warning', 'error'];
-
-export interface Notification {
-    id: string;
-    type: NotificationType;
-    message: string;
-    group?: string;
-    dateTime: string;
-}
+import { Notification } from '../../../shared/objects/notification';
 
 export interface NotificationsStoreData {
     notifications: Notification[];

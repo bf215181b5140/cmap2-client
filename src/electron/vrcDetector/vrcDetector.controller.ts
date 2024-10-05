@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
-import { VrcDetectorSettings } from '../../shared/schemas/settings.schema';
+import { VrcDetectorSettings } from '../../shared/objects/settings';
 import { SETTINGS } from '../store/settings/settings.store';
 
 export default class VrcDetectorController {

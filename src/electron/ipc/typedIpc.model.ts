@@ -1,8 +1,8 @@
-import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../shared/schemas/settings.schema';
+import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../shared/objects/settings';
 import { Credentials } from '../../shared/objects/credentials';
-import { VrcOscAvatar } from '../../shared/schemas/avatars.schema';
+import { VrcOscAvatar } from '../../shared/objects/vrcOscAvatar';
 import { ClientStateParameterDTO, VrcParameter } from 'cmap2-shared';
-import { Notification } from '../store/notifications/notifications.model';
+import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
 
 export type IpcGetOptions = {

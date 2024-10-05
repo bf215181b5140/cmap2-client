@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { ClientStateParameterFormDTO } from 'cmap2-shared';
+import { ClientStateParameterFormDTO, ClientStateParametersSchema } from 'cmap2-shared';
 import styled from 'styled-components';
 import { EventEmitter } from 'events';
 import Segment from '../../../../components/segment/segment.component';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
+import { VrcOscAvatar } from '../../../../../shared/objects/vrcOscAvatar';
+import FormControlBar from '../../../../components/form/formControlBar.component';
+import IconButton from '../../../../components/buttons/iconButton.component';
 
 interface ParametersStateProps {
     statePageEmitter: EventEmitter;
@@ -11,7 +14,7 @@ interface ParametersStateProps {
 
 export default function ParametersState({ statePageEmitter }: ParametersStateProps) {
 
-    const { POST } = useCmapFetch();
+    const { GET, POST, DELETE } = useCmapFetch();
 
     const [websiteParameters, setWebsiteParameters] = useState<Map<string, string | number | boolean>>(new Map());
     const [localParameters, setLocalParameters] = useState<Map<string, string | number | boolean>>(new Map());
@@ -34,29 +37,14 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
         };
         statePageEmitter.on('setParameter', setParameterListener);
 
-        const deleteParameterListener = (parameter: ClientStateParamDTO) => {
-            setWebsiteParameters(state => {
-                state.delete(parameter.path);
-                return new Map(state);
-            });
-            setLocalParameters(state => {
-                state.delete(parameter.path);
-                return new Map(state);
-            });
-        };
-        statePageEmitter.on('deleteParameter', deleteParameterListener);
-
         return () => {
             statePageEmitter.removeListener('setParameter', setParameterListener);
-            statePageEmitter.removeListener('deleteParameter', deleteParameterListener);
-        };
+        }
     }, []);
 
     function refreshStateData() {
-        cmapFetch<ClientStateParamsDTO>('clientState', {
-            method: 'GET'
-        }, parameters => {
-            setWebsiteParameters(new Map(parameters));
+        GET('clientState', ClientStateParametersSchema, data => {
+            setWebsiteParameters(new Map(data));
         });
 
         window.IPC.get('getTrackedParameters').then(data => {
@@ -72,21 +60,26 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
 
     function syncWebsiteState() {
         const parameters = [...localParameters.entries()];
-        cmapFetch<ClientStateParamsDTO>('clientState', {
-            method: 'POST',
-            body: JSON.stringify(parameters),
-            headers: { 'Content-Type': 'application/json' }
-        }, parameters => {
+        POST('clientState', parameters, ClientStateParametersSchema, parameters => {
             setWebsiteParameters(new Map(parameters));
         });
     }
 
     function clearWebsiteState() {
-        cmapFetch<ClientStateParamsDTO>('clientState', {
-            method: 'DELETE'
-        }, parameters => {
+        DELETE('clientState', undefined, ClientStateParametersSchema, parameters => {
             setWebsiteParameters(new Map(parameters));
         });
+    }
+
+    function deleteParameter() {
+        // DELETE('clientState/parameter', deleteParameter, undefined, () => {
+        //     statePageEmitter.emit('deleteParameter', deleteParameter);
+        //     window.IPC.send('deleteTrackedParameter', deleteParameter);
+        //     reset({
+        //         path: '',
+        //         value: ''
+        //     });
+        // });
     }
 
     function localValueCell(key: string): React.JSX.Element {

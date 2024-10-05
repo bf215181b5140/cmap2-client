@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NotificationType } from '../../../../electron/store/notifications/notifications.model';
 import { useNotifications } from '../../../hooks/useNotifications.hook';
 import { ReactProps } from '../../../types';
+import { NotificationType } from 'cmap2-shared';
 
 interface NotificationIconProps extends ReactProps {
     type: NotificationType,

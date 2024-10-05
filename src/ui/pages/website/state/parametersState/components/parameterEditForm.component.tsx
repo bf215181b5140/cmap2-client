@@ -1,14 +1,14 @@
-import FormTable from '../../../../../shared/components/form/formTable.component';
-import IconButton from '../../../../../shared/components/buttons/iconButton.component';
 import React, { useEffect, useRef } from 'react';
-import Input from '../../../../../shared/components/form/inputs/input.component';
-import useCmapFetch from '../../../../../shared/hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { ClientStateParamDTO, ClientStateParamFormSchema, ClientStateParamsDTO, ContentBoxWidth } from 'cmap2-shared';
-import ContentBox from '../../../../../shared/components/contentBox/contentBox.component';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { EventEmitter } from 'events';
-import FormControlBar from '../../../../../shared/components/form/formControlBar.component';
+import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
+import { ClientStateParameterFormDTO, ClientStateParameterFormSchema, } from 'cmap2-shared';
+import Segment from '../../../../../components/segment/segment.component';
+import FormTable from '../../../../../components/form/formTable.component';
+import Input from '../../../../../components/input/input.component';
+import FormControlBar from '../../../../../components/form/formControlBar.component';
+import IconButton from '../../../../../components/buttons/iconButton.component';
 
 interface ParameterEditForm {
     statePageEmitter: EventEmitter;
@@ -16,10 +16,10 @@ interface ParameterEditForm {
 
 export default function ParameterEditForm({ statePageEmitter }: ParameterEditForm) {
 
-    const cmapFetch = useCmapFetch();
+    const { POST, DELETE } = useCmapFetch();
     const scrollRef = useRef<HTMLFormElement>(null);
-    const { register, watch, reset, formState: { errors, isDirty }, handleSubmit } = useForm<ClientStateParamDTO>({
-        resolver: zodResolver(ClientStateParamFormSchema),
+    const { register, watch, reset, formState: { errors, isDirty }, handleSubmit } = useForm<ClientStateParameterFormDTO>({
+        resolver: zodResolver(ClientStateParameterFormSchema),
         defaultValues: {
             path: '',
             value: ''
@@ -42,38 +42,22 @@ export default function ParameterEditForm({ statePageEmitter }: ParameterEditFor
         };
     }, []);
 
-    function onSubmit(formData: ClientStateParamDTO) {
-        cmapFetch<ClientStateParamsDTO>('clientState/parameter', {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: { 'Content-Type': 'application/json' }
-        }, () => {
+    function onSubmit(formData: ClientStateParameterFormDTO) {
+        POST('clientState/parameter', formData, undefined, () => {
             statePageEmitter.emit('setParameter', formData);
-            window.electronAPI.send('setTrackedParameter', formData);
+            // window.IPC.send('setTrackedParameter', formData);
             reset(formData);
         });
     }
 
     function onDelete() {
-        const deleteParameter: ClientStateParamDTO = {
-            path: watch('path'),
-            value: true,
-        };
-        cmapFetch<ClientStateParamsDTO>('clientState/parameter', {
-            method: 'DELETE',
-            body: JSON.stringify(deleteParameter),
-            headers: { 'Content-Type': 'application/json' }
-        }, () => {
-            statePageEmitter.emit('deleteParameter', deleteParameter);
-            window.electronAPI.send('deleteTrackedParameter', deleteParameter);
-            reset({
-                path: '',
-                value: ''
-            });
-        });
+        // const deleteParameter: ClientStateParameterDTO = {
+        //     path: watch('path'),
+        //     value: true,
+        // };
     }
 
-    return (<ContentBox flexBasis={ContentBoxWidth.Full} contentTitle={'Edit parameter'}>
+    return (<Segment flexBasis={'Full'} segmentTitle={'Edit parameter'}>
         <form onSubmit={handleSubmit(onSubmit)} ref={scrollRef}>
             <FormTable>
                 <tr>
@@ -90,5 +74,5 @@ export default function ParameterEditForm({ statePageEmitter }: ParameterEditFor
                 </tr>
             </FormTable>
         </form>
-    </ContentBox>);
+    </Segment>);
 }

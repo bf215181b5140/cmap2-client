@@ -1,12 +1,13 @@
 import { Page } from '../../components/page/page.component';
 import Segment from '../../components/segment/segment.component';
 import React, { useEffect, useState } from 'react';
-import { Notification, NotificationType, notificationTypes } from '../../../electron/store/notifications/notifications.model';
+import { Notification } from '../../../shared/objects/notification';
 import IconButton from '../../components/buttons/iconButton.component';
 import styled from 'styled-components';
 import SegmentTable from '../../components/segment/segmentTable.component';
 import { useNotifications } from '../../hooks/useNotifications.hook';
 import { InputStyled, SelectInputStyled } from '../../style/input.style';
+import { NotificationType, NotificationTypeSchema } from 'cmap2-shared';
 
 export default function NotificationsPage() {
 
@@ -44,7 +45,7 @@ export default function NotificationsPage() {
                     Filter
                     <SelectInputStyled errors={false} width={'125px'} onChange={(event) => setTypeFilter(event.target.value)}>
                         <option value={'any'} key={'any'}>{'Any type'}</option>
-                        {notificationTypes.map(type => (<option value={type} key={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>))}
+                        {NotificationTypeSchema.options.map(type => (<option value={type} key={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>))}
                     </SelectInputStyled>
                     <InputStyled placeholder={'Search message'} value={messageFilter} onChange={(event) => setMessageFilter(event.target.value)} />
                 </div>

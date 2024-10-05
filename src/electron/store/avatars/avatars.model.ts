@@ -1,4 +1,4 @@
-import { VrcOscAvatar } from '../../../shared/schemas/avatars.schema';
+import { VrcOscAvatar } from '../../../shared/objects/vrcOscAvatar';
 
 export interface AvatarStoreData {
     avatars: VrcOscAvatar[];
