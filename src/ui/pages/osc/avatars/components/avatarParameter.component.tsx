@@ -54,7 +54,7 @@ const AvatarParameterStyled = styled.div`
     height: min-content;
 
     h4 {
-        font-size: 1em;
+        font-size: 16px;
         color: ${props => props.theme.colors.font.h4};
         padding: 0;
         margin: 0;

@@ -37,8 +37,8 @@ export class OscController {
         IPC.handle('getLastOscActivity', async () => this.lastActivity);
         IPC.handle('getTrackedParameters', async () => this.trackedParameters);
         // IPC.on('setTrackedParameters', parameters => this.trackedParameters = parameters);
-        // IPC.on('setTrackedParameter', parameter => this.trackedParameters.set(parameter.path, parameter.value));
-        // IPC.on('deleteTrackedParameter', parameter => this.trackedParameters.delete(parameter.path));
+        IPC.on('setTrackedParameter', parameter => this.trackedParameters.set(parameter.path, parameter.value));
+        IPC.on('deleteTrackedParameter', path => this.trackedParameters.delete(path));
 
         BRIDGE.on('sendOscMessage', message => this.send(message));
 

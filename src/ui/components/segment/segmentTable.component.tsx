@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { ReactProps } from '../../types';
+import React from 'react';
 
 interface SegmentTableProps extends ReactProps {
     maxHeight?: string;
+    className?: string;
 }
 
-export default function SegmentTable({ maxHeight, children }: SegmentTableProps) {
-    return (<SegmentTableStyled maxHeight={maxHeight}>
+export default function SegmentTable({ maxHeight, className, children }: SegmentTableProps) {
+    return (<SegmentTableStyled maxHeight={maxHeight} className={className}>
         <div>
             <table>
                 {children}

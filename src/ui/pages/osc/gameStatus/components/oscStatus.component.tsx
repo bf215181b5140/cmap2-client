@@ -1,21 +1,17 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { VrcOscAvatar } from '../../../../../shared/objects/vrcOscAvatar';
 import Segment from '../../../../components/segment/segment.component';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
+import AvatarName from '../../../../components/savedAvatar/savedAvatar.component';
 
 export default function OscStatus() {
 
     const [trackedParameters, setTrackedParametersState] = useState<Map<string, string | number | boolean>>(new Map());
-    const [knownAvatars, setKnownAvatars] = useState<VrcOscAvatar[]>([]);
-
     const trackedAvatarId = trackedParameters.get('/avatar/change')?.toString();
-    const activeAvatar = knownAvatars.find(a => a.id === trackedAvatarId);
 
     useEffect(() => {
         window.IPC.get('getTrackedParameters').then(data => setTrackedParametersState(data));
-
-        window.IPC.get('getAvatars').then(data => setKnownAvatars(data));
 
         const removeListener = window.IPC.receive('vrcParameter', vrcParameter => setTrackedParametersState(state => state.set(vrcParameter.path, vrcParameter.value)));
 
@@ -24,17 +20,9 @@ export default function OscStatus() {
         };
     }, []);
 
-    function currentAvatarText() {
-        if (trackedAvatarId === undefined) return 'No avatar detected';
-        if (activeAvatar) return activeAvatar.name;
-        return `Unknown avatar with ID ${trackedAvatarId}`;
-    }
-
     return (<Segment flexBasis={'Full'} segmentTitle={'Current detected avatar state'}>
-        <AvatarNameStyled>
-            <i className={'ri-contacts-book-fill'}></i>
-            {currentAvatarText()}
-        </AvatarNameStyled>
+
+        <AvatarName avatarId={trackedAvatarId} />
 
         {trackedParameters.size > 0 ? (
             <SegmentTable>

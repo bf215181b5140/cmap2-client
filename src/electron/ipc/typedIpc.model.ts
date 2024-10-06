@@ -49,9 +49,9 @@ export type IpcSendOptions = {
     // setToyCommandParameters: ToyCommandParameter[];
     // setToyCommandOscMessages: ToyCommandOscMessage[];
 
-    setTrackedParameters: Map<string, boolean | number | string>;
-    setTrackedParameter: ClientStateParameterDTO;
-    deleteTrackedParameter: ClientStateParameterDTO;
+    // setTrackedParameters: Map<string, boolean | number | string>;
+    setTrackedParameter: VrcParameter;
+    deleteTrackedParameter: string;
 
     // checkForUpdates: undefined;
     // startUpdate: string;
