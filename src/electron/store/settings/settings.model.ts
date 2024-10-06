@@ -34,7 +34,7 @@ export const settingsStoreDefaults: SettingsStoreData = {
         outPort: 9001
     },
     oscState: {
-        clearOnAvatarChange: false,
+        clearOnAvatarChange: true,
     },
     socket: {
         autoConnect: true,

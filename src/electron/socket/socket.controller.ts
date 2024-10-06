@@ -29,7 +29,7 @@ export class SocketController {
             if (this.parameterBlacklist.has(vrcParameter.path)) return;
             this.sendParameter(vrcParameter);
         });
-        BRIDGE.on('stateParameters', parameters => {
+        BRIDGE.on('trackedParameters', parameters => {
             this.sendData('stateParameters', parameters);
         });
 

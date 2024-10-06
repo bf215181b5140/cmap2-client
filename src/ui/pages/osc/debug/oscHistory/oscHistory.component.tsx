@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { VrcParameter } from 'cmap2-shared';
 import Segment from '../../../../components/segment/segment.component';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
@@ -22,27 +22,26 @@ export default function OscHistory() {
     }, []);
 
     return (<Segment flexBasis={'Full'} segmentTitle={'OSC activity history'}>
-        {oscParameterHistory.length > 0 ? (
-            <SegmentTable>
-                <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Parameter</th>
-                    <th>Value</th>
+        <SegmentTable>
+            <thead>
+            <tr>
+                <th>Time</th>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {oscParameterHistory.length === 0 && <tr>
+                <td colSpan={3} style={{ textAlign: 'center' }}>Waiting for OSC activity...</td>
+            </tr>}
+            {oscParameterHistory.map((parameter, index) => (
+                <tr key={index}>
+                    <td>{parameter.date.toLocaleTimeString() + '.' + ('000' + parameter.date.getMilliseconds()).slice(-3)}</td>
+                    <td>{parameter.path}</td>
+                    <td>{parameter.value.toString()}</td>
                 </tr>
-                </thead>
-                <tbody>
-                {oscParameterHistory.map((parameter, index) => (
-                    <tr key={index}>
-                        <td>{parameter.date.toLocaleTimeString() + '.' + ('000' + parameter.date.getMilliseconds()).slice(-3)}</td>
-                        <td>{parameter.path}</td>
-                        <td>{parameter.value.toString()}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </SegmentTable>
-        ) : (
-            <p>Waiting for OSC activity...</p>
-        )}
+            ))}
+            </tbody>
+        </SegmentTable>
     </Segment>);
 }

@@ -46,6 +46,7 @@ export class OscController {
         IPC.on('deleteTrackedParameter', path => this.trackedParameters.delete(path));
 
         BRIDGE.on('sendOscMessage', message => this.send(message));
+        IPC.on('sendVrcParameter', data => this.send(new Message(data.path, data.value)));
 
         // Currently nothing subscribes to this
         // BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
@@ -112,10 +113,10 @@ export class OscController {
                 this.trackedParametersActivity.delete(param);
             });
 
-            // emit new state parameters
+            // emit new tracked parameters
             const stateParameters = [...this.trackedParameters.entries()];
-            BRIDGE.emit('stateParameters', stateParameters);
-            IPC.emit('stateParameters', stateParameters);
+            BRIDGE.emit('trackedParameters', stateParameters);
+            IPC.emit('trackedParameters', stateParameters);
         }, 300);
     }
 

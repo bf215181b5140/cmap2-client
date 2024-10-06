@@ -12,20 +12,22 @@ import CheckboxInput from '../../../../components/input/checkbox.component';
 
 export default function OscStatus() {
 
-    const [trackedParameters, setTrackedParametersState] = useState<Map<string, string | number | boolean>>(new Map());
+    const [trackedParameters, setTrackedParameters] = useState<Map<string, string | number | boolean>>(new Map());
     const trackedAvatarId = trackedParameters.get('/avatar/change')?.toString();
 
     const { register, formState: { errors }, handleSubmit, reset } = useForm<OscStateSettings>({ resolver: zodResolver(OscStateSettingsSchema) });
     const submitRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        window.IPC.get('getTrackedParameters').then(data => setTrackedParametersState(data));
+        window.IPC.get('getTrackedParameters').then(data => setTrackedParameters(data));
         window.IPC.get('getOscStateSettings').then(data => reset(data));
 
-        const removeListener = window.IPC.receive('vrcParameter', vrcParameter => setTrackedParametersState(state => state.set(vrcParameter.path, vrcParameter.value)));
+        const parameterListener = window.IPC.receive('vrcParameter', vrcParameter => setTrackedParameters(state => new Map(state.set(vrcParameter.path, vrcParameter.value))));
+        const parametersListener = window.IPC.receive('trackedParameters', data => setTrackedParameters(new Map(data)));
 
         return () => {
-            if (removeListener) removeListener();
+            if (parameterListener) parameterListener();
+            if (parametersListener) parametersListener();
         };
     }, []);
 
@@ -33,31 +35,29 @@ export default function OscStatus() {
         window.IPC.send('saveOscStateSettings', data);
     }
 
-
     return (<Segment flexBasis={'Full'} segmentTitle={'Current detected avatar state'}>
 
         <AvatarName avatarId={trackedAvatarId} />
 
-        {trackedParameters.size > 0 ? (
-            <SegmentTable>
-                <thead>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Value</th>
+        <SegmentTable>
+            <thead>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {trackedParameters.size === 0 && <tr>
+                <td colSpan={2} style={{ textAlign: 'center' }}>No detected parameters yet</td>
+            </tr>}
+            {Array.from(trackedParameters).map((parameter) => (
+                <tr key={parameter[0]}>
+                    <td>{parameter[0]}</td>
+                    <td>{parameter[1].toString()}</td>
                 </tr>
-                </thead>
-                <tbody>
-                {Array.from(trackedParameters).map((parameter) => (
-                    <tr key={parameter[0]}>
-                        <td>{parameter[0]}</td>
-                        <td>{parameter[1].toString()}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </SegmentTable>
-        ) : (
-            <p>No detected parameters</p>
-        )}
+            ))}
+            </tbody>
+        </SegmentTable>
 
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormTable>

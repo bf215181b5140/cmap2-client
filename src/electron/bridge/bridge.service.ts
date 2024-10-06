@@ -11,7 +11,7 @@ type MessageEvents = {
     isVrcDetected: (isVrcDetected: boolean | null) => void;
     vrcParameter: (vrcParameter: VrcParameter) => void;
     sendOscMessage: (oscMessage: Message) => void;
-    stateParameters: (parameters: ClientStateParametersDTO) => void;
+    trackedParameters: (parameters: ClientStateParametersDTO) => void;
 }
 
 export const BRIDGE = new EventEmitter() as TypedEmitter<MessageEvents>;

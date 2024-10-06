@@ -42,6 +42,7 @@ export type IpcSendOptions = {
     saveNotification: Notification;
     deleteNotification: Notification;
     clearNotifications: void;
+    sendVrcParameter: VrcParameter;
 
     // setLovenseSettings: LovenseSettings;
     // getLovenseStatus: undefined;
@@ -63,7 +64,7 @@ export type IpcReceiveOptions = {
     isVrcDetected: boolean | null;
     socketConnected: boolean;
     vrcParameter: VrcParameter;
-    stateParameters: ClientStateParametersDTO;
+    trackedParameters: ClientStateParametersDTO;
 
     // lovenseStatus: LovenseStatus;
     // updateData: UpdateData;
