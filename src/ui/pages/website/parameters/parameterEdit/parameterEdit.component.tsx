@@ -2,25 +2,25 @@ import React, { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
-import { ClientStateParameterFormDTO, ClientStateParameterFormSchema, VrcParameter, } from 'cmap2-shared';
+import { TrackedParameterFormDTO, TrackedParameterFormSchema, VrcParameter } from 'cmap2-shared';
 import Segment from '../../../../components/segment/segment.component';
 import FormTable from '../../../../components/form/formTable.component';
 import Input from '../../../../components/input/input.component';
 import FormControlBar from '../../../../components/form/formControlBar.component';
 import IconButton from '../../../../components/buttons/iconButton.component';
 import TypedEmitter from 'typed-emitter/rxjs';
-import { StatePageEmitter } from '../types/statePageEmitter';
+import { ParametersPageEmitter } from '../types/parametersPageEmitter';
 
 interface ParameterEditForm {
-    statePageEmitter: TypedEmitter<StatePageEmitter>;
+    parametersPageEmitter: TypedEmitter<ParametersPageEmitter>;
 }
 
-export default function ParameterEdit({ statePageEmitter }: ParameterEditForm) {
+export default function ParameterEdit({ parametersPageEmitter }: ParameterEditForm) {
 
     const { POST, DELETE } = useCmapFetch();
     const scrollRef = useRef<HTMLFormElement>(null);
-    const { register, watch, reset, formState: { errors, isDirty }, handleSubmit } = useForm<ClientStateParameterFormDTO>({
-        resolver: zodResolver(ClientStateParameterFormSchema),
+    const { register, watch, reset, formState: { errors, isDirty }, handleSubmit } = useForm<TrackedParameterFormDTO>({
+        resolver: zodResolver(TrackedParameterFormSchema),
         defaultValues: {
             path: '',
             value: ''
@@ -35,16 +35,16 @@ export default function ParameterEdit({ statePageEmitter }: ParameterEditForm) {
             });
             scrollRef.current?.scrollIntoView();
         };
-        statePageEmitter.on('selectParameter', resetListener);
+        parametersPageEmitter.on('selectParameter', resetListener);
 
         return () => {
-            statePageEmitter.removeListener('selectParameter', resetListener);
+            parametersPageEmitter.removeListener('selectParameter', resetListener);
         };
     }, []);
 
-    function onSubmit(formData: ClientStateParameterFormDTO) {
-        POST('state/parameter', formData, undefined, () => {
-            statePageEmitter.emit('saveParameter', formData);
+    function onSubmit(formData: VrcParameter) {
+        POST('trackedParameters/parameter', formData, undefined, () => {
+            parametersPageEmitter.emit('saveParameter', formData);
             window.IPC.send('setTrackedParameter', formData);
             reset({
                 path: formData.path,
@@ -55,8 +55,8 @@ export default function ParameterEdit({ statePageEmitter }: ParameterEditForm) {
 
     function onDelete() {
         const parameter = watch('path');
-        DELETE('state/parameter', { path: parameter }, undefined, () => {
-            statePageEmitter.emit('deleteParameter', parameter);
+        DELETE('trackedParameters/parameter', { path: parameter }, undefined, () => {
+            parametersPageEmitter.emit('deleteParameter', parameter);
             window.IPC.send('deleteTrackedParameter', parameter);
             reset({
                 path: '',

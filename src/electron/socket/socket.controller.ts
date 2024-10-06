@@ -30,7 +30,7 @@ export class SocketController {
             this.sendParameter(vrcParameter);
         });
         BRIDGE.on('trackedParameters', parameters => {
-            this.sendData('stateParameters', parameters);
+            this.sendData('trackedParameters', parameters);
         });
 
         if (SETTINGS.get('socket').autoConnect) this.connect(SETTINGS.get('credentials'));

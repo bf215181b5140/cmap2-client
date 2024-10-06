@@ -1,12 +1,12 @@
 import { Credentials } from '../../../shared/objects/credentials';
-import { AppSettings, OscSettings, OscStateSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
+import { AppSettings, OscSettings, TrackedParametersSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
 
 export interface SettingsStoreData {
     credentials: Credentials;
     app: AppSettings;
     vrcDetector: VrcDetectorSettings;
     osc: OscSettings;
-    oscState: OscStateSettings;
+    trackedParameters: TrackedParametersSettings;
     socket: SocketSettings;
     socketParameterBlacklist: SocketParameterBlacklist;
     // lovense: {
@@ -33,7 +33,7 @@ export const settingsStoreDefaults: SettingsStoreData = {
         inPort: 9000,
         outPort: 9001
     },
-    oscState: {
+    trackedParameters: {
         clearOnAvatarChange: true,
     },
     socket: {

@@ -1,9 +1,9 @@
 import { EventEmitter } from 'events';
 import TypedEmitter from 'typed-emitter/rxjs';
-import { WindowSize } from '../../shared/enums/windowSize';
-import { ClientStateParametersDTO, VrcParameter } from 'cmap2-shared';
+import type { WindowSize } from '../../shared/enums/windowSize';
+import { TrackedParametersDTO, VrcParameter } from 'cmap2-shared';
 import { Message } from 'node-osc';
-import { WindowState } from '../../shared/enums/windowState';
+import type { WindowState } from '../../shared/enums/windowState';
 
 type MessageEvents = {
     setWindowState: (windowState: WindowState) => void;
@@ -11,7 +11,7 @@ type MessageEvents = {
     isVrcDetected: (isVrcDetected: boolean | null) => void;
     vrcParameter: (vrcParameter: VrcParameter) => void;
     sendOscMessage: (oscMessage: Message) => void;
-    trackedParameters: (parameters: ClientStateParametersDTO) => void;
+    trackedParameters: (parameters: TrackedParametersDTO) => void;
 }
 
 export const BRIDGE = new EventEmitter() as TypedEmitter<MessageEvents>;

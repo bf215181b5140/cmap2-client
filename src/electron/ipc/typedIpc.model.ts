@@ -1,7 +1,7 @@
-import { AppSettings, OscSettings, OscStateSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../shared/objects/settings';
+import { AppSettings, OscSettings, TrackedParametersSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../shared/objects/settings';
 import { Credentials } from '../../shared/objects/credentials';
 import { VrcOscAvatar } from '../../shared/objects/vrcOscAvatar';
-import { ClientStateParametersDTO, VrcParameter } from 'cmap2-shared';
+import { TrackedParametersDTO, TrackedParametersMap, VrcParameter } from 'cmap2-shared';
 import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
 
@@ -11,12 +11,12 @@ export type IpcGetOptions = {
     getAppSettings: AppSettings;
     getVrcDetectorSettings: VrcDetectorSettings;
     getOscSettings: OscSettings;
-    getOscStateSettings: OscStateSettings;
+    getTrackedParametersSettings: TrackedParametersSettings;
     getSocketSettings: SocketSettings;
     getSocketConnected: boolean;
     getAvatars: VrcOscAvatar[];
     getLastOscActivity: number | undefined;
-    getTrackedParameters: Map<string, boolean | number | string>;
+    getTrackedParameters: TrackedParametersMap;
     getFingerprint: string;
     getNotifications: Notification[];
 
@@ -32,7 +32,7 @@ export type IpcSendOptions = {
     saveAppSettings: AppSettings;
     saveVrcDetectorSettings: VrcDetectorSettings;
     saveOscSettings: OscSettings;
-    saveOscStateSettings: OscStateSettings;
+    saveTrackedParametersSettings: TrackedParametersSettings;
     saveSocketSettings: SocketSettings;
     saveSocketParameterBlacklist: SocketParameterBlacklist;
     checkIsVrcDetected: void;
@@ -64,7 +64,7 @@ export type IpcReceiveOptions = {
     isVrcDetected: boolean | null;
     socketConnected: boolean;
     vrcParameter: VrcParameter;
-    trackedParameters: ClientStateParametersDTO;
+    trackedParameters: TrackedParametersDTO;
 
     // lovenseStatus: LovenseStatus;
     // updateData: UpdateData;

@@ -1,10 +1,9 @@
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
-import { VrcParameter } from 'cmap2-shared';
+import { TrackedParametersMap, VrcParameter } from 'cmap2-shared';
 import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { OscSettings } from '../../shared/objects/settings';
 import { SETTINGS } from '../store/settings/settings.store';
-import path from 'path';
 
 const ignoredOscParameters = ['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
                               '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
@@ -19,7 +18,7 @@ export class OscController {
     private oscSettings: OscSettings | undefined;
 
     private ignoredParameters: Set<string> = new Set(ignoredOscParameters);
-    private trackedParameters: Map<string, boolean | number | string> = new Map();
+    private trackedParameters = new TrackedParametersMap();
     private trackedParametersActivity: Map<string, number> = new Map();
 
     private lastActivity: number | undefined;
@@ -37,7 +36,7 @@ export class OscController {
             }
         });
 
-        IPC.on('saveOscStateSettings', data => this.clearOnAvatarChange = data.clearOnAvatarChange);
+        IPC.on('saveTrackedParametersSettings', data => this.clearOnAvatarChange = data.clearOnAvatarChange);
 
         IPC.handle('getLastOscActivity', async () => this.lastActivity);
         IPC.handle('getTrackedParameters', async () => this.trackedParameters);
@@ -51,7 +50,7 @@ export class OscController {
         // Currently nothing subscribes to this
         // BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
 
-        this.clearOnAvatarChange = SETTINGS.get('oscState').clearOnAvatarChange;
+        this.clearOnAvatarChange = SETTINGS.get('trackedParameters').clearOnAvatarChange;
 
         this.start(SETTINGS.get('osc'));
     }
@@ -100,13 +99,6 @@ export class OscController {
             const deleteParameters: string[] = [];
             this.trackedParametersActivity.forEach((time, path) => time < cutoutTime && deleteParameters.push(path));
 
-            // const deleteParameters = [...this.trackedParametersActivity.entries()].filter(param => {
-            //     const paramPath = param.at(0);
-            //     const paramTime = param.at(1);
-            //     if (typeof paramPath !== 'string' || typeof paramTime !== 'number') return false;
-            //     return paramTime < cutoutTime;
-            // }).map(param => param.at(0) as string);
-
             // delete tracked parameters
             deleteParameters.forEach(param => {
                 this.trackedParameters.delete(param);
@@ -114,9 +106,9 @@ export class OscController {
             });
 
             // emit new tracked parameters
-            const stateParameters = [...this.trackedParameters.entries()];
-            BRIDGE.emit('trackedParameters', stateParameters);
-            IPC.emit('trackedParameters', stateParameters);
+            const trackedparametersDto = this.trackedParameters.dto();
+            BRIDGE.emit('trackedParameters', trackedparametersDto);
+            IPC.emit('trackedParameters', trackedparametersDto);
         }, 300);
     }
 

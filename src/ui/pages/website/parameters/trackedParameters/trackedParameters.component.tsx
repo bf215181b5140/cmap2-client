@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ClientStateParameterFormDTO, ClientStateParametersSchema, VrcParameter } from 'cmap2-shared';
+import { TrackedParametersMap, TrackedParametersSchema, VrcParameter } from 'cmap2-shared';
 import styled from 'styled-components';
-import { EventEmitter } from 'events';
 import Segment from '../../../../components/segment/segment.component';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import FormControlBar from '../../../../components/form/formControlBar.component';
@@ -10,14 +9,14 @@ import SegmentTable from '../../../../components/segment/segmentTable.component'
 import AvatarName from '../../../../components/savedAvatar/savedAvatar.component';
 import useCmapUtil from '../../../../hooks/cmapUtil.hook';
 import TypedEmitter from 'typed-emitter/rxjs';
-import { StatePageEmitter } from '../types/statePageEmitter';
+import { ParametersPageEmitter } from '../types/parametersPageEmitter';
 import { ModalContext } from '../../../../components/context/modal.context';
 
 interface ParametersStateProps {
-    statePageEmitter: TypedEmitter<StatePageEmitter>;
+    parametersPageEmitter: TypedEmitter<ParametersPageEmitter>;
 }
 
-export default function ParametersState({ statePageEmitter }: ParametersStateProps) {
+export default function TrackedParameters({ parametersPageEmitter }: ParametersStateProps) {
 
     const { GET, POST, DELETE } = useCmapFetch();
     const { setModal } = useContext(ModalContext);
@@ -26,8 +25,8 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
     const [lastRefresh, setLastRefresh] = useState<number | undefined>();
     const [refreshId, setRefreshId] = useState(0);
 
-    const [websiteParameters, setWebsiteParameters] = useState<Map<string, string | number | boolean>>(new Map());
-    const [localParameters, setLocalParameters] = useState<Map<string, string | number | boolean>>(new Map());
+    const [websiteParameters, setWebsiteParameters] = useState<TrackedParametersMap>(new TrackedParametersMap());
+    const [localParameters, setLocalParameters] = useState<TrackedParametersMap>(new TrackedParametersMap());
     const allParameters = [...new Map([...websiteParameters, ...localParameters]).keys()];
 
     const avatarId = websiteParameters.get('/avatar/change');
@@ -38,11 +37,11 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
     useEffect(() => {
         refreshStateData();
 
-        const saveParameterListener = (parameter: ClientStateParameterFormDTO) => {
+        const saveParameterListener = (parameter: VrcParameter) => {
             setWebsiteParameters(state => state.set(parameter.path, parameter.value));
             setLocalParameters(state => state.set(parameter.path, parameter.value));
         };
-        statePageEmitter.on('saveParameter', saveParameterListener);
+        parametersPageEmitter.on('saveParameter', saveParameterListener);
 
         const deleteParameterListener = (path: string) => {
             setWebsiteParameters(state => {
@@ -54,20 +53,20 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
                 return state;
             });
         };
-        statePageEmitter.on('deleteParameter', deleteParameterListener);
+        parametersPageEmitter.on('deleteParameter', deleteParameterListener);
 
         const intervalId = setInterval(() => setRefreshId(state => state + 1), 1000);
 
         return () => {
-            statePageEmitter.removeListener('saveParameter', saveParameterListener);
-            statePageEmitter.removeListener('deleteParameter', deleteParameterListener);
+            parametersPageEmitter.removeListener('saveParameter', saveParameterListener);
+            parametersPageEmitter.removeListener('deleteParameter', deleteParameterListener);
             clearInterval(intervalId);
         };
     }, []);
 
     function refreshStateData() {
-        GET('state', ClientStateParametersSchema, data => {
-            setWebsiteParameters(new Map(data));
+        GET('trackedParameters', TrackedParametersSchema, data => {
+            setWebsiteParameters(new TrackedParametersMap(data));
             setLastRefresh(Date.now());
         });
 
@@ -79,13 +78,13 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
 
     function onSyncState() {
         setModal({
-            title: 'Uploading state',
-            message: 'This will upload and set website state to currently detected state in the program',
+            title: 'Uploading tracked parameters',
+            message: 'This will upload and set website tracked parameters to currently detected ones from the program',
             confirmValue: 'Upload',
             confirmFunction: () => {
                 const parameters = [...localParameters.entries()];
-                POST('state', parameters, undefined, () => {
-                    setWebsiteParameters(new Map(parameters));
+                POST('trackedParameters', parameters, undefined, () => {
+                    setWebsiteParameters(new TrackedParametersMap(parameters));
                 });
             }
         });
@@ -93,12 +92,12 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
 
     function onClearState() {
         setModal({
-            title: 'Clearing state',
-            message: 'This will clear website state',
+            title: 'Clearing tracked parameters',
+            message: 'This will clear website tracked parameters',
             confirmValue: 'Clear',
             confirmFunction: () => {
-                DELETE('state', undefined, undefined, () => {
-                    setWebsiteParameters(new Map());
+                DELETE('trackedParameters', undefined, undefined, () => {
+                    setWebsiteParameters(new TrackedParametersMap());
                 });
             }
         });
@@ -110,7 +109,7 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
         return <span className={className}>{localValue?.toString()}</span>;
     }
 
-    return (<Segment flexBasis={'Full'} segmentTitle={'Parameters state'} infoContent={segmentInfo}>
+    return (<Segment flexBasis={'Full'} segmentTitle={'Tracked parameters'} infoContent={segmentInfo}>
 
         <AvatarName avatarId={avatarId?.toString()} />
 
@@ -126,7 +125,7 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
                 </thead>
                 <tbody>
                 {allParameters.map((parameter) => (
-                    <tr key={parameter} onClick={() => statePageEmitter.emit('selectParameter', { path: parameter, value: websiteParameters.get(parameter) } as VrcParameter)}>
+                    <tr key={parameter} onClick={() => parametersPageEmitter.emit('selectParameter', { path: parameter, value: websiteParameters.get(parameter) || '' })}>
                         <td>{parameter}</td>
                         <td>{websiteParameters.get(parameter)?.toString()}</td>
                         <td>{localValueCell(parameter)}</td>
@@ -147,7 +146,7 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
             <span key={refreshId}>Last refresh: {timeSinceTimestamp(lastRefresh)}</span>
             <IconButton role={'normal'} tooltip={'Refresh'} icon={'ri-loop-left-line'} size={'small'} onClick={() => refreshStateData()} />
             <hr />
-            <IconButton role={'normal'} tooltip={'Upload program state'} icon={'ri-upload-2-line'} onClick={() => onSyncState()} />
+            <IconButton role={'normal'} tooltip={'Upload program parameters'} icon={'ri-upload-2-line'} onClick={() => onSyncState()} />
             <IconButton role={'normal'} tooltip={'Clear state'} icon={'ri-delete-bin-6-line'} onClick={() => onClearState()} />
         </FormControlBar>
 
@@ -158,8 +157,8 @@ const segmentInfo = <>
     <p>This is a list of all the parameters and their values that the website and this program are tracking for you.</p>
     <p>Parameters and values tracked on the website is how the website knows what to display and how layouts and buttons react to people coming to your website profile.</p>
     <p>
-        If you keep the program running while you play VRChat this state should be fairly accurate, however, there are many reason website parameters and values can become
-        out of sync with this program or VRChat, so here are some options to help you control it. None of these actions have affect on your parameters in VRChat.
+        If you keep the program running while you play VRChat this should be fairly accurate, however, there are many reason website parameters and values can become
+        out of sync with this program or VRChat, so here are some options to help you control that. None of these actions have affect on your parameters in VRChat.
     </p>
     <ul>
         <li><b>Refresh</b>: refreshes the list</li>

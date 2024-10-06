@@ -6,7 +6,7 @@ import { CredentialsContext } from '../../components/context/credentials.context
 import ConnectionPage from './connection/connection.page';
 import ProfilePage from './profile/profile.page';
 import TiersPage from './tiers/tiers.page';
-import StatePage from './state/state.page';
+import ParametersPage from './parameters/parameters.page';
 
 export default function WebsitePage() {
 
@@ -17,7 +17,7 @@ export default function WebsitePage() {
             <ContentMenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Website connection'} />
             <ContentMenuLink to={'/website/profile'} icon={'ri-profile-fill'} tooltip={'Website profile'} disabled={!apiToken} />
             <ContentMenuLink to={'/website/avatars'} icon={'ri-layout-masonry-fill'} tooltip={'Website layout'} disabled={!apiToken} />
-            <ContentMenuLink to={'/website/state'} icon={'ri-archive-stack-fill'} tooltip={'Website state'} disabled={!apiToken} />
+            <ContentMenuLink to={'/website/parameters'} icon={'ri-archive-stack-fill'} tooltip={'Website parameters'} disabled={!apiToken} />
             <ContentMenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Tiers & invite keys'} disabled={!apiToken} />
 
             {isAdmin && (<>
@@ -31,7 +31,7 @@ export default function WebsitePage() {
             <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             {/* <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} /> */}
-            <Route path="/state" element={<StatePage />} />
+            <Route path="/parameters" element={<ParametersPage />} />
             <Route path="/tiers" element={<TiersPage />} />
 
             {/* /!* Admin pages *!/ */}
