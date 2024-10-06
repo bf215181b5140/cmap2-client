@@ -24,10 +24,13 @@ export class SocketController {
         IPC.handle('getSocketConnected', async () => !!this.socket?.connected);
         IPC.on('saveSocketParameterBlacklist', data => this.parameterBlacklist = new Set(data));
 
-        BRIDGE.on('isVrcDetected', (data) => this.sendData('isVrcDetected', data));
-        BRIDGE.on('vrcParameter', (vrcParameter: VrcParameter) => {
+        BRIDGE.on('isVrcDetected', data => this.sendData('isVrcDetected', data));
+        BRIDGE.on('vrcParameter', vrcParameter => {
             if (this.parameterBlacklist.has(vrcParameter.path)) return;
             this.sendParameter(vrcParameter);
+        });
+        BRIDGE.on('stateParameters', parameters => {
+            this.sendData('stateParameters', parameters);
         });
 
         if (SETTINGS.get('socket').autoConnect) this.connect(SETTINGS.get('credentials'));

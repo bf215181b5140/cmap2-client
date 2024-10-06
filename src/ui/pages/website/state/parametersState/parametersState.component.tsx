@@ -10,7 +10,7 @@ import SegmentTable from '../../../../components/segment/segmentTable.component'
 import AvatarName from '../../../../components/savedAvatar/savedAvatar.component';
 import useCmapUtil from '../../../../hooks/cmapUtil.hook';
 import TypedEmitter from 'typed-emitter/rxjs';
-import { StatePageEmitter } from './types/statePageEmitter';
+import { StatePageEmitter } from '../types/statePageEmitter';
 import { ModalContext } from '../../../../components/context/modal.context';
 
 interface ParametersStateProps {
@@ -56,7 +56,7 @@ export default function ParametersState({ statePageEmitter }: ParametersStatePro
         };
         statePageEmitter.on('deleteParameter', deleteParameterListener);
 
-        const intervalId = setInterval(() => setRefreshId(state => state + 1), 2000);
+        const intervalId = setInterval(() => setRefreshId(state => state + 1), 1000);
 
         return () => {
             statePageEmitter.removeListener('saveParameter', saveParameterListener);

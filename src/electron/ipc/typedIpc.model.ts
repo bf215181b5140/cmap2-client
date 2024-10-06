@@ -1,7 +1,7 @@
-import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../shared/objects/settings';
+import { AppSettings, OscSettings, OscStateSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../shared/objects/settings';
 import { Credentials } from '../../shared/objects/credentials';
 import { VrcOscAvatar } from '../../shared/objects/vrcOscAvatar';
-import { ClientStateParameterDTO, VrcParameter } from 'cmap2-shared';
+import { ClientStateParametersDTO, VrcParameter } from 'cmap2-shared';
 import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
 
@@ -11,6 +11,7 @@ export type IpcGetOptions = {
     getAppSettings: AppSettings;
     getVrcDetectorSettings: VrcDetectorSettings;
     getOscSettings: OscSettings;
+    getOscStateSettings: OscStateSettings;
     getSocketSettings: SocketSettings;
     getSocketConnected: boolean;
     getAvatars: VrcOscAvatar[];
@@ -31,6 +32,7 @@ export type IpcSendOptions = {
     saveAppSettings: AppSettings;
     saveVrcDetectorSettings: VrcDetectorSettings;
     saveOscSettings: OscSettings;
+    saveOscStateSettings: OscStateSettings;
     saveSocketSettings: SocketSettings;
     saveSocketParameterBlacklist: SocketParameterBlacklist;
     checkIsVrcDetected: void;
@@ -61,6 +63,7 @@ export type IpcReceiveOptions = {
     isVrcDetected: boolean | null;
     socketConnected: boolean;
     vrcParameter: VrcParameter;
+    stateParameters: ClientStateParametersDTO;
 
     // lovenseStatus: LovenseStatus;
     // updateData: UpdateData;

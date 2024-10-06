@@ -24,6 +24,12 @@ export const OscSettingsSchema = z.object({
 
 export type OscSettings = z.infer<typeof OscSettingsSchema>;
 
+export const OscStateSettingsSchema = z.object({
+    clearOnAvatarChange: z.boolean(),
+});
+
+export type OscStateSettings = z.infer<typeof OscStateSettingsSchema>;
+
 export const SocketSettingsSchema = z.object({
     autoConnect: z.boolean(),
 });

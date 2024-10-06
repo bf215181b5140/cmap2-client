@@ -31,6 +31,10 @@ class SettingsStore extends CmapStore<SettingsStoreData> {
         IPC.handle('getOscSettings', async () => this.get('osc'));
         IPC.on('saveOscSettings', data => this.set('osc', data));
 
+        // OSC state
+        IPC.handle('getOscStateSettings', async () => this.get('oscState'));
+        IPC.on('saveOscStateSettings', data => this.set('oscState', data));
+
         // Socket
         IPC.handle('getSocketSettings', async () => this.get('socket'));
         IPC.on('saveSocketSettings', data => this.set('socket', data));

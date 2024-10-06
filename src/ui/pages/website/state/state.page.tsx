@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { EventEmitter } from 'events';
 import { Page } from '../../../components/page/page.component';
 import ParametersState from './parametersState/parametersState.component';
-import ParameterEditForm from './parametersState/components/parameterEditForm.component';
+import ParameterEdit from './parameterEdit/parameterEdit.component';
 import TypedEmitter from 'typed-emitter/rxjs';
-import { StatePageEmitter } from './parametersState/types/statePageEmitter';
+import { StatePageEmitter } from './types/statePageEmitter';
 
 export default function StatePage() {
 
@@ -13,6 +13,6 @@ export default function StatePage() {
     return (<Page>
         <ParametersState statePageEmitter={statePageEmitter} />
 
-        <ParameterEditForm statePageEmitter={statePageEmitter} />
+        <ParameterEdit statePageEmitter={statePageEmitter} />
     </Page>);
 }

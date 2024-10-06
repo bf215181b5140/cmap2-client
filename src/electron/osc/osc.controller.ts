@@ -4,6 +4,7 @@ import { VrcParameter } from 'cmap2-shared';
 import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { OscSettings } from '../../shared/objects/settings';
 import { SETTINGS } from '../store/settings/settings.store';
+import path from 'path';
 
 const ignoredOscParameters = ['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
                               '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
@@ -17,10 +18,12 @@ export class OscController {
     private oscClient: Client | undefined;
     private oscSettings: OscSettings | undefined;
 
+    private ignoredParameters: Set<string> = new Set(ignoredOscParameters);
     private trackedParameters: Map<string, boolean | number | string> = new Map();
-    private lastActivity: number | undefined;
+    private trackedParametersActivity: Map<string, number> = new Map();
 
-    private ignoredParams: Set<string> = new Set(ignoredOscParameters);
+    private lastActivity: number | undefined;
+    private clearOnAvatarChange: boolean;
 
     constructor() {
 
@@ -34,6 +37,8 @@ export class OscController {
             }
         });
 
+        IPC.on('saveOscStateSettings', data => this.clearOnAvatarChange = data.clearOnAvatarChange);
+
         IPC.handle('getLastOscActivity', async () => this.lastActivity);
         IPC.handle('getTrackedParameters', async () => this.trackedParameters);
         // IPC.on('setTrackedParameters', parameters => this.trackedParameters = parameters);
@@ -44,6 +49,8 @@ export class OscController {
 
         // Currently nothing subscribes to this
         // BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
+
+        this.clearOnAvatarChange = SETTINGS.get('oscState').clearOnAvatarChange;
 
         this.start(SETTINGS.get('osc'));
     }
@@ -67,15 +74,49 @@ export class OscController {
         const path = message[0];
 
         // filter ignored parameters
-        if (this.ignoredParams.has(path)) return;
+        if (this.ignoredParameters.has(path)) return;
 
         const value = this.valueFromArgumentType(message[1]);
 
         const vrcParameter: VrcParameter = { path, value };
 
         this.trackedParameters.set(vrcParameter.path, vrcParameter.value);
+        if (this.clearOnAvatarChange) this.trackedParametersActivity.set(vrcParameter.path, Date.now());
+
         BRIDGE.emit('vrcParameter', vrcParameter);
         IPC.emit('vrcParameter', vrcParameter);
+
+        if (this.clearOnAvatarChange && vrcParameter.path.startsWith('/avatar/change')) this.clearParametersAfterAvatarChange();
+    }
+
+    private clearParametersAfterAvatarChange() {
+        // first wait 300ms so all avatar change parameters get here
+        setTimeout(() => {
+            // set cutoutTime to 600ms ago
+            const cutoutTime = Date.now() - 600;
+
+            // filter parameters from activity map, that are older than cutoutTime
+            const deleteParameters: string[] = [];
+            this.trackedParametersActivity.forEach((time, path) => time < cutoutTime && deleteParameters.push(path));
+
+            // const deleteParameters = [...this.trackedParametersActivity.entries()].filter(param => {
+            //     const paramPath = param.at(0);
+            //     const paramTime = param.at(1);
+            //     if (typeof paramPath !== 'string' || typeof paramTime !== 'number') return false;
+            //     return paramTime < cutoutTime;
+            // }).map(param => param.at(0) as string);
+
+            // delete tracked parameters
+            deleteParameters.forEach(param => {
+                this.trackedParameters.delete(param);
+                this.trackedParametersActivity.delete(param);
+            });
+
+            // emit new state parameters
+            const stateParameters = [...this.trackedParameters.entries()];
+            BRIDGE.emit('stateParameters', stateParameters);
+            IPC.emit('stateParameters', stateParameters);
+        }, 300);
     }
 
     private send(message: Message) {

@@ -1,11 +1,12 @@
 import { Credentials } from '../../../shared/objects/credentials';
-import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
+import { AppSettings, OscSettings, OscStateSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
 
 export interface SettingsStoreData {
     credentials: Credentials;
     app: AppSettings;
     vrcDetector: VrcDetectorSettings;
     osc: OscSettings;
+    oscState: OscStateSettings;
     socket: SocketSettings;
     socketParameterBlacklist: SocketParameterBlacklist;
     // lovense: {
@@ -31,6 +32,9 @@ export const settingsStoreDefaults: SettingsStoreData = {
         ip: '127.0.0.1',
         inPort: 9000,
         outPort: 9001
+    },
+    oscState: {
+        clearOnAvatarChange: false,
     },
     socket: {
         autoConnect: true,
