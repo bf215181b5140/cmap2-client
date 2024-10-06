@@ -1,6 +1,7 @@
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
-import { TrackedParametersMap, VrcParameter } from 'cmap2-shared';
+import { TrackedParametersMap } from 'cmap2-shared/src/objects/trackedParameters'; // has to have direct path or it throws weird errors about enum (?)
+import { VrcParameter } from 'cmap2-shared';
 import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { OscSettings } from '../../shared/objects/settings';
 import { SETTINGS } from '../store/settings/settings.store';

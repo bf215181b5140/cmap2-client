@@ -159,7 +159,7 @@ export default function useCmapFetch() {
             .catch(err => {
                 let notificationType: NotificationType = 'error';
                 let message = 'Unknown error connecting to server.';
-                let id: string = fetchId;
+                let id: string = nanoid(8);
 
                 if (err instanceof ApiError) {
                     notificationType = err.type;

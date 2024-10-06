@@ -21,7 +21,7 @@ export default function TrackedParameters() {
 
     useEffect(() => {
         window.IPC.get('getTrackedParameters').then(data => setTrackedParameters(data));
-        window.IPC.get('getOscStateSettings').then(data => reset(data));
+        window.IPC.get('getTrackedParametersSettings').then(data => reset(data));
 
         const parameterListener = window.IPC.receive('vrcParameter', vrcParameter => setTrackedParameters(state => new TrackedParametersMap(state.set(vrcParameter.path, vrcParameter.value))));
         const parametersListener = window.IPC.receive('trackedParameters', data => setTrackedParameters(new TrackedParametersMap(data)));
@@ -33,7 +33,7 @@ export default function TrackedParameters() {
     }, []);
 
     function onSubmit(data: TrackedParametersSettings) {
-        window.IPC.send('saveOscStateSettings', data);
+        window.IPC.send('saveTrackedParametersSettings', data);
     }
 
     return (<Segment flexBasis={'Full'} segmentTitle={'Tracked parameters'}>
