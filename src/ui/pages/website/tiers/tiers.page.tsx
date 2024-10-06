@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { GeneratedAccountKeyDTO, TierDTO, TiersPageSchema } from 'cmap2-shared';
+import { GeneratedInviteKeyDTO, TierDTO, TiersPageSchema } from 'cmap2-shared';
 import { Page } from '../../../components/page/page.component';
 import Tiers from './tiers/tiers.component';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
-import GenerateAccountKey from './generateAccountKey/generateAccountKey.component';
-import UseAccountKey from './useAccountKey/useAccountKey.component';
+import GenerateInviteKey from './generateInviteKey/generateInviteKey.component';
+import UseInviteKey from './useInviteKey/useInviteKey.component';
 import PageMenuLink from '../../../components/menu/pageMenu/pageMenuLink.component';
 import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
 
-type TiersPageSections = 'tiers' | 'accountKeys';
+type TiersPageSections = 'tiers' | 'inviteKeys';
 
 export default function TiersPage() {
 
@@ -16,14 +16,14 @@ export default function TiersPage() {
     const [section, setSection] = useState<TiersPageSections>('tiers');
     const [tiers, setTiers] = useState<TierDTO[] | undefined>();
     const [clientTier, setClientTier] = useState<TierDTO | undefined>();
-    const [generatedKeys, setGeneratedKeys] = useState<GeneratedAccountKeyDTO[] | undefined>();
+    const [generatedKeys, setGeneratedKeys] = useState<GeneratedInviteKeyDTO[] | undefined>();
 
     const minRank = tiers?.reduce((val, tier) => Math.min(val, tier.rank), 999) || 1;
 
-    function addGeneratedAccountKey(generatedAccountKey: GeneratedAccountKeyDTO) {
+    function addGeneratedInviteKey(generatedInviteKey: GeneratedInviteKeyDTO) {
         setGeneratedKeys(state => {
-            if (!state) return [generatedAccountKey];
-            return [...state, generatedAccountKey];
+            if (!state) return [generatedInviteKey];
+            return [...state, generatedInviteKey];
         });
     }
 
@@ -41,16 +41,16 @@ export default function TiersPage() {
 
         <PageMenu noMarginTop={true}>
             <PageMenuLink onClick={() => setSection('tiers')} isActive={section === 'tiers'}>Tiers</PageMenuLink>
-            <PageMenuLink onClick={() => setSection('accountKeys')} isActive={section === 'accountKeys'}>Account keys</PageMenuLink>
+            <PageMenuLink onClick={() => setSection('inviteKeys')} isActive={section === 'inviteKeys'}>Invite keys</PageMenuLink>
         </PageMenu>
 
         {section === 'tiers' && <>
             <Tiers clientTier={clientTier} tiers={tiers} />
         </>}
 
-        {section === 'accountKeys' && <>
-            <UseAccountKey setClientTier={setClientTier} />
-            {minRank < clientTier.rank && <GenerateAccountKey tiers={tiers} clientTier={clientTier} generatedAccountKeys={generatedKeys} addGeneratedAccountKey={addGeneratedAccountKey} />}
+        {section === 'inviteKeys' && <>
+            <UseInviteKey setClientTier={setClientTier} />
+            {minRank < clientTier.rank && <GenerateInviteKey tiers={tiers} clientTier={clientTier} generatedInviteKeys={generatedKeys} addGeneratedInviteKey={addGeneratedInviteKey} />}
         </>}
 
     </Page>);

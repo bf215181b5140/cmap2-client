@@ -18,7 +18,7 @@ export default function WebsitePage() {
             <ContentMenuLink to={'/website/profile'} icon={'ri-profile-fill'} tooltip={'Website profile'} disabled={!apiToken} />
             <ContentMenuLink to={'/website/avatars'} icon={'ri-layout-masonry-fill'} tooltip={'Website layout'} disabled={!apiToken} />
             <ContentMenuLink to={'/website/state'} icon={'ri-archive-stack-fill'} tooltip={'Website state'} disabled={!apiToken} />
-            <ContentMenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Tiers & account keys'} disabled={!apiToken} />
+            <ContentMenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Tiers & invite keys'} disabled={!apiToken} />
 
             {isAdmin && (<>
                 <hr />

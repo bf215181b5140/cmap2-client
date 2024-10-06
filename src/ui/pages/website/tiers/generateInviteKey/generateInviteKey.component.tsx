@@ -1,6 +1,6 @@
 import Segment from '../../../../components/segment/segment.component';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
-import { GeneratedAccountKeyDTO, GeneratedAccountKeySchema, TierDTO } from 'cmap2-shared';
+import { GeneratedInviteKeyDTO, GeneratedInviteKeySchema, TierDTO } from 'cmap2-shared';
 import { SelectInputStyled } from '../../../../style/input.style';
 import React, { useContext, useState } from 'react';
 import IconButton from '../../../../components/buttons/iconButton.component';
@@ -10,46 +10,46 @@ import { ModalContext } from '../../../../components/context/modal.context';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';
 import AddCounter from '../../../../components/addCounter/addCounter.component';
 
-interface GenerateAccountKeyProps {
+interface GenerateInviteKeyProps {
     tiers: TierDTO[];
     clientTier: TierDTO;
-    generatedAccountKeys: GeneratedAccountKeyDTO[];
-    addGeneratedAccountKey: (generatedAccountKey: GeneratedAccountKeyDTO) => void;
+    generatedInviteKeys: GeneratedInviteKeyDTO[];
+    addGeneratedInviteKey: (generatedInviteKey: GeneratedInviteKeyDTO) => void;
 }
 
-export default function GenerateAccountKey({ generatedAccountKeys, tiers, clientTier, addGeneratedAccountKey }: GenerateAccountKeyProps) {
+export default function GenerateInviteKey({ generatedInviteKeys, tiers, clientTier, addGeneratedInviteKey }: GenerateInviteKeyProps) {
 
     const { POST } = useCmapFetch();
     const { setModal } = useContext(ModalContext);
     const { addNotification } = useNotifications();
     const [selectedTierId, setSelectedTierId] = useState<string>(tiers.at(0)?.id || '');
-    const canAddMore = generatedAccountKeys.length < clientTier.accountKeys;
+    const canAddMore = generatedInviteKeys.length < clientTier.inviteKeys;
 
-    function usedText(key: GeneratedAccountKeyDTO) {
+    function usedText(key: GeneratedInviteKeyDTO) {
         return key.used ? 'Used' : 'Available';
     }
 
-    function usedColor(key: GeneratedAccountKeyDTO) {
+    function usedColor(key: GeneratedInviteKeyDTO) {
         return key.used ? theme.colors.error : theme.colors.success;
     }
 
     function confirmGenerateKey() {
         setModal({
-            title: 'Generate new account key',
-            message: `Are you sure you want to generate a new account key of tier ${tiers.find(t => t.id === selectedTierId)?.label}?`,
+            title: 'Generate new invite key',
+            message: `Are you sure you want to generate a new invite key of tier ${tiers.find(t => t.id === selectedTierId)?.label}?`,
             confirmValue: 'Generate',
             confirmFunction: () => generateKey()
         });
     }
 
     function generateKey() {
-        POST('tiers/generateAccountKey', { id: selectedTierId }, GeneratedAccountKeySchema, data => {
-            addGeneratedAccountKey(data);
-            addNotification('success', 'New account key has been generated successfully.');
+        POST('tiers/generateInviteKey', { id: selectedTierId }, GeneratedInviteKeySchema, data => {
+            addGeneratedInviteKey(data);
+            addNotification('success', 'New invite key has been generated successfully.');
         });
     }
 
-    return (<Segment segmentTitle={'Generated account keys'} infoContent={segmentInfo}>
+    return (<Segment segmentTitle={'Generated invite keys'} infoContent={segmentInfo}>
         <SegmentTable>
             <thead>
             <tr>
@@ -59,10 +59,10 @@ export default function GenerateAccountKey({ generatedAccountKeys, tiers, client
             </tr>
             </thead>
             <tbody>
-            {generatedAccountKeys.length === 0 && <tr>
+            {generatedInviteKeys.length === 0 && <tr>
                 <td colSpan={3} style={{ textAlign: 'center' }}>You haven't generated any keys yet :3</td>
             </tr>}
-            {generatedAccountKeys.map((key) => (
+            {generatedInviteKeys.map((key) => (
                 <tr key={key.id}>
                     <td style={{ width: '140px' }}>
                         <i className={'ri-medal-fill'} style={{ color: key.tier.color }} />
@@ -79,14 +79,14 @@ export default function GenerateAccountKey({ generatedAccountKeys, tiers, client
             {tiers.filter(tier => tier.rank < clientTier.rank).map((tier) => (<option value={tier.id} key={tier.id}>{tier.label}</option>))}
         </SelectInputStyled>
         <IconButton role={'add'} tooltip={'Generate new key'} disabled={!canAddMore} onClick={() => confirmGenerateKey()} />
-        <AddCounter canAddMore={canAddMore}>{generatedAccountKeys.length}/{clientTier.accountKeys}</AddCounter>
+        <AddCounter canAddMore={canAddMore}>{generatedInviteKeys.length}/{clientTier.inviteKeys}</AddCounter>
     </Segment>);
 }
 
 const segmentInfo = <>
     <p>
-        You may be eligable to generate account keys to share with other people.
+        You may be eligable to generate invite keys to share with other people.
         <br />
-        These can be used to either upgrade an existing account tier or used during registration at times when registration is only available for those who have an account key.
+        These can be used to either upgrade an existing account tier or used during registration at times when registration is only available for those who have an invite key.
     </p>
 </>;

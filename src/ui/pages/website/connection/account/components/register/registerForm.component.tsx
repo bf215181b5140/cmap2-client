@@ -56,8 +56,8 @@ export default function RegisterForm({ registrationInfo, fingerprint, loginSegme
                 <td><Input type="password" register={register} name={'passwordRepeat'} errors={errors} /></td>
             </tr>
             <tr>
-                <th>Account key</th>
-                <td><Input register={register} name={'accountKey'} errors={errors} /></td>
+                <th>Invite key</th>
+                <td><Input register={register} name={'inviteKey'} errors={errors} /></td>
             </tr>
             <tr>
                 <td></td>
