@@ -14,10 +14,10 @@ export default function WebsitePage() {
 
     return (<>
         <ContentMenu>
-            <ContentMenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Website connection'} />
-            <ContentMenuLink to={'/website/profile'} icon={'ri-profile-fill'} tooltip={'Website profile'} disabled={!apiToken} />
-            <ContentMenuLink to={'/website/avatars'} icon={'ri-layout-masonry-fill'} tooltip={'Website layout'} disabled={!apiToken} />
-            <ContentMenuLink to={'/website/parameters'} icon={'ri-archive-stack-fill'} tooltip={'Website parameters'} disabled={!apiToken} />
+            <ContentMenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Connection'} />
+            <ContentMenuLink to={'/website/profile'} icon={'ri-profile-fill'} tooltip={'Profile'} disabled={!apiToken} />
+            <ContentMenuLink to={'/website/layouts'} icon={'ri-layout-masonry-fill'} tooltip={'Layouts'} disabled={!apiToken} />
+            <ContentMenuLink to={'/website/parameters'} icon={'ri-archive-stack-fill'} tooltip={'Tracked parameters'} disabled={!apiToken} />
             <ContentMenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Tiers & invite keys'} disabled={!apiToken} />
 
             {isAdmin && (<>
@@ -30,7 +30,7 @@ export default function WebsitePage() {
         <Routes>
             <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            {/* <Route path="/avatars/:avatarId?/:layoutId?/:buttonId?" element={<AvatarsPage />} /> */}
+            {/* <Route path="/layouts/:layoutId?/:groupId?/:buttonId?" element={<AvatarsPage />} /> */}
             <Route path="/parameters" element={<ParametersPage />} />
             <Route path="/tiers" element={<TiersPage />} />
 
