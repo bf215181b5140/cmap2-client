@@ -7,6 +7,7 @@ import ConnectionPage from './connection/connection.page';
 import ProfilePage from './profile/profile.page';
 import TiersPage from './tiers/tiers.page';
 import ParametersPage from './parameters/parameters.page';
+import LayoutsPage from './layouts/layouts.page';
 
 export default function WebsitePage() {
 
@@ -30,7 +31,7 @@ export default function WebsitePage() {
         <Routes>
             <Route path="/connection" element={<ConnectionPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            {/* <Route path="/layouts/:layoutId?/:groupId?/:buttonId?" element={<AvatarsPage />} /> */}
+            <Route path="/layouts/:layoutId?/:groupId?/:buttonId?" element={<LayoutsPage />} />
             <Route path="/parameters" element={<ParametersPage />} />
             <Route path="/tiers" element={<TiersPage />} />
 
