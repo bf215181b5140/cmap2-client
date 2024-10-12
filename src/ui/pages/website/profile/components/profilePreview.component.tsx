@@ -24,13 +24,13 @@ export default function ProfilePreview({ profile }: ProfilePreviewProps) {
 
             {/* TODO: these have to be LayoutComponent, GroupComponent, ButtonComponent */}
             <Page>
-                <Segment segmentTitle={'Group'} flexBasis={'Third'}>
+                <Segment segmentTitle={'Group'} width={'Third'}>
 
                 </Segment>
-                <Segment segmentTitle={'Group'} flexBasis={'Half'}>
+                <Segment segmentTitle={'Group'} width={'Half'}>
 
                 </Segment>
-                <Segment segmentTitle={'Group'} flexBasis={'Full'}>
+                <Segment segmentTitle={'Group'} width={'Full'}>
 
                 </Segment>
             </Page>

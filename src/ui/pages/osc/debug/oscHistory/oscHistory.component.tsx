@@ -21,7 +21,7 @@ export default function OscHistory() {
         };
     }, []);
 
-    return (<Segment flexBasis={'Full'} segmentTitle={'OSC activity history'}>
+    return (<Segment width={'Full'} segmentTitle={'OSC activity history'}>
         <SegmentTable>
             <thead>
             <tr>

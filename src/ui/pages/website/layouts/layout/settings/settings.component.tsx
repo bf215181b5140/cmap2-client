@@ -1,7 +1,7 @@
 import Segment from '../../../../../components/segment/segment.component';
 import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { LayoutFormDTO, LayoutFormSchema, LayoutPageDTO, TierDTO } from 'cmap2-shared';
+import { LayoutDTO, LayoutFormDTO, LayoutFormSchema, TierDTO } from 'cmap2-shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormTable from '../../../../../components/form/formTable.component';
 import Input from '../../../../../components/input/input.component';
@@ -13,7 +13,7 @@ import NumberInput from '../../../../../components/input/number.component';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
 
 interface LayoutSettingsProps {
-    layout: LayoutPageDTO['layouts'][0];
+    layout: LayoutDTO;
     tier: TierDTO;
 }
 
@@ -28,15 +28,13 @@ export default function LayoutSettings({ layout, tier }: LayoutSettingsProps) {
 
     const canAddAvatars = fields.length < tier.avatars;
 
-    console.log('layout settings', watch());
-
     function onSubmit(formData: LayoutFormDTO) {
         if (layout.id) {
-            POST(`layout/${layout.id}`, formData, undefined, () => {
+            POST(`layouts/layout/${layout.id}`, formData, undefined, () => {
                 reset(formData);
             });
         } else {
-            PUT(`layout`, formData, undefined, () => {
+            PUT(`layouts/layout`, formData, undefined, () => {
                 reset(formData);
             });
         }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { globalInputStyle } from '../../style/input.style';
 import { ReactProps } from '../../types';
@@ -7,7 +7,7 @@ interface TextButtonProps extends ReactProps {
     type?: 'button' | 'submit';
     text: string;
     disabled?: boolean;
-    onClick?: () => void;
+    onClick?: MouseEventHandler<HTMLInputElement>;
     icon?: string;
 }
 

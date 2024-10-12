@@ -15,7 +15,7 @@ export default function AccountSegment() {
     if (apiToken && segment !== 'welcome') setSegment('welcome');
     if (!apiToken && segment === 'welcome') setSegment('login');
 
-    return (<Segment>
+    return (<Segment width={'Half'}>
         <SegmentMenu>
             <SegmentMenuLink onClick={() => setSegment('welcome')} active={segment === 'welcome'} icon={'ri-user-line'} disabled={!apiToken}>Account</SegmentMenuLink>
             <SegmentMenuLink onClick={() => setSegment('login')} active={segment === 'login'} icon={'ri-user-follow-line'} disabled={!!apiToken}>Login</SegmentMenuLink>

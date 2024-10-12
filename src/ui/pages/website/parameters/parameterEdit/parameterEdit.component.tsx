@@ -65,7 +65,7 @@ export default function ParameterEdit({ parametersPageEmitter }: ParameterEditFo
         });
     }
 
-    return (<Segment flexBasis={'Full'} segmentTitle={'Edit parameter'}>
+    return (<Segment segmentTitle={'Edit parameter'}>
         <form onSubmit={handleSubmit(onSubmit)} ref={scrollRef}>
             <FormTable>
                 <tr>

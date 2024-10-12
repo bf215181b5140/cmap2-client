@@ -17,7 +17,7 @@ type ProfilePageSections = 'basicInfo' | 'interactionKeys' | 'background' | 'sty
 export default function ProfilePage() {
 
     const { profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setStyle } = useProlfilePage();
-    const [section, setSection] = useState<ProfilePageSections>('basicInfo')
+    const [section, setSection] = useState<ProfilePageSections>('basicInfo');
     const pageFlexDirection = section === 'basicInfo' ? 'row' : 'column';
 
     if (!profile) return;

@@ -11,7 +11,7 @@ interface ProfileOverviewProps {
 
 export default function ProfileOverview({ profile, setImage }: ProfileOverviewProps) {
 
-    return (<Segment segmentTitle={`Hello, ${profile.displayName}`}>
+    return (<Segment segmentTitle={`Hello, ${profile.displayName}`} width={'Third'}>
         <ProfilePicture image={profile.image} setImage={setImage} />
         <h3>Account tier</h3>
         <TierBadge tier={profile.tier} />

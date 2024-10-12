@@ -10,19 +10,18 @@ interface SegmentProps extends ReactProps {
     segmentTitle?: string;
     toggleTitle?: string;
     infoContent?: React.JSX.Element;
-    flexGrow?: number | string;
-    flexBasis?: string | GroupWidth;
+    width?: GroupWidth;
     loading?: boolean;
 }
 
-export default function Segment({ segmentTitle, toggleTitle, infoContent, flexGrow, flexBasis, loading = false, children }: SegmentProps) {
+export default function Segment({ segmentTitle, toggleTitle, infoContent, width, loading = false, children }: SegmentProps) {
 
     const [shown, setShown] = useState<boolean>(!toggleTitle);
     const [infoShown, setInfoShown] = useState<boolean>(false);
 
     function getFlexBasis(): string | undefined {
-        if (!flexBasis) return undefined;
-        switch (flexBasis) {
+        if (!width) return undefined;
+        switch (width) {
             case 'None':
                 return '0';
             case 'Third':
@@ -32,11 +31,11 @@ export default function Segment({ segmentTitle, toggleTitle, infoContent, flexGr
             case 'Full':
                 return `calc(100%)`;
             default:
-                return flexBasis;
+                return undefined;
         }
     }
 
-    return (<SegmentWrapper flexGrow={flexGrow} flexBasis={getFlexBasis()}>
+    return (<SegmentWrapper flexGrow={!!getFlexBasis()} flexBasis={getFlexBasis()} flex={getFlexBasis()}>
 
         {/* Toggle title */}
         {toggleTitle && <SegmentTitle shown={shown}>
@@ -62,9 +61,10 @@ export default function Segment({ segmentTitle, toggleTitle, infoContent, flexGr
     </SegmentWrapper>);
 }
 
-const SegmentWrapper = styled.div<{ flexGrow?: number | string, flexBasis?: string }>`
-    flex-grow: ${props => props.flexGrow || 2};
-    flex-basis: ${props => props.flexBasis || '0'};
+const SegmentWrapper = styled.div<{ flexGrow?: boolean | string, flexBasis?: string, flex?: string }>`
+    // flex-grow: ${props => props.flexGrow ? 1 : 0};
+    // flex-basis: ${props => props.flexBasis || '0'};
+    flex: ${props => props.flex || '0'};
 `;
 
 const SegmentTitle = styled.div<{ shown: boolean }>`

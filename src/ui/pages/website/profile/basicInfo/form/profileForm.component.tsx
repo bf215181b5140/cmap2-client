@@ -33,7 +33,7 @@ export default function ProfileForm({ profile, setBasicInfo }: ProfileFormProps)
         });
     };
 
-    return (<Segment segmentTitle={'Edit profile'} flexGrow={3}>
+    return (<Segment segmentTitle={'Edit profile'} width={'Half'}>
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormTable>
                 <tr>

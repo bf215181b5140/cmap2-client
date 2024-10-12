@@ -44,7 +44,7 @@ export default function InteractionKeys({ profile, setInteractionKeys }: Interac
         });
     }
 
-    return (<Segment segmentTitle={'Interaction keys'} infoContent={segmentInfo} flexBasis={'Full'}>
+    return (<Segment segmentTitle={'Interaction keys'} infoContent={segmentInfo} width={'Full'}>
         <form onSubmit={handleSubmit(onSubmit)}>
             <FormTableStyled>
                 <thead>

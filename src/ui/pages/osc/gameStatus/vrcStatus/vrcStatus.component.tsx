@@ -27,7 +27,7 @@ export default function VrcStatus() {
         };
     }, []);
 
-    return (<Segment flexBasis={'Full'}>
+    return (<Segment>
         <h2 style={{ color: vrcStatusColor, marginTop: '0' }}>{vrcStatus}</h2>
         <p key={key}>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
     </Segment>);

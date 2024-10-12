@@ -11,7 +11,7 @@ interface AvatarProps extends ReactProps {
 
 export default function Avatar({ avatar, avatarsDispatch }: AvatarProps) {
 
-    return (<Segment flexBasis={'Full'} segmentTitle={avatar.name}>
+    return (<Segment width={'Full'} segmentTitle={avatar.name}>
         <p><b>Avatar ID:</b> {avatar.id}</p>
         {avatar.parameters && <AvatarParameters avatarId={avatar.id} parameters={avatar.parameters} avatarsDispatch={avatarsDispatch} />}
     </Segment>);

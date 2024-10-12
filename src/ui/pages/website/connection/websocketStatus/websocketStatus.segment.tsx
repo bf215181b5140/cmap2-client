@@ -32,7 +32,7 @@ export default function WebsocketStatusSegment() {
         window.IPC.send('saveSocketSettings', data);
     }
 
-    return (<Segment>
+    return (<Segment width={'Third'}>
         <h2 style={{ color: color, marginTop: '0' }}>{message}</h2>
 
         <p>When connected, the application will forward OSC messages from VRChat to the website and vice versa.</p>

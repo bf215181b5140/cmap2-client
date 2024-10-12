@@ -19,13 +19,13 @@ export default function AvatarsPage() {
 
     return (<Page flexDirection={'row'}>
 
-        <Segment segmentTitle={'Saved avatars'} flexBasis={'Third'}>
+        <Segment segmentTitle={'Saved avatars'} width={'Third'}>
             <p>Import, view or edit your avatar information.</p>
             <p>This can help you keep track of parameters on your avatar, let you set up OSC interactions faster and help you come up with creative ways of
                 interacting with VRChat.</p>
         </Segment>
 
-        <Segment segmentTitle={'Upload OSC file'} flexBasis={'Half'}>
+        <Segment segmentTitle={'Upload OSC file'} width={'Half'}>
             <p>Upload your avatar file found in: C:\ Users \ [USER] \ AppData \ LocalLow \ VRChat \ VRChat \ OSC \ [USER] \ Avatars</p>
             <AvatarUploadForm avatars={avatars} avatarsDispatch={avatarsDispatch} />
         </Segment>

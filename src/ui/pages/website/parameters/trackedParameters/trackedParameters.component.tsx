@@ -109,7 +109,7 @@ export default function TrackedParameters({ parametersPageEmitter }: ParametersS
         return <span className={className}>{localValue?.toString()}</span>;
     }
 
-    return (<Segment flexBasis={'Full'} segmentTitle={'Tracked parameters'} infoContent={segmentInfo}>
+    return (<Segment segmentTitle={'Tracked parameters'} infoContent={segmentInfo}>
 
         <AvatarName avatarId={avatarId?.toString()} />
 

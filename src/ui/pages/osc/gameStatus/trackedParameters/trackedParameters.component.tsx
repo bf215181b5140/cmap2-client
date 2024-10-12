@@ -36,7 +36,7 @@ export default function TrackedParameters() {
         window.IPC.send('saveTrackedParametersSettings', data);
     }
 
-    return (<Segment flexBasis={'Full'} segmentTitle={'Tracked parameters'}>
+    return (<Segment segmentTitle={'Tracked parameters'}>
 
         <AvatarName avatarId={trackedAvatarId} />
 
