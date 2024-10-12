@@ -55,6 +55,16 @@ export default class LovenseController extends LovenseService {
   };
 
   /**
+   * Disconnects from Lovense
+   * @protected
+   */
+  protected disconnect() {
+    super.disconnect();
+    this.lovenseStatus = new LovenseStatus();
+    this.updateLovenseStatus();
+  }
+
+  /**
    * Fires every time an update regarding lovense connection is received.<br>
    * Emits lovenseStatus for renderer and sends osc message to Vrchat
    * @private
@@ -71,16 +81,6 @@ export default class LovenseController extends LovenseService {
       };
       BRIDGE.emit('sendOscMessage', new Message(vrcParameter.path, vrcParameter.value));
     }
-  }
-
-  /**
-   * Disconnects from Lovense
-   * @protected
-   */
-  protected disconnect() {
-    super.disconnect();
-    this.lovenseStatus = new LovenseStatus();
-    this.updateLovenseStatus();
   }
 
   /**

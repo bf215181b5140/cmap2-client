@@ -18,7 +18,7 @@ export function ToastComponent() {
       </ToastStyled>
     ))}
   </ToastComponentStyled>);
-};
+}
 
 const ToastComponentStyled = styled.div`
     position: absolute;

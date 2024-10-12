@@ -3,11 +3,11 @@ import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from './typedIpc.mod
 import type { WindowController } from '../window/window.controller';
 
 class TypedIpcService {
-  private _cmapWindow: WindowController | undefined;
-
   constructor() {
     // this.handle('getFingerprint', async () => await getFingerprint());
   }
+
+  private _cmapWindow: WindowController | undefined;
 
   set cmapWindow(cmapWindow: WindowController) {
     this._cmapWindow = cmapWindow;

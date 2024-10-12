@@ -1,6 +1,6 @@
 import { IPC } from '../../ipc/typedIpc.service';
 import CmapStore from '../cmapStore';
-import { settingsStoreDefaults, SettingsStoreData } from './settings.model';
+import { SettingsStoreData, settingsStoreDefaults } from './settings.model';
 import { BRIDGE } from '../../bridge/bridge.service';
 import { app } from 'electron';
 

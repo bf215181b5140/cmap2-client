@@ -3,7 +3,7 @@ import { globalInputStyle } from '../../../style/input.style';
 
 export const PageMenuSelect = styled.select`
   ${globalInputStyle};
-  
+
   background-color: ${props => props.theme.colors.buttons.secondary.bg};
   border: 2px solid ${props => props.theme.colors.buttons.secondary.border};
   transition: 0.1s linear;

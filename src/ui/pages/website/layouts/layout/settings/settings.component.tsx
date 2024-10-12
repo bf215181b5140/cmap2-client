@@ -38,7 +38,7 @@ export default function LayoutSettings({ layout, tier }: LayoutSettingsProps) {
         reset(formData);
       });
     }
-  };
+  }
 
   return (<Segment segmentTitle={'Settings'}>
     <form onSubmit={handleSubmit(onSubmit)}>

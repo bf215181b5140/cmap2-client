@@ -17,14 +17,14 @@ export default function PickerOverlayTier({ tier, valid = true }: PickerOverlayT
 }
 
 const PickerOverlayTierStyled = styled.div<{ valid?: boolean }>`
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    font-size: 14px;
-    background: ${props => props.theme.colors.buttons.primary.bg};
-    padding: 4px 6px;
-    border-radius: 5px;
-    border: 1px solid ${props => props.theme.colors.buttons.primary.border};
-    text-transform: capitalize;
-    color: ${props => props.valid ? props.theme.colors.font.text : props.theme.colors.error};
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 14px;
+  background: ${props => props.theme.colors.buttons.primary.bg};
+  padding: 4px 6px;
+  border-radius: 5px;
+  border: 1px solid ${props => props.theme.colors.buttons.primary.border};
+  text-transform: capitalize;
+  color: ${props => props.valid ? props.theme.colors.font.text : props.theme.colors.error};
 `;

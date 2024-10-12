@@ -4,20 +4,20 @@ import { WEBSITE_URL } from '../../shared/const';
 import { StoreService } from '../store/store.service';
 
 export default abstract class LovenseService {
+  protected toyCommandFrequency: number = 300; // milliseconds
   private authToken: string | null = null;
   private socketInfo: SocketIoData | null = null;
   private lovenseSocket: SocketIOClient.Socket | null = null;
   private lastToyCommand: number = 0; // unix timestamp
-  protected toyCommandFrequency: number = 300; // milliseconds
+
+  protected constructor() {
+  }
 
   protected abstract setQrCodeData(data: QRCodeData): void;
 
   protected abstract setConnectionStatus(status: number): void;
 
   protected abstract setDeviceInformation(deviceInformation: DeviceInformation): void;
-
-  protected constructor() {
-  }
 
   protected isSocketConnected(): boolean {
     return !!this.lovenseSocket?.connected;

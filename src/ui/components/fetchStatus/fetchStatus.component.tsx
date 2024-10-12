@@ -13,7 +13,7 @@ export function FetchStatusComponent() {
       {fetchStatusRequests.map(request => <div key={request.id}><i className={fetchStatusIcon(request.type)} /></div>)}
     </FetchStatusComponentStyled>}
   </>);
-};
+}
 
 const FetchStatusComponentStyled = styled.div`
     position: absolute;

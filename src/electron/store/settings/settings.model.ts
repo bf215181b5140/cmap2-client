@@ -1,5 +1,5 @@
 import { Credentials } from '../../../shared/objects/credentials';
-import { AppSettings, OscSettings, TrackedParametersSettings, SocketParameterBlacklist, SocketSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
+import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, TrackedParametersSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
 
 export interface SettingsStoreData {
   credentials: Credentials;
