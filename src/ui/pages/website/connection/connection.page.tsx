@@ -4,9 +4,9 @@ import WebsocketStatusSegment from './websocketStatus/websocketStatus.segment';
 
 export default function ConnectionPage() {
 
-    return (<Page flexDirection={'row'}>
-        <WebsocketStatusSegment />
-        <AccountSegment />
-    </Page>);
+  return (<Page flexDirection={'row'}>
+    <WebsocketStatusSegment />
+    <AccountSegment />
+  </Page>);
 }
 

@@ -8,17 +8,17 @@ import DebugPage from './debug/debug.page';
 
 export default function OscPage() {
 
-    return (<>
-        <ContentMenu>
-            <ContentMenuLink to={'/osc/status'} icon={'ri-wifi-fill'} tooltip={'Game status'} />
-            <ContentMenuLink to={'/osc/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Saved avatars'} />
-            <ContentMenuLink to={'/osc/debug'} icon={'ri-terminal-box-line'} tooltip={'Debug'} />
-        </ContentMenu>
-        <Routes>
-            <Route path="/status" element={<GameStatusPage />} />
-            <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
-            <Route path="/debug" element={<DebugPage />} />
-            <Route path="*" element={<Navigate to={'/osc/status'} />} />
-        </Routes>
-    </>);
+  return (<>
+    <ContentMenu>
+      <ContentMenuLink to={'/osc/status'} icon={'ri-wifi-fill'} tooltip={'Game status'} />
+      <ContentMenuLink to={'/osc/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Saved avatars'} />
+      <ContentMenuLink to={'/osc/debug'} icon={'ri-terminal-box-line'} tooltip={'Debug'} />
+    </ContentMenu>
+    <Routes>
+      <Route path="/status" element={<GameStatusPage />} />
+      <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
+      <Route path="/debug" element={<DebugPage />} />
+      <Route path="*" element={<Navigate to={'/osc/status'} />} />
+    </Routes>
+  </>);
 }

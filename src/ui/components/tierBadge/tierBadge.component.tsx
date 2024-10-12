@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import Icon from '../icon/icon.component';
 
 interface TierBadgeProps {
-    tier: TierDTO;
+  tier: TierDTO;
 }
 
 export default function TierBadge({ tier }: TierBadgeProps) {
 
-    return (<TierBadgeStyled color={tier.color}>
-        <Icon icon="ri-medal-fill" color={tier.color} />
-        {tier.label}
-    </TierBadgeStyled>);
+  return (<TierBadgeStyled color={tier.color}>
+    <Icon icon="ri-medal-fill" color={tier.color} />
+    {tier.label}
+  </TierBadgeStyled>);
 }
 
 const TierBadgeStyled = styled.span<{ color?: string }>`

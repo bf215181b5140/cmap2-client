@@ -2,18 +2,18 @@ import styled from 'styled-components';
 import { ReactProps } from '../../../types';
 
 interface SegmentMenuLinkProps extends ReactProps {
-    onClick: () => void;
-    active?: boolean;
-    disabled?: boolean;
-    icon?: string;
+  onClick: () => void;
+  active?: boolean;
+  disabled?: boolean;
+  icon?: string;
 }
 
 export default function SegmentMenuLink({ onClick, active, disabled, icon, children }: SegmentMenuLinkProps) {
 
-    return (<SegmentMenuLinkStyled onClick={onClick} data-active={!!active} data-disabled={!!disabled}>
-        {icon && <i className={icon}></i>}
-        {children}
-    </SegmentMenuLinkStyled>);
+  return (<SegmentMenuLinkStyled onClick={onClick} data-active={!!active} data-disabled={!!disabled}>
+    {icon && <i className={icon}></i>}
+    {children}
+  </SegmentMenuLinkStyled>);
 }
 
 const SegmentMenuLinkStyled = styled.div`

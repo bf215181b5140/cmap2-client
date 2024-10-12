@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export default function LoadingSpinner() {
-    return(<LoadingSpinnerStyled>
-        <div className={'spinner'} />
-    </LoadingSpinnerStyled>)
+  return (<LoadingSpinnerStyled>
+    <div className={'spinner'} />
+  </LoadingSpinnerStyled>);
 }
 
 export const LoadingSpinnerStyled = styled.div`

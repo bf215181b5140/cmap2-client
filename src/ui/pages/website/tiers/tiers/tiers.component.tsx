@@ -4,40 +4,40 @@ import styled from 'styled-components';
 import Icon from '../../../../components/icon/icon.component';
 
 interface TiersProps {
-    clientTier: TierDTO;
-    tiers: TierDTO[];
+  clientTier: TierDTO;
+  tiers: TierDTO[];
 }
 
 export default function Tiers({ clientTier, tiers }: TiersProps) {
 
-    const minRank = tiers.reduce((val, tier) => Math.min(val, tier.rank), 999);
-    const maxRank = tiers.reduce((val, tier) => Math.max(val, tier.rank), 0);
+  const minRank = tiers.reduce((val, tier) => Math.min(val, tier.rank), 999);
+  const maxRank = tiers.reduce((val, tier) => Math.max(val, tier.rank), 0);
 
-    return (<Segment>
-        <TiersStyled>
-            {(tiers && clientTier) && tiers.map(tier => (
-                <Tier current={tier.id === clientTier.id} key={tier.id}>
-                    {tier.id === clientTier.id && <h3>current</h3>}
-                    <h2>
-                        <Icon icon="ri-medal-fill" color={tier.color} />
-                        {tier.label}
-                    </h2>
-                    <p>Up to <Highlight color={tier.color}>{tier.interactionKeys}</Highlight> interaction keys</p>
-                    <p>Up to <Highlight color={tier.color}>{tier.layouts}</Highlight> layouts</p>
-                    <p>Up to <Highlight color={tier.color}>{tier.avatars}</Highlight> avatars per layout</p>
-                    <p>Up to <Highlight color={tier.color}>{tier.groups}</Highlight> groups per layout</p>
-                    <p>Up to <Highlight color={tier.color}>{tier.buttons}</Highlight> buttons per group</p>
-                    <p>Up to <Highlight color={tier.color}>{tier.stateBadges}</Highlight> state badges</p>
-                    <p>Up to <Highlight color={tier.color}>{tier.controlParameters}</Highlight> control parameters</p>
-                    {tier.rank !== minRank && <p>Unlock <Highlight color={tier.color}>{tier.rank === maxRank ? 'all' : 'more'}</Highlight> website backgrounds</p>}
-                    {tier.rank !== minRank && <p>Unlock <Highlight color={tier.color}>{tier.rank === maxRank ? 'all' : 'more'}</Highlight> website styles</p>}
-                    {tier.useCost && <p>Unlock <Highlight color={tier.color}>cost system</Highlight> for buttons</p>}
-                    {tier.health && <p>Unlock <Highlight color={tier.color}>health display</Highlight> for avatars</p>}
-                    <br />
-                </Tier>
-            ))}
-        </TiersStyled>
-    </Segment>);
+  return (<Segment>
+    <TiersStyled>
+      {(tiers && clientTier) && tiers.map(tier => (
+        <Tier current={tier.id === clientTier.id} key={tier.id}>
+          {tier.id === clientTier.id && <h3>current</h3>}
+          <h2>
+            <Icon icon="ri-medal-fill" color={tier.color} />
+            {tier.label}
+          </h2>
+          <p>Up to <Highlight color={tier.color}>{tier.interactionKeys}</Highlight> interaction keys</p>
+          <p>Up to <Highlight color={tier.color}>{tier.layouts}</Highlight> layouts</p>
+          <p>Up to <Highlight color={tier.color}>{tier.avatars}</Highlight> avatars per layout</p>
+          <p>Up to <Highlight color={tier.color}>{tier.groups}</Highlight> groups per layout</p>
+          <p>Up to <Highlight color={tier.color}>{tier.buttons}</Highlight> buttons per group</p>
+          <p>Up to <Highlight color={tier.color}>{tier.stateBadges}</Highlight> state badges</p>
+          <p>Up to <Highlight color={tier.color}>{tier.controlParameters}</Highlight> control parameters</p>
+          {tier.rank !== minRank && <p>Unlock <Highlight color={tier.color}>{tier.rank === maxRank ? 'all' : 'more'}</Highlight> website backgrounds</p>}
+          {tier.rank !== minRank && <p>Unlock <Highlight color={tier.color}>{tier.rank === maxRank ? 'all' : 'more'}</Highlight> website styles</p>}
+          {tier.useCost && <p>Unlock <Highlight color={tier.color}>cost system</Highlight> for buttons</p>}
+          {tier.health && <p>Unlock <Highlight color={tier.color}>health display</Highlight> for avatars</p>}
+          <br />
+        </Tier>
+      ))}
+    </TiersStyled>
+  </Segment>);
 }
 
 const TiersStyled = styled.div`

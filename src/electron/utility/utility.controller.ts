@@ -4,17 +4,17 @@ import { IPC } from '../ipc/typedIpc.service';
 
 export class UtilityController {
 
-    constructor() {
-        IPC.handle('getFingerprint', () => this.getFingerprint())
-    }
+  constructor() {
+    IPC.handle('getFingerprint', () => this.getFingerprint());
+  }
 
-    async getFingerprint(): Promise<string> {
-        const {serial, uuid: systemUuid} = await system();
-        const {hardware} = await uuid();
-        const {serial: boardSerial} = await baseboard();
+  async getFingerprint(): Promise<string> {
+    const { serial, uuid: systemUuid } = await system();
+    const { hardware } = await uuid();
+    const { serial: boardSerial } = await baseboard();
 
-        const systemInfo = {serial, systemUuid, hardware, boardSerial};
+    const systemInfo = { serial, systemUuid, hardware, boardSerial };
 
-        return createHash('sha256').update(Object.values(systemInfo).join(',')).digest('hex').toString();
-    }
+    return createHash('sha256').update(Object.values(systemInfo).join(',')).digest('hex').toString();
+  }
 }

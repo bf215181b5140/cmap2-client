@@ -6,24 +6,24 @@ import useSocketConnection from '../../hooks/socketConnection.hook';
 
 export default function TitleBar() {
 
-    const { color: color } = useSocketConnection();
-    const { vrcStatusColor } = useVrcDetector();
+  const { color: color } = useSocketConnection();
+  const { vrcStatusColor } = useVrcDetector();
 
-    function setWindowState(state: WindowState) {
-        window.IPC.send('setWindowState', state);
-    }
+  function setWindowState(state: WindowState) {
+    window.IPC.send('setWindowState', state);
+  }
 
-    return (<TitleBarStyled>
-        <StatusStyled>
-            <i className={'ri-gamepad-line'} style={{ color: vrcStatusColor }} />
-            <i className={'ri-global-line'} style={{ color: color }} />
-        </StatusStyled>
-        <ButtonsStyled>
-            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Tray')} icon={'ri-arrow-right-down-line'} />
-            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Minimize')} icon={'ri-subtract-fill'} />
-            <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Exit')} icon={'ri-close-fill'} />
-        </ButtonsStyled>
-    </TitleBarStyled>);
+  return (<TitleBarStyled>
+    <StatusStyled>
+      <i className={'ri-gamepad-line'} style={{ color: vrcStatusColor }} />
+      <i className={'ri-global-line'} style={{ color: color }} />
+    </StatusStyled>
+    <ButtonsStyled>
+      <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Tray')} icon={'ri-arrow-right-down-line'} />
+      <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Minimize')} icon={'ri-subtract-fill'} />
+      <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Exit')} icon={'ri-close-fill'} />
+    </ButtonsStyled>
+  </TitleBarStyled>);
 }
 
 const TitleBarStyled = styled.div`

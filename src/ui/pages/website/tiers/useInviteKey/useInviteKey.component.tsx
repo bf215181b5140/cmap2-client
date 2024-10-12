@@ -10,40 +10,40 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';
 
 interface UseInviteKeyProps {
-    setClientTier: Dispatch<SetStateAction<TierDTO | undefined>>;
+  setClientTier: Dispatch<SetStateAction<TierDTO | undefined>>;
 }
 
 export default function UseInviteKey({ setClientTier }: UseInviteKeyProps) {
 
-    const { POST } = useCmapFetch();
-    const { addNotification } = useNotifications();
-    const { register, reset, formState: { errors, isDirty }, handleSubmit } = useForm<UseInviteKeyFormDTO>({
-        resolver: zodResolver(UseInviteKeyFormSchema),
-        defaultValues: {
-            key: ''
-        }
-    });
+  const { POST } = useCmapFetch();
+  const { addNotification } = useNotifications();
+  const { register, reset, formState: { errors, isDirty }, handleSubmit } = useForm<UseInviteKeyFormDTO>({
+    resolver: zodResolver(UseInviteKeyFormSchema),
+    defaultValues: {
+      key: ''
+    }
+  });
 
-    const onSubmit = (formData: UseInviteKeyFormDTO) => {
-        POST('tiers/useInviteKey', formData, TierSchema, data => {
-            setClientTier(data);
-            reset();
-            addNotification('success', 'New invite key has been generated successfully.');
-        }, () => reset());
-    };
+  const onSubmit = (formData: UseInviteKeyFormDTO) => {
+    POST('tiers/useInviteKey', formData, TierSchema, data => {
+      setClientTier(data);
+      reset();
+      addNotification('success', 'New invite key has been generated successfully.');
+    }, () => reset());
+  };
 
-    return(<Segment segmentTitle={'Use invite key'} infoContent={segmentInfo}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <FormTable>
-                <tr>
-                    <td><Input register={register} placeholder={'Invite key'} name={'key'} errors={errors} /></td>
-                    <td><IconButton role={'save'} tooltip={'Apply key'} disabled={!isDirty} /></td>
-                </tr>
-            </FormTable>
-        </form>
-    </Segment>)
+  return (<Segment segmentTitle={'Use invite key'} infoContent={segmentInfo}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormTable>
+        <tr>
+          <td><Input register={register} placeholder={'Invite key'} name={'key'} errors={errors} /></td>
+          <td><IconButton role={'save'} tooltip={'Apply key'} disabled={!isDirty} /></td>
+        </tr>
+      </FormTable>
+    </form>
+  </Segment>);
 }
 
 const segmentInfo = <>
-    <p>If you received an invite key for a higher tier than your current account, use it here to upgrade your account.</p>
+  <p>If you received an invite key for a higher tier than your current account, use it here to upgrade your account.</p>
 </>;

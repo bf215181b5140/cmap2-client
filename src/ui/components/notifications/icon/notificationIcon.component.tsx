@@ -5,18 +5,18 @@ import { ReactProps } from '../../../types';
 import { NotificationType } from 'cmap2-shared';
 
 interface NotificationIconProps extends ReactProps {
-    type: NotificationType,
-    message: string,
+  type: NotificationType,
+  message: string,
 }
 
 export default function NotificationIcon({ type, message, children }: NotificationIconProps) {
 
-    const { notificationColor, notificationIcon } = useNotifications();
+  const { notificationColor, notificationIcon } = useNotifications();
 
-    return (<NotificationIconStyled color={notificationColor(type).border} title={message}>
-        {children}
-        <i className={notificationIcon(type)} />
-    </NotificationIconStyled>);
+  return (<NotificationIconStyled color={notificationColor(type).border} title={message}>
+    {children}
+    <i className={notificationIcon(type)} />
+  </NotificationIconStyled>);
 }
 
 const NotificationIconStyled = styled.span<{ color: string }>`

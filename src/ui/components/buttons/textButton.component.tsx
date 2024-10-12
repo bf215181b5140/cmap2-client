@@ -4,16 +4,16 @@ import { globalInputStyle } from '../../style/input.style';
 import { ReactProps } from '../../types';
 
 interface TextButtonProps extends ReactProps {
-    type?: 'button' | 'submit';
-    text: string;
-    disabled?: boolean;
-    onClick?: MouseEventHandler<HTMLInputElement>;
-    icon?: string;
+  type?: 'button' | 'submit';
+  text: string;
+  disabled?: boolean;
+  onClick?: MouseEventHandler<HTMLInputElement>;
+  icon?: string;
 }
 
-export default function TextButton({type = 'button', text, disabled, onClick}: TextButtonProps) {
+export default function TextButton({ type = 'button', text, disabled, onClick }: TextButtonProps) {
 
-    return (<TextButtonStyled type={type} value={text} onClick={onClick} disabled={disabled} />);
+  return (<TextButtonStyled type={type} value={text} onClick={onClick} disabled={disabled} />);
 };
 
 const TextButtonStyled = styled.input`

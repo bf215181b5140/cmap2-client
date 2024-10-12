@@ -7,14 +7,14 @@ import { FetchStatusComponent } from '../fetchStatus/fetchStatus.component';
 
 export default function Content({ children }: ReactProps) {
 
-    return (<ContentStyled>
-        <ContentOverflow>
-            {children}
-        </ContentOverflow>
-        <ModalComponent />
-        <ToastComponent />
-        <FetchStatusComponent />
-    </ContentStyled>);
+  return (<ContentStyled>
+    <ContentOverflow>
+      {children}
+    </ContentOverflow>
+    <ModalComponent />
+    <ToastComponent />
+    <FetchStatusComponent />
+  </ContentStyled>);
 }
 
 const ContentStyled = styled.div`

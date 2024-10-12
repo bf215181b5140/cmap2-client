@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { ReactProps } from '../../types';
 
 interface FormControlBarProps extends ReactProps {
-    justifyContent?: string;
+  justifyContent?: string;
 }
 
 export default function FormControlBar({ justifyContent, children }: FormControlBarProps) {
-    return (<FormControlStyled justifyContent={justifyContent}>
-        {children}
-    </FormControlStyled>);
+  return (<FormControlStyled justifyContent={justifyContent}>
+    {children}
+  </FormControlStyled>);
 }
 
 const FormControlStyled = styled.div<{ justifyContent?: string }>`

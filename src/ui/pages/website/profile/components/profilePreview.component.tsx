@@ -6,37 +6,37 @@ import { Page } from '../../../../components/page/page.component';
 import Background from '../../../../components/background/background.component';
 
 interface ProfilePreviewProps {
-    profile: ProfilePageDTO;
+  profile: ProfilePageDTO;
 }
 
 export default function ProfilePreview({ profile }: ProfilePreviewProps) {
 
-    return (<ProfilePreviewStyled>
-        <div id={'profilePreviewSeparator'}>
-            <i className="ri-arrow-down-s-line" />
-            <hr />
-            Preview
-            <hr />
-            <i className="ri-arrow-down-s-line" />
-        </div>
-        <div id={'profilePreview'}>
-            <Background background={profile.background} />
+  return (<ProfilePreviewStyled>
+    <div id={'profilePreviewSeparator'}>
+      <i className="ri-arrow-down-s-line" />
+      <hr />
+      Preview
+      <hr />
+      <i className="ri-arrow-down-s-line" />
+    </div>
+    <div id={'profilePreview'}>
+      <Background background={profile.background} />
 
-            {/* TODO: these have to be LayoutComponent, GroupComponent, ButtonComponent */}
-            <Page>
-                <Segment segmentTitle={'Group'} width={'Third'}>
+      {/* TODO: these have to be LayoutComponent, GroupComponent, ButtonComponent */}
+      <Page>
+        <Segment segmentTitle={'Group'} width={'Third'}>
 
-                </Segment>
-                <Segment segmentTitle={'Group'} width={'Half'}>
+        </Segment>
+        <Segment segmentTitle={'Group'} width={'Half'}>
 
-                </Segment>
-                <Segment segmentTitle={'Group'} width={'Full'}>
+        </Segment>
+        <Segment segmentTitle={'Group'} width={'Full'}>
 
-                </Segment>
-            </Page>
+        </Segment>
+      </Page>
 
-        </div>
-    </ProfilePreviewStyled>);
+    </div>
+  </ProfilePreviewStyled>);
 }
 
 const ProfilePreviewStyled = styled.div`

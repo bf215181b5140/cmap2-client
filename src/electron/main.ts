@@ -11,35 +11,35 @@ import { UtilityController } from './utility/utility.controller';
 import { NotificationsStore } from './store/notifications/notifications.store';
 
 if (!app.requestSingleInstanceLock()) {
-    app.quit();
-    process.exit(0);
+  app.quit();
+  process.exit(0);
 }
 
 app.whenReady().then(() => {
 
-    // Start logging (electron events)
-    log.initialize();
-    log.info('Application started');
-    log.eventLogger.startLogging();
+  // Start logging (electron events)
+  log.initialize();
+  log.info('Application started');
+  log.eventLogger.startLogging();
 
-    // Stores
-    new NotificationsStore();
-    AVATARS;
+  // Stores
+  new NotificationsStore();
+  AVATARS;
 
-    // start functions
-    new VrcDetectorController();
-    new SocketController();
-    new OscController();
-    new UtilityController();
+  // start functions
+  new VrcDetectorController();
+  new SocketController();
+  new OscController();
+  new UtilityController();
 
-    // create window and tray
-    new WindowController();
-    new TrayController();
+  // create window and tray
+  new WindowController();
+  new TrayController();
 
-    // Context menu for development
-    if (!app.isPackaged) contextMenu();
+  // Context menu for development
+  if (!app.isPackaged) contextMenu();
 
-    // prevent terminating main process so program can run in background
-    app.on('window-all-closed', (event: any) => event.preventDefault());
+  // prevent terminating main process so program can run in background
+  app.on('window-all-closed', (event: any) => event.preventDefault());
 
 }).catch(e => log.error('Application failed to start', e));

@@ -8,97 +8,97 @@ type IconButtonSize = 'normal' | 'small' | 'tiny';
 type IconButtonRole = 'normal' | 'add' | 'delete' | 'edit' | 'save' | 'info' | 'reset';
 
 interface IconButtonProps {
-    role: IconButtonRole;
-    onClick?: () => void;
-    icon?: string;
-    tooltip?: string | false;
-    disabled?: boolean;
-    active?: boolean;
-    size?: IconButtonSize;
-    deleteKeyword?: string;
-    className?: string;
-    name?: string;
-    type?: 'submit' | 'button';
+  role: IconButtonRole;
+  onClick?: () => void;
+  icon?: string;
+  tooltip?: string | false;
+  disabled?: boolean;
+  active?: boolean;
+  size?: IconButtonSize;
+  deleteKeyword?: string;
+  className?: string;
+  name?: string;
+  type?: 'submit' | 'button';
 }
 
 export default function IconButton({ role, onClick, icon, tooltip, disabled, active, size = 'normal', deleteKeyword, className, name, type }: IconButtonProps) {
 
-    const { deleteModal } = useContext(ModalContext);
+  const { deleteModal } = useContext(ModalContext);
 
-    if (!icon) {
-        switch (role) {
-            case 'normal':
-                icon = 'ri-link-m';
-                break;
-            case 'add':
-                icon = 'ri-add-line';
-                break;
-            case 'delete':
-                icon = 'ri-delete-bin-6-line';
-                break;
-            case 'edit':
-                icon = 'ri-edit-line';
-                break;
-            case 'save':
-                icon = 'ri-save-3-line';
-                break;
-            case 'info':
-                icon = 'ri-question-line';
-                break;
-            case 'reset':
-                icon = 'ri-loop-left-line';
-                break;
-        }
+  if (!icon) {
+    switch (role) {
+      case 'normal':
+        icon = 'ri-link-m';
+        break;
+      case 'add':
+        icon = 'ri-add-line';
+        break;
+      case 'delete':
+        icon = 'ri-delete-bin-6-line';
+        break;
+      case 'edit':
+        icon = 'ri-edit-line';
+        break;
+      case 'save':
+        icon = 'ri-save-3-line';
+        break;
+      case 'info':
+        icon = 'ri-question-line';
+        break;
+      case 'reset':
+        icon = 'ri-loop-left-line';
+        break;
     }
+  }
 
-    if (tooltip === undefined) {
-        switch (role) {
-            case 'add':
-                tooltip = 'Add new';
-                break;
-            case 'delete':
-                tooltip = 'Delete';
-                break;
-            case 'edit':
-                tooltip = 'Edit';
-                break;
-            case 'save':
-                tooltip = 'Save';
-                break;
-            case 'info':
-                tooltip = 'Show info';
-                break;
-            case 'reset':
-                tooltip = 'Reset';
-                break;
-        }
+  if (tooltip === undefined) {
+    switch (role) {
+      case 'add':
+        tooltip = 'Add new';
+        break;
+      case 'delete':
+        tooltip = 'Delete';
+        break;
+      case 'edit':
+        tooltip = 'Edit';
+        break;
+      case 'save':
+        tooltip = 'Save';
+        break;
+      case 'info':
+        tooltip = 'Show info';
+        break;
+      case 'reset':
+        tooltip = 'Reset';
+        break;
     }
+  }
 
-    if (type === undefined) {
-        if (role === 'save') {
-            type = 'submit';
-        } else {
-            type = 'button';
-        }
+  if (type === undefined) {
+    if (role === 'save') {
+      type = 'submit';
+    } else {
+      type = 'button';
     }
+  }
 
-    function onClickInternal() {
-        if (!onClick) return;
+  function onClickInternal() {
+    if (!onClick) return;
 
-        switch (role) {
-            case 'delete':
-                deleteModal(deleteKeyword || 'item', onClick);
-                break;
-            default:
-                onClick();
-        }
+    switch (role) {
+      case 'delete':
+        deleteModal(deleteKeyword || 'item', onClick);
+        break;
+      default:
+        onClick();
     }
+  }
 
-    return (<IconButtonStyled type={type} role={role} size={size} disabled={!!disabled} data-active={active}
-                              onClick={() => onClickInternal()} className={className} name={name}>
-        <i className={icon} />
-        {tooltip && <span>{tooltip}</span>}
-    </IconButtonStyled>);
+  return (<IconButtonStyled type={type} role={role} size={size} disabled={!!disabled} data-active={active}
+                            onClick={() => onClickInternal()} className={className} name={name}>
+    <i className={icon} />
+    {tooltip && <span>{tooltip}</span>}
+  </IconButtonStyled>);
 }
 
 const IconButtonStyled = styled.button<{ role: IconButtonRole, size: IconButtonSize }>`
@@ -110,35 +110,35 @@ const IconButtonStyled = styled.button<{ role: IconButtonRole, size: IconButtonS
 
     // Style type
     ${props => {
-        switch (props.role) {
-            case 'normal':
-                return null;
-            case 'add':
-                return styleAdd;
-            case 'delete':
-                return styleDelete;
-            case 'edit':
-                return styleEdit;
-            case 'save':
-                return styleSave;
-            case 'info':
-                return styleInfo;
-            case 'reset':
-                return styleReset;
-        }
-    }};
+  switch (props.role) {
+    case 'normal':
+      return null;
+    case 'add':
+      return styleAdd;
+    case 'delete':
+      return styleDelete;
+    case 'edit':
+      return styleEdit;
+    case 'save':
+      return styleSave;
+    case 'info':
+      return styleInfo;
+    case 'reset':
+      return styleReset;
+  }
+}};
 
     // size
     ${props => {
-        switch (props.size) {
-            case 'normal':
-                return sizeNormal;
-            case 'small':
-                return sizeSmall;
-            case 'tiny':
-                return sizeTiny;
-        }
-    }};
+  switch (props.size) {
+    case 'normal':
+      return sizeNormal;
+    case 'small':
+      return sizeSmall;
+    case 'tiny':
+      return sizeTiny;
+  }
+}};
     
     span {
         position: absolute;

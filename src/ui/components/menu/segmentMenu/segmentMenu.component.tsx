@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { ReactProps } from 'cmap2-shared';
 
 export default function SegmentMenu({ children }: ReactProps) {
-    return(<SegmentMenuStyled>
-        {children}
-    </SegmentMenuStyled>)
+  return (<SegmentMenuStyled>
+    {children}
+  </SegmentMenuStyled>);
 }
 
 const SegmentMenuStyled = styled.div`

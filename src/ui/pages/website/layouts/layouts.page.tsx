@@ -4,14 +4,13 @@ import { useParams } from 'react-router-dom';
 import { LayoutDTO, LayoutsPageDTO, LayoutsPageSchema } from 'cmap2-shared';
 import { Page, PAGE_ELEMENT_GAP } from '../../../components/page/page.component';
 import LayoutSettings from './layout/settings/settings.component';
-import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
 import PageMenuLink from '../../../components/menu/pageMenu/pageMenuLink.component';
 import Segment from '../../../components/segment/segment.component';
 import { PageMenuSelect } from '../../../components/menu/pageMenu/pageMenuSelect.component';
 import { QuickEditItem } from './quickEditToolbar/quickEditToolbar.model';
 import QuickEditToolbar from './quickEditToolbar/quickEditToolbar.component';
 import TextButton from '../../../components/buttons/textButton.component';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 type LayoutSections = 'settings' | 'parameterBadges' | 'controlParameters' | 'preview' | 'button';
 

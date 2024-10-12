@@ -4,16 +4,16 @@ import { TierDTO } from 'cmap2-shared';
 import Icon from '../icon/icon.component';
 
 interface PickerOverlayTierProps {
-    tier: TierDTO;
-    valid?: boolean;
+  tier: TierDTO;
+  valid?: boolean;
 }
 
 export default function PickerOverlayTier({ tier, valid = true }: PickerOverlayTierProps) {
 
-    return (<PickerOverlayTierStyled valid={valid}>
-        <Icon icon="ri-medal-fill" color={tier.color} />
-        {tier.label}
-    </PickerOverlayTierStyled>);
+  return (<PickerOverlayTierStyled valid={valid}>
+    <Icon icon="ri-medal-fill" color={tier.color} />
+    {tier.label}
+  </PickerOverlayTierStyled>);
 }
 
 const PickerOverlayTierStyled = styled.div<{ valid?: boolean }>`

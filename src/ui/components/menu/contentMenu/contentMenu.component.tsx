@@ -3,9 +3,9 @@ import { ReactProps } from 'cmap2-shared';
 
 export default function ContentMenu({ children }: ReactProps) {
 
-    return (<ContentMenuStyled>
-            {children}
-    </ContentMenuStyled>);
+  return (<ContentMenuStyled>
+    {children}
+  </ContentMenuStyled>);
 }
 
 const ContentMenuStyled = styled.div`

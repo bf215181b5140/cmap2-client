@@ -4,27 +4,27 @@ import Icon from '../../../components/icon/icon.component';
 import { ReactProps } from '../../../types';
 
 interface LaunchPadBoxProps extends ReactProps {
-    icon: string;
-    connected: boolean;
-    redirectPath: string;
+  icon: string;
+  connected: boolean;
+  redirectPath: string;
 }
 
 export default function LaunchPadBox({ icon, connected, redirectPath, children }: LaunchPadBoxProps) {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    function redirect() {
-        navigate(redirectPath);
-    }
+  function redirect() {
+    navigate(redirectPath);
+  }
 
-    return (<LaunchPadBoxStyled connected={connected} onClick={redirect}>
-        <IconStyled>
-            <Icon icon={icon} />
-        </IconStyled>
-        <ChildrenStyled>
-            {children}
-        </ChildrenStyled>
-    </LaunchPadBoxStyled>);
+  return (<LaunchPadBoxStyled connected={connected} onClick={redirect}>
+    <IconStyled>
+      <Icon icon={icon} />
+    </IconStyled>
+    <ChildrenStyled>
+      {children}
+    </ChildrenStyled>
+  </LaunchPadBoxStyled>);
 }
 
 const LaunchPadBoxStyled = styled.div<{ connected: boolean }>`

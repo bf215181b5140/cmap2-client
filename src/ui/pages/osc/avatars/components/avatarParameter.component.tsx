@@ -7,41 +7,41 @@ import { VrcOscAvatarParameter } from '../../../../../shared/objects/vrcOscAvata
 import IconButton from '../../../../components/buttons/iconButton.component';
 
 interface AvatarParameterProps {
-    avatarId: string;
-    parameter: VrcOscAvatarParameter;
-    avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
-    forceShowProperties: boolean;
+  avatarId: string;
+  parameter: VrcOscAvatarParameter;
+  avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
+  forceShowProperties: boolean;
 }
 
 export default function AvatarParameter({ avatarId, parameter, avatarsDispatch, forceShowProperties }: AvatarParameterProps) {
 
-    const [showProperties, setShowProperties] = useState<boolean>(forceShowProperties);
-    const [parent] = useAutoAnimate();
+  const [showProperties, setShowProperties] = useState<boolean>(forceShowProperties);
+  const [parent] = useAutoAnimate();
 
-    useEffect(() => {
-        setShowProperties(forceShowProperties);
-    }, [forceShowProperties]);
+  useEffect(() => {
+    setShowProperties(forceShowProperties);
+  }, [forceShowProperties]);
 
-    function deleteParameter() {
-        avatarsDispatch({ type: 'removeParameter', avatarId: avatarId, parameter: parameter });
-    }
+  function deleteParameter() {
+    avatarsDispatch({ type: 'removeParameter', avatarId: avatarId, parameter: parameter });
+  }
 
-    return (<AvatarParameterStyled ref={parent}>
+  return (<AvatarParameterStyled ref={parent}>
 
-        <h4 onClick={() => setShowProperties((state) => !state)}>
-            <i className={showProperties ? 'ri-arrow-down-s-line' : 'ri-arrow-right-s-line'} /> {parameter.name}
-        </h4>
+    <h4 onClick={() => setShowProperties((state) => !state)}>
+      <i className={showProperties ? 'ri-arrow-down-s-line' : 'ri-arrow-right-s-line'} /> {parameter.name}
+    </h4>
 
-        <div className={'editOptions'}>
-            <IconButton role={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={deleteParameter} />
-        </div>
+    <div className={'editOptions'}>
+      <IconButton role={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={deleteParameter} />
+    </div>
 
-        {showProperties && <div className={'properties'}>
-            <AvatarParameterProperties type={'input'} properties={parameter.input} />
-            <AvatarParameterProperties type={'output'} properties={parameter.output} />
-        </div>}
+    {showProperties && <div className={'properties'}>
+      <AvatarParameterProperties type={'input'} properties={parameter.input} />
+      <AvatarParameterProperties type={'output'} properties={parameter.output} />
+    </div>}
 
-    </AvatarParameterStyled>);
+  </AvatarParameterStyled>);
 }
 
 const AvatarParameterStyled = styled.div`

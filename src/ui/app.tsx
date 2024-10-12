@@ -15,26 +15,26 @@ import NotificationsPage from './pages/notifications/notifications.page';
 
 export default function App() {
 
-    return (<AppStyled>
-        <Context>
-            <TitleBar />
-            <Content>
-                <Routes>
-                    <Route path="/osc/*" element={<OscPage />} />
-                    <Route path="/website/*" element={<WebsitePage />} />
-                    {/* <Route path="/avatars/:avatarId?" element={<AvatarsPage />} /> */}
-                    {/* <Route path="/settings" element={<SettingsPage />} /> */}
-                    {/* <Route path="/lovense" element={<LovensePage />} /> */}
-                    {/* <Route path="/updater" element={<UpdaterPage />} /> */}
-                    {/* <Route path="/guide" element={<GuidePage />} /> */}
-                    <Route path="/notifications" element={<NotificationsPage />} />
-                    <Route path="/testing" element={<TestingPage />} />
-                    <Route path="*" element={<LaunchPadPage />} />
-                </Routes>
-            </Content>
-            <AppMenu />
-        </Context>
-    </AppStyled>);
+  return (<AppStyled>
+    <Context>
+      <TitleBar />
+      <Content>
+        <Routes>
+          <Route path="/osc/*" element={<OscPage />} />
+          <Route path="/website/*" element={<WebsitePage />} />
+          {/* <Route path="/avatars/:avatarId?" element={<AvatarsPage />} /> */}
+          {/* <Route path="/settings" element={<SettingsPage />} /> */}
+          {/* <Route path="/lovense" element={<LovensePage />} /> */}
+          {/* <Route path="/updater" element={<UpdaterPage />} /> */}
+          {/* <Route path="/guide" element={<GuidePage />} /> */}
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/testing" element={<TestingPage />} />
+          <Route path="*" element={<LaunchPadPage />} />
+        </Routes>
+      </Content>
+      <AppMenu />
+    </Context>
+  </AppStyled>);
 }
 
 const AppStyled = styled.div`

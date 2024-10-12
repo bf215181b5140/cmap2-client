@@ -4,19 +4,19 @@ import { ReactProps } from '../../types';
 import { NotificationType } from 'cmap2-shared';
 
 interface NotificationProps extends ReactProps {
-    type: NotificationType;
+  type: NotificationType;
 }
 
 export default function SpanNotification({ type, children }: NotificationProps) {
 
-    const { notificationColor, notificationIcon } = useNotifications();
-    const icon = notificationIcon(type);
-    const colors = notificationColor(type);
+  const { notificationColor, notificationIcon } = useNotifications();
+  const icon = notificationIcon(type);
+  const colors = notificationColor(type);
 
-    return (<SpanNotificationStyled background={colors.background} border={colors.border}>
-        <i className={icon} />
-        {children}
-    </SpanNotificationStyled>);
+  return (<SpanNotificationStyled background={colors.background} border={colors.border}>
+    <i className={icon} />
+    {children}
+  </SpanNotificationStyled>);
 }
 
 const SpanNotificationStyled = styled.div<{ background: string, border: string }>`

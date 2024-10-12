@@ -4,26 +4,26 @@ import React from 'react';
 import { theme } from '../../../style/theme';
 
 interface AppMenuLinkProps {
-    to: string,
-    icon: string,
-    tooltip?: string;
-    attentionIcon?: boolean;
-    attentionColor?: string;
+  to: string,
+  icon: string,
+  tooltip?: string;
+  attentionIcon?: boolean;
+  attentionColor?: string;
 }
 
 export default function AppMenuLink({ to, icon, tooltip, attentionIcon = false, attentionColor = theme.colors.attention }: AppMenuLinkProps) {
 
-    const pathname = useLocation().pathname;
+  const pathname = useLocation().pathname;
 
-    function selected() {
-        return (pathname.indexOf(to) === 0 && to !== '/') || (pathname === to);
-    }
+  function selected() {
+    return (pathname.indexOf(to) === 0 && to !== '/') || (pathname === to);
+  }
 
-    return (<AppMenuLinkStyled to={to} selected={selected()}>
-        {icon && <i className={icon}></i>}
-        {attentionIcon && <i className={'attention ri-circle-fill'} style={{ color: attentionColor }}></i>}
-        {tooltip && <span className={'tooltip'}>{tooltip}</span>}
-    </AppMenuLinkStyled>);
+  return (<AppMenuLinkStyled to={to} selected={selected()}>
+    {icon && <i className={icon}></i>}
+    {attentionIcon && <i className={'attention ri-circle-fill'} style={{ color: attentionColor }}></i>}
+    {tooltip && <span className={'tooltip'}>{tooltip}</span>}
+  </AppMenuLinkStyled>);
 }
 
 const AppMenuLinkStyled = styled(Link)<{ selected: boolean }>`

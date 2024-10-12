@@ -4,8 +4,8 @@ import TrackedParameters from './trackedParameters/trackedParameters.component';
 
 export default function GameStatusPage() {
 
-    return(<Page flexDirection={'column'}>
-        <VrcStatus />
-        <TrackedParameters />
-    </Page>);
+  return (<Page flexDirection={'column'}>
+    <VrcStatus />
+    <TrackedParameters />
+  </Page>);
 }

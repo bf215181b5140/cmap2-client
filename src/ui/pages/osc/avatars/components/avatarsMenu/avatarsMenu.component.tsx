@@ -8,29 +8,29 @@ import styled from 'styled-components';
 import { VrcOscAvatarsReducerAction } from '../../avatars.reducer';
 
 interface AvatarsMenuProps {
-    avatars: VrcOscAvatar[];
-    activeAvatar: VrcOscAvatar | undefined;
-    avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
+  avatars: VrcOscAvatar[];
+  activeAvatar: VrcOscAvatar | undefined;
+  avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
 }
 
 export default function AvatarMenu({ avatars, activeAvatar, avatarsDispatch }: AvatarsMenuProps) {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    function deleteAvatar() {
-        if (!activeAvatar) return;
-        avatarsDispatch({ type: 'removeAvatar', avatar: activeAvatar });
-        navigate('/osc/avatars/');
-    }
+  function deleteAvatar() {
+    if (!activeAvatar) return;
+    avatarsDispatch({ type: 'removeAvatar', avatar: activeAvatar });
+    navigate('/osc/avatars/');
+  }
 
-    return (<PageMenu>
-        <PageMenuSelect onChange={(event) => navigate('/osc/avatars/' + event.target.value)} value={activeAvatar?.id}>
-            {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
-        </PageMenuSelect>
-        <PageMenuLeftBar>
-            <CustomIconButton role={'delete'} size={'small'} deleteKeyword={'avatar "' + activeAvatar?.name + '"'} onClick={deleteAvatar} />
-        </PageMenuLeftBar>
-    </PageMenu>);
+  return (<PageMenu>
+    <PageMenuSelect onChange={(event) => navigate('/osc/avatars/' + event.target.value)} value={activeAvatar?.id}>
+      {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
+    </PageMenuSelect>
+    <PageMenuLeftBar>
+      <CustomIconButton role={'delete'} size={'small'} deleteKeyword={'avatar "' + activeAvatar?.name + '"'} onClick={deleteAvatar} />
+    </PageMenuLeftBar>
+  </PageMenu>);
 }
 
 const PageMenuLeftBar = styled.div`

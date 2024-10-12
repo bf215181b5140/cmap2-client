@@ -10,20 +10,20 @@ import { useFetchStatus } from '../fetchStatus/fetchStatus.hook';
 
 export default function Context({ children }: ReactProps) {
 
-    const credentialsHook = useCredentials();
-    const toastHook = useToast();
-    const modalHook = useModalHook();
-    const fetchStatusHook = useFetchStatus();
+  const credentialsHook = useCredentials();
+  const toastHook = useToast();
+  const modalHook = useModalHook();
+  const fetchStatusHook = useFetchStatus();
 
-    return (<>
-        <CredentialsContext.Provider value={credentialsHook}>
-            <ToastContext.Provider value={toastHook}>
-                <ModalContext.Provider value={modalHook}>
-                    <FetchStatusContext.Provider value={fetchStatusHook}>
-                        {children}
-                    </FetchStatusContext.Provider>
-                </ModalContext.Provider>
-            </ToastContext.Provider>
-        </CredentialsContext.Provider>
-    </>);
+  return (<>
+    <CredentialsContext.Provider value={credentialsHook}>
+      <ToastContext.Provider value={toastHook}>
+        <ModalContext.Provider value={modalHook}>
+          <FetchStatusContext.Provider value={fetchStatusHook}>
+            {children}
+          </FetchStatusContext.Provider>
+        </ModalContext.Provider>
+      </ToastContext.Provider>
+    </CredentialsContext.Provider>
+  </>);
 }

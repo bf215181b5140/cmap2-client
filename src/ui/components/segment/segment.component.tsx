@@ -7,58 +7,58 @@ import { ReactProps } from '../../types';
 import { GroupWidth } from 'cmap2-shared';
 
 interface SegmentProps extends ReactProps {
-    segmentTitle?: string;
-    toggleTitle?: string;
-    infoContent?: React.JSX.Element;
-    width?: GroupWidth;
-    loading?: boolean;
+  segmentTitle?: string;
+  toggleTitle?: string;
+  infoContent?: React.JSX.Element;
+  width?: GroupWidth;
+  loading?: boolean;
 }
 
 export default function Segment({ segmentTitle, toggleTitle, infoContent, width, loading = false, children }: SegmentProps) {
 
-    const [shown, setShown] = useState<boolean>(!toggleTitle);
-    const [infoShown, setInfoShown] = useState<boolean>(false);
+  const [shown, setShown] = useState<boolean>(!toggleTitle);
+  const [infoShown, setInfoShown] = useState<boolean>(false);
 
-    function getFlexBasis(): string | undefined {
-        if (!width) return undefined;
-        switch (width) {
-            case 'None':
-                return '0';
-            case 'Third':
-                return `calc(100% * (1 / 3) - ${PAGE_ELEMENT_GAP})`;
-            case 'Half':
-                return `calc(100% * (1 / 2) - ${PAGE_ELEMENT_GAP})`;
-            case 'Full':
-                return `calc(100%)`;
-            default:
-                return undefined;
-        }
+  function getFlexBasis(): string | undefined {
+    if (!width) return undefined;
+    switch (width) {
+      case 'None':
+        return '0';
+      case 'Third':
+        return `calc(100% * (1 / 3) - ${PAGE_ELEMENT_GAP})`;
+      case 'Half':
+        return `calc(100% * (1 / 2) - ${PAGE_ELEMENT_GAP})`;
+      case 'Full':
+        return `calc(100%)`;
+      default:
+        return undefined;
     }
+  }
 
-    return (<SegmentWrapper flexGrow={!!getFlexBasis()} flexBasis={getFlexBasis()} flex={getFlexBasis()}>
+  return (<SegmentWrapper flexGrow={!!getFlexBasis()} flexBasis={getFlexBasis()} flex={getFlexBasis()}>
 
-        {/* Toggle title */}
-        {toggleTitle && <SegmentTitle shown={shown}>
-            <h2 onClick={() => setShown(!shown)}>
-                <i className={'ri-arrow-down-s-line'} />
-                {toggleTitle}
-            </h2>
-        </SegmentTitle>}
+    {/* Toggle title */}
+    {toggleTitle && <SegmentTitle shown={shown}>
+      <h2 onClick={() => setShown(!shown)}>
+        <i className={'ri-arrow-down-s-line'} />
+        {toggleTitle}
+      </h2>
+    </SegmentTitle>}
 
-        {/* Main box */}
-        {shown && <SegmentStyled>
-            {loading ? (
-                <LoadingSpinner />
-            ) : (
-                <>
-                    {infoContent && <FloatIconButton role={'info'} size={'small'} active={infoShown} onClick={() => setInfoShown(!infoShown)} />}
-                    {segmentTitle && <h2 style={{ marginTop: 0 }}>{segmentTitle}</h2>}
-                    {infoShown && infoContent}
-                    {children}
-                </>
-            )}
-        </SegmentStyled>}
-    </SegmentWrapper>);
+    {/* Main box */}
+    {shown && <SegmentStyled>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          {infoContent && <FloatIconButton role={'info'} size={'small'} active={infoShown} onClick={() => setInfoShown(!infoShown)} />}
+          {segmentTitle && <h2 style={{ marginTop: 0 }}>{segmentTitle}</h2>}
+          {infoShown && infoContent}
+          {children}
+        </>
+      )}
+    </SegmentStyled>}
+  </SegmentWrapper>);
 }
 
 const SegmentWrapper = styled.div<{ flexGrow?: boolean | string, flexBasis?: string, flex?: string }>`

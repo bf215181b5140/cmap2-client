@@ -2,26 +2,26 @@ import { Link, useLocation } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 interface ContentMenuLinkProps {
-    to: string;
-    icon: string;
-    disabled?: boolean;
-    tooltip?: string;
-    attention?: boolean;
+  to: string;
+  icon: string;
+  disabled?: boolean;
+  tooltip?: string;
+  attention?: boolean;
 }
 
 export default function ContentMenuLink({ to, icon, disabled = false, tooltip, attention = false }: ContentMenuLinkProps) {
 
-    const pathname = useLocation().pathname;
+  const pathname = useLocation().pathname;
 
-    function isCurrentPath(): boolean {
-        return pathname.indexOf(to) === 0;
-    }
+  function isCurrentPath(): boolean {
+    return pathname.indexOf(to) === 0;
+  }
 
-    return (<ContentMenuLinkStyled to={to} $isActive={isCurrentPath()} disabled={disabled}>
-        <i className={icon} />
-        {tooltip && <div className={'tooltip'}>{tooltip}</div>}
-        {attention && <i className={'ri-circle-fill attention'}></i>}
-    </ContentMenuLinkStyled>);
+  return (<ContentMenuLinkStyled to={to} $isActive={isCurrentPath()} disabled={disabled}>
+    <i className={icon} />
+    {tooltip && <div className={'tooltip'}>{tooltip}</div>}
+    {attention && <i className={'ri-circle-fill attention'}></i>}
+  </ContentMenuLinkStyled>);
 }
 
 const highlight = css`

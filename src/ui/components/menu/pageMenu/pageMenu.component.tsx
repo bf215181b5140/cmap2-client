@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { PAGE_ELEMENT_GAP } from '../../page/page.component';
-import { ReactProps } from '../../../types';
 
 const PageMenu = styled.div<{ noMarginTop?: boolean }>`
     //flex-grow: 2;
@@ -15,13 +14,13 @@ const PageMenu = styled.div<{ noMarginTop?: boolean }>`
     flex-wrap: wrap;
     align-items: center;
     ${props => {
-        if (props.noMarginTop) {
-            return css`
+  if (props.noMarginTop) {
+    return css`
             margin-top: -${PAGE_ELEMENT_GAP};
             border-radius: 0 0 8px 8px;
         `;
-        }
-    }};
+  }
+}};
 
     hr {
         border: 1px solid ${props => props.theme.colors.submenu.bg} !important;

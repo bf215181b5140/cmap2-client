@@ -6,18 +6,18 @@ import { useNotifications } from '../../hooks/useNotifications.hook';
 
 export function ToastComponent() {
 
-    const [parent] = useAutoAnimate();
-    const { toasts } = useContext(ToastContext);
-    const { notificationColor, notificationIcon } = useNotifications();
+  const [parent] = useAutoAnimate();
+  const { toasts } = useContext(ToastContext);
+  const { notificationColor, notificationIcon } = useNotifications();
 
-    return (<ToastComponentStyled ref={parent}>
-        {toasts.map(toast => (
-            <ToastStyled key={toast.id} background={notificationColor(toast.type).background} border={notificationColor(toast.type).border}>
-                <i className={notificationIcon(toast.type)} />
-                {toast.message}
-            </ToastStyled>
-        ))}
-    </ToastComponentStyled>);
+  return (<ToastComponentStyled ref={parent}>
+    {toasts.map(toast => (
+      <ToastStyled key={toast.id} background={notificationColor(toast.type).background} border={notificationColor(toast.type).border}>
+        <i className={notificationIcon(toast.type)} />
+        {toast.message}
+      </ToastStyled>
+    ))}
+  </ToastComponentStyled>);
 };
 
 const ToastComponentStyled = styled.div`

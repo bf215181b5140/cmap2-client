@@ -16,46 +16,46 @@ type ProfilePageSections = 'basicInfo' | 'interactionKeys' | 'background' | 'sty
 
 export default function ProfilePage() {
 
-    const { profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setStyle } = useProlfilePage();
-    const [section, setSection] = useState<ProfilePageSections>('basicInfo');
-    const pageFlexDirection = section === 'basicInfo' ? 'row' : 'column';
+  const { profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setStyle } = useProlfilePage();
+  const [section, setSection] = useState<ProfilePageSections>('basicInfo');
+  const pageFlexDirection = section === 'basicInfo' ? 'row' : 'column';
 
-    if (!profile) return;
+  if (!profile) return;
 
-    return (<Page flexDirection={pageFlexDirection}>
+  return (<Page flexDirection={pageFlexDirection}>
 
-        <ProfilePageMenu noMarginTop={true}>
-            <div>
-                <PageMenuLink onClick={() => setSection('basicInfo')} isActive={section === 'basicInfo'}>Basic info</PageMenuLink>
-                <PageMenuLink onClick={() => setSection('interactionKeys')} isActive={section === 'interactionKeys'}>Interaction keys</PageMenuLink>
-                <PageMenuLink onClick={() => setSection('background')} isActive={section === 'background'}>Background</PageMenuLink>
-                <PageMenuLink onClick={() => setSection('style')} isActive={section === 'style'}>Style</PageMenuLink>
-            </div>
-            <div>
-                <a id={'viewOnWebsiteLink'} href={WEBSITE_URL + '/' + profile.username} target={'_blank'}>View profile on website <i className={'ri-external-link-line'} /></a>
-            </div>
-        </ProfilePageMenu>
+    <ProfilePageMenu noMarginTop={true}>
+      <div>
+        <PageMenuLink onClick={() => setSection('basicInfo')} isActive={section === 'basicInfo'}>Basic info</PageMenuLink>
+        <PageMenuLink onClick={() => setSection('interactionKeys')} isActive={section === 'interactionKeys'}>Interaction keys</PageMenuLink>
+        <PageMenuLink onClick={() => setSection('background')} isActive={section === 'background'}>Background</PageMenuLink>
+        <PageMenuLink onClick={() => setSection('style')} isActive={section === 'style'}>Style</PageMenuLink>
+      </div>
+      <div>
+        <a id={'viewOnWebsiteLink'} href={WEBSITE_URL + '/' + profile.username} target={'_blank'}>View profile on website <i className={'ri-external-link-line'} /></a>
+      </div>
+    </ProfilePageMenu>
 
-        {section === 'basicInfo' && <>
-            <ProfileOverview profile={profile} setImage={setImage} />
-            <ProfileForm profile={profile} setBasicInfo={setBasicInfo} />
-        </>}
+    {section === 'basicInfo' && <>
+      <ProfileOverview profile={profile} setImage={setImage} />
+      <ProfileForm profile={profile} setBasicInfo={setBasicInfo} />
+    </>}
 
-        {section === 'interactionKeys' && <>
-            <InteractionKeys profile={profile} setInteractionKeys={setInteractionKeys} />
-        </>}
+    {section === 'interactionKeys' && <>
+      <InteractionKeys profile={profile} setInteractionKeys={setInteractionKeys} />
+    </>}
 
-        {section === 'background' && <>
-            <BackgroundPicker profile={profile} setBackground={setBackground} />
-            <ProfilePreview profile={profile} />
-        </>}
+    {section === 'background' && <>
+      <BackgroundPicker profile={profile} setBackground={setBackground} />
+      <ProfilePreview profile={profile} />
+    </>}
 
-        {section === 'style' && <>
-            <StylePicker profile={profile} setStyle={setStyle} />
-            <ProfilePreview profile={profile} />
-        </>}
+    {section === 'style' && <>
+      <StylePicker profile={profile} setStyle={setStyle} />
+      <ProfilePreview profile={profile} />
+    </>}
 
-    </Page>);
+  </Page>);
 }
 
 const ProfilePageMenu = styled(PageMenu)`

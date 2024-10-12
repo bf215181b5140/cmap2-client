@@ -1,92 +1,92 @@
 import styled, { css } from 'styled-components';
 import expOrb from '../../../images/expOrb.png';
 import ParameterSlider from './parameter.slider';
-import { ButtonDTO, StyleDTO, ImageOrientation, UsedButtonDTO } from 'cmap2-shared';
+import { ButtonDTO, ImageOrientation, StyleDTO, UsedButtonDTO } from 'cmap2-shared';
 
 export const URL = process.env.NODE_ENV === 'production' ? 'https://changemyavatarparams.com' : 'http://localhost:8080';
 
 interface ParameterButtonProps {
-    button: ButtonDTO;
-    style: StyleDTO;
-    active?: boolean;
-    disabled?: boolean;
-    value?: string | number | boolean | undefined;
-    useCostParameter?: { path: string, value: number };
-    onClick?: (usedParameter: UsedButtonDTO) => void;
+  button: ButtonDTO;
+  style: StyleDTO;
+  active?: boolean;
+  disabled?: boolean;
+  value?: string | number | boolean | undefined;
+  useCostParameter?: { path: string, value: number };
+  onClick?: (usedParameter: UsedButtonDTO) => void;
 }
 
 export default function ParameterButton(props: ParameterButtonProps) {
 
-    function onClick(value?: string) {
-        if (props.onClick) {
-            switch (props.button.buttonType) {
-                case 'Button':
-                    if (!props.active) props.onClick({ buttonId: props.button.id!, value: props.button.value! });
-                    break;
-                case 'Toggle':
-                    props.onClick({ buttonId: props.button.id!, value: props.active ? props.button.valueAlt! : props.button.value! });
-                    break;
-                case 'Slider':
-                    if (value === undefined) return;
-                    props.onClick({ buttonId: props.button.id!, value: value });
-                    break;
-            }
-        }
+  function onClick(value?: string) {
+    if (props.onClick) {
+      switch (props.button.buttonType) {
+        case 'Button':
+          if (!props.active) props.onClick({ buttonId: props.button.id!, value: props.button.value! });
+          break;
+        case 'Toggle':
+          props.onClick({ buttonId: props.button.id!, value: props.active ? props.button.valueAlt! : props.button.value! });
+          break;
+        case 'Slider':
+          if (value === undefined) return;
+          props.onClick({ buttonId: props.button.id!, value: value });
+          break;
+      }
     }
+  }
 
-    function useCostUsable(): boolean {
-        if (props.useCostParameter && props.button.useCost) {
-            return props.useCostParameter.value - props.button.useCost >= 0;
-        }
-        return true;
+  function useCostUsable(): boolean {
+    if (props.useCostParameter && props.button.useCost) {
+      return props.useCostParameter.value - props.button.useCost >= 0;
     }
+    return true;
+  }
 
-    function imageUrl() {
-        if (props.button.image?.urlPath.indexOf('blob:') === 0) {
-            return props.button.image.urlPath;
-        } else {
-            return URL + '/' + props.button.image?.urlPath;
-        }
+  function imageUrl() {
+    if (props.button.image?.urlPath.indexOf('blob:') === 0) {
+      return props.button.image.urlPath;
+    } else {
+      return URL + '/' + props.button.image?.urlPath;
     }
+  }
 
-    if (props.button.buttonType === 'Slider') {
-        return (<UseCostWrapper>
-            <SliderWrapper>
-                {props.button.label && <ParameterSliderLabel>{props.button.label}</ParameterSliderLabel>}
-                <ParameterSlider disabled={!!props.disabled || !useCostUsable()}
-                                 className={props.style.id}
-                                 onClick={(value: string) => onClick(value)}
-                                 value={typeof props.value === 'number' ? props.value : 0}
-                                 step={Math.abs(Number(props.button.value) - Number(props.button.valueAlt)) > 1 ? 1 : 0.01}
-                                 min={Number(props.button.value)}
-                                 max={Number(props.button.valueAlt)} />
-            </SliderWrapper>
-            {props.button.useCost && <UseCostIcon position="top" background={expOrb} usable={useCostUsable()}>{props.button.useCost.toString()}</UseCostIcon>}
-        </UseCostWrapper>);
-    }
-
+  if (props.button.buttonType === 'Slider') {
     return (<UseCostWrapper>
-        <ParameterLayoutStyled disabled={!!props.disabled || !useCostUsable()} className={`${props.style.id} ${props.active ? 'active' : ''}`}
-                               onClick={() => onClick()}>
-            {props.button.image?.urlPath &&
-                <ParameterButtonPicture src={imageUrl()} imageOrientation={props.button.imageOrientation || 'Square'} />}
-            {props.button.label && <ParameterButtonLabel>{props.button.label}</ParameterButtonLabel>}
-            <ActiveOverlay active={!!props.active} />
-        </ParameterLayoutStyled>
-        {props.button.useCost && <UseCostIcon position="bottom" background={expOrb} usable={useCostUsable()}>{props.button.useCost.toString()}</UseCostIcon>}
+      <SliderWrapper>
+        {props.button.label && <ParameterSliderLabel>{props.button.label}</ParameterSliderLabel>}
+        <ParameterSlider disabled={!!props.disabled || !useCostUsable()}
+                         className={props.style.id}
+                         onClick={(value: string) => onClick(value)}
+                         value={typeof props.value === 'number' ? props.value : 0}
+                         step={Math.abs(Number(props.button.value) - Number(props.button.valueAlt)) > 1 ? 1 : 0.01}
+                         min={Number(props.button.value)}
+                         max={Number(props.button.valueAlt)} />
+      </SliderWrapper>
+      {props.button.useCost && <UseCostIcon position="top" background={expOrb} usable={useCostUsable()}>{props.button.useCost.toString()}</UseCostIcon>}
     </UseCostWrapper>);
+  }
+
+  return (<UseCostWrapper>
+    <ParameterLayoutStyled disabled={!!props.disabled || !useCostUsable()} className={`${props.style.id} ${props.active ? 'active' : ''}`}
+                           onClick={() => onClick()}>
+      {props.button.image?.urlPath &&
+        <ParameterButtonPicture src={imageUrl()} imageOrientation={props.button.imageOrientation || 'Square'} />}
+      {props.button.label && <ParameterButtonLabel>{props.button.label}</ParameterButtonLabel>}
+      <ActiveOverlay active={!!props.active} />
+    </ParameterLayoutStyled>
+    {props.button.useCost && <UseCostIcon position="bottom" background={expOrb} usable={useCostUsable()}>{props.button.useCost.toString()}</UseCostIcon>}
+  </UseCostWrapper>);
 }
 
 function imageOrientationToAspectRatio(imageOrientation: ImageOrientation): string {
-    switch (imageOrientation) {
-        case 'Square':
-            return '4/3';
-        case 'Vertical':
-            return '3/4';
-        case 'Horizontal':
-        default:
-            return '16/9';
-    }
+  switch (imageOrientation) {
+    case 'Square':
+      return '4/3';
+    case 'Vertical':
+      return '3/4';
+    case 'Horizontal':
+    default:
+      return '16/9';
+  }
 }
 
 const ParameterLayoutStyled = styled.div<{ disabled: boolean }>`
@@ -141,8 +141,8 @@ const ActiveOverlay = styled.div<{ active: boolean }>`
   right: 0;
 
   ${props => {
-    if (props.active) {
-      return css`
+  if (props.active) {
+    return css`
         background: linear-gradient(45deg, transparent 0%, transparent 25%, rgba(144, 160, 164, 0.20) 50%, transparent 50%, transparent 100%) 0 0 / 400% 400%;
         animation: overlay 3s linear infinite;
 
@@ -176,8 +176,8 @@ const ActiveOverlay = styled.div<{ active: boolean }>`
           }
         }
       `;
-    }
-  }}
+  }
+}}
 `;
 
 const ParameterButtonLabel = styled.div`

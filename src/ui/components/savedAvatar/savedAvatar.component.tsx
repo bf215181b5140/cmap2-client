@@ -4,28 +4,28 @@ import { VrcOscAvatar } from '../../../shared/objects/vrcOscAvatar';
 import { Link } from 'react-router-dom';
 
 interface AvatarNameProps {
-    avatarId: string | undefined;
+  avatarId: string | undefined;
 }
 
 export default function AvatarName({ avatarId }: AvatarNameProps) {
 
-    const [knownAvatars, setKnownAvatars] = useState<VrcOscAvatar[]>([]);
-    const avatar = knownAvatars.find(a => a.id === avatarId);
+  const [knownAvatars, setKnownAvatars] = useState<VrcOscAvatar[]>([]);
+  const avatar = knownAvatars.find(a => a.id === avatarId);
 
-    useEffect(() => {
-        window.IPC.get('getAvatars').then(data => {
-            setKnownAvatars(data);
-        });
-    }, []);
+  useEffect(() => {
+    window.IPC.get('getAvatars').then(data => {
+      setKnownAvatars(data);
+    });
+  }, []);
 
-    if (!avatarId) return;
+  if (!avatarId) return;
 
-    return (<AvatarNameStyled>
-        <Link to={'/osc/avatars/' + avatar?.id} className={'avatarNameLink'}>
-            <i className={'ri-contacts-book-fill'} />
-            {avatar?.name || avatarId}
-        </Link>
-    </AvatarNameStyled>);
+  return (<AvatarNameStyled>
+    <Link to={'/osc/avatars/' + avatar?.id} className={'avatarNameLink'}>
+      <i className={'ri-contacts-book-fill'} />
+      {avatar?.name || avatarId}
+    </Link>
+  </AvatarNameStyled>);
 }
 
 const AvatarNameStyled = styled.div`

@@ -3,7 +3,6 @@ import { LayoutsPageDTO } from 'cmap2-shared';
 import { QuickEditItem } from './quickEditToolbar.model';
 import TextButton from '../../../../components/buttons/textButton.component';
 import IconButton from '../../../../components/buttons/iconButton.component';
-import { PAGE_ELEMENT_GAP } from '../../../../components/page/page.component';
 
 interface QuickEditToolbarProps {
   client: LayoutsPageDTO;
@@ -13,15 +12,15 @@ interface QuickEditToolbarProps {
 export default function QuickEditToolbar({ client, item }: QuickEditToolbarProps) {
   return (<QuickEditToolbarStyled>
     <div>
-    <TextButton text={'Hello :D'} />
+      <TextButton text={'Hello :D'} />
     </div>
     <div>
       Editing {item.groupId}
     </div>
     <div>
-    <span className={'grey'}>Double click to edit right away</span>
+      <span className={'grey'}>Double click to edit right away</span>
       <hr />
-    <IconButton role={'edit'} size={'small'} tooltip={'Go to edit!'} />
+      <IconButton role={'edit'} size={'small'} tooltip={'Go to edit!'} />
     </div>
   </QuickEditToolbarStyled>);
 }

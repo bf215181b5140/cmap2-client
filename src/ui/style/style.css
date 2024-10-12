@@ -1,42 +1,42 @@
 @font-face {
-    font-family: 'Dosis-Bold';
-    src: local('Dosis-Bold'), url(Dosis-Bold.ttf) format('truetype');
+  font-family: 'Dosis-Bold';
+  src: local('Dosis-Bold'), url(Dosis-Bold.ttf) format('truetype');
 }
 
 @font-face {
-    font-family: 'Noto-Sans-Regular';
-    src: local('Noto-Sans-Regular'), url(Noto-Sans-Regular.ttf) format('truetype');
+  font-family: 'Noto-Sans-Regular';
+  src: local('Noto-Sans-Regular'), url(Noto-Sans-Regular.ttf) format('truetype');
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: Dosis-Bold, sans-serif;
-    font-size: 16px;
-    color: #b8b9b9;
+  font-family: Dosis-Bold, sans-serif;
+  font-size: 16px;
+  color: #b8b9b9;
 }
 
 p, ul, ol {
-    font-family: Noto-Sans-Regular, serif;
-    font-size: 14px;
-    padding: 5px 0;
+  font-family: Noto-Sans-Regular, serif;
+  font-size: 14px;
+  padding: 5px 0;
 
-    b {
-        font-size: 16px;
-        font-family: Dosis-Bold, sans-serif;
-        font-weight: normal;
-    }
+  b {
+    font-size: 16px;
+    font-family: Dosis-Bold, sans-serif;
+    font-weight: normal;
+  }
 }
 
 span.grey {
-    color: dimgrey;
+  color: dimgrey;
 }
 
 /* width */
 ::-webkit-scrollbar {
-    width: 16px;
+  width: 16px;
 }
 
 /* Track */
@@ -45,12 +45,12 @@ span.grey {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #1c222a;
-    border-radius: 8px;
-    cursor: grab;
+  background: #1c222a;
+  border-radius: 8px;
+  cursor: grab;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #163136;
+  background: #163136;
 }

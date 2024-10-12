@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { ReactProps } from '../../types';
 
 interface AddCounterProps extends ReactProps {
-    canAddMore: boolean;
+  canAddMore: boolean;
 }
 
 export default function AddCounter({ canAddMore, children }: AddCounterProps) {
-    return (<AddCounterStyled canAddMore={canAddMore}>
-        {children}
-    </AddCounterStyled>);
+  return (<AddCounterStyled canAddMore={canAddMore}>
+    {children}
+  </AddCounterStyled>);
 }
 
 const AddCounterStyled = styled.span<{ canAddMore: boolean }>`

@@ -1,3 +1,3 @@
 export interface ReactProps {
-    children?: React.ReactNode;
+  children?: React.ReactNode;
 }

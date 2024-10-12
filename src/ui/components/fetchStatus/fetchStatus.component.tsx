@@ -5,14 +5,14 @@ import { FetchStatusContext } from '../context/fetchStatus.context';
 
 export function FetchStatusComponent() {
 
-    const [parent] = useAutoAnimate();
-    const { fetchStatusRequests, fetchStatusIcon } = useContext(FetchStatusContext);
+  const [parent] = useAutoAnimate();
+  const { fetchStatusRequests, fetchStatusIcon } = useContext(FetchStatusContext);
 
-    return (<>
-        {fetchStatusRequests.length > 0 && <FetchStatusComponentStyled ref={parent}>
-            {fetchStatusRequests.map(request => <div key={request.id}><i className={fetchStatusIcon(request.type)} /></div>)}
-        </FetchStatusComponentStyled>}
-    </>);
+  return (<>
+    {fetchStatusRequests.length > 0 && <FetchStatusComponentStyled ref={parent}>
+      {fetchStatusRequests.map(request => <div key={request.id}><i className={fetchStatusIcon(request.type)} /></div>)}
+    </FetchStatusComponentStyled>}
+  </>);
 };
 
 const FetchStatusComponentStyled = styled.div`

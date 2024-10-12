@@ -6,34 +6,34 @@ import { ModalContext } from '../context/modal.context';
 
 export default function ModalComponent() {
 
-    const { modal, clearModal } = useContext(ModalContext);
+  const { modal, clearModal } = useContext(ModalContext);
 
-    function onClose() {
-        modal?.cancelFunction?.apply(null);
-        clearModal();
-    }
+  function onClose() {
+    modal?.cancelFunction?.apply(null);
+    clearModal();
+  }
 
-    function onConfirm() {
-        modal?.confirmFunction.apply(null);
-        clearModal();
-    }
+  function onConfirm() {
+    modal?.confirmFunction.apply(null);
+    clearModal();
+  }
 
-    if (!modal) {
-        return null;
-    }
+  if (!modal) {
+    return null;
+  }
 
-    return (<ModalWrapper>
-        <ModalStyled>
-            <ModalTitle>
-                <h2>{modal.title || 'Confirmation required'}</h2>
-                <span onClick={onClose}><Icon icon={'ri-close-line'} /></span>
-            </ModalTitle>
-            <p>{modal.message || 'Confirm your action'}</p>
-            <div id="confirmation">
-                <TextButton text={modal.confirmValue || 'Confirm'} onClick={onConfirm} />
-            </div>
-        </ModalStyled>
-    </ModalWrapper>);
+  return (<ModalWrapper>
+    <ModalStyled>
+      <ModalTitle>
+        <h2>{modal.title || 'Confirmation required'}</h2>
+        <span onClick={onClose}><Icon icon={'ri-close-line'} /></span>
+      </ModalTitle>
+      <p>{modal.message || 'Confirm your action'}</p>
+      <div id="confirmation">
+        <TextButton text={modal.confirmValue || 'Confirm'} onClick={onConfirm} />
+      </div>
+    </ModalStyled>
+  </ModalWrapper>);
 }
 
 const ModalWrapper = styled.div`

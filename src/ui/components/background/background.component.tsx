@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import { BackgroundDTO } from 'cmap2-shared';
 
 interface BackgroundProps {
-    background: BackgroundDTO;
+  background: BackgroundDTO;
 }
 
 export default function Background({ background }: BackgroundProps) {
 
-    return (<BackgroundStyled className={background.id} />);
+  return (<BackgroundStyled className={background.id} />);
 }
 
 const BackgroundStyled = styled.div`

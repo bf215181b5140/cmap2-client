@@ -8,10 +8,10 @@ import { ParametersPageEmitter } from './types/parametersPageEmitter';
 
 export default function ParametersPage() {
 
-    const [parametersPageEmitter] = useState(new EventEmitter() as TypedEmitter<ParametersPageEmitter>);
+  const [parametersPageEmitter] = useState(new EventEmitter() as TypedEmitter<ParametersPageEmitter>);
 
-    return (<Page flexDirection={'column'}>
-        <TrackedParameters parametersPageEmitter={parametersPageEmitter} />
-        <ParameterEdit parametersPageEmitter={parametersPageEmitter} />
-    </Page>);
+  return (<Page flexDirection={'column'}>
+    <TrackedParameters parametersPageEmitter={parametersPageEmitter} />
+    <ParameterEdit parametersPageEmitter={parametersPageEmitter} />
+  </Page>);
 }

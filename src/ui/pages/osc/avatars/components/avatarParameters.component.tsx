@@ -8,66 +8,66 @@ import { globalInputStyle, SelectInputStyled } from '../../../../style/input.sty
 import Icon from '../../../../components/icon/icon.component';
 
 interface AvatarParametersProps {
-    avatarId: string;
-    parameters: VrcOscAvatarParameter[];
-    avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
+  avatarId: string;
+  parameters: VrcOscAvatarParameter[];
+  avatarsDispatch: React.Dispatch<VrcOscAvatarsReducerAction>;
 }
 
 const sortOrder = [
-    { key: 'none', value: 'None' },
-    { key: 'asc', value: 'Ascending' },
-    { key: 'desc', value: 'Descending' }
+  { key: 'none', value: 'None' },
+  { key: 'asc', value: 'Ascending' },
+  { key: 'desc', value: 'Descending' }
 ];
 
 export default function AvatarParameters({ avatarId, parameters, avatarsDispatch }: AvatarParametersProps) {
 
-    const [filter, setFilter] = useState<string>('');
-    const [sort, setSort] = useState<string>('none');
-    const [showProperties, setShowProperties] = useState<boolean>(true);
-    const [parent] = useAutoAnimate();
+  const [filter, setFilter] = useState<string>('');
+  const [sort, setSort] = useState<string>('none');
+  const [showProperties, setShowProperties] = useState<boolean>(true);
+  const [parent] = useAutoAnimate();
 
-    function filteredParameters(): VrcOscAvatarParameter[] {
-        let filteredList;
+  function filteredParameters(): VrcOscAvatarParameter[] {
+    let filteredList;
 
-        if (filter) {
-            filteredList = parameters.filter(parameter => parameter.name.toLowerCase().includes(filter.toLowerCase()));
-        } else {
-            filteredList = parameters;
-        }
-
-        if (sort === 'asc') {
-            filteredList = [...filteredList].sort((a, b) => a.name.localeCompare(b.name));
-        } else if (sort === 'desc') {
-            filteredList = [...filteredList].sort((a, b) => b.name.localeCompare(a.name));
-        }
-
-        return filteredList;
+    if (filter) {
+      filteredList = parameters.filter(parameter => parameter.name.toLowerCase().includes(filter.toLowerCase()));
+    } else {
+      filteredList = parameters;
     }
 
-    return (<div>
+    if (sort === 'asc') {
+      filteredList = [...filteredList].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sort === 'desc') {
+      filteredList = [...filteredList].sort((a, b) => b.name.localeCompare(a.name));
+    }
 
-        <FiltersStyled>
-            <div>
-                <FilterInputStyled placeholder={'Search by name'} onChange={(event) => setFilter(event.target.value)} />
-                Sort
-                <SelectInputStyled errors={false} width={'125px'} onChange={(event) => setSort(event.target.value)}>
-                    {sortOrder.map(option => (<option value={option.key} key={option.key}>{option.value}</option>))}
-                </SelectInputStyled>
-            </div>
+    return filteredList;
+  }
 
-            <div>
-                Show parameter info
-                <CollapseCheckboxStyled onClick={() => setShowProperties((state) => !state)} checked={showProperties}>
-                    <Icon icon="ri-check-fill" />
-                </CollapseCheckboxStyled>
-            </div>
-        </FiltersStyled>
+  return (<div>
 
-        <AvatarParametersStyled ref={parent}>
-            {filteredParameters().map(parameter => (<AvatarParameter avatarId={avatarId} parameter={parameter} avatarsDispatch={avatarsDispatch}
-                                                                     forceShowProperties={showProperties} key={parameter.name} />))}
-        </AvatarParametersStyled>
-    </div>);
+    <FiltersStyled>
+      <div>
+        <FilterInputStyled placeholder={'Search by name'} onChange={(event) => setFilter(event.target.value)} />
+        Sort
+        <SelectInputStyled errors={false} width={'125px'} onChange={(event) => setSort(event.target.value)}>
+          {sortOrder.map(option => (<option value={option.key} key={option.key}>{option.value}</option>))}
+        </SelectInputStyled>
+      </div>
+
+      <div>
+        Show parameter info
+        <CollapseCheckboxStyled onClick={() => setShowProperties((state) => !state)} checked={showProperties}>
+          <Icon icon="ri-check-fill" />
+        </CollapseCheckboxStyled>
+      </div>
+    </FiltersStyled>
+
+    <AvatarParametersStyled ref={parent}>
+      {filteredParameters().map(parameter => (<AvatarParameter avatarId={avatarId} parameter={parameter} avatarsDispatch={avatarsDispatch}
+                                                               forceShowProperties={showProperties} key={parameter.name} />))}
+    </AvatarParametersStyled>
+  </div>);
 }
 
 const FiltersStyled = styled.div`

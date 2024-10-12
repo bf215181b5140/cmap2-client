@@ -4,19 +4,19 @@ import { IS_DEV } from '../../../../shared/const';
 
 export default function AppMenu() {
 
-    // const { updateStatusColor } = useUpdateStatus();
+  // const { updateStatusColor } = useUpdateStatus();
 
-    return (<AppMenuStyled>
-        <AppMenuLink to="/" icon="ri-rocket-2-fill" tooltip={'Launch pad'} />
-        <AppMenuLink to="/osc" icon="ri-gamepad-line" tooltip={'VRChat and OSC'} />
-        <AppMenuLink to="/website" icon="ri-global-line" tooltip={'Website'} />
-        <AppMenuLink to="/lovense" icon="ri-wireless-charging-fill" tooltip={'Lovense'} />
-        {/* <NavBarLink to="/updater" icon="ri-download-2-fill" tooltip={'Updates'} attentionIcon={!!updateStatusColor} attentionColor={updateStatusColor} /> */}
-        <AppMenuLink to="/notifications" icon="ri-discuss-line" tooltip={'Notifications'} />
-        <AppMenuLink to="/guide" icon="ri-questionnaire-fill" tooltip={'Quick start'} />
-        <AppMenuLink to="/settings" icon="ri-settings-3-fill" tooltip={'Settings'} />
-        {IS_DEV && <AppMenuLink to="/testing" icon="ri-flask-line" tooltip={'Testing page'} />}
-    </AppMenuStyled>);
+  return (<AppMenuStyled>
+    <AppMenuLink to="/" icon="ri-rocket-2-fill" tooltip={'Launch pad'} />
+    <AppMenuLink to="/osc" icon="ri-gamepad-line" tooltip={'VRChat and OSC'} />
+    <AppMenuLink to="/website" icon="ri-global-line" tooltip={'Website'} />
+    <AppMenuLink to="/lovense" icon="ri-wireless-charging-fill" tooltip={'Lovense'} />
+    {/* <NavBarLink to="/updater" icon="ri-download-2-fill" tooltip={'Updates'} attentionIcon={!!updateStatusColor} attentionColor={updateStatusColor} /> */}
+    <AppMenuLink to="/notifications" icon="ri-discuss-line" tooltip={'Notifications'} />
+    <AppMenuLink to="/guide" icon="ri-questionnaire-fill" tooltip={'Quick start'} />
+    <AppMenuLink to="/settings" icon="ri-settings-3-fill" tooltip={'Settings'} />
+    {IS_DEV && <AppMenuLink to="/testing" icon="ri-flask-line" tooltip={'Testing page'} />}
+  </AppMenuStyled>);
 }
 
 const AppMenuStyled = styled.nav`

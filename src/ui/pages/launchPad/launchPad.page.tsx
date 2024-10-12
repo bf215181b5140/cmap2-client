@@ -6,15 +6,15 @@ import WebsiteConnection from './components/websiteConnection.component';
 
 export default function LaunchPadPage() {
 
-    return (<Page flexDirection="column">
-        <Segment>
-            <LaunchPadStyled>
-                <VrcConnection />
-                <WebsiteConnection />
-                {/* <LovenseConnection /> */}
-            </LaunchPadStyled>
-        </Segment>
-    </Page>);
+  return (<Page flexDirection="column">
+    <Segment>
+      <LaunchPadStyled>
+        <VrcConnection />
+        <WebsiteConnection />
+        {/* <LovenseConnection /> */}
+      </LaunchPadStyled>
+    </Segment>
+  </Page>);
 }
 
 const LaunchPadStyled = styled.div`

@@ -2,17 +2,17 @@ import styled, { css } from 'styled-components';
 import { ReactProps } from '../../../types';
 
 interface PageMenuLinkProps extends ReactProps {
-    onClick: () => void;
-    isActive: boolean;
-    disabled?: boolean;
-    className?: string;
+  onClick: () => void;
+  isActive: boolean;
+  disabled?: boolean;
+  className?: string;
 }
 
 export default function PageMenuLink({ onClick, isActive, disabled = false, className, children }: PageMenuLinkProps) {
 
-    return (<PageMenuLinkStyled isActive={isActive} onClick={onClick} disabled={disabled} className={className}>
-        {children}
-    </PageMenuLinkStyled>);
+  return (<PageMenuLinkStyled isActive={isActive} onClick={onClick} disabled={disabled} className={className}>
+    {children}
+  </PageMenuLinkStyled>);
 }
 
 const highlight = css`
