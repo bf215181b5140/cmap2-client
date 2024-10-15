@@ -111,6 +111,10 @@ const AppStyled = styled.div`
         legend {
             padding: 0 10px;
         }
+      
+      :disabled {
+        filter: saturate(0%);
+      }
     }
 
 `;

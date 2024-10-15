@@ -15,9 +15,10 @@ import AddCounter from '../../../../../components/addCounter/addCounter.componen
 interface LayoutSettingsProps {
   layout: LayoutDTO;
   tier: TierDTO;
+  title?: string;
 }
 
-export default function LayoutSettings({ layout, tier }: LayoutSettingsProps) {
+export default function LayoutSettings({ layout, tier, title }: LayoutSettingsProps) {
 
   const { POST, PUT } = useCmapFetch();
   const { register, control, setValue, handleSubmit, watch, reset, formState: { errors, isDirty } } = useForm<LayoutFormDTO>({
@@ -40,7 +41,7 @@ export default function LayoutSettings({ layout, tier }: LayoutSettingsProps) {
     }
   }
 
-  return (<Segment segmentTitle={'Settings'}>
+  return (<Segment segmentTitle={title || 'Basic info'}>
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormTable>
         <tr>
@@ -71,13 +72,13 @@ export default function LayoutSettings({ layout, tier }: LayoutSettingsProps) {
           </tr>
         </FormTable>
       </fieldset>
-      <fieldset>
+      <fieldset disabled={!tier.health}>
         <legend>Health system</legend>
         <p>When using an avatar that isn't set on any layout you can display a specific default layout.</p>
         <FormTable>
           <tr>
             <th>Enabled</th>
-            <td><CheckboxInput register={register} name={'healthEnabled'} errors={errors} /></td>
+            <td><CheckboxInput register={register} name={'healthEnabled'} readOnly={!tier.health} errors={errors} /></td>
           </tr>
           <tr>
             <th>Parameter</th>
@@ -89,13 +90,13 @@ export default function LayoutSettings({ layout, tier }: LayoutSettingsProps) {
           </tr>
         </FormTable>
       </fieldset>
-      <fieldset>
+      <fieldset disabled={!tier.useCost}>
         <legend>Use cost system</legend>
         <p>When using an avatar that isn't set on any layout you can display a specific default layout.</p>
         <FormTable>
           <tr>
             <th>Enabled</th>
-            <td><CheckboxInput register={register} name={'useCostEnabled'} errors={errors} /></td>
+            <td><CheckboxInput register={register} name={'useCostEnabled'} readOnly={!tier.useCost} errors={errors} /></td>
           </tr>
           <tr>
             <th>Parameter</th>

@@ -1,30 +1,29 @@
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { LayoutDTO, LayoutsPageDTO, LayoutsPageSchema } from 'cmap2-shared';
-import { Page, PAGE_ELEMENT_GAP } from '../../../components/page/page.component';
-import LayoutSettings from './layout/settings/settings.component';
-import PageMenuLink from '../../../components/menu/pageMenu/pageMenuLink.component';
+import { Page } from '../../../components/page/page.component';
 import Segment from '../../../components/segment/segment.component';
-import { PageMenuSelect } from '../../../components/menu/pageMenu/pageMenuSelect.component';
-import { QuickEditItem } from './quickEditToolbar/quickEditToolbar.model';
-import QuickEditToolbar from './quickEditToolbar/quickEditToolbar.component';
-import TextButton from '../../../components/buttons/textButton.component';
+import LayoutBreadcrumbs from './breadcrumbs/layoutBreadcrumbs.component';
+import LayoutSection from './layout/layout.section';
 import styled from 'styled-components';
-
-type LayoutSections = 'settings' | 'parameterBadges' | 'controlParameters' | 'preview' | 'button';
+import LayoutSettings from './layout/settings/settings.component';
 
 export default function LayoutsPage() {
 
   // hooks
   const { GET } = useCmapFetch();
   const { layoutId, groupId, buttonId } = useParams();
+  const navigate = useNavigate();
 
   // data
   const [client, setClient] = useState<LayoutsPageDTO | undefined>();
-  const layout = client?.layouts?.find(l => l.id === layoutId) || client?.layouts[0];
+  const [addingLayout, setAddingLayout] = useState<boolean>(false);
+
+  const layout = client?.layouts?.find(l => l.id === layoutId);
   const group = layout?.groups?.find(g => g.id === groupId);
   const button = group?.buttons?.find(b => b.id === buttonId);
+  const section = button ? 'button' : group ? 'group' : layout ? 'layout' : 'layouts';
 
   const newLayout: LayoutDTO = {
     id: '',
@@ -38,88 +37,114 @@ export default function LayoutsPage() {
     useCostPath: null
   };
 
-  // section
-  const [section, setSection] = useState<LayoutSections>('settings');
-  const pageFlexDirection = section === 'button' ? 'row' : 'column';
-
-  const [quickEditItem, setQuickEditItem] = useState<QuickEditItem | undefined>();
-
   useEffect(() => {
     GET('layouts', LayoutsPageSchema, (data) => setClient(data));
   }, []);
 
   if (!client) return;
 
-  return (<Page flexDirection={pageFlexDirection}>
+  const canAddLayout = client?.layouts.length < client?.tier.layouts;
+  if (!canAddLayout && addingLayout) setAddingLayout(false);
 
-    <Menu>
-      <div>
-        <PageMenuSelect>
-          {client.layouts.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
-        </PageMenuSelect>
+  return (<Page flexDirection={'column'}>
 
-        <hr />
-
-        <PageMenuLink onClick={() => setSection('settings')} isActive={section === 'settings'}>Settings</PageMenuLink>
-        <PageMenuLink onClick={() => setSection('parameterBadges')} isActive={section === 'parameterBadges'}>Parameter badges</PageMenuLink>
-        <PageMenuLink onClick={() => setSection('controlParameters')} isActive={section === 'controlParameters'}>Control parameters</PageMenuLink>
-        <PageMenuLink onClick={() => setSection('preview')} isActive={section === 'preview'}>Preview</PageMenuLink>
-      </div>
-    </Menu>
-
-    {section === 'settings' && <LayoutSettings tier={client?.tier} layout={layout || newLayout} />}
-
-    {section === 'parameterBadges' && <>
-      <Segment segmentTitle={'Parameter badges'}></Segment>
-    </>}
-
-    {section === 'controlParameters' && <>
-      <Segment segmentTitle={'Control parameters'}></Segment>
-    </>}
+    <LayoutBreadcrumbs layout={layout} group={group} button={button} />
 
     {section === 'button' && <>
       <Segment segmentTitle={'Preview'} width={'Third'}></Segment>
       <Segment segmentTitle={'Edit'} width={'Half'}></Segment>
     </>}
 
-    {section === 'preview' && <>
-      <Segment segmentTitle={'Preview'}>
-        <TextButton text={'Item 1'} onClick={() => setQuickEditItem(state => state?.groupId === 'item1' ? undefined : { groupId: 'item1' })} />
-        <TextButton text={'Item 2'} onClick={() => setQuickEditItem(state => state?.groupId === 'item2' ? undefined : { groupId: 'item2' })} />
-        <TextButton text={'Item 3'} onClick={() => setQuickEditItem(state => state?.groupId === 'item3' ? undefined : { groupId: 'item3' })} />
+    {section === 'group' && <>
+      <Segment segmentTitle={'Group'}></Segment>
+    </>}
 
-        {quickEditItem && <>
-          <QuickEditToolbar client={client} item={quickEditItem} />
-        </>}
-      </Segment>
+    {section === 'layout' && layout && <LayoutSection layout={layout} client={client} />}
+
+    {section === 'button' && <>
+      <Segment segmentTitle={'Preview'} width={'Third'}></Segment>
+      <Segment segmentTitle={'Edit'} width={'Half'}></Segment>
+    </>}
+
+    {section === 'layouts' && <>
+      <LayoutPicker>
+
+        {client.layouts?.map(l => <div key={l.id} onClick={() => navigate('/website/layouts/' + l.id)}>
+          <h2>{l.label}</h2>
+          <div>{l.avatars.length} avatars</div>
+          <div>{l.groups?.length || 0} groups</div>
+          <div>{l.groups?.reduce((sum, g) => sum += (g.buttons?.length || 0), 0) || 0} buttons</div>
+        </div>)}
+
+        <div className={'addNew' + (addingLayout ? ' active' : '') + (!canAddLayout ? ' limitReached' : '')} onClick={() => setAddingLayout(!addingLayout)}>
+          <i className={'ri-function-add-fill'} />
+          <div>{client.layouts.length}/{client.tier.layouts}</div>
+          <h2>{canAddLayout ? 'Add layout' : 'Limit reached'}</h2>
+        </div>
+
+      </LayoutPicker>
+      {addingLayout && <LayoutSettings layout={newLayout} tier={client.tier} title={'Adding new layout'} />}
     </>}
 
   </Page>);
 }
 
-const Menu = styled.div<{ noMarginTop?: boolean }>`
-  width: 100%;
-  background-color: ${props => props.theme.colors.ui.background3};
-  border-radius: 0 0 8px 8px;
-  padding: 10px;
+const LayoutPicker = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
   flex-wrap: wrap;
-  align-items: center;
-  margin-top: -${PAGE_ELEMENT_GAP};
+  gap: 20px;
+  justify-content: center;
+  padding: 0 20px;
 
   > div {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
+    width: 250px;
+    min-height: 160px;
+    background-color: ${props => props.theme.colors.ui.background3};
+    border: 2px solid ${props => props.theme.colors.buttons.primary.border};
+    transition: 0.1s linear;
+    padding: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
 
-    hr {
-      border: 1px solid ${props => props.theme.colors.submenu.bg};
-      height: 30px;
+    h2 {
+      margin-top: 0;
+      color: ${props => props.theme.colors.font.h3};
+    }
+
+    > div {
+      margin: 5px;
+    }
+
+    :hover, &.active {
+      border-color: ${props => props.theme.colors.buttons.primary.hoverBorder};
+      transform: scale(1.05);
+    }
+
+    &.addNew {
+      background: none;
+      border-style: dashed;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      i {
+        color: ${props => props.theme.colors.buttons.secondary.hoverBg};
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 50px;
+      }
+    }
+
+    &.limitReached {
+      border-color: ${props => props.theme.colors.error};
+      color: ${props => props.theme.colors.error};
+      pointer-events: none;
     }
   }
 `;
+
 

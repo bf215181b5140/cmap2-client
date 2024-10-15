@@ -46,6 +46,7 @@ export const theme = {
       text: '#b8b9b9',
       textBright: '#f1f2f2',
       textActive: '#4aaec2',
+      textInactive: '#616161',
       h1: '#6ae3f9',
       h2: '#387c86',
       h3: '#4f777f',
