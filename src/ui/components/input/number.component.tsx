@@ -4,7 +4,7 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { ReactProps } from '../../types';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
-import { globalInputStyle } from '../../style/input.style';
+import { globalInputStyle } from './input.style';
 
 interface NumberInputProps extends ReactProps {
   name: string;

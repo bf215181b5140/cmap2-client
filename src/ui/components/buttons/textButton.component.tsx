@@ -1,6 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 import styled from 'styled-components';
-import { globalInputStyle } from '../../style/input.style';
+import { globalInputStyle } from '../input/input.style';
 import { ReactProps } from '../../types';
 
 interface TextButtonProps extends ReactProps {

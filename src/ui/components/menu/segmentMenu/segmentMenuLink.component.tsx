@@ -22,22 +22,22 @@ const SegmentMenuLinkStyled = styled.div`
     text-align: center;
     align-content: center;
     cursor: pointer;
-    color: ${props => props.theme.colors.submenu.icon};
-    border-bottom: 2px solid ${props => props.theme.colors.submenu.icon};
+    color: ${props => props.theme.colors.segmentMenu.color};
+    border-bottom: 2px solid ${props => props.theme.colors.segmentMenu.color};
     
     i {
         margin-right: 5px;
     }
 
     :hover, &[data-active='true'] {
-        color: ${props => props.theme.colors.submenu.hoverIcon};
-        border-color: ${props => props.theme.colors.submenu.hoverIcon};
+        color: ${props => props.theme.colors.segmentMenu.active};
+        border-color: ${props => props.theme.colors.segmentMenu.active};
     }
 
     &[data-disabled='true'] {
         pointer-events: none;
-        color: ${props => props.theme.colors.input.textDisabled};
-        border-color: ${props => props.theme.colors.input.textDisabled};
+        color: ${props => props.theme.colors.segmentMenu.disabled};
+        border-color: ${props => props.theme.colors.segmentMenu.disabled};
         filter: saturate(0%);
     }
 `;

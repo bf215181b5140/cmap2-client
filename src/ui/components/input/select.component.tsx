@@ -2,7 +2,7 @@ import React from 'react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
-import { SelectInputStyled } from '../../style/input.style';
+import { SelectInputStyled } from './input.style';
 import { ReactProps } from '../../types';
 import { KeyValueDTO } from 'cmap2-shared';
 

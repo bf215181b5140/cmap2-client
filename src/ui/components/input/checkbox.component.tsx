@@ -4,7 +4,7 @@ import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import Icon from '../icon/icon.component';
 import InputErrorMessage from './inputErrorMessage.component';
-import { globalInputStyle } from '../../style/input.style';
+import { globalInputStyle } from './input.style';
 import { ReactProps } from '../../types';
 
 interface CheckboxInputProps extends ReactProps {

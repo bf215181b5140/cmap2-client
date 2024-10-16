@@ -1,7 +1,7 @@
 import Segment from '../../../../components/segment/segment.component';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
 import { GeneratedInviteKeyDTO, GeneratedInviteKeySchema, TierDTO } from 'cmap2-shared';
-import { SelectInputStyled } from '../../../../style/input.style';
+import { SelectInputStyled } from '../../../../components/input/input.style';
 import React, { useContext, useState } from 'react';
 import IconButton from '../../../../components/buttons/iconButton.component';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';

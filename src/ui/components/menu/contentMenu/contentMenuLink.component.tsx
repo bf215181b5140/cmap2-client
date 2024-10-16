@@ -25,11 +25,11 @@ export default function ContentMenuLink({ to, icon, disabled = false, tooltip, a
 }
 
 const highlight = css`
-    background-color: ${props => props.theme.colors.submenu.hoverBg};
-    border-color: ${props => props.theme.colors.submenu.hoverBorder};
+    background-color: ${props => props.theme.colors.contentMenu.hoverBg};
+    border-color: ${props => props.theme.colors.contentMenu.hoverBorder};
 
     i {
-        color: ${props => props.theme.colors.submenu.hoverIcon};
+        color: ${props => props.theme.colors.contentMenu.hoverIcon};
     }
 `;
 
@@ -38,8 +38,8 @@ const ContentMenuLinkStyled = styled(Link)<{ $isActive: boolean, disabled: boole
     flex-direction: row;
     gap: 8px;
     align-items: center;
-    background-color: ${props => props.theme.colors.submenu.bg};
-    border: 2px solid ${props => props.theme.colors.submenu.border};
+    background-color: ${props => props.theme.colors.contentMenu.bg};
+    border: 2px solid ${props => props.theme.colors.contentMenu.border};
     transition: 0.1s linear;
     text-decoration: none;
     padding: 8px 12px;
@@ -49,7 +49,7 @@ const ContentMenuLinkStyled = styled(Link)<{ $isActive: boolean, disabled: boole
     i {
         font-size: 24px;
         display: block;
-        color: ${props => props.theme.colors.submenu.icon};
+        color: ${props => props.theme.colors.contentMenu.icon};
     }
 
     .tooltip {

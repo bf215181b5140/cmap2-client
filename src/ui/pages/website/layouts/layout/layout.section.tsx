@@ -55,7 +55,7 @@ const Menu = styled.div<{ noMarginTop?: boolean }>`
     align-items: center;
 
     hr {
-      border: 1px solid ${props => props.theme.colors.submenu.bg};
+      border: 1px solid ${props => props.theme.colors.ui.background5};
       height: 30px;
     }
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
-import { globalInputStyle } from '../../style/input.style';
+import { globalInputStyle } from './input.style';
 import InputErrorMessage from './inputErrorMessage.component';
 import useInputError from '../../hooks/inputError.hook';
 import { ReactProps } from '../../types';

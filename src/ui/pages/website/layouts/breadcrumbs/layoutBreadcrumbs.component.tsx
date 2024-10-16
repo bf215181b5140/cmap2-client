@@ -42,7 +42,7 @@ const LayoutBreadcrumbsStyled = styled.div`
   margin-top: -20px;
   border-radius: 0 0 8px 8px;
   padding: 0 25px;
-  background-color: ${props => props.theme.colors.ui.background3};
+  background-color: ${props => props.theme.colors.segment.bg};
   display: flex;
   flex-direction: row;
   gap: 20px;

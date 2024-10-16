@@ -23,7 +23,7 @@ const PageMenu = styled.div<{ noMarginTop?: boolean }>`
 }};
 
     hr {
-        border: 1px solid ${props => props.theme.colors.submenu.bg} !important;
+        border: 1px solid ${props => props.theme.colors.ui.background5} !important;
         margin: 0 5px;
         padding: 0;
         height: 70%;

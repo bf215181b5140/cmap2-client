@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ReactProps } from 'cmap2-shared';
+import { ReactProps } from '../../../types';
 
 export default function ContentMenu({ children }: ReactProps) {
 
@@ -9,7 +9,7 @@ export default function ContentMenu({ children }: ReactProps) {
 }
 
 const ContentMenuStyled = styled.div`
-    background: ${props => props.theme.colors.ui.background3};
+    background: ${props => props.theme.colors.segment.bg};
     position: sticky;
     top: 0;
     bottom: 0;
@@ -20,7 +20,7 @@ const ContentMenuStyled = styled.div`
     z-index: 10;
 
     hr {
-        border: 1px solid ${props => props.theme.colors.submenu.bg} !important;
+        border: 1px solid ${props => props.theme.colors.contentMenu.bg} !important;
         margin: 3px 5px !important;
         padding: 0 !important;
     }

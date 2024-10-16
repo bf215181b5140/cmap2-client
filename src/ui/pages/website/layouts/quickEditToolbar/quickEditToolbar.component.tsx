@@ -45,7 +45,7 @@ const QuickEditToolbarStyled = styled.div`
     align-items: center;
   
     hr {
-      border: 1px solid ${props => props.theme.colors.submenu.bg};
+      border: 1px solid ${props => props.theme.colors.ui.background5};
       margin: 0;
       height: 30px;
     }

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { globalInputStyle } from '../../../style/input.style';
+import { globalInputStyle } from '../../input/input.style';
 
 export const PageMenuSelect = styled.select`
   ${globalInputStyle};

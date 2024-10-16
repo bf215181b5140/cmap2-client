@@ -32,8 +32,7 @@ export const theme = {
       activeBg: '#10888d',
       activeIcon: '#6ce6fc',
     },
-    submenu: {
-      submenuBg: '#1c222a',
+    contentMenu: {
       bg: '#23303c',
       border: '#23303c',
       icon: '#166472',
@@ -41,6 +40,28 @@ export const theme = {
       hoverBorder: '#4aaec2',
       hoverIcon: '#4aaec2',
     },
+
+    pageMenu: {
+
+    },
+    sectionMenu: {
+      bg: '#23303c',
+      border: '#23303c',
+      hoverBg: '#374451',
+      hoverBorder: '#4aaec2',
+    },
+    segmentMenu: {
+      color: '#166472',
+      active: '#4aaec2',
+      disabled: '#616161',
+    },
+    page: {
+
+    },
+    segment: {
+      bg: '#1c222a',
+    },
+
     font: {
       icon: '#2bacc2',
       text: '#b8b9b9',

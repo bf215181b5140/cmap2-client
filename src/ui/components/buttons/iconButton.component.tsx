@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import React, { useContext } from 'react';
-import { globalInputStyle } from '../../style/input.style';
+import { globalInputStyle } from '../input/input.style';
 import { ModalContext } from '../context/modal.context';
 
 type IconButtonSize = 'normal' | 'small' | 'tiny';

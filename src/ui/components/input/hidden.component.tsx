@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
-import { globalInputStyle } from '../../style/input.style';
+import { globalInputStyle } from './input.style';
 import { ReactProps } from '../../types';
 
 interface HiddenInputProps extends ReactProps {

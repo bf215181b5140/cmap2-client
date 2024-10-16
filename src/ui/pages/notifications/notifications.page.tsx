@@ -6,7 +6,7 @@ import IconButton from '../../components/buttons/iconButton.component';
 import styled from 'styled-components';
 import SegmentTable from '../../components/segment/segmentTable.component';
 import { useNotifications } from '../../hooks/useNotifications.hook';
-import { InputStyled, SelectInputStyled } from '../../style/input.style';
+import { InputStyled, SelectInputStyled } from '../../components/input/input.style';
 import { NotificationType, NotificationTypeSchema } from 'cmap2-shared';
 
 export default function NotificationsPage() {

@@ -4,7 +4,7 @@ import AvatarParameter from './avatarParameter.component';
 import { VrcOscAvatarsReducerAction } from '../avatars.reducer';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { VrcOscAvatarParameter } from '../../../../../shared/objects/vrcOscAvatar';
-import { globalInputStyle, SelectInputStyled } from '../../../../style/input.style';
+import { globalInputStyle, SelectInputStyled } from '../../../../components/input/input.style';
 import Icon from '../../../../components/icon/icon.component';
 
 interface AvatarParametersProps {
