@@ -17,8 +17,10 @@ import { SelectInputStyled } from '../../components/input/input.style';
 export default function TestingPage() {
 
   const { addNotification } = useNotifications();
-  const [groups, setGroups] = useState<GroupWidth[]>(['None', 'None', 'None', 'None', 'Third', 'None', 'Half', 'Half', 'Third', 'Third', 'Third', 'Third', 'Half', 'Full']);
-  const [buttons, setButtons] = useState<string[]>(['150px', '200px', '300px', '150px', '200px', '300px', '150px', '200px', '300px', '150px', '200px', '300px']);
+  const [groups, setGroups] = useState<GroupWidth[]>(['None', 'None', 'None', 'None', 'Third', 'None', 'Half', 'Half', 'Third', 'Third', 'Third', 'Third',
+                                                      'Half', 'Full']);
+  const [buttons, setButtons] = useState<string[]>(['150px', '200px', '300px', '150px', '200px', '300px', '150px', '200px', '300px', '150px', '200px',
+                                                    '300px']);
 
   return (<Page flexDirection={'column'}>
 
@@ -47,34 +49,63 @@ export default function TestingPage() {
     </SectionMenu>
 
     <Segment segmentTitle={'Testing segment 2'}>
-    </Segment>
-    <Segment segmentTitle={'Testing segment 3'}>
+      <TestDivBg></TestDivBg>
+      <TestDivBorder></TestDivBorder>
+      <TestDivBgBorder></TestDivBgBorder>
     </Segment>
 
-  {/*   <Layout> */}
-  {/*   {groups.map((group, gi) => <LayoutGroup key={gi} width={group}> */}
-  {/*     <h2 className={'layoutGroupLabel'}>Group {group + ' ' + gi}</h2> */}
-  {/*     <div className={'layoutButtonWrapper'}> */}
-  {/*       {Array.from({ length: Math.floor(Math.random() * 10) + 4 }, () => '').map((button, bi) => */}
-  {/*         <LayoutButton key={gi + '' + bi} height={Math.floor((Math.random() * 250) + 50) + 'px'}> */}
-  {/*           <ParameterButton></ParameterButton> */}
-  {/*         </LayoutButton> */}
-  {/*       )} */}
-  {/*     </div> */}
-  {/*   </LayoutGroup>)} */}
-  {/* </Layout> */}
+    <TestDivBg></TestDivBg>
+    <TestDivBorder></TestDivBorder>
+    <TestDivBgBorder></TestDivBgBorder>
+
+    <Segment segmentTitle={'Testing segment 3'}>
+      <TestDivBg></TestDivBg>
+      <TestDivBorder></TestDivBorder>
+      <TestDivBgBorder></TestDivBgBorder>
+    </Segment>
+
+
+    {/*   <Layout> */}
+    {/*   {groups.map((group, gi) => <LayoutGroup key={gi} width={group}> */}
+    {/*     <h2 className={'layoutGroupLabel'}>Group {group + ' ' + gi}</h2> */}
+    {/*     <div className={'layoutButtonWrapper'}> */}
+    {/*       {Array.from({ length: Math.floor(Math.random() * 10) + 4 }, () => '').map((button, bi) => */}
+    {/*         <LayoutButton key={gi + '' + bi} height={Math.floor((Math.random() * 250) + 50) + 'px'}> */}
+    {/*           <ParameterButton></ParameterButton> */}
+    {/*         </LayoutButton> */}
+    {/*       )} */}
+    {/*     </div> */}
+    {/*   </LayoutGroup>)} */}
+    {/* </Layout> */}
   </Page>);
 }
 
-
-
-
 const ParameterButton = styled.div`
-  width: 100%;
-  height: 100%;
-  background-image: url('https://changemyavatarparams.com/files/sawks/4526cd-kxJHDe.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  border: 1px solid red;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://changemyavatarparams.com/files/sawks/4526cd-kxJHDe.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid red;
+`;
+
+const TestDiv = styled.div`
+    display: inline-block;
+    width: 250px;
+    height: 250px;
+    margin: 10px;
+`;
+
+const TestDivBorder = styled(TestDiv)`
+    border: 2px solid ${props => props.theme.colors.ui.element2};
+`;
+
+const TestDivBg = styled(TestDiv)`
+    background: ${props => props.theme.colors.ui.element2};
+`;
+
+const TestDivBgBorder = styled(TestDiv)`
+    background: ${props => props.theme.colors.ui.element2};
+    border: 2px solid ${props => props.theme.colors.ui.element1};
 `;

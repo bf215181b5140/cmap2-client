@@ -22,6 +22,17 @@ export const theme = {
       element3: '#163136',
       element4: '#347380',
       element5: '#3f8e9e',
+
+      // new testing
+
+      highlight1: '#6ae3f9',
+      highlight2: '#4aaec2',
+      highlight3: '#2bacc2',
+      highlight4: '#387c86',
+      highlight5: '#387c86',
+      highlight6: '#4f777f',
+
+      // new testing
     },
     titleBar: {
       bg: '#15191dEE',
