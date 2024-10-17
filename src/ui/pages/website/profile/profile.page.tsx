@@ -11,6 +11,7 @@ import InteractionKeys from './interactionKeys/interactionKeys.component';
 import BackgroundPicker from './background/backgroundPicker.component';
 import StylePicker from './style/stylePicker.component';
 import ProfilePreview from './components/profilePreview.component';
+import SectionMenu from '../../../components/menu/sectionMenu/sectionMenu.component';
 
 type ProfilePageSections = 'basicInfo' | 'interactionKeys' | 'background' | 'style';
 
@@ -24,17 +25,17 @@ export default function ProfilePage() {
 
   return (<Page flexDirection={pageFlexDirection}>
 
-    <ProfilePageMenu noMarginTop={true}>
+    <SectionMenu>
       <div>
-        <PageMenuLink onClick={() => setSection('basicInfo')} isActive={section === 'basicInfo'}>Basic info</PageMenuLink>
-        <PageMenuLink onClick={() => setSection('interactionKeys')} isActive={section === 'interactionKeys'}>Interaction keys</PageMenuLink>
-        <PageMenuLink onClick={() => setSection('background')} isActive={section === 'background'}>Background</PageMenuLink>
-        <PageMenuLink onClick={() => setSection('style')} isActive={section === 'style'}>Style</PageMenuLink>
+        <div className={'SectionMenuLink'} onClick={() => setSection('basicInfo')} aria-current={section === 'basicInfo'}>Basic info</div>
+        <div className={'SectionMenuLink'} onClick={() => setSection('interactionKeys')} aria-current={section === 'interactionKeys'}>Interaction keys</div>
+        <div className={'SectionMenuLink'} onClick={() => setSection('background')} aria-current={section === 'background'}>Background</div>
+        <div className={'SectionMenuLink'} onClick={() => setSection('style')} aria-current={section === 'style'}>Style</div>
       </div>
       <div>
         <a id={'viewOnWebsiteLink'} href={WEBSITE_URL + '/' + profile.username} target={'_blank'}>View profile on website <i className={'ri-external-link-line'} /></a>
       </div>
-    </ProfilePageMenu>
+    </SectionMenu>
 
     {section === 'basicInfo' && <>
       <ProfileOverview profile={profile} setImage={setImage} />

@@ -6,6 +6,8 @@ import PageMenu from '../../../../../components/menu/pageMenu/pageMenu.component
 import React from 'react';
 import styled from 'styled-components';
 import { VrcOscAvatarsReducerAction } from '../../avatars.reducer';
+import SectionMenu from '../../../../../components/menu/sectionMenu/sectionMenu.component';
+import { SelectInputStyled } from '../../../../../components/input/input.style';
 
 interface AvatarsMenuProps {
   avatars: VrcOscAvatar[];
@@ -23,14 +25,16 @@ export default function AvatarMenu({ avatars, activeAvatar, avatarsDispatch }: A
     navigate('/osc/avatars/');
   }
 
-  return (<PageMenu>
-    <PageMenuSelect onChange={(event) => navigate('/osc/avatars/' + event.target.value)} value={activeAvatar?.id}>
-      {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
-    </PageMenuSelect>
-    <PageMenuLeftBar>
+  return (<SectionMenu>
+    <div>
+      <SelectInputStyled className={'SectionMenuLink'} onChange={(event) => navigate('/osc/avatars/' + event.target.value)} value={activeAvatar?.id}>
+        {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
+      </SelectInputStyled>
+    </div>
+    <div>
       <CustomIconButton role={'delete'} size={'small'} deleteKeyword={'avatar "' + activeAvatar?.name + '"'} onClick={deleteAvatar} />
-    </PageMenuLeftBar>
-  </PageMenu>);
+    </div>
+  </SectionMenu>);
 }
 
 const PageMenuLeftBar = styled.div`

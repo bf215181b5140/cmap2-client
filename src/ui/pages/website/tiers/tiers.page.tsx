@@ -7,6 +7,7 @@ import GenerateInviteKey from './generateInviteKey/generateInviteKey.component';
 import UseInviteKey from './useInviteKey/useInviteKey.component';
 import PageMenuLink from '../../../components/menu/pageMenu/pageMenuLink.component';
 import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
+import SectionMenu from '../../../components/menu/sectionMenu/sectionMenu.component';
 
 type TiersPageSections = 'tiers' | 'inviteKeys';
 
@@ -39,10 +40,10 @@ export default function TiersPage() {
 
   return (<Page flexDirection={'column'}>
 
-    <PageMenu noMarginTop={true}>
-      <PageMenuLink onClick={() => setSection('tiers')} isActive={section === 'tiers'}>Tiers</PageMenuLink>
-      <PageMenuLink onClick={() => setSection('inviteKeys')} isActive={section === 'inviteKeys'}>Invite keys</PageMenuLink>
-    </PageMenu>
+    <SectionMenu>
+      <div className={'SectionMenuLink'} onClick={() => setSection('tiers')} aria-current={section === 'tiers'}>Tiers</div>
+      <div className={'SectionMenuLink'} onClick={() => setSection('inviteKeys')} aria-current={section === 'inviteKeys'}>Invite keys</div>
+    </SectionMenu>
 
     {section === 'tiers' && <>
       <Tiers clientTier={clientTier} tiers={tiers} />

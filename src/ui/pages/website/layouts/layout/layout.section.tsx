@@ -5,6 +5,8 @@ import PageMenuLink from '../../../../components/menu/pageMenu/pageMenuLink.comp
 import styled from 'styled-components';
 import { PAGE_ELEMENT_GAP } from '../../../../components/page/page.component';
 import Section from '../../../../components/section/section.component';
+import SectionMenu from '../../../../components/menu/sectionMenu/sectionMenu.component';
+import { SelectInputStyled } from '../../../../components/input/input.style';
 
 interface LayoutProps {
   layout: LayoutDTO;
@@ -18,45 +20,17 @@ export default function LayoutSection({ layout, client }: LayoutProps) {
   const [segment, setSegment] = useState<LayoutSegments>('preview');
 
   return (<Section>
-    <Menu>
+    <SectionMenu>
       <div>
-        <PageMenuSelect>
+        <SelectInputStyled className={'SectionMenuLink'}>
           {client.layouts?.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
-        </PageMenuSelect>
-
+        </SelectInputStyled>
         <hr />
-
-        <PageMenuLink onClick={() => setSegment('preview')} isActive={segment === 'preview'}>Preview</PageMenuLink>
-        <PageMenuLink onClick={() => setSegment('basicInfo')} isActive={segment === 'basicInfo'}>Basic info</PageMenuLink>
-        <PageMenuLink onClick={() => setSegment('parameterBadges')} isActive={segment === 'parameterBadges'}>Parameter badges</PageMenuLink>
-        <PageMenuLink onClick={() => setSegment('controlParameters')} isActive={segment === 'controlParameters'}>Control parameters</PageMenuLink>
+        <div className={'SectionMenuLink'} onClick={() => setSegment('preview')} aria-current={segment === 'preview'}>Preview</div>
+        <div className={'SectionMenuLink'} onClick={() => setSegment('basicInfo')} aria-current={segment === 'basicInfo'}>Basic info</div>
+        <div className={'SectionMenuLink'} onClick={() => setSegment('parameterBadges')} aria-current={segment === 'parameterBadges'}>Parameter badges</div>
+        <div className={'SectionMenuLink'} onClick={() => setSegment('controlParameters')} aria-current={segment === 'controlParameters'}>Control parameters</div>
       </div>
-    </Menu>
+    </SectionMenu>
   </Section>);
 }
-
-const Menu = styled.div<{ noMarginTop?: boolean }>`
-  width: 100%;
-  background-color: ${props => props.theme.colors.ui.background3};
-  border-radius: 0 0 8px 8px;
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-    // margin-top: -${PAGE_ELEMENT_GAP};
-
-  > div {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-
-    hr {
-      border: 1px solid ${props => props.theme.colors.ui.background5};
-      height: 30px;
-    }
-  }
-`;

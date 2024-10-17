@@ -20,6 +20,8 @@ export const theme = {
       element1: '#2b5f69',
       element2: '#1f4147',
       element3: '#163136',
+      element4: '#347380',
+      element5: '#3f8e9e',
     },
     titleBar: {
       bg: '#15191dEE',
