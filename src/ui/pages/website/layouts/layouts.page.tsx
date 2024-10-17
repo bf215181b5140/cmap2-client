@@ -4,16 +4,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { LayoutDTO, LayoutsPageDTO, LayoutsPageSchema } from 'cmap2-shared';
 import { Page } from '../../../components/page/page.component';
 import Segment from '../../../components/segment/segment.component';
-import LayoutBreadcrumbs from './breadcrumbs/layoutBreadcrumbs.component';
 import LayoutSection from './layout/layout.section';
 import styled from 'styled-components';
 import LayoutSettings from './layout/settings/settings.component';
+import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
 
 export default function LayoutsPage() {
 
   // hooks
   const { GET } = useCmapFetch();
   const { layoutId, groupId, buttonId } = useParams();
+  console.log('Layouts page', layoutId)
   const navigate = useNavigate();
 
   // data
@@ -24,6 +25,7 @@ export default function LayoutsPage() {
   const group = layout?.groups?.find(g => g.id === groupId);
   const button = group?.buttons?.find(b => b.id === buttonId);
   const section = button ? 'button' : group ? 'group' : layout ? 'layout' : 'layouts';
+
 
   const newLayout: LayoutDTO = {
     id: '',
@@ -46,9 +48,29 @@ export default function LayoutsPage() {
   const canAddLayout = client?.layouts.length < client?.tier.layouts;
   if (!canAddLayout && addingLayout) setAddingLayout(false);
 
+  function test(id: string) {
+    console.log(`/website/layouts/${id}`)
+    navigate(`/website/layouts/${id}`);
+  }
+
   return (<Page flexDirection={'column'}>
 
-    <LayoutBreadcrumbs layout={layout} group={group} button={button} />
+    <PageMenu>
+      <div onClick={() => navigate('/website/layouts')} aria-current={section === 'layouts'}>Layouts</div>
+      <i className={'ri-arrow-right-s-line'} />
+      <div aria-current={section === 'layout'} aria-disabled={!layout}>
+        {layout?.label || 'Layout'}
+        {client.layouts.length > 0 && <div className={'PageMenuDropdown'}>
+          <ul>
+            {client.layouts.map(l => <li key={l.id} onClick={() => navigate('/website/layouts/' + l.id)}>{l.label}</li>)}
+          </ul>
+        </div>}
+      </div>
+      <i className={'ri-arrow-right-s-line'} />
+      <div onClick={() => navigate(`/website/layouts/${layout?.id}/${group?.id}`)} aria-current={section === 'group'} aria-disabled={!group}>{group?.label || 'Group'}</div>
+      <i className={'ri-arrow-right-s-line'} />
+      <div onClick={() => navigate(`/website/layouts/${layout?.id}/${group?.id}/${button?.id}`)} aria-current={section === 'button'} aria-disabled={!button}>{button?.label || 'Button'}</div>
+    </PageMenu>
 
     {section === 'button' && <>
       <Segment segmentTitle={'Preview'} width={'Third'}></Segment>

@@ -1,18 +1,11 @@
-import { Page, PAGE_ELEMENT_GAP } from '../../components/page/page.component';
+import { Page } from '../../components/page/page.component';
 import React, { useState } from 'react';
 import { useNotifications } from '../../hooks/useNotifications.hook';
 import styled from 'styled-components';
 import { GroupWidth } from 'cmap2-shared';
 import './testing.style.css';
-import Layout from '../../components/preview/layout/layout.component';
-import LayoutGroup from '../../components/preview/group/layoutGroup.component';
-import LayoutButton from '../../components/preview/button/layoutButton.component';
 import Segment from '../../components/segment/segment.component';
-import { Link } from 'react-router-dom';
-import IconButton from '../../components/buttons/iconButton.component';
-import SectionMenu from '../../components/menu/sectionMenu/sectionMenu.component';
-import { PageMenuSelect } from '../../components/menu/pageMenu/pageMenuSelect.component';
-import { SelectInputStyled } from '../../components/input/input.style';
+import PageMenu from '../../components/menu/pageMenu/pageMenu.component';
 
 export default function TestingPage() {
 
@@ -24,31 +17,41 @@ export default function TestingPage() {
 
   return (<Page flexDirection={'column'}>
 
-    <Segment segmentTitle={'Testing segment 1'}>
-    </Segment>
-
-    <SectionMenu>
-      <div>
-        <SelectInputStyled className={'SectionMenuLink'}>
-          {['one', 'two', 'three', 'four', 'five but this one is a lot longer']?.map(l => <option key={l} value={l}>{l}</option>)}
-        </SelectInputStyled>
-
-        <div className={'SectionMenuLink'}>Normal</div>
-        <div className={'SectionMenuLink'}>Another one</div>
-        <div className={'SectionMenuLink'} aria-current={true}>Selected</div>
-        <div className={'SectionMenuLink'} aria-disabled={true}>Disabled</div>
+    <PageMenu>
+      <div aria-current={false} aria-disabled={false}>Layouts</div>
+      <i className={'ri-arrow-right-s-line'} />
+      <div aria-current={true} aria-disabled={false}>
+        Layout
+        <div className={'PageMenuDropdown'}>
+          <ul>
+            <li>Layout 1 :D</li>
+            <li>Layout 2 border</li>
+            <li>Layout 3 background</li>
+            <li>Layout 4 but this one has a lot longer title</li>
+            <li>Layout 5 right</li>
+            <li>Layout 6 Pellentesque</li>
+            <li>Layout 7 tincidunt</li>
+            <li>Layout 8 lacus</li>
+            <li>Layout 9 blandit</li>
+            <li>Layout 9 et tincidunt</li>
+            <li>Layout 9 Vestibulum</li>
+            <li>Layout 9 euismod</li>
+            <li>Layout 9 aliquet</li>
+          </ul>
+        </div>
       </div>
-      {/* <div> */}
-      {/*   Hello this is section menu */}
-      {/* </div> */}
-      {/* <div> */}
-      {/*   <IconButton role={'normal'} size={'small'} /> */}
-      {/*   <hr /> */}
-      {/*   <IconButton role={'delete'} size={'small'} /> */}
-      {/* </div> */}
-    </SectionMenu>
+      <i className={'ri-arrow-right-s-line'} />
+      <div aria-current={false} aria-disabled={false}>Group</div>
+      <i className={'ri-arrow-right-s-line'} />
+      <div aria-current={false} aria-disabled={true}>Button</div>
+    </PageMenu>
+
 
     <Segment segmentTitle={'Testing segment 2'}>
+      <p>Pellentesque at blandit justo. Vestibulum et tincidunt massa. Nunc quis aliquam lacus. Etiam eget aliquet ex, id euismod felis. Nullam sed elit at purus pulvinar mattis vel eu sem. Mauris in
+        fermentum metus, a venenatis leo. Morbi eget nulla nulla. Vestibulum volutpat lorem nec commodo volutpat. Aenean vel quam sed leo lacinia suscipit. Aliquam dignissim sodales felis sit amet
+        laoreet. Quisque non nisi condimentum, egestas libero ac, tristique tortor. Cras ut neque tincidunt, iaculis risus a, lobortis orci. Aliquam dolor nisi, rutrum eu nulla vel, auctor lacinia
+        mauris.</p>
       <TestDivBg></TestDivBg>
       <TestDivBorder></TestDivBorder>
       <TestDivBgBorder></TestDivBgBorder>
@@ -81,31 +84,31 @@ export default function TestingPage() {
 }
 
 const ParameterButton = styled.div`
-    width: 100%;
-    height: 100%;
-    background-image: url('https://changemyavatarparams.com/files/sawks/4526cd-kxJHDe.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    border: 1px solid red;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://changemyavatarparams.com/files/sawks/4526cd-kxJHDe.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid red;
 `;
 
 const TestDiv = styled.div`
-    display: inline-block;
-    width: 250px;
-    height: 250px;
-    margin: 10px;
+  display: inline-block;
+  width: 250px;
+  height: 250px;
+  margin: 10px;
 `;
 
 const TestDivBorder = styled(TestDiv)`
-    border: 2px solid ${props => props.theme.colors.ui.element2};
+  border: 2px solid ${props => props.theme.colors.ui.element2};
 `;
 
 const TestDivBg = styled(TestDiv)`
-    background: ${props => props.theme.colors.ui.element2};
+  background: ${props => props.theme.colors.ui.element2};
 `;
 
 const TestDivBgBorder = styled(TestDiv)`
-    background: ${props => props.theme.colors.ui.element2};
-    border: 2px solid ${props => props.theme.colors.ui.element1};
+  background: ${props => props.theme.colors.ui.element2};
+  border: 2px solid ${props => props.theme.colors.ui.element1};
 `;

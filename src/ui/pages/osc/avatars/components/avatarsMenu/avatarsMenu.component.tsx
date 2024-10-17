@@ -1,8 +1,6 @@
 import { VrcOscAvatar } from '../../../../../../shared/objects/vrcOscAvatar';
 import { useNavigate } from 'react-router-dom';
-import { PageMenuSelect } from '../../../../../components/menu/pageMenu/pageMenuSelect.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';
-import PageMenu from '../../../../../components/menu/pageMenu/pageMenu.component';
 import React from 'react';
 import styled from 'styled-components';
 import { VrcOscAvatarsReducerAction } from '../../avatars.reducer';

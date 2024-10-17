@@ -3,9 +3,6 @@ import useProlfilePage from './profile.hook';
 import { Page } from '../../../components/page/page.component';
 import ProfileOverview from './basicInfo/overview/profileOverview.component';
 import ProfileForm from './basicInfo/form/profileForm.component';
-import PageMenuLink from '../../../components/menu/pageMenu/pageMenuLink.component';
-import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
-import styled from 'styled-components';
 import { WEBSITE_URL } from '../../../../shared/const';
 import InteractionKeys from './interactionKeys/interactionKeys.component';
 import BackgroundPicker from './background/backgroundPicker.component';
@@ -58,39 +55,4 @@ export default function ProfilePage() {
 
   </Page>);
 }
-
-const ProfilePageMenu = styled(PageMenu)`
-    justify-content: space-between;
-
-    div {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-    }
-
-    #viewOnWebsiteLink {
-        display: inline-block;
-        background-color: ${props => props.theme.colors.buttons.info.bg};
-        border: 2px solid ${props => props.theme.colors.buttons.info.bg};
-        transition: 0.1s linear;
-        text-decoration: none;
-        padding: 8px 14px;
-        font-size: 18px;
-        border-radius: 7px;
-        color: ${props => props.theme.colors.font.text};
-        cursor: pointer;
-        font-weight: normal;
-
-        i {
-            font-size: 20px;
-
-        }
-
-        :hover {
-            background-color: ${props => props.theme.colors.buttons.info.hoverBg};
-            border-color: ${props => props.theme.colors.buttons.info.hoverBorder};
-        }
-    }
-`;
-
 

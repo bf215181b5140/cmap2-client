@@ -1,9 +1,5 @@
-import { ClientDTO, LayoutDTO, LayoutsPageDTO } from 'cmap2-shared';
+import { LayoutDTO, LayoutsPageDTO } from 'cmap2-shared';
 import React, { useState } from 'react';
-import { PageMenuSelect } from '../../../../components/menu/pageMenu/pageMenuSelect.component';
-import PageMenuLink from '../../../../components/menu/pageMenu/pageMenuLink.component';
-import styled from 'styled-components';
-import { PAGE_ELEMENT_GAP } from '../../../../components/page/page.component';
 import Section from '../../../../components/section/section.component';
 import SectionMenu from '../../../../components/menu/sectionMenu/sectionMenu.component';
 import { SelectInputStyled } from '../../../../components/input/input.style';
@@ -22,10 +18,6 @@ export default function LayoutSection({ layout, client }: LayoutProps) {
   return (<Section>
     <SectionMenu>
       <div>
-        <SelectInputStyled className={'SectionMenuLink'}>
-          {client.layouts?.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
-        </SelectInputStyled>
-        <hr />
         <div className={'SectionMenuLink'} onClick={() => setSegment('preview')} aria-current={segment === 'preview'}>Preview</div>
         <div className={'SectionMenuLink'} onClick={() => setSegment('basicInfo')} aria-current={segment === 'basicInfo'}>Basic info</div>
         <div className={'SectionMenuLink'} onClick={() => setSegment('parameterBadges')} aria-current={segment === 'parameterBadges'}>Parameter badges</div>
