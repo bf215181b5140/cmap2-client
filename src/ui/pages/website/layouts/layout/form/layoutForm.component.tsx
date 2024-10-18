@@ -1,19 +1,19 @@
 import Segment from '../../../../../components/segment/segment.component';
 import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { LayoutDTO, LayoutFormDTO, LayoutFormSchema, LayoutSchema, TierDTO } from 'cmap2-shared';
+import { LayoutDTO, LayoutFormDTO, LayoutFormSchema, LayoutSchema } from 'cmap2-shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormTable from '../../../../../components/form/formTable.component';
 import Input from '../../../../../components/input/input.component';
 import FormControlBar from '../../../../../components/form/formControlBar.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import CheckboxInput from '../../../../../components/input/checkbox.component';
 import NumberInput from '../../../../../components/input/number.component';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
-import Layout from '../../../../../components/preview/layout/layout.component';
 import { LayoutsPageContext } from '../../layouts.context';
 import { useNavigate } from 'react-router-dom';
+import ParameterInput from '../../../../../components/input/parameterInput/parameterInput.component';
 
 interface LayoutFormProps {
   editLayout: LayoutDTO;
@@ -24,12 +24,16 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
   const { POST, PUT } = useCmapFetch();
   const navigate = useNavigate();
   const { client: { tier }, layoutsDispatch } = useContext(LayoutsPageContext);
-  const { register, control, setValue, handleSubmit, watch, reset, formState: { errors, isDirty } } = useForm<LayoutFormDTO>({
+  const { register, setValue, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm<LayoutFormDTO>({
     resolver: zodResolver(LayoutFormSchema),
     defaultValues: editLayout,
   });
   // @ts-ignore
   const { fields, append, remove } = useFieldArray({ control, name: 'avatars' });
+
+  useEffect(() => {
+    reset(editLayout);
+  }, [editLayout]);
 
   const canAddAvatars = fields.length < tier.avatars;
   const isNew = !editLayout.id;
@@ -37,12 +41,12 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
   function onSubmit(formData: LayoutFormDTO) {
     if (isNew) {
       PUT(`layouts/layout`, formData, LayoutSchema, data => {
-        layoutsDispatch({ type: 'addLayout', layout: data});
+        layoutsDispatch({ type: 'addLayout', layout: data });
         navigate(`layouts/layout/${data.id}`);
       });
     } else {
       POST(`layouts/layout/${editLayout.id}`, formData, undefined, () => {
-        layoutsDispatch({ type: 'editLayout', layout: { id: editLayout.id, ...formData }});
+        layoutsDispatch({ type: 'editLayout', layout: { id: editLayout.id, ...formData } });
         reset(formData);
       });
     }
@@ -58,7 +62,7 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
       </FormTable>
       <fieldset>
         <legend>Avatars</legend>
-        <p>When using an avatar that isn't set on any layout you can display a specific default layout.</p>
+        <p>All the avatars that should display this layout when you use it. Avoid entering the same avatar on multiple layouts.</p>
         <FormTable>
           {fields.map((item, index) => (<tr key={index}>
             {index === 0 && <th rowSpan={fields.length}>Avatar ID</th>}
@@ -89,7 +93,7 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
           </tr>
           <tr>
             <th>Parameter</th>
-            <td><Input register={register} name={'healthPath'} width={'350px'} errors={errors} /></td>
+            <td><ParameterInput register={register} name={'healthPath'} setValue={setValue} defaultType={'output'} width={'350px'} errors={errors}/></td>
           </tr>
           <tr>
             <th>Max health</th>
@@ -107,7 +111,7 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
           </tr>
           <tr>
             <th>Parameter</th>
-            <td><Input register={register} name={'useCostPath'} width={'350px'} errors={errors} /></td>
+            <td><ParameterInput register={register} name={'useCostPath'} setValue={setValue} defaultType={'output'} width={'350px'} errors={errors} /></td>
           </tr>
           <tr>
             <th>Max cost?</th>

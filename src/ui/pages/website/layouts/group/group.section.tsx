@@ -5,11 +5,9 @@ import { LayoutsPageContext } from '../layouts.context';
 
 export default function GroupSection() {
 
-  const { group } = useContext(LayoutsPageContext);
-
-  if(!group) return;
+  const { group, newGroup } = useContext(LayoutsPageContext);
 
   return (<Section>
-    <GroupForm  editGroup={group} />
+    <GroupForm editGroup={group || newGroup} />
   </Section>);
 }

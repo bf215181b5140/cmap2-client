@@ -1,7 +1,7 @@
 import Segment from '../../../../../components/segment/segment.component';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
 import { ControlParameterSchema, ControlParametersFormDTO, ControlParametersFormSchema } from 'cmap2-shared';
 import { LayoutsPageContext } from '../../layouts.context';
@@ -11,6 +11,7 @@ import HiddenInput from '../../../../../components/input/hidden.component';
 import Input from '../../../../../components/input/input.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';
 import FormControlBar from '../../../../../components/form/formControlBar.component';
+import ParameterInput from '../../../../../components/input/parameterInput/parameterInput.component';
 
 export default function ControlParamters() {
 
@@ -23,10 +24,9 @@ export default function ControlParamters() {
   const { fields, append, remove } = useFieldArray({ control, name: 'controlParameters' });
   const watchParameters = watch('controlParameters')!;
 
-  // todo reset on avatar url change?
-  // useEffect(() => {
-  //   reset({ avatarId: selectedAvatar.id, controlParameters: [...selectedAvatar.controlParameters || []] });
-  // }, [selectedAvatar, selectedAvatar.controlParameters]);
+  useEffect(() => {
+    reset({ controlParameters: layout?.controlParameters || [] });
+  }, [layout]);
 
   function onSave(formData: ControlParametersFormDTO) {
     if (!layout) return;
@@ -106,21 +106,9 @@ export default function ControlParamters() {
 }
 
 const segmentInfo = <>
-  <p>Control parameters are some extra specific functions I wanted for my avatar. <b>You probably wont have use for these.</b></p>
-  <p>Roles:
+  <p>Control parameters can be bound to some specific functionality on groups or buttons:</p>
     <ul>
-      <li><b>HP</b>: parameter used to display minecraft HP bar on the website. All parameter/HP logic has to be on the avatar.
-        <br />Values are minimum and maximum HP values as Int
-      </li>
-      <li><b>Use cost</b>: parameter used to display minecraft EXP bar on the website. When button have use cost set, it will check if this parameter
-        number is high enough so it doesn't go below minimum before allowing buttons to be used.
-        <br />Values are minimum and maximum EXP as Int.
-      </li>
-      <li><b>Callback</b>: can be selected as "Control parameter" when editing a button. When button is pressed on the website, in addition to itself, it will
-        send this parameter with value after X seconds.
-        <br />Useful for reseting parameters - someone turns off your pants on website and it automatically turns them on again after 15 seconds.
-        <br />Values are parameter value to be sent and number of seconds after button press.
-      </li>
+      <li><b>Visibility paramters</b>: sdsfdfhsdfhsdfh</li>
+      <li><b>Callback parameters</b>: When button is pressed on the website, in addition to itself, it will send this parameter with value after X seconds.</li>
     </ul>
-  </p>
 </>;

@@ -1,12 +1,7 @@
-import useCmapFetch from '../../../hooks/cmapFetch.hook';
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { LayoutDTO, LayoutsPageDTO, LayoutsPageSchema } from 'cmap2-shared';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Page } from '../../../components/page/page.component';
-import Segment from '../../../components/segment/segment.component';
 import LayoutSection from './layout/layout.section';
-import styled from 'styled-components';
-import LayoutForm from './layout/form/layoutForm.component';
 import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
 import { useLayoutsPage } from './layouts.hook';
 import { LayoutsPageContext } from './layouts.context';
@@ -16,22 +11,14 @@ import LayoutsSection from './layouts/layouts.section';
 
 export default function LayoutsPage() {
 
-  // hooks
-  const { GET } = useCmapFetch();
   const navigate = useNavigate();
-  const [client, setClient] = useState<LayoutsPageDTO | undefined>();
-
-  useEffect(() => {
-    GET('layouts', LayoutsPageSchema, (data) => setClient(data));
-  }, []);
+  const layoutsPageHook = useLayoutsPage();
+  const { client, layouts, section, layout, group, button } = layoutsPageHook;
 
   if (!client) return;
 
-  const LayoutsPageHook = useLayoutsPage(client);
-  const { layouts, section, layout, group, button } = LayoutsPageHook;
-
   return (<Page flexDirection={'column'}>
-    <LayoutsPageContext.Provider value={LayoutsPageHook}>
+    <LayoutsPageContext.Provider value={{ ...layoutsPageHook, client }}>
 
       <PageMenu>
         <div onClick={() => navigate('/website/layouts')} aria-current={section === 'layouts'}>Layouts</div>

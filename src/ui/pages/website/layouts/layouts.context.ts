@@ -1,4 +1,10 @@
-import { createContext } from 'react';
+import { createContext, Dispatch } from 'react';
 import { useLayoutsPage } from './layouts.hook';
+import { ButtonDTO, GroupDTO, LayoutDTO, LayoutsPageDTO } from 'cmap2-shared';
+import { LayoutsReducerAction } from './layouts.reducer';
 
-export const LayoutsPageContext = createContext<ReturnType<typeof useLayoutsPage>>(undefined!);
+export interface LayoutsPageData extends ReturnType<typeof useLayoutsPage> {
+  client: LayoutsPageDTO;
+}
+
+export const LayoutsPageContext = createContext<LayoutsPageData>(undefined!);

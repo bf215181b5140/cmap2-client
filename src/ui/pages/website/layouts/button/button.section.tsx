@@ -7,13 +7,11 @@ import { LayoutsPageContext } from '../layouts.context';
 
 export default function ButtonSection() {
 
-  const { button } = useContext(LayoutsPageContext);
+  const { button, newButton } = useContext(LayoutsPageContext);
   const formButton: ButtonFormDTO | undefined = undefined;
-
-  if (!button) return;
 
   return (<Section direction={'row'}>
     <ButtonPreview buttonPreview={formButton} />
-    <ButtonForm buttonPreview={formButton}  editButton={button} />
+    <ButtonForm buttonPreview={formButton} editButton={button || newButton} />
   </Section>);
 }

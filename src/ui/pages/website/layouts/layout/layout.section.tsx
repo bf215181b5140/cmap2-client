@@ -26,7 +26,7 @@ export default function LayoutSection() {
         <div className={'SectionMenuLink'} onClick={() => setSegment('controlParameters')} aria-current={segment === 'controlParameters'} aria-disabled={!layout}>Control parameters</div>
       </div>
       <div>
-        {layout && <IconButton role={'delete'} size={'small'} deleteKeyword={'layout'} onClick={() => layoutsDispatch({ type: 'removeLayout', layout })} />}
+        {layout && <IconButton role={'delete'} size={'small'} margin={'0'} deleteKeyword={'layout'} onClick={() => layoutsDispatch({ type: 'removeLayout', layout })} />}
       </div>
     </SectionMenu>
 
