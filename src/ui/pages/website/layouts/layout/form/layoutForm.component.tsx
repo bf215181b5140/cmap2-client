@@ -1,7 +1,7 @@
 import Segment from '../../../../../components/segment/segment.component';
 import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { LayoutDTO, LayoutFormDTO, LayoutFormSchema, TierDTO } from 'cmap2-shared';
+import { LayoutDTO, LayoutFormDTO, LayoutFormSchema, LayoutSchema, TierDTO } from 'cmap2-shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormTable from '../../../../../components/form/formTable.component';
 import Input from '../../../../../components/input/input.component';
@@ -13,16 +13,17 @@ import NumberInput from '../../../../../components/input/number.component';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
 import Layout from '../../../../../components/preview/layout/layout.component';
 import { LayoutsPageContext } from '../../layouts.context';
+import { useNavigate } from 'react-router-dom';
 
-interface LayoutSettingsProps {
+interface LayoutFormProps {
   editLayout: LayoutDTO;
-  title?: string;
 }
 
-export default function LayoutSettings({ editLayout, title }: LayoutSettingsProps) {
+export default function LayoutForm({ editLayout }: LayoutFormProps) {
 
   const { POST, PUT } = useCmapFetch();
-  const { client: { tier } } = useContext(LayoutsPageContext);
+  const navigate = useNavigate();
+  const { client: { tier }, layoutsDispatch } = useContext(LayoutsPageContext);
   const { register, control, setValue, handleSubmit, watch, reset, formState: { errors, isDirty } } = useForm<LayoutFormDTO>({
     resolver: zodResolver(LayoutFormSchema),
     defaultValues: editLayout,
@@ -30,20 +31,23 @@ export default function LayoutSettings({ editLayout, title }: LayoutSettingsProp
   const { fields, append, remove } = useFieldArray({ control, name: 'avatars' });
 
   const canAddAvatars = fields.length < tier.avatars;
+  const isNew = !editLayout.id;
 
   function onSubmit(formData: LayoutFormDTO) {
-    if (editLayout.id) {
-      POST(`layouts/layout/${editLayout.id}`, formData, undefined, () => {
-        reset(formData);
+    if (isNew) {
+      PUT(`layouts/layout`, formData, LayoutSchema, data => {
+        layoutsDispatch({ type: 'addLayout', layout: data});
+        navigate(`layouts/layout/${data.id}`);
       });
     } else {
-      PUT(`layouts/layout`, formData, undefined, () => {
+      POST(`layouts/layout/${editLayout.id}`, formData, undefined, () => {
+        layoutsDispatch({ type: 'editLayout', layout: { id: editLayout.id, ...formData }});
         reset(formData);
       });
     }
   }
 
-  return (<Segment segmentTitle={title || 'Basic info'}>
+  return (<Segment segmentTitle={isNew ? 'Add layout' : 'Edit layout'}>
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormTable>
         <tr>

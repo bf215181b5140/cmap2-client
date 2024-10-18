@@ -1,13 +1,18 @@
 import { useParams } from 'react-router-dom';
 import { ButtonDTO, GroupDTO, LayoutDTO, LayoutsPageDTO } from 'cmap2-shared';
+import { useReducer } from 'react';
+import layoutsReducer from './layouts.reducer';
 
-export function useLayoutsPage(client: LayoutsPageDTO, dispatch: () => void) {
+export function useLayoutsPage(client: LayoutsPageDTO) {
 
   const { layoutId, groupId, buttonId } = useParams();
+  const [layouts, layoutsDispatch] = useReducer(layoutsReducer, client.layouts);
 
-  const layout = client?.layouts?.find(l => l.id === layoutId);
+  const layout = layouts?.find(l => l.id === layoutId);
   const group = layout?.groups?.find(g => g.id === groupId);
   const button = group?.buttons?.find(b => b.id === buttonId);
+
+  const section = button || buttonId === 'new' ? 'button' : group || groupId === 'new' ? 'group' : layout || layoutId === 'new' ? 'layout' : 'layouts';
 
   const newLayout: LayoutDTO = {
     id: '',
@@ -45,5 +50,5 @@ export function useLayoutsPage(client: LayoutsPageDTO, dispatch: () => void) {
     interactionKeyId: null,
   };
 
-  return { client, dispatch, layout, group, button, newLayout, newGroup, newButton };
+  return { client, layouts, layoutsDispatch, section, layout, group, button, layoutId, groupId, buttonId, newLayout, newGroup, newButton };
 }

@@ -1,5 +1,4 @@
 import Section from '../../../../components/section/section.component';
-import LayoutSettings from '../layout/settings/settings.component';
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { LayoutsPageContext } from '../layouts.context';
@@ -7,30 +6,26 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LayoutsSection() {
 
-  const [addingLayout, setAddingLayout] = useState<boolean>(false);
   const { client, newLayout } = useContext(LayoutsPageContext);
   const navigate = useNavigate();
 
   const canAddLayout = client?.layouts.length < client?.tier.layouts;
-  if (!canAddLayout && addingLayout) setAddingLayout(false);
 
   return (<Section>
     <LayoutPicker>
-      {client.layouts?.map(l => <div key={l.id} onClick={() => navigate('/website/layouts/' + l.id)}>
+      {client.layouts?.map(l => <div key={l.id} onClick={() => navigate(`/website/layouts/${l.id}`)}>
         <h2>{l.label}</h2>
         <div>{l.avatars.length} avatars</div>
         <div>{l.groups?.length || 0} groups</div>
         <div>{l.groups?.reduce((sum, g) => sum += (g.buttons?.length || 0), 0) || 0} buttons</div>
       </div>)}
 
-      <div className={'addNew' + (addingLayout ? ' active' : '') + (!canAddLayout ? ' limitReached' : '')} onClick={() => setAddingLayout(!addingLayout)}>
+      <div onClick={() => navigate('/website/layouts/new')} className={'addNew'} aria-disabled={!canAddLayout}>
         <i className={'ri-function-add-fill'} />
         <div>{client.layouts.length}/{client.tier.layouts}</div>
         <h2>{canAddLayout ? 'Add layout' : 'Limit reached'}</h2>
       </div>
     </LayoutPicker>
-
-    {addingLayout && <LayoutSettings editLayout={newLayout} title={'Adding new layout'} />}
   </Section>)
 }
 
@@ -63,7 +58,7 @@ const LayoutPicker = styled.div`
             margin: 5px;
         }
 
-        :hover, &.active {
+        :hover {
             border-color: ${props => props.theme.colors.buttons.primary.hoverBorder};
             transform: scale(1.05);
         }
@@ -85,7 +80,7 @@ const LayoutPicker = styled.div`
             }
         }
 
-        &.limitReached {
+        &[aria-disabled='true'] {
             border-color: ${props => props.theme.colors.error};
             color: ${props => props.theme.colors.error};
             pointer-events: none;
