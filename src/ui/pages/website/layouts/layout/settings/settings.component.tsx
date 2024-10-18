@@ -7,31 +7,33 @@ import FormTable from '../../../../../components/form/formTable.component';
 import Input from '../../../../../components/input/input.component';
 import FormControlBar from '../../../../../components/form/formControlBar.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';
-import React from 'react';
+import React, { useContext } from 'react';
 import CheckboxInput from '../../../../../components/input/checkbox.component';
 import NumberInput from '../../../../../components/input/number.component';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
+import Layout from '../../../../../components/preview/layout/layout.component';
+import { LayoutsPageContext } from '../../layouts.context';
 
 interface LayoutSettingsProps {
-  layout: LayoutDTO;
-  tier: TierDTO;
+  editLayout: LayoutDTO;
   title?: string;
 }
 
-export default function LayoutSettings({ layout, tier, title }: LayoutSettingsProps) {
+export default function LayoutSettings({ editLayout, title }: LayoutSettingsProps) {
 
   const { POST, PUT } = useCmapFetch();
+  const { client: { tier } } = useContext(LayoutsPageContext);
   const { register, control, setValue, handleSubmit, watch, reset, formState: { errors, isDirty } } = useForm<LayoutFormDTO>({
     resolver: zodResolver(LayoutFormSchema),
-    defaultValues: layout,
+    defaultValues: editLayout,
   });
   const { fields, append, remove } = useFieldArray({ control, name: 'avatars' });
 
   const canAddAvatars = fields.length < tier.avatars;
 
   function onSubmit(formData: LayoutFormDTO) {
-    if (layout.id) {
-      POST(`layouts/layout/${layout.id}`, formData, undefined, () => {
+    if (editLayout.id) {
+      POST(`layouts/layout/${editLayout.id}`, formData, undefined, () => {
         reset(formData);
       });
     } else {

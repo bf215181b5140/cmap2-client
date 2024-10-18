@@ -1,9 +1,9 @@
-import { ReactProps } from 'cmap2-shared';
 import styled from 'styled-components';
 import React from 'react';
 import ModalComponent from '../modal/modal.component';
 import { ToastComponent } from '../toast/toast.component';
 import { FetchStatusComponent } from '../fetchStatus/fetchStatus.component';
+import { ReactProps } from '../../types';
 
 export default function Content({ children }: ReactProps) {
 

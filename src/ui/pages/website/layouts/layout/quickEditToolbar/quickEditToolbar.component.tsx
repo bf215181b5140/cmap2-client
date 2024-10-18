@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { LayoutsPageDTO } from 'cmap2-shared';
 import { QuickEditItem } from './quickEditToolbar.model';
-import TextButton from '../../../../components/buttons/textButton.component';
-import IconButton from '../../../../components/buttons/iconButton.component';
+import TextButton from '../../../../../components/buttons/textButton.component';
+import IconButton from '../../../../../components/buttons/iconButton.component';
 
 interface QuickEditToolbarProps {
   client: LayoutsPageDTO;

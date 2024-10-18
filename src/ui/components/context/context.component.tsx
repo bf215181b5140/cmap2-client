@@ -1,4 +1,3 @@
-import { ReactProps } from 'cmap2-shared';
 import useCredentials from '../../hooks/credentials.hook';
 import { CredentialsContext } from './credentials.context';
 import { ModalContext } from './modal.context';
@@ -7,6 +6,7 @@ import { ToastContext } from './toast.context';
 import { useToast } from '../../hooks/toast.hook';
 import { FetchStatusContext } from './fetchStatus.context';
 import { useFetchStatus } from '../fetchStatus/fetchStatus.hook';
+import { ReactProps } from '../../types';
 
 export default function Context({ children }: ReactProps) {
 
