@@ -28,6 +28,7 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
     resolver: zodResolver(LayoutFormSchema),
     defaultValues: editLayout,
   });
+  // @ts-ignore
   const { fields, append, remove } = useFieldArray({ control, name: 'avatars' });
 
   const canAddAvatars = fields.length < tier.avatars;

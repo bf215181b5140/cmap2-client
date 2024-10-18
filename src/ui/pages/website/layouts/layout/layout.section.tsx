@@ -6,13 +6,14 @@ import LayoutPreview from './preview/layoutPreview.component';
 import ParameterBadges from './parameterBadges/parameterBadges.component';
 import ControlParamters from './controlParameters/controlParameters.component';
 import { LayoutsPageContext } from '../layouts.context';
+import IconButton from '../../../../components/buttons/iconButton.component';
 
 type LayoutSegments = 'preview' | 'settings' | 'parameterBadges' | 'controlParameters';
 
 export default function LayoutSection() {
 
   const [segment, setSegment] = useState<LayoutSegments>('preview');
-  const { layout, newLayout } = useContext(LayoutsPageContext);
+  const { layoutsDispatch, layout, newLayout } = useContext(LayoutsPageContext);
 
   if (!layout && segment !== 'settings') setSegment('settings');
 
@@ -23,6 +24,9 @@ export default function LayoutSection() {
         <div className={'SectionMenuLink'} onClick={() => setSegment('settings')} aria-current={segment === 'settings'}>Settings</div>
         <div className={'SectionMenuLink'} onClick={() => setSegment('parameterBadges')} aria-current={segment === 'parameterBadges'} aria-disabled={!layout}>Parameter badges</div>
         <div className={'SectionMenuLink'} onClick={() => setSegment('controlParameters')} aria-current={segment === 'controlParameters'} aria-disabled={!layout}>Control parameters</div>
+      </div>
+      <div>
+        {layout && <IconButton role={'delete'} size={'small'} deleteKeyword={'layout'} onClick={() => layoutsDispatch({ type: 'removeLayout', layout })} />}
       </div>
     </SectionMenu>
 
