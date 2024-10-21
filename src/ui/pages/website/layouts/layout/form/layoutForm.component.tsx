@@ -14,6 +14,7 @@ import AddCounter from '../../../../../components/addCounter/addCounter.componen
 import { LayoutsPageContext } from '../../layouts.context';
 import { useNavigate } from 'react-router-dom';
 import ParameterInput from '../../../../../components/input/parameterInput/parameterInput.component';
+import HiddenInput from '../../../../../components/input/hidden.component';
 
 interface LayoutFormProps {
   editLayout: LayoutDTO;
@@ -45,15 +46,16 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
         navigate(`layouts/layout/${data.id}`);
       });
     } else {
-      POST(`layouts/layout/${editLayout.id}`, formData, undefined, () => {
-        layoutsDispatch({ type: 'editLayout', layout: { id: editLayout.id, ...formData } });
-        reset(formData);
+      POST(`layouts/layout`, formData, LayoutSchema, data => {
+        layoutsDispatch({ type: 'editLayout', layout: data });
+        reset(data);
       });
     }
   }
 
   return (<Segment segmentTitle={isNew ? 'Add layout' : 'Edit layout'}>
     <form onSubmit={handleSubmit(onSubmit)}>
+      <HiddenInput register={register} name={'id'} />
       <FormTable>
         <tr>
           <th>Label</th>

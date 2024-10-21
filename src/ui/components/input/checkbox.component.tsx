@@ -1,21 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import Icon from '../icon/icon.component';
 import InputErrorMessage from './inputErrorMessage.component';
 import { globalInputStyle } from './input.style';
-import { ReactProps } from '../../types';
 
-interface CheckboxInputProps extends ReactProps {
-  name: string;
-  register: UseFormRegister<any>;
+interface CheckboxInputProps<T extends FieldValues> {
+  name: Path<T>;
+  register: UseFormRegister<T>;
   errors?: FieldErrors;
   readOnly?: boolean;
   onChange?: () => void;
 }
 
-export default function CheckboxInput({ name, register, errors, readOnly, onChange }: CheckboxInputProps) {
+export default function CheckboxInput<T extends FieldValues>({ name, register, errors, readOnly, onChange }: CheckboxInputProps<T>) {
   const [hasError, errorMessage] = useInputError(name, errors);
 
   function booleanClick(id: string) {

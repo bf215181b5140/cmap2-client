@@ -1,21 +1,20 @@
 import React from 'react';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
 import { SelectInputStyled } from './input.style';
-import { ReactProps } from '../../types';
 import { KeyValueDTO } from 'cmap2-shared';
 
-interface SelectInputProps extends ReactProps {
-  name: string;
-  register: UseFormRegister<any>;
+interface SelectInputProps<T extends FieldValues> {
+  name: Path<T>;
+  register: UseFormRegister<T>;
   options: KeyValueDTO[];
   errors?: FieldErrors;
   readOnly?: boolean;
   width?: string;
 }
 
-export default function SelectInput({ name, register, options, errors, readOnly, width }: SelectInputProps) {
+export default function SelectInput<T extends FieldValues>({ name, register, options, errors, readOnly, width }: SelectInputProps<T>) {
   const [hasError, errorMessage] = useInputError(name, errors);
 
   return (<div>

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { FieldErrors, FieldValues, Path, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import ParameterDropdown from './parameterDropdown.component';
 import { ReactProps } from '../../../types';
 import { VrcOscAvatarParameterProperties } from '../../../../shared/objects/vrcOscAvatar';
@@ -9,10 +9,10 @@ import InputErrorMessage from '../inputErrorMessage.component';
 import IconButton from '../../buttons/iconButton.component';
 import { globalInputStyle } from '../input.style';
 
-interface ParameterInputProps extends ReactProps {
-  name: string;
-  register: UseFormRegister<any>;
-  setValue: UseFormSetValue<any>;
+interface ParameterInputProps<T extends FieldValues> {
+  name: Path<T>;
+  register: UseFormRegister<T>;
+  setValue: UseFormSetValue<T>;
   defaultAvatarVrcId?: string;
   defaultType?: 'input' | 'output';
   onSelection?: (parameter: VrcOscAvatarParameterProperties) => void;
@@ -22,7 +22,7 @@ interface ParameterInputProps extends ReactProps {
   width?: string;
 }
 
-export default function ParameterInput({ name, register, setValue, defaultAvatarVrcId, defaultType, onSelection, placeholder, errors, readOnly, width }: ParameterInputProps) {
+export default function ParameterInput<T extends FieldValues>({ name, register, setValue, defaultAvatarVrcId, defaultType, onSelection, placeholder, errors, readOnly, width }: ParameterInputProps<T>) {
 
   const [hasError, errorMessage] = useInputError(name, errors);
 

@@ -4,7 +4,6 @@ import SectionMenu from '../../../../components/menu/sectionMenu/sectionMenu.com
 import LayoutForm from './form/layoutForm.component';
 import LayoutPreview from './preview/layoutPreview.component';
 import ParameterBadges from './parameterBadges/parameterBadges.component';
-import ControlParamters from './controlParameters/controlParameters.component';
 import { LayoutsPageContext } from '../layouts.context';
 import IconButton from '../../../../components/buttons/iconButton.component';
 
@@ -33,7 +32,7 @@ export default function LayoutSection() {
     {segment === 'preview' && <LayoutPreview />}
     {segment === 'settings' && <LayoutForm editLayout={layout || newLayout} />}
     {segment === 'parameterBadges' && <ParameterBadges />}
-    {segment === 'controlParameters' && <ControlParamters />}
+    {segment === 'controlParameters' && <LayoutPreview />}
 
   </Section>);
 }

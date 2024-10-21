@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
 import { globalInputStyle } from './input.style';
 
-interface TextareaInputProps {
-  name: string;
-  register: UseFormRegister<any>;
+interface TextareaInputProps<T extends FieldValues> {
+  name: Path<T>;
+  register: UseFormRegister<T>;
   rows?: number;
   placeholder?: string;
   errors?: FieldErrors;
@@ -15,7 +15,7 @@ interface TextareaInputProps {
   width?: string;
 }
 
-export default function TextareaInput({ name, register, rows, placeholder, errors, readOnly, width }: TextareaInputProps) {
+export default function TextareaInput<T extends FieldValues>({ name, register, rows, placeholder, errors, readOnly, width }: TextareaInputProps<T>) {
   const [hasError, errorMessage] = useInputError(name, errors);
 
   return (<div>

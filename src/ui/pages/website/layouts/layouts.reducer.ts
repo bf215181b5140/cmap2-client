@@ -1,11 +1,11 @@
-import { LayoutDTO, ButtonDTO, ControlParameterDTO, GroupDTO, ParameterBadgeDTO, UploadedFileDTO } from 'cmap2-shared';
+import { LayoutDTO, ButtonDTO, GroupDTO, ParameterBadgeDTO, UploadedFileDTO, LayoutFormDTO } from 'cmap2-shared';
 
 export type LayoutsReducerAction = { type: 'setLayouts', layouts: LayoutDTO[] } |
   { type: 'addLayout', layout: LayoutDTO } |
   { type: 'editLayout', layout: LayoutDTO } |
   { type: 'removeLayout', layout: LayoutDTO } |
-  { type: 'saveControlParameters', controlParameters: ControlParameterDTO[], layoutId: string } |
-  { type: 'removeControlParameter', controlParameter: ControlParameterDTO, layoutId: string } |
+  // { type: 'saveControlParameters', controlParameters: ControlParameterDTO[], layoutId: string } |
+  // { type: 'removeControlParameter', controlParameter: ControlParameterDTO, layoutId: string } |
   { type: 'saveParameterBadges', parameterBadges: ParameterBadgeDTO[], layoutId: string } |
   { type: 'removeParameterBadge', parameterBadge: ParameterBadgeDTO, layoutId: string } |
   { type: 'addGroup', group: GroupDTO, layoutId: string } |
@@ -31,16 +31,16 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       });
     case 'removeLayout':
       return state.filter(layout => layout.id !== action.layout.id);
-    case 'saveControlParameters':
-      return state.map(layout => {
-        if (layout.id === action.layoutId) layout.controlParameters = action.controlParameters;
-        return layout;
-      });
-    case 'removeControlParameter':
-      return state.map(layout => {
-        if (layout.id === action.layoutId) layout.controlParameters = layout.controlParameters?.filter(cp => cp.id !== action.controlParameter.id);
-        return layout;
-      });
+    // case 'saveControlParameters':
+    //   return state.map(layout => {
+    //     if (layout.id === action.layoutId) layout.controlParameters = action.controlParameters;
+    //     return layout;
+    //   });
+    // case 'removeControlParameter':
+    //   return state.map(layout => {
+    //     if (layout.id === action.layoutId) layout.controlParameters = layout.controlParameters?.filter(cp => cp.id !== action.controlParameter.id);
+    //     return layout;
+    //   });
     case 'saveParameterBadges':
       return state.map(layout => {
         if (layout.id === action.layoutId) layout.parameterBadges = action.parameterBadges;

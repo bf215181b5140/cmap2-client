@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
-import { ReactProps } from '../../types';
+import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
 import { globalInputStyle } from './input.style';
 
-interface NumberInputProps extends ReactProps {
-  name: string;
-  register: UseFormRegister<any>;
+interface NumberInputProps<T extends FieldValues> {
+  name: Path<T>;
+  register: UseFormRegister<T>;
   decimals?: number;
   placeholder?: string;
   errors?: FieldErrors;
@@ -16,7 +15,7 @@ interface NumberInputProps extends ReactProps {
   width?: string;
 }
 
-export default function NumberInput({ name, register, decimals = 0, placeholder, errors, readOnly, width }: NumberInputProps) {
+export default function NumberInput<T extends FieldValues>({ name, register, decimals = 0, placeholder, errors, readOnly, width }: NumberInputProps<T>) {
   const [hasError, errorMessage] = useInputError(name, errors);
 
   function setValue(value: string) {
