@@ -72,7 +72,7 @@ export default function InteractionKeys({ profile, setInteractionKeys }: Interac
                           onClick={() => setValue(`interactionKeys.${index}.key`, nanoid(16), { shouldDirty: true })} />
             </td>
             <td>
-              <IconButton role={'delete'} deleteKeyword={'interaction key'} onClick={() => remove(index)} size={'small'} />
+              <IconButton role={'remove'} onClick={() => remove(index)} size={'small'} />
             </td>
           </tr>
         ))}

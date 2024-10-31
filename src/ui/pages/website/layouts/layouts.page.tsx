@@ -1,24 +1,62 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useReducer, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Page } from '../../../components/page/page.component';
 import LayoutSection from './layout/layout.section';
 import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
 import { useLayoutsPage } from './layouts.hook';
-import { LayoutsPageContext } from './layouts.context';
+import { LayoutsPageContext, LayoutsPageData } from './layouts.context';
 import GroupSection from './group/group.section';
 import ButtonSection from './button/button.section';
 import LayoutsSection from './layouts/layouts.section';
+import useCmapFetch from '../../../hooks/cmapFetch.hook';
+import { BackgroundDTO, InteractionKeyDTO, LayoutDTO, LayoutsPageDTO, LayoutsPageSchema, StyleDTO, TierDTO } from 'cmap2-shared';
+import layoutsReducer from './layouts.reducer';
 
 export default function LayoutsPage() {
 
   const navigate = useNavigate();
-  const layoutsPageHook = useLayoutsPage();
-  const { client, layouts, section, layout, group, button } = layoutsPageHook;
+  const { GET } = useCmapFetch();
+  const { layoutId, groupId, buttonId } = useParams();
+  const [tier, setTier] = useState<TierDTO | undefined>();
+  const [background, setBackground] = useState<BackgroundDTO | undefined>();
+  const [style, setStyle] = useState<StyleDTO | undefined>();
+  const [interactionKeys, setInteractionKeys] = useState<InteractionKeyDTO[]>([]);
+  const [layouts, layoutsDispatch] = useReducer(layoutsReducer, []);
 
-  if (!client) return;
+  useEffect(() => {
+    GET('layouts', LayoutsPageSchema, (data) => {
+      setTier(data.tier);
+      setBackground(data.background);
+      setStyle(data.style);
+      layoutsDispatch({ type: 'setLayouts', layouts: data.layouts });
+    });
+  }, []);
+
+  if (!tier || !background || !style) return;
+
+  const layout = layouts?.find(l => l.id === layoutId);
+  const group = layout?.groups?.find(g => g.id === groupId);
+  const button = group?.buttons?.find(b => b.id === buttonId);
+
+  const section = button || buttonId === 'new' ? 'button' : group || groupId === 'new' ? 'group' : layout || layoutId === 'new' ? 'layout' : 'layouts';
+
+  const pageData: LayoutsPageData = {
+    tier,
+    background,
+    style,
+    interactionKeys,
+    layouts,
+    layoutsDispatch,
+    layoutId,
+    groupId,
+    buttonId,
+    layout,
+    group,
+    button
+  }
 
   return (<Page flexDirection={'column'}>
-    <LayoutsPageContext.Provider value={{ ...layoutsPageHook, client }}>
+    <LayoutsPageContext.Provider value={pageData}>
 
       <PageMenu>
         <div onClick={() => navigate('/website/layouts')} aria-current={section === 'layouts'}>Layouts</div>
@@ -66,11 +104,11 @@ export default function LayoutsPage() {
         </div>
       </PageMenu>
 
-      {section === 'layout' && layout && <LayoutSection />}
+      {section === 'layout' && <LayoutSection />}
 
-      {section === 'group' && group && <GroupSection />}
+      {section === 'group' && <GroupSection />}
 
-      {section === 'button' && button && <ButtonSection />}
+      {section === 'button' && <ButtonSection />}
 
       {section === 'layouts' && <LayoutsSection />}
 

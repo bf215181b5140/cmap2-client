@@ -32,6 +32,8 @@ export default function StylePicker({ profile, setStyle }: StylePickerProps) {
   }
 
   const exampleButton: ButtonDTO = {
+    callbackParameters: [],
+    visibilityParameters: [],
     id: '',
     label: '',
     path: '',
@@ -41,7 +43,7 @@ export default function StylePicker({ profile, setStyle }: StylePickerProps) {
     imageOrientation: 'Square',
     order: 0,
     useCost: null,
-    interactionKeyId: null,
+    interactionKeyId: null
   };
 
   return (<Segment segmentTitle={'Website style'} loading={!styles}>

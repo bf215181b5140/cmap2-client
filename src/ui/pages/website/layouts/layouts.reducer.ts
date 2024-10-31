@@ -6,17 +6,17 @@ export type LayoutsReducerAction = { type: 'setLayouts', layouts: LayoutDTO[] } 
   { type: 'removeLayout', layout: LayoutDTO } |
   // { type: 'saveControlParameters', controlParameters: ControlParameterDTO[], layoutId: string } |
   // { type: 'removeControlParameter', controlParameter: ControlParameterDTO, layoutId: string } |
-  { type: 'saveParameterBadges', parameterBadges: ParameterBadgeDTO[], layoutId: string } |
-  { type: 'removeParameterBadge', parameterBadge: ParameterBadgeDTO, layoutId: string } |
-  { type: 'addGroup', group: GroupDTO, layoutId: string } |
-  { type: 'editGroup', group: GroupDTO, layoutId: string } |
-  { type: 'removeGroup', group: GroupDTO, layoutId: string } |
-  { type: 'setGroupOrder', groups: GroupDTO[], layoutId: string } |
-  { type: 'addButton', button: ButtonDTO, groupId: string, layoutId: string } |
-  { type: 'editButton', button: ButtonDTO, groupId: string, layoutId: string } |
-  { type: 'removeButton', button: ButtonDTO, groupId: string, layoutId: string } |
-  { type: 'setButtonOrder', buttons: ButtonDTO[], groupId: string, layoutId: string } |
-  { type: 'changeButtonPicture', image: UploadedFileDTO | null, buttonId: string, groupId: string, layoutId: string };
+  { type: 'saveParameterBadges', layoutId: string, parameterBadges: ParameterBadgeDTO[] } |
+  { type: 'removeParameterBadge', layoutId: string, parameterBadge: ParameterBadgeDTO } |
+  { type: 'addGroup', layoutId: string, group: GroupDTO } |
+  { type: 'editGroup', layoutId: string, group: GroupDTO } |
+  { type: 'removeGroup', layoutId: string, groupId: string } |
+  { type: 'setGroupOrder', layoutId: string, groups: GroupDTO[] } |
+  { type: 'addButton', layoutId: string, groupId: string, button: ButtonDTO } |
+  { type: 'editButton', layoutId: string, groupId: string, button: ButtonDTO } |
+  { type: 'removeButton', layoutId: string, groupId: string, buttonId: string } |
+  { type: 'setButtonOrder', layoutId: string, groupId: string, buttons: ButtonDTO[] } |
+  { type: 'changeButtonPicture', layoutId: string, groupId: string, buttonId: string, image: UploadedFileDTO | null };
 
 export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReducerAction) {
   switch (action.type) {
@@ -71,7 +71,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       });
     case 'removeGroup':
       return state.map(layout => {
-        if (layout.id === action.layoutId) layout.groups = layout.groups?.filter(group => group.id !== action.group.id);
+        if (layout.id === action.layoutId) layout.groups = layout.groups?.filter(group => group.id !== action.groupId);
         return layout;
       });
     case 'setGroupOrder':
@@ -111,7 +111,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       return state.map(layout => {
         if (layout.id === action.layoutId) {
           layout.groups = layout.groups?.map(group => {
-            if (group.id === action.groupId) group.buttons = group.buttons?.filter(button => button.id !== action.button.id);
+            if (group.id === action.groupId) group.buttons = group.buttons?.filter(button => button.id !== action.buttonId);
             return group;
           });
         }

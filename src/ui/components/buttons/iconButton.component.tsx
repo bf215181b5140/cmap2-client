@@ -5,7 +5,7 @@ import { ModalContext } from '../context/modal.context';
 
 type IconButtonSize = 'normal' | 'small' | 'tiny';
 
-type IconButtonRole = 'normal' | 'add' | 'delete' | 'edit' | 'save' | 'info' | 'reset';
+type IconButtonRole = 'normal' | 'add' | 'delete' | 'remove' | 'edit' | 'save' | 'info' | 'reset';
 
 interface IconButtonProps {
   role: IconButtonRole;
@@ -35,6 +35,7 @@ export default function IconButton({ role, onClick, icon, tooltip, disabled, act
         icon = 'ri-add-line';
         break;
       case 'delete':
+      case 'remove':
         icon = 'ri-delete-bin-6-line';
         break;
       case 'edit':
@@ -59,6 +60,9 @@ export default function IconButton({ role, onClick, icon, tooltip, disabled, act
         break;
       case 'delete':
         tooltip = 'Delete';
+        break;
+      case 'remove':
+        tooltip = 'Remove';
         break;
       case 'edit':
         tooltip = 'Edit';
@@ -118,6 +122,7 @@ const IconButtonStyled = styled.button<{ role: IconButtonRole, size: IconButtonS
       case 'add':
         return styleAdd;
       case 'delete':
+      case 'remove':
         return styleDelete;
       case 'edit':
         return styleEdit;

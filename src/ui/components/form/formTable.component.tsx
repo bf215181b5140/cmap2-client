@@ -15,11 +15,11 @@ export default function FormTable({ children, width, thAlign }: FormTableProps) 
 }
 
 export const FormTableStyled = styled.table<{ width?: string, thAlign?: string }>`
-    border-collapse: collapse;
-    width: ${props => props.width ? props.width : 'auto'};
+  border-collapse: collapse;
+  width: ${props => props.width ? props.width : 'auto'};
 
-    tbody th {
-        font-weight: normal;
-        text-align: ${props => props.thAlign ? props.thAlign : 'left'};
-    }
+  tbody th {
+    font-weight: normal;
+    text-align: ${props => props.thAlign ? props.thAlign : 'left'};
+  }
 `;

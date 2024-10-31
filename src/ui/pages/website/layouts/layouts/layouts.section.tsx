@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LayoutsSection() {
 
-  const { client, newLayout } = useContext(LayoutsPageContext);
+  const { tier, layouts } = useContext(LayoutsPageContext);
   const navigate = useNavigate();
 
-  const canAddLayout = client.layouts.length < client.tier.layouts;
+  const canAddLayout = layouts.length < tier.layouts;
 
   return (<Section>
     <LayoutPicker>
-      {client.layouts?.map(l => <div key={l.id} onClick={() => navigate(`/website/layouts/${l.id}`)}>
+      {layouts?.map(l => <div key={l.id} onClick={() => navigate(`/website/layouts/${l.id}`)}>
         <h2>{l.label}</h2>
         <div>{l.avatars.length} avatars</div>
         <div>{l.groups?.length || 0} groups</div>
@@ -22,7 +22,7 @@ export default function LayoutsSection() {
 
       <div onClick={() => navigate('/website/layouts/new')} className={'addNew'} aria-disabled={!canAddLayout}>
         <i className={'ri-function-add-fill'} />
-        <div>{client.layouts.length}/{client.tier.layouts}</div>
+        <div>{layouts.length}/{tier.layouts}</div>
         <h2>{canAddLayout ? 'Add layout' : 'Limit reached'}</h2>
       </div>
     </LayoutPicker>

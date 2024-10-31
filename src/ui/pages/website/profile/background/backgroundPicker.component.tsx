@@ -31,7 +31,7 @@ export default function BackgroundPicker({ profile, setBackground }: BackgroundP
     });
   }
 
-  return (<Segment segmentTitle={'Website background'} width="100%" loading={!backgrounds}>
+  return (<Segment segmentTitle={'Website background'} width={'Full'} loading={!backgrounds}>
     <BackgroundFlex>
       {backgrounds?.map(background => (
         <BackgroundPickerStyled color={background.tier.color} validPick={profile.tier.rank >= background.tier.rank} onClick={() => saveSelected(background)} key={background.id}>

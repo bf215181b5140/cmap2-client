@@ -15,38 +15,54 @@ import { LayoutsPageContext } from '../../layouts.context';
 import { useNavigate } from 'react-router-dom';
 import ParameterInput from '../../../../../components/input/parameterInput/parameterInput.component';
 import HiddenInput from '../../../../../components/input/hidden.component';
+import { useNotifications } from '../../../../../hooks/useNotifications.hook';
 
 interface LayoutFormProps {
-  editLayout: LayoutDTO;
+  layout: LayoutDTO | undefined;
 }
 
-export default function LayoutForm({ editLayout }: LayoutFormProps) {
+export default function LayoutForm({ layout }: LayoutFormProps) {
 
-  const { POST, PUT } = useCmapFetch();
+  const defaultValue: LayoutFormDTO = layout || {
+    id: null,
+    label: '',
+    avatars: [],
+    healthEnabled: false,
+    healthMax: null,
+    healthPath: null,
+    useCostEnabled: false,
+    useCostMax: null,
+    useCostPath: null
+  };
+
   const navigate = useNavigate();
-  const { client: { tier }, layoutsDispatch } = useContext(LayoutsPageContext);
+  const { POST, PUT } = useCmapFetch();
+  const { addNotification } = useNotifications();
+  const { tier, layoutsDispatch } = useContext(LayoutsPageContext);
   const { register, setValue, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm<LayoutFormDTO>({
     resolver: zodResolver(LayoutFormSchema),
-    defaultValues: editLayout,
+    defaultValues: defaultValue,
   });
   // @ts-ignore
   const { fields, append, remove } = useFieldArray({ control, name: 'avatars' });
 
   useEffect(() => {
-    reset(editLayout);
-  }, [editLayout]);
+    reset(defaultValue);
+  }, [layout]);
 
   const canAddAvatars = fields.length < tier.avatars;
-  const isNew = !editLayout.id;
+  const isNew = !defaultValue.id;
 
   function onSubmit(formData: LayoutFormDTO) {
     if (isNew) {
-      PUT(`layouts/layout`, formData, LayoutSchema, data => {
+      PUT('layouts/layout', formData, LayoutSchema, data => {
         layoutsDispatch({ type: 'addLayout', layout: data });
-        navigate(`layouts/layout/${data.id}`);
+        addNotification('success', 'New layout added.');
+        reset(data);
+        navigate(`/website/layouts/${data.id}`);
       });
     } else {
-      POST(`layouts/layout`, formData, LayoutSchema, data => {
+      POST('layouts/layout', formData, LayoutSchema, data => {
         layoutsDispatch({ type: 'editLayout', layout: data });
         reset(data);
       });
@@ -72,7 +88,7 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
               <Input register={register} name={`avatars.${index}`} errors={errors} width={'350px'} />
             </td>
             <td>
-              <IconButton role={'delete'} size={'small'} deleteKeyword={'avatar id'} onClick={() => remove(index)} />
+              <IconButton role={'remove'} size={'small'} onClick={() => remove(index)} />
             </td>
           </tr>))}
           <tr>
@@ -95,7 +111,7 @@ export default function LayoutForm({ editLayout }: LayoutFormProps) {
           </tr>
           <tr>
             <th>Parameter</th>
-            <td><ParameterInput register={register} name={'healthPath'} setValue={setValue} defaultType={'output'} width={'350px'} errors={errors}/></td>
+            <td><ParameterInput register={register} name={'healthPath'} setValue={setValue} defaultType={'output'} width={'350px'} errors={errors} /></td>
           </tr>
           <tr>
             <th>Max health</th>

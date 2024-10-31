@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { ButtonDTO, GroupDTO, LayoutDTO, LayoutsPageDTO, LayoutsPageSchema } from 'cmap2-shared';
+import { ButtonDTO, ButtonFormDTO, GroupDTO, GroupFormDTO, LayoutDTO, LayoutFormDTO, LayoutsPageDTO, LayoutsPageSchema } from 'cmap2-shared';
 import { useEffect, useReducer, useState } from 'react';
 import layoutsReducer from './layouts.reducer';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
@@ -24,20 +24,9 @@ export function useLayoutsPage() {
 
   const section = button || buttonId === 'new' ? 'button' : group || groupId === 'new' ? 'group' : layout || layoutId === 'new' ? 'layout' : 'layouts';
 
-  const newLayout: LayoutDTO = {
-    id: '',
-    label: '',
-    avatars: [],
-    healthEnabled: false,
-    healthMax: null,
-    healthPath: null,
-    useCostEnabled: false,
-    useCostMax: null,
-    useCostPath: null
-  };
-
-  const newGroup: GroupDTO = {
-    id: '',
+  const newGroup: GroupFormDTO = {
+    id: null,
+    layoutId: '',
     label: '',
     order: layout?.groups?.length || 1,
     width: 'Full',
@@ -45,8 +34,9 @@ export function useLayoutsPage() {
     interactionKeyId: null,
   };
 
-  const newButton: ButtonDTO = {
-    id: '',
+  const newButton: ButtonFormDTO = {
+    id: null,
+    groupId: '',
     label: '',
     path: '',
     value: '',
@@ -60,5 +50,5 @@ export function useLayoutsPage() {
     interactionKeyId: null,
   };
 
-  return { client, layouts, layoutsDispatch, section, layout, group, button, layoutId, groupId, buttonId, newLayout, newGroup, newButton };
+  return { client, layouts, layoutsDispatch, section, layout, group, button, layoutId, groupId, buttonId };
 }
