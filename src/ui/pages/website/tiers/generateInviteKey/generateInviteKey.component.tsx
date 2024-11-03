@@ -45,7 +45,7 @@ export default function GenerateInviteKey({ generatedInviteKeys, tiers, clientTi
   function generateKey() {
     POST('tiers/generateInviteKey', { id: selectedTierId }, GeneratedInviteKeySchema, data => {
       addGeneratedInviteKey(data);
-      addNotification('success', 'New invite key has been generated successfully.');
+      addNotification('Success', 'New invite key has been generated successfully.');
     });
   }
 

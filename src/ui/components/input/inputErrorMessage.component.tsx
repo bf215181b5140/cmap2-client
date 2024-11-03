@@ -15,7 +15,7 @@ export default function InputErrorMessage(props: InputErrorMessageProps) {
 }
 
 const ErrorStyled = styled.div`
-  margin: -6px 10px 0 10px;
+  margin: 0 10px 0 10px;
   font-size: 12px;
   text-align: center;
   color: ${props => props.theme.colors.error};

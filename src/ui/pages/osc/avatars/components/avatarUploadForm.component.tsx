@@ -35,7 +35,7 @@ export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUpl
             VrcOscAvatarSchema.parse(tempFileAvatar);
             setFileAvatar(tempFileAvatar);
           } catch (e) {
-            addNotification('error', 'Not recognized as a VRChat avatar file');
+            addNotification('Error', 'Not recognized as a VRChat avatar file');
             setFileAvatar(undefined);
           }
         }
@@ -64,7 +64,7 @@ export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUpl
 
   function addAvatar(avatar: VrcOscAvatar) {
     avatarsDispatch({ type: 'addAvatar', avatar: avatar });
-    addNotification('success', 'Avatar saved');
+    addNotification('Success', 'Avatar saved');
     clearForm();
     navigate('/osc/avatars/' + avatar.id);
   }

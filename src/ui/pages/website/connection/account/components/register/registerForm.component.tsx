@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useContext } from 'react';
-import { RegisterFormDTO, RegisterFormSchema, RegisterInfoDTO, RegisterWithKeyFormSchema } from 'cmap2-shared';
+import { RegisterFormDTO, RegisterFormSchema, RegisterInfoDTO, RegisterWithKeyFormDTO, RegisterWithKeyFormSchema } from 'cmap2-shared';
 import { CredentialsContext } from '../../../../../../components/context/credentials.context';
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { Credentials } from '../../../../../../../shared/objects/credentials';
@@ -22,7 +22,7 @@ export default function RegisterForm({ registrationInfo, fingerprint, loginSegme
   const { PUT } = useCmapFetch();
   const { addNotification } = useNotifications();
   const { setCredentials } = useContext(CredentialsContext);
-  const { register, formState: { errors }, handleSubmit } = useForm<RegisterFormDTO>({
+  const { register, formState: { errors }, handleSubmit } = useForm<RegisterWithKeyFormDTO>({
     resolver: zodResolver(registrationInfo?.keyRequired ? RegisterWithKeyFormSchema : RegisterFormSchema),
     defaultValues: {
       fingerprint: fingerprint
@@ -31,7 +31,7 @@ export default function RegisterForm({ registrationInfo, fingerprint, loginSegme
 
   async function onSubmit(formData: RegisterFormDTO) {
     PUT('register', formData, undefined, () => {
-      addNotification('success', 'Account registered!');
+      addNotification('Success', 'Account registered!');
       setCredentials({
         ...new Credentials(),
         username: formData.username,

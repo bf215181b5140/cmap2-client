@@ -36,9 +36,8 @@ export default function NumberInput<T extends FieldValues>({ name, register, dec
     return Math.pow(10, -decimals);
   }
 
-  return (<div>
-    <NumberInputStyled type="number" {...register(name, { setValueAs: setValue })} step={step()}
-                       placeholder={placeholder} errors={hasError} readOnly={readOnly} width={width} />
+  return (<div style={{ width: width || '100%' }}>
+    <NumberInputStyled type={'number'} {...register(name, { setValueAs: setValue })} step={step()} placeholder={placeholder} errors={hasError} readOnly={readOnly} width={'100%'} />
     <InputErrorMessage errorMessage={errorMessage} />
   </div>);
 };

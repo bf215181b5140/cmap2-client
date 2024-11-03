@@ -3,7 +3,7 @@ import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { LayoutDTO, LayoutFormDTO, LayoutFormSchema, LayoutSchema } from 'cmap2-shared';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormTable from '../../../../../components/form/formTable.component';
+import FormTable, { FormTableStyled } from '../../../../../components/form/formTable.component';
 import Input from '../../../../../components/input/input.component';
 import FormControlBar from '../../../../../components/form/formControlBar.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';
@@ -16,6 +16,8 @@ import { useNavigate } from 'react-router-dom';
 import ParameterInput from '../../../../../components/input/parameterInput/parameterInput.component';
 import HiddenInput from '../../../../../components/input/hidden.component';
 import { useNotifications } from '../../../../../hooks/useNotifications.hook';
+import FormRemoveRow from '../../../../../components/form/removeRow/formRemoveRow.component';
+import FormAddRow from '../../../../../components/form/addRow/formAddRow.component';
 
 interface LayoutFormProps {
   layout: LayoutDTO | undefined;
@@ -57,7 +59,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
     if (isNew) {
       PUT('layouts/layout', formData, LayoutSchema, data => {
         layoutsDispatch({ type: 'addLayout', layout: data });
-        addNotification('success', 'New layout added.');
+        addNotification('Success', 'New layout added.');
         reset(data);
         navigate(`/website/layouts/${data.id}`);
       });
@@ -74,44 +76,46 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
       <HiddenInput register={register} name={'id'} />
       <FormTable>
         <tr>
-          <th>Label</th>
-          <td><Input register={register} name={'label'} errors={errors} width={'350px'} /></td>
+          <th style={{ width: '45px' }}>Label</th>
+          <td><Input register={register} name={'label'} width={'300px'} errors={errors} /></td>
         </tr>
       </FormTable>
       <fieldset>
         <legend>Avatars</legend>
-        <p>All the avatars that should display this layout when you use it. Avoid entering the same avatar on multiple layouts.</p>
-        <FormTable>
-          {fields.map((item, index) => (<tr key={index}>
-            {index === 0 && <th rowSpan={fields.length}>Avatar ID</th>}
-            <td>
-              <Input register={register} name={`avatars.${index}`} errors={errors} width={'350px'} />
-            </td>
-            <td>
-              <IconButton role={'remove'} size={'small'} onClick={() => remove(index)} />
-            </td>
-          </tr>))}
+        <p>Avatars that will display this layout when you use them. Avoid entering the same avatar on multiple layouts.</p>
+        <FormTableStyled>
+          {fields.length > 0 && <thead>
           <tr>
-            <td colSpan={3}>
-              <FormControlBar>
-                <AddCounter canAddMore={canAddAvatars}>{fields.length}/{tier.avatars}</AddCounter>
-                <IconButton role={'add'} size={'small'} disabled={!canAddAvatars} onClick={() => append('')} />
-              </FormControlBar>
-            </td>
+            <th>Avatar</th>
+            <th></th>
           </tr>
-        </FormTable>
+          </thead>}
+          <tbody>
+          {fields.map((item, index) => (
+            <tr key={index}>
+              <td>
+                <Input register={register} name={`avatars.${index}`} errors={errors} />
+              </td>
+              <FormRemoveRow onClick={() => remove(index)} />
+            </tr>
+          ))}
+          <tr>
+            <FormAddRow colSpan={1} items={fields.length} limit={tier.avatars} onClick={() => append('')} />
+          </tr>
+          </tbody>
+        </FormTableStyled>
       </fieldset>
       <fieldset disabled={!tier.health}>
         <legend>Health system</legend>
         <p>When using an avatar that isn't set on any layout you can display a specific default layout.</p>
         <FormTable>
           <tr>
-            <th>Enabled</th>
+            <th style={{ width: '80px' }}>Enabled</th>
             <td><CheckboxInput register={register} name={'healthEnabled'} readOnly={!tier.health} errors={errors} /></td>
           </tr>
           <tr>
             <th>Parameter</th>
-            <td><ParameterInput register={register} name={'healthPath'} setValue={setValue} defaultType={'output'} width={'350px'} errors={errors} /></td>
+            <td><ParameterInput register={register} name={'healthPath'} setValue={setValue} defaultType={'output'} errors={errors} /></td>
           </tr>
           <tr>
             <th>Max health</th>
@@ -124,12 +128,12 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
         <p>When using an avatar that isn't set on any layout you can display a specific default layout.</p>
         <FormTable>
           <tr>
-            <th>Enabled</th>
+            <th style={{ width: '80px' }}>Enabled</th>
             <td><CheckboxInput register={register} name={'useCostEnabled'} readOnly={!tier.useCost} errors={errors} /></td>
           </tr>
           <tr>
             <th>Parameter</th>
-            <td><ParameterInput register={register} name={'useCostPath'} setValue={setValue} defaultType={'output'} width={'350px'} errors={errors} /></td>
+            <td><ParameterInput register={register} name={'useCostPath'} setValue={setValue} defaultType={'output'} errors={errors} /></td>
           </tr>
           <tr>
             <th>Max cost?</th>

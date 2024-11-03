@@ -1,24 +1,18 @@
 import styled from 'styled-components';
 import { ReactProps } from '../../types';
 
-interface FormControlBarProps extends ReactProps {
-  justifyContent?: string;
-}
+const FormControlBar = styled.div<{ justifyContent?: string, position?: 'above' | 'below' }>`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: ${props => props.justifyContent ?? 'flex-end'};
+  align-items: center;
+  margin: ${props => props.position === 'above' ? '12px 0' : '12px 0 0 0'};
+  gap: 6px;
 
-export default function FormControlBar({ justifyContent, children }: FormControlBarProps) {
-  return (<FormControlStyled justifyContent={justifyContent}>
-    {children}
-  </FormControlStyled>);
-}
-
-const FormControlStyled = styled.div<{ justifyContent?: string }>`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: ${props => props.justifyContent ?? 'flex-end'};
-    align-items: center;
-
-    hr {
-        height: 44px;
-    }
+  hr {
+    height: 28px;
+  }
 `;
+
+export default FormControlBar;

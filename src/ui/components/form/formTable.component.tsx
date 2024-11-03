@@ -15,8 +15,9 @@ export default function FormTable({ children, width, thAlign }: FormTableProps) 
 }
 
 export const FormTableStyled = styled.table<{ width?: string, thAlign?: string }>`
-  border-collapse: collapse;
-  width: ${props => props.width ? props.width : 'auto'};
+  //border-collapse: collapse;
+  width: ${props => props.width ? props.width : '100%'};
+  border-spacing: 3px;
 
   tbody th {
     font-weight: normal;

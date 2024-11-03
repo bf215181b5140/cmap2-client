@@ -5,11 +5,11 @@ import TextButton from '../../../../../../components/buttons/textButton.componen
 import IconButton from '../../../../../../components/buttons/iconButton.component';
 
 interface QuickEditToolbarProps {
-  client: LayoutsPageDTO;
   item: QuickEditItem;
 }
 
-export default function QuickEditToolbar({ client, item }: QuickEditToolbarProps) {
+export default function QuickEditToolbar({ item }: QuickEditToolbarProps) {
+
   return (<QuickEditToolbarStyled>
     <div>
       <TextButton text={'Hello :D'} />
@@ -26,8 +26,9 @@ export default function QuickEditToolbar({ client, item }: QuickEditToolbarProps
 }
 
 const QuickEditToolbarStyled = styled.div`
-  background-color: ${props => props.theme.colors.ui.background4};
-  //border-radius: 8px 8px 0 0;
+  background-color: ${props => props.theme.colors.ui.background3};
+  border-bottom: 2px solid ${props => props.theme.colors.ui.appBgOpaque};
+  border-radius: 0 0 8px 8px;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -36,7 +37,9 @@ const QuickEditToolbarStyled = styled.div`
   align-items: center;
   flex-wrap: wrap;
   position: sticky;
-  bottom: 0;
+  top: 0;
+  z-index: 2;
+  //box-shadow: 0 0 5px black;
   
   > div {
     display: flex;

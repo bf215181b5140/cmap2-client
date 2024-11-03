@@ -18,8 +18,8 @@ interface InputProps<T extends FieldValues> {
 export default function Input<T extends FieldValues>({ type = 'text', name, register, placeholder, errors, readOnly, width }: InputProps<T>) {
   const [hasError, errorMessage] = useInputError(name, errors);
 
-  return (<div>
-    <InputStyled type={type} {...register(name)} placeholder={placeholder} errors={hasError} readOnly={readOnly} width={width} />
+  return (<div style={{ width: width || '100%' }}>
+    <InputStyled type={type} {...register(name)} placeholder={placeholder} errors={hasError} readOnly={readOnly} width={'100%'} />
     <InputErrorMessage errorMessage={errorMessage} />
   </div>);
 };

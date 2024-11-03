@@ -10,7 +10,7 @@ interface SegmentProps extends ReactProps {
   segmentTitle?: string;
   toggleTitle?: string;
   infoContent?: React.JSX.Element;
-  width?: GroupWidth;
+  width?: GroupWidth | string;
   loading?: boolean;
 }
 
@@ -31,11 +31,11 @@ export default function Segment({ segmentTitle, toggleTitle, infoContent, width,
       case 'Full':
         return `calc(100%)`;
       default:
-        return undefined;
+        return width;
     }
   }
 
-  return (<SegmentWrapper flexGrow={!!getFlexBasis()} flexBasis={getFlexBasis()} flex={getFlexBasis()}>
+  return (<SegmentWrapper flex={getFlexBasis()}>
 
     {/* Toggle title */}
     {toggleTitle && <SegmentTitle shown={shown}>
@@ -61,9 +61,7 @@ export default function Segment({ segmentTitle, toggleTitle, infoContent, width,
   </SegmentWrapper>);
 }
 
-const SegmentWrapper = styled.div<{ flexGrow?: boolean | string, flexBasis?: string, flex?: string }>`
-    // flex-grow: ${props => props.flexGrow ? 1 : 0};
-    // flex-basis: ${props => props.flexBasis || '0'};
+const SegmentWrapper = styled.div<{ flex?: string }>`
     flex: ${props => props.flex || '0'};
 `;
 

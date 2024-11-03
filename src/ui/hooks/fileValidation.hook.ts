@@ -19,10 +19,10 @@ export default function useFileValidation() {
     let success: boolean = true;
 
     if (file.size >= maxSize) {
-      addNotification('error', 'File too large, max size is 3MB');
+      addNotification('Error', 'File too large, max size is 3MB');
       success = false;
     } else if (!allowedTypes.includes(file.type)) {
-      addNotification('error', 'Only png or jpeg images');
+      addNotification('Error', 'Only png or jpeg images');
       success = false;
     }
 

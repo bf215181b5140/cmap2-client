@@ -30,7 +30,7 @@ export default function ProfilePage() {
         <div className={'SectionMenuLink'} onClick={() => setSection('style')} aria-current={section === 'style'}>Style</div>
       </div>
       <div>
-        <a id={'viewOnWebsiteLink'} href={WEBSITE_URL + '/' + profile.username} target={'_blank'}>View profile on website <i className={'ri-external-link-line'} /></a>
+        <a href={WEBSITE_URL + '/' + profile.username} target={'_blank'}>View profile on website <i className={'ri-external-link-line'} /></a>
       </div>
     </SectionMenu>
 

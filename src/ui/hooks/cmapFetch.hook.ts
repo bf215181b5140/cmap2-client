@@ -1,7 +1,7 @@
 import { z, ZodError } from 'zod';
 import { useContext, useState } from 'react';
 import { CredentialsContext } from '../components/context/credentials.context';
-import { WEBSITE_URL } from '../../shared/const';
+import { IS_DEV, WEBSITE_URL } from '../../shared/const';
 import log from 'electron-log/renderer';
 import { FetchStatusContext } from '../components/context/fetchStatus.context';
 import { nanoid } from 'nanoid';
@@ -132,7 +132,7 @@ export default function useCmapFetch() {
         if (cmapRes.response.ok) return cmapRes;
 
         // clear client token if we're unauthorized
-        if (cmapRes.response.status === 401) clearLoginToken();
+        if (cmapRes.response.status === 401 && !IS_DEV) clearLoginToken();
 
         // check if it's apiResponse object
         const apiResponse = ApiResponseSchema.safeParse(cmapRes.data);
@@ -157,7 +157,7 @@ export default function useCmapFetch() {
       })
       // Catch errors and display toast with error message, run error callback if provided
       .catch(err => {
-        let notificationType: NotificationType = 'error';
+        let notificationType: NotificationType = 'Error';
         let message = 'Unknown error connecting to server.';
         let id: string = nanoid(8);
 

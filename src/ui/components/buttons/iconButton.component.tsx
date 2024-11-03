@@ -108,11 +108,11 @@ export default function IconButton({ role, onClick, icon, tooltip, disabled, act
 
 const IconButtonStyled = styled.button<{ role: IconButtonRole, size: IconButtonSize, margin?: string }>`
   ${globalInputStyle};
+  margin: ${props => props.margin ? props.margin : '0'};
   cursor: pointer;
   vertical-align: top;
   position: relative;
   color: ${props => props.theme.colors.font.text};
-  ${props => props.margin && css`margin: ${props.margin};`};
 
   // Style type
   ${props => {

@@ -15,7 +15,7 @@ export default function AvatarParameterProperties({ type, properties }: AvatarPa
 
   function copyPath(path: string) {
     navigator.clipboard.writeText(path).then(() => {
-      addNotification('info', `Copied parameter to clipboard: ${path}`, { group: 'copyToClipboard' });
+      addNotification('Info', `Copied parameter to clipboard: ${path}`, { group: 'copyToClipboard' });
     });
   }
 

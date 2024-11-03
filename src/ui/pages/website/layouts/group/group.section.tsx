@@ -5,9 +5,7 @@ import { LayoutsPageContext } from '../layouts.context';
 
 export default function GroupSection() {
 
-  const { group } = useContext(LayoutsPageContext);
-
   return (<Section>
-    <GroupForm group={group} />
+    <GroupForm />
   </Section>);
 }

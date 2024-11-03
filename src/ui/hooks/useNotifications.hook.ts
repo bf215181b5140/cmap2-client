@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Notification } from '../../shared/objects/notification';
 import { nanoid } from 'nanoid';
 import { ToastContext } from '../components/context/toast.context';
-import { NotificationType } from 'cmap2-shared';
+import { NotificationType, NotificationTypeSchema } from 'cmap2-shared';
 
 interface AddNotificationOptions {
   id?: string;
@@ -33,13 +33,13 @@ export function useNotifications() {
 
   function notificationColor(type: NotificationType) {
     switch (type) {
-      case 'info':
+      case NotificationTypeSchema.Enum.Info:
         return { background: '#284966', border: '#486D8B' };
-      case 'success':
+      case NotificationTypeSchema.Enum.Success:
         return { background: '#29553B', border: '#4A795E' };
-      case 'warning':
+      case NotificationTypeSchema.Enum.Warning:
         return { background: '#905A2D', border: '#B87E4F' };
-      case 'error':
+      case NotificationTypeSchema.Enum.Error:
       default:
         return { background: '#8D3F3F', border: '#B56161' };
     }
@@ -47,13 +47,13 @@ export function useNotifications() {
 
   function notificationIcon(type: NotificationType) {
     switch (type) {
-      case 'info':
+      case NotificationTypeSchema.Enum.Info:
         return 'ri-information-2-line';
-      case 'success':
+      case NotificationTypeSchema.Enum.Success:
         return 'ri-checkbox-circle-line';
-      case 'warning':
+      case NotificationTypeSchema.Enum.Warning:
         return 'ri-alert-line';
-      case 'error':
+      case NotificationTypeSchema.Enum.Error:
       default:
         return 'ri-spam-3-line';
     }

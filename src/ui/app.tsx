@@ -102,7 +102,7 @@ const AppStyled = styled.div`
     
     fieldset {
         margin: 8px 0;
-        padding: 6px 16px;
+        padding: 0 10px 8px 10px;
         border-width: 2px;
         border-style: solid;
         border-color: ${props => props.theme.colors.input.bg};

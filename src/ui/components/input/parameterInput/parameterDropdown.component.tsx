@@ -96,9 +96,9 @@ export default function ParameterDropdown({ showDropdown, setShowDropdown, onApp
       }
 
       if (spaceTop >= dropdownRect.height) {
-        style.top = '50px';
+        style.top = '40px';
       } else {
-        style.bottom = '50px';
+        style.bottom = '40px';
       }
 
       setDropdownPosition(style);

@@ -18,14 +18,16 @@ interface TextareaInputProps<T extends FieldValues> {
 export default function TextareaInput<T extends FieldValues>({ name, register, rows, placeholder, errors, readOnly, width }: TextareaInputProps<T>) {
   const [hasError, errorMessage] = useInputError(name, errors);
 
-  return (<div>
-    <TextareaInputStyled {...register(name)} rows={rows || 3} placeholder={placeholder} errors={hasError} readOnly={readOnly} width={width} />
+  return (<div style={{ width: width || '100%' }}>
+    <TextareaInputStyled {...register(name)} rows={rows || 3} placeholder={placeholder} errors={hasError} readOnly={readOnly} width={'100%'} />
     <InputErrorMessage errorMessage={errorMessage} />
   </div>);
 };
 
 const TextareaInputStyled = styled.textarea<{ errors: boolean, width?: string }>`
-    ${globalInputStyle};
-    padding: 10px;
-    height: auto;
+  ${globalInputStyle};
+  padding: 10px;
+  height: auto;
+  display: block;
+  resize: none;
 `;

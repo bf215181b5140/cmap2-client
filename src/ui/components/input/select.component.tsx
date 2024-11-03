@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
@@ -12,13 +12,15 @@ interface SelectInputProps<T extends FieldValues> {
   errors?: FieldErrors;
   readOnly?: boolean;
   width?: string;
+  onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export default function SelectInput<T extends FieldValues>({ name, register, options, errors, readOnly, width }: SelectInputProps<T>) {
+export default function SelectInput<T extends FieldValues>({ name, register, options, errors, readOnly, width, onChange }: SelectInputProps<T>) {
+
   const [hasError, errorMessage] = useInputError(name, errors);
 
-  return (<div>
-    <SelectInputStyled {...register(name)} errors={hasError} className={readOnly ? 'readOnly' : undefined} width={width}>
+  return (<div style={{ width: width || 'auto' }}>
+    <SelectInputStyled {...register(name, { onChange: event => onChange ? onChange(event) : undefined})} errors={hasError} className={readOnly ? 'readOnly' : undefined} width={width || 'auto'}>
       {options && options.map((option) => (<option value={option.key} key={option.key}>{option.value}</option>))}
     </SelectInputStyled>
     <InputErrorMessage errorMessage={errorMessage} />

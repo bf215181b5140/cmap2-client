@@ -28,7 +28,7 @@ export default function UseInviteKey({ setClientTier }: UseInviteKeyProps) {
     POST('tiers/useInviteKey', formData, TierSchema, data => {
       setClientTier(data);
       reset();
-      addNotification('success', 'New invite key has been generated successfully.');
+      addNotification('Success', 'New invite key has been generated successfully.');
     }, () => reset());
   };
 

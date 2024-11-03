@@ -59,6 +59,7 @@ const SectionMenu = styled.div`
       color: ${props => props.theme.colors.font.text};
       background-color: ${props => props.theme.colors.buttons.info.bg};
       border: 2px solid ${props => props.theme.colors.buttons.info.bg};
+      transition: 0.1s linear;
 
       i {
         font-size: 18px;

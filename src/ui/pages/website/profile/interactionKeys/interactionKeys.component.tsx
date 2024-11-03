@@ -12,6 +12,8 @@ import IconButton from '../../../../components/buttons/iconButton.component';
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import AddCounter from '../../../../components/addCounter/addCounter.component';
+import FormRemoveRow from '../../../../components/form/removeRow/formRemoveRow.component';
+import FormAddRow from '../../../../components/form/addRow/formAddRow.component';
 
 interface InteractionKeysProps {
   profile: ProfilePageDTO;
@@ -28,9 +30,7 @@ export default function InteractionKeys({ profile, setInteractionKeys }: Interac
     }
   });
   const { fields, append, remove } = useFieldArray({ control, name: 'interactionKeys' });
-  const watchInteractionKeys = watch('interactionKeys');
 
-  const canAddMore = watchInteractionKeys.length < profile.tier.interactionKeys;
   const newKey = {
     id: null,
     label: '',
@@ -48,7 +48,7 @@ export default function InteractionKeys({ profile, setInteractionKeys }: Interac
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormTableStyled>
         <thead>
-        {watchInteractionKeys && watchInteractionKeys.length > 0 &&
+        {fields.length > 0 &&
           <tr>
             <th>Label</th>
             <th>Key</th>
@@ -65,24 +65,21 @@ export default function InteractionKeys({ profile, setInteractionKeys }: Interac
               <Input register={register} name={`interactionKeys.${index}.label`} errors={errors} />
             </td>
             <td>
-              <Input register={register} name={`interactionKeys.${index}.key`} width={'180px'} errors={errors} />
+              <Input register={register} name={`interactionKeys.${index}.key`} errors={errors} />
             </td>
-            <td>
-              <IconButton role={'normal'} icon={'ri-key-2-fill'} tooltip={'Generate random key'}
+            <td style={{ width: '30px' }}>
+              <IconButton role={'normal'} icon={'ri-key-2-fill'} tooltip={'Generate random key'} margin={'0'}
                           onClick={() => setValue(`interactionKeys.${index}.key`, nanoid(16), { shouldDirty: true })} />
             </td>
-            <td>
-              <IconButton role={'remove'} onClick={() => remove(index)} size={'small'} />
-            </td>
+            <FormRemoveRow onClick={() => remove(index)} />
           </tr>
         ))}
+        <tr>
+          <FormAddRow colSpan={3} items={fields.length} limit={profile.tier.interactionKeys} onClick={() => append(newKey)} />
+        </tr>
         </tbody>
       </FormTableStyled>
-      <hr />
       <FormControlBar>
-        <AddCounter canAddMore={canAddMore}>{watchInteractionKeys.length}/{profile.tier.interactionKeys}</AddCounter>
-        <IconButton role={'add'} size={'small'} disabled={!canAddMore} onClick={() => append(newKey)} />
-        <hr />
         <IconButton role={'save'} disabled={!isDirty} />
         <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
       </FormControlBar>
