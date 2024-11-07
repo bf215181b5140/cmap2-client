@@ -53,7 +53,7 @@ export default function ParameterInput<T extends FieldValues>({ name, register, 
     </div>
 
     {/* Toggle dropdown for parameters */}
-    <CustomIconButtonStyled role={'normal'} tooltip={'Search parameters'} icon={'ri-menu-search-line'} margin={'0'} onClick={onToggleDropdown} disabled={readOnly} />
+    <CustomIconButtonStyled role={'normal'} tooltip={'Search parameters'} icon={'ri-menu-search-line'} onClick={onToggleDropdown} disabled={readOnly} />
 
     {/* Show dropdown parameter picker */}
     {showDropdown && <ParameterDropdown showDropdown={showDropdown} setShowDropdown={setShowDropdown} onApplyParameter={onApplyParameter}

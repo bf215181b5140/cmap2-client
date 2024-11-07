@@ -68,8 +68,7 @@ export default function InteractionKeys({ profile, setInteractionKeys }: Interac
               <Input register={register} name={`interactionKeys.${index}.key`} errors={errors} />
             </td>
             <td style={{ width: '30px' }}>
-              <IconButton role={'normal'} icon={'ri-key-2-fill'} tooltip={'Generate random key'} margin={'0'}
-                          onClick={() => setValue(`interactionKeys.${index}.key`, nanoid(16), { shouldDirty: true })} />
+              <IconButton role={'normal'} icon={'ri-key-2-fill'} tooltip={'Generate random key'} onClick={() => setValue(`interactionKeys.${index}.key`, nanoid(16), { shouldDirty: true })} />
             </td>
             <FormRemoveRow onClick={() => remove(index)} />
           </tr>

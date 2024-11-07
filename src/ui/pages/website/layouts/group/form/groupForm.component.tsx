@@ -14,7 +14,7 @@ import SelectInput from '../../../../../components/input/select.component';
 import FormControlBar from '../../../../../components/form/formControlBar.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';
 import ParameterInput from '../../../../../components/input/parameterInput/parameterInput.component';
-import { VisibilityParameterConditionSchema } from 'cmap2-shared/src/enums/visibilityParameterCondition';
+import { VisibilityParameterConditionSchema } from 'cmap2-shared';
 import FormAddRow from '../../../../../components/form/addRow/formAddRow.component';
 import FormRemoveRow from '../../../../../components/form/removeRow/formRemoveRow.component';
 import CheckboxInput from '../../../../../components/input/checkbox.component';

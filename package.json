@@ -1,5 +1,5 @@
 {
-  "name": "cmap-client",
+  "name": "cmap2-client",
   "version": "3.0.0",
   "description": "VRChat utility application for OSC interactions and access to Cmap website features.",
   "private": true,

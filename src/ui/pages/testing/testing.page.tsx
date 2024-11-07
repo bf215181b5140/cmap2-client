@@ -2,12 +2,17 @@ import { Page } from '../../components/page/page.component';
 import React, { useState } from 'react';
 import { useNotifications } from '../../hooks/useNotifications.hook';
 import styled from 'styled-components';
-import { GroupWidth } from 'cmap2-shared';
+import { GroupWidth, LayoutFormDTO, LayoutFormSchema } from 'cmap2-shared';
 import './testing.style.css';
 import Segment from '../../components/segment/segment.component';
 import PageMenu from '../../components/menu/pageMenu/pageMenu.component';
+import AvatarInput from '../../components/input/avatarInput/avatarInput.component';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function TestingPage() {
+
+  const { register, setValue, control, handleSubmit, reset, formState: { errors, isDirty } } = useForm();
 
   const { addNotification } = useNotifications();
   const [groups, setGroups] = useState<GroupWidth[]>(['None', 'None', 'None', 'None', 'Third', 'None', 'Half', 'Half', 'Third', 'Third', 'Third', 'Third',
@@ -67,6 +72,9 @@ export default function TestingPage() {
 
 
     <Segment segmentTitle={'Testing segment 2'}>
+      <AvatarInput register={register} name={'avatar1'} setValue={setValue} errors={errors} />
+      <AvatarInput register={register} name={'avatar2'} width={'250px'} setValue={setValue} errors={errors} />
+
       <p>Pellentesque at blandit justo. Vestibulum et tincidunt massa. Nunc quis aliquam lacus. Etiam eget aliquet ex, id euismod felis. Nullam sed elit at
         purus pulvinar mattis vel eu sem. Mauris in
         fermentum metus, a venenatis leo. Morbi eget nulla nulla. Vestibulum volutpat lorem nec commodo volutpat. Aenean vel quam sed leo lacinia suscipit.

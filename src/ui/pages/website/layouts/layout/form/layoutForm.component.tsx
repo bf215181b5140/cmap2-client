@@ -18,6 +18,7 @@ import HiddenInput from '../../../../../components/input/hidden.component';
 import { useNotifications } from '../../../../../hooks/useNotifications.hook';
 import FormRemoveRow from '../../../../../components/form/removeRow/formRemoveRow.component';
 import FormAddRow from '../../../../../components/form/addRow/formAddRow.component';
+import AvatarInput from '../../../../../components/input/avatarInput/avatarInput.component';
 
 interface LayoutFormProps {
   layout: LayoutDTO | undefined;
@@ -94,7 +95,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
           {fields.map((item, index) => (
             <tr key={index}>
               <td>
-                <Input register={register} name={`avatars.${index}`} errors={errors} />
+                <AvatarInput register={register} name={`avatars.${index}`} setValue={setValue} errors={errors} />
               </td>
               <FormRemoveRow onClick={() => remove(index)} />
             </tr>

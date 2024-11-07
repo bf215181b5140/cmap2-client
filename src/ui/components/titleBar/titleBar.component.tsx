@@ -35,12 +35,12 @@ const TitleBarStyled = styled.div`
     justify-content: space-between;
     -webkit-app-region: drag;
     -webkit-user-select: none;
+    padding: 0 8px;
 `;
 
 const StatusStyled = styled.div`
     display: flex;
     align-items: center;
-    margin-left: 10px;
     font-size: 30px;
 
     i {
@@ -51,7 +51,7 @@ const StatusStyled = styled.div`
 
 const ButtonsStyled = styled.div`
     display: flex;
+    gap: 6px;
     align-items: center;
-    margin-right: 8px;
     -webkit-app-region: none;
 `;
