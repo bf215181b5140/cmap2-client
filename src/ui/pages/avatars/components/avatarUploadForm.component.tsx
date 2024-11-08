@@ -66,7 +66,7 @@ export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUpl
     avatarsDispatch({ type: 'addAvatar', avatar: avatar });
     addNotification('Success', 'Avatar saved');
     clearForm();
-    navigate('/osc/avatars/' + avatar.id);
+    navigate('/avatars/' + avatar.id);
   }
 
   function clearForm() {

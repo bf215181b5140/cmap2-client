@@ -6,6 +6,7 @@ import UseInviteKey from './useInviteKey/useInviteKey.component';
 import useCmapFetch from '../../hooks/cmapFetch.hook';
 import { Page } from '../../components/page/page.component';
 import SectionMenu from '../../components/menu/sectionMenu/sectionMenu.component';
+import NoConnection from '../../components/noConnection/noConnection.component';
 
 type TiersPageSections = 'tiers' | 'inviteKeys';
 
@@ -16,6 +17,7 @@ export default function TiersPage() {
   const [tiers, setTiers] = useState<TierDTO[] | undefined>();
   const [clientTier, setClientTier] = useState<TierDTO | undefined>();
   const [generatedKeys, setGeneratedKeys] = useState<GeneratedInviteKeyDTO[] | undefined>();
+  const [noConnection, setNoConnection] = useState<boolean>(false);
 
   const minRank = tiers?.reduce((val, tier) => Math.min(val, tier.rank), 999) || 1;
 
@@ -31,8 +33,10 @@ export default function TiersPage() {
       setTiers(data.tiers);
       setClientTier(data.clientTier);
       setGeneratedKeys(data.generatedKeys);
-    });
+    }, () => setNoConnection(true));
   }, []);
+
+  if (noConnection) return <NoConnection />;
 
   if (!tiers || !clientTier || !generatedKeys) return;
 

@@ -29,10 +29,10 @@ export default function LayoutPreview() {
 
   function onGroupClick(event: MouseEvent<HTMLDivElement>, group?: GroupDTO) {
     if (!group) {
-      navigate(`/website/layouts/${layout?.id}/new`);
+      navigate(`/layouts/${layout?.id}/new`);
     } else {
       if (event.detail > 1) {
-        navigate(`/website/layouts/${layout?.id}/${group?.id}`);
+        navigate(`/layouts/${layout?.id}/${group?.id}`);
       } else {
         setActiveItem({ groupId: group.id });
       }
@@ -43,10 +43,10 @@ export default function LayoutPreview() {
 
   function onButtonClick(event: MouseEvent<HTMLDivElement>, group: GroupDTO, button?: ButtonDTO) {
     if (!button) {
-      navigate(`/website/layouts/${layout?.id}/${group?.id}/new`);
+      navigate(`/layouts/${layout?.id}/${group?.id}/new`);
     } else {
       if (event.detail > 1) {
-        navigate(`/website/layouts/${layout?.id}/${group.id}/${button.id}`);
+        navigate(`/layouts/${layout?.id}/${group.id}/${button.id}`);
       } else {
         setActiveItem({ groupId: group.id, buttonId: button.id });
       }

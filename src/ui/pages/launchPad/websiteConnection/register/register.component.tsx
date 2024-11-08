@@ -4,6 +4,7 @@ import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import LoadingSpinner from '../../../../components/loadingSpinner/loadingSpinner.component';
 import RegisterForm from './registerForm.component';
 import SpanNotification from '../../../../components/spanNotification/spanNotification.component';
+import NoConnection from '../../../../components/noConnection/noConnection.component';
 
 interface RegisterProps {
   loginSegment: () => void;
@@ -14,11 +15,14 @@ export default function Register({ loginSegment }: RegisterProps) {
   const { GET, fetchBusy } = useCmapFetch();
   const [registrationInfo, setRegistrationInfo] = useState<RegisterInfoDTO | undefined>();
   const [fingerprint, setFingerprint] = useState<string | undefined>();
+  const [noConnection, setNoConnection] = useState<boolean>(false);
 
   useEffect(() => {
     window.IPC.get('getFingerprint').then(data => setFingerprint(data));
-    GET('register', RegisterInfoSchema, data => setRegistrationInfo(data));
+    GET('register', RegisterInfoSchema, data => setRegistrationInfo(data), () => setNoConnection(true));
   }, []);
+
+  if (noConnection) return <NoConnection />;
 
   if (fetchBusy || !fingerprint) return <LoadingSpinner />;
 
@@ -26,14 +30,14 @@ export default function Register({ loginSegment }: RegisterProps) {
 
   if (!registrationInfo.available) {
     return (<>
-      <SpanNotification type={'error'}>Website is currently not accepting new registrations.</SpanNotification>
-      {registrationInfo.message && <SpanNotification type={'info'}>{registrationInfo.message}</SpanNotification>}
+      <SpanNotification type={'Error'}>Website is currently not accepting new registrations.</SpanNotification>
+      {registrationInfo.message && <SpanNotification type={'Info'}>{registrationInfo.message}</SpanNotification>}
     </>);
   }
 
   return (<>
-    {registrationInfo.keyRequired && <SpanNotification type={'warning'}>Registration is currently only available if you have an invite key.</SpanNotification>}
-    {registrationInfo.message && <SpanNotification type={'info'}>{registrationInfo.message}</SpanNotification>}
+    {registrationInfo.keyRequired && <SpanNotification type={'Warning'}>Registration is currently only available if you have an invite key.</SpanNotification>}
+    {registrationInfo.message && <SpanNotification type={'Info'}>{registrationInfo.message}</SpanNotification>}
     <RegisterForm registrationInfo={registrationInfo} fingerprint={fingerprint} loginSegment={loginSegment} />
   </>);
 }

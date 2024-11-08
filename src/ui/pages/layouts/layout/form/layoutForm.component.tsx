@@ -61,7 +61,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
         layoutsDispatch({ type: 'addLayout', layout: data });
         addNotification('Success', 'New layout added.');
         reset(data);
-        navigate(`/website/layouts/${data.id}`);
+        navigate(`/layouts/${data.id}`);
       });
     } else {
       POST('layouts/layout', formData, LayoutSchema, data => {

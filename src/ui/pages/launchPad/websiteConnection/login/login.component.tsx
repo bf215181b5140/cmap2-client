@@ -8,6 +8,7 @@ import { Credentials } from '../../../../../shared/objects/credentials';
 import TextButton from '../../../../components/buttons/textButton.component';
 import FormTable from '../../../../components/form/formTable.component';
 import Input from '../../../../components/input/input.component';
+import FormControlBar from '../../../../components/form/formControlBar.component';
 
 export default function Login() {
 
@@ -34,21 +35,18 @@ export default function Login() {
     <p>To use website features you need to log in to or register a new website account.</p>
     <FormTable>
       <tr>
-        <th>Username</th>
+        <th style={{ width: '80px' }}>Username</th>
         <td><Input register={register} name={'username'} readOnly={!!credentials.apiToken} errors={errors} /></td>
       </tr>
       <tr>
         <th>Password</th>
         <td><Input type="password" register={register} name={'password'} readOnly={!!credentials.apiToken} errors={errors} /></td>
       </tr>
-      <tr>
-        <td></td>
-        <td style={{ textAlign: 'center' }}>
-          <TextButton text={'Clear'} onClick={onClear} />
-          <TextButton type={'submit'} text={'Log in'} />
-        </td>
-      </tr>
     </FormTable>
+    <FormControlBar>
+          <TextButton type={'submit'} text={'Log in'} />
+          <TextButton text={'Clear'} onClick={onClear} />
+    </FormControlBar>
   </form>);
 
 }

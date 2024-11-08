@@ -13,14 +13,14 @@ export default function LayoutsSection() {
 
   return (<Section>
     <LayoutPicker>
-      {layouts?.map(l => <div key={l.id} onClick={() => navigate(`/website/layouts/${l.id}`)}>
+      {layouts?.map(l => <div key={l.id} onClick={() => navigate(`/layouts/${l.id}`)}>
         <h2>{l.label}</h2>
         <div>{l.avatars.length} avatars</div>
         <div>{l.groups?.length || 0} groups</div>
         <div>{l.groups?.reduce((sum, g) => sum += (g.buttons?.length || 0), 0) || 0} buttons</div>
       </div>)}
 
-      <div onClick={() => navigate('/website/layouts/new')} className={'addNew'} aria-disabled={!canAddLayout}>
+      <div onClick={() => navigate('/layouts/new')} className={'addNew'} aria-disabled={!canAddLayout}>
         <i className={'ri-function-add-fill'} />
         <div>{layouts.length}/{tier.layouts}</div>
         <h2>{canAddLayout ? 'Add layout' : 'Limit reached'}</h2>

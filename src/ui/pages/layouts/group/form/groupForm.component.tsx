@@ -55,7 +55,7 @@ export default function GroupForm() {
         layoutsDispatch({ type: 'addGroup', group: data, layoutId: formData.layoutId });
         addNotification('Success', 'New group added.');
         reset(data);
-        navigate(`/website/layouts/${layoutId}/${data.id}`);
+        navigate(`/layouts/${layoutId}/${data.id}`);
       });
     } else {
       POST('layouts/group', formData, GroupSchema, data => {

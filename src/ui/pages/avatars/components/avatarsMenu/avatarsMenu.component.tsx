@@ -20,12 +20,12 @@ export default function AvatarMenu({ avatars, activeAvatar, avatarsDispatch }: A
   function deleteAvatar() {
     if (!activeAvatar) return;
     avatarsDispatch({ type: 'removeAvatar', avatar: activeAvatar });
-    navigate('/osc/avatars/');
+    navigate('/avatars/');
   }
 
   return (<SectionMenu>
     <div>
-      <SelectInputStyled className={'SectionMenuLink'} onChange={(event) => navigate('/osc/avatars/' + event.target.value)} value={activeAvatar?.id}>
+      <SelectInputStyled className={'SectionMenuLink'} onChange={(event) => navigate('/avatars/' + event.target.value)} value={activeAvatar?.id}>
         {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
       </SelectInputStyled>
     </div>

@@ -6,13 +6,11 @@ import { useParams } from 'react-router-dom';
 export default function useProlfilePage() {
 
   const { GET } = useCmapFetch();
-  const [profile, setProfile] = useState<ProfilePageDTO | undefined>();
+  const [profile, setProfile] = useState<ProfilePageDTO | undefined | null>();
   const page = useParams().page ?? 'settings';
 
   useEffect(() => {
-    GET('profile', ProfilePageSchema, data => {
-      setProfile(data);
-    });
+    GET('profile', ProfilePageSchema, data => setProfile(data), () => setProfile(null));
   }, []);
 
   function setBasicInfo(basicInfo: BasicInfoFormDTO) {

@@ -10,6 +10,7 @@ import LayoutSection from './layout/layout.section';
 import GroupSection from './group/group.section';
 import ButtonSection from './button/button.section';
 import LayoutsSection from './layouts/layouts.section';
+import NoConnection from '../../components/noConnection/noConnection.component';
 
 export default function LayoutsPage() {
 
@@ -21,15 +22,19 @@ export default function LayoutsPage() {
   const [style, setStyle] = useState<StyleDTO | undefined>();
   const [interactionKeys, setInteractionKeys] = useState<InteractionKeyDTO[]>([]);
   const [layouts, layoutsDispatch] = useReducer(layoutsReducer, []);
+  const [noConnection, setNoConnection] = useState<boolean>(false);
 
   useEffect(() => {
     GET('layouts', LayoutsPageSchema, (data) => {
       setTier(data.tier);
       setBackground(data.background);
       setStyle(data.style);
+      setInteractionKeys(data.interactionKeys);
       layoutsDispatch({ type: 'setLayouts', layouts: data.layouts });
-    });
+    }, () => setNoConnection(true));
   }, []);
+
+  if (noConnection) return <NoConnection />;
 
   if (!tier || !background || !style) return;
 
@@ -58,7 +63,7 @@ export default function LayoutsPage() {
     <LayoutsPageContext.Provider value={pageData}>
 
       <PageMenu>
-        <div onClick={() => navigate('/website/layouts')} aria-current={section === 'layouts'}>Layouts</div>
+        <div onClick={() => navigate('/layouts')} aria-current={section === 'layouts'}>Layouts</div>
 
         <i className={'ri-arrow-right-s-line'} />
 
@@ -68,7 +73,7 @@ export default function LayoutsPage() {
           {layouts.length > 0 && <div className={'PageMenuDropdown'}>
             <ul>
               {layouts.map(l =>
-                <li key={l.id} onClick={() => navigate(`/website/layouts/${l.id}`)}>{l.label}</li>
+                <li key={l.id} onClick={() => navigate(`/layouts/${l.id}`)}>{l.label}</li>
               )}
             </ul>
           </div>}
@@ -82,7 +87,7 @@ export default function LayoutsPage() {
           {(layout?.groups?.length || 0) > 0 && <div className={'PageMenuDropdown'}>
             <ul>
               {layout?.groups?.map((g, index) =>
-                <li key={g.id} onClick={() => navigate(`/website/layouts/${layout.id}/${g.id}`)}>{g.label || `Unnamed group ${index}`}</li>
+                <li key={g.id} onClick={() => navigate(`/layouts/${layout.id}/${g.id}`)}>{g.label || `Unnamed group ${index}`}</li>
               )}
             </ul>
           </div>}
@@ -96,7 +101,7 @@ export default function LayoutsPage() {
           {(group?.buttons?.length || 0) > 0 && <div className={'PageMenuDropdown'}>
             <ul>
               {group?.buttons?.map((b, index) =>
-                <li key={b.id} onClick={() => navigate(`/website/layouts/${layout?.id}/${group.id}/${b.id}`)}>{b.label || `Unnamed button ${index}`}</li>
+                <li key={b.id} onClick={() => navigate(`/layouts/${layout?.id}/${group.id}/${b.id}`)}>{b.label || `Unnamed button ${index}`}</li>
               )}
             </ul>
           </div>}

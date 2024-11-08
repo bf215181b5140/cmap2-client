@@ -9,6 +9,7 @@ import BackgroundPicker from './background/backgroundPicker.component';
 import StylePicker from './style/stylePicker.component';
 import ProfilePreview from './components/profilePreview.component';
 import SectionMenu from '../../components/menu/sectionMenu/sectionMenu.component';
+import NoConnection from '../../components/noConnection/noConnection.component';
 
 type ProfilePageSections = 'basicInfo' | 'interactionKeys' | 'background' | 'style';
 
@@ -18,7 +19,9 @@ export default function ProfilePage() {
   const [section, setSection] = useState<ProfilePageSections>('basicInfo');
   const pageFlexDirection = section === 'basicInfo' ? 'row' : 'column';
 
-  if (!profile) return;
+  if (profile === undefined) return;
+
+  if (profile === null) return <NoConnection />;
 
   return (<Page flexDirection={pageFlexDirection}>
 

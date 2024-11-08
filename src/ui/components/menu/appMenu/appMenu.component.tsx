@@ -13,7 +13,7 @@ export default function AppMenu() {
 
     {/* disabled={!apiToken} */}
     <AppMenuLink to={'/profile'} icon={'ri-profile-fill'} tooltip={'Profile'} />
-    <AppMenuLink to={'/layouts/:layoutId?/:groupId?/:buttonId?'} icon={'ri-layout-masonry-fill'} tooltip={'Layouts'} />
+    <AppMenuLink to={'/layouts'} icon={'ri-layout-masonry-fill'} tooltip={'Layouts'} />
     <AppMenuLink to={'/parameters'} icon={'ri-archive-stack-fill'} tooltip={'Tracked parameters'} />
     <AppMenuLink to={'/tiers'} icon={'ri-medal-fill'} tooltip={'Tiers & invite keys'} />
 
