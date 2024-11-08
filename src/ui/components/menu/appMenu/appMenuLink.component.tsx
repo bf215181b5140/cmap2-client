@@ -34,8 +34,8 @@ const AppMenuLinkStyled = styled(Link)<{ selected: boolean }>`
     border-radius: 0 0 7px 7px;
     transition: 0.1s linear;
     position: relative;
-    padding: ${props => props.selected ? '15px 16px 12px 16px' : '10px 16px'};
-    margin-bottom: ${props => props.selected ? '0' : '7px'};
+    padding: ${props => props.selected ? '12px 12px 8px 12px' : '8px 12px'};
+    margin-bottom: ${props => props.selected ? '0' : '6px'};
     background-color: ${props => props.selected ? props.theme.colors.navBar.activeBg : props.theme.colors.navBar.bg};
 
     i {
@@ -66,7 +66,7 @@ const AppMenuLinkStyled = styled(Link)<{ selected: boolean }>`
     }
 
     :hover {
-        padding: 15px 16px 12px 16px;
+        padding: 12px 12px 8px 12px;
         margin-bottom: 0;
         background-color: ${props => props.selected ? props.theme.colors.navBar.activeBg : props.theme.colors.navBar.hoverBg};
 

@@ -12,6 +12,11 @@ import OscPage from './pages/osc/osc.page';
 import WebsitePage from './pages/website/website.page';
 import TestingPage from './pages/testing/testing.page';
 import NotificationsPage from './pages/notifications/notifications.page';
+import AvatarsPage from './pages/avatars/avatars.page';
+import ProfilePage from './pages/profile/profile.page';
+import LayoutsPage from './pages/layouts/layouts.page';
+import ParametersPage from './pages/state/parameters.page';
+import TiersPage from './pages/tiers/tiers.page';
 
 export default function App() {
 
@@ -21,8 +26,12 @@ export default function App() {
       <Content>
         <Routes>
           <Route path="/osc/*" element={<OscPage />} />
-          <Route path="/website/*" element={<WebsitePage />} />
-          {/* <Route path="/avatars/:avatarId?" element={<AvatarsPage />} /> */}
+          <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/layouts/:layoutId?/:groupId?/:buttonId?" element={<LayoutsPage />} />
+          <Route path="/parameters" element={<ParametersPage />} />
+          <Route path="/tiers" element={<TiersPage />} />
+          {/* <Route path="/website/*" element={<WebsitePage />} /> */}
           {/* <Route path="/settings" element={<SettingsPage />} /> */}
           {/* <Route path="/lovense" element={<LovensePage />} /> */}
           {/* <Route path="/updater" element={<UpdaterPage />} /> */}

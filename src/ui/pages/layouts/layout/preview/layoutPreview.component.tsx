@@ -1,0 +1,151 @@
+import { useNavigate } from 'react-router-dom';
+import { useContext, useState, MouseEvent } from 'react';
+import { LayoutsPageContext } from '../../layouts.context';
+import { QuickEditItem } from './quickEditToolbar/quickEditToolbar.model';
+import { ButtonDTO, GroupDTO, LayoutDTO } from 'cmap2-shared';
+import QuickEditToolbar from './quickEditToolbar/quickEditToolbar.component';
+import Layout from '../../../../components/preview/layout/layout.component';
+import LayoutGroup from '../../../../components/preview/group/layoutGroup.component';
+import LayoutButton from '../../../../components/preview/button/layoutButton.component';
+import ParameterButton from '../../../../components/preview/button/parameter.button';
+import AddCounter from '../../../../components/addCounter/addCounter.component';
+import styled from 'styled-components';
+import Background from '../../../../components/background/background.component';
+
+export default function LayoutPreview() {
+
+  const navigate = useNavigate();
+  const { tier, background, style, layout } = useContext(LayoutsPageContext);
+  const [mode, setMode] = useState<'edit' | 'simulate'>('edit');
+  const [activeItem, setActiveItem] = useState<QuickEditItem | undefined>();
+
+  function canAddGroup(layout: LayoutDTO) {
+    return (layout.groups?.length || 0) < tier.groups;
+  }
+
+  function canAddButton(group: GroupDTO) {
+    return (group.buttons?.length || 0) < tier.buttons;
+  }
+
+  function onGroupClick(event: MouseEvent<HTMLDivElement>, group?: GroupDTO) {
+    if (!group) {
+      navigate(`/website/layouts/${layout?.id}/new`);
+    } else {
+      if (event.detail > 1) {
+        navigate(`/website/layouts/${layout?.id}/${group?.id}`);
+      } else {
+        setActiveItem({ groupId: group.id });
+      }
+    }
+  }
+
+  if (!layout) return;
+
+  function onButtonClick(event: MouseEvent<HTMLDivElement>, group: GroupDTO, button?: ButtonDTO) {
+    if (!button) {
+      navigate(`/website/layouts/${layout?.id}/${group?.id}/new`);
+    } else {
+      if (event.detail > 1) {
+        navigate(`/website/layouts/${layout?.id}/${group.id}/${button.id}`);
+      } else {
+        setActiveItem({ groupId: group.id, buttonId: button.id });
+      }
+    }
+  }
+
+  return (<LayoutPreviewStyled>
+    <PreviewBackground background={background}>
+
+      {activeItem && <QuickEditToolbar item={activeItem} />}
+      <div style={{ height: '100px' }} />
+
+
+      <Layout style={style}>
+
+        {/* Groups */}
+        {layout?.groups?.map(group => (
+          <LayoutGroup key={group.id} style={style} group={group} onClick={event => onGroupClick(event, group)}>
+
+            {/* Buttons */}
+            {group.buttons?.map(button => (
+              <LayoutButton key={button.id} onClick={event => onButtonClick(event, group, button)}>
+                <ParameterButton button={button} style={style} />
+              </LayoutButton>
+            ))}
+
+            {/* Add Button */}
+            <div onClick={event => onButtonClick(event, group)} className={'newItem'} aria-disabled={!canAddButton(group)}>
+              {/* <i className={'ri-function-add-fill'} /> */}
+              <AddCounter canAddMore={canAddButton(group)}>{group.buttons?.length}/{tier.buttons}</AddCounter>
+              {canAddButton(group) ? 'Add button' : 'Limit reached'}
+            </div>
+
+          </LayoutGroup>
+        ))}
+
+        {/* Add Group */}
+        <div onClick={event => onGroupClick(event)} className={'newItem'} aria-disabled={!canAddGroup(layout)}>
+          <i className={'ri-function-add-fill'} />
+          <AddCounter canAddMore={canAddGroup(layout)}>{layout.groups?.length}/{tier.groups}</AddCounter>
+          {canAddGroup(layout) ? 'Add group' : 'Limit reached'}
+        </div>
+
+      </Layout>
+
+    </PreviewBackground>
+  </LayoutPreviewStyled>);
+}
+
+const LayoutPreviewStyled = styled.div`
+  border: 4px solid ${props => props.theme.colors.ui.background3};
+  background: ${props => props.theme.colors.ui.background3};
+  border-radius: 8px;
+
+  div.newItem {
+    border: 2px dashed ${props => props.theme.colors.ui.element2};
+    padding: 30px;
+    border-radius: 8px;
+    flex: 100%;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: 0.1s linear;
+    pointer-events: auto;
+
+    i {
+      color: ${props => props.theme.colors.success};
+      position: absolute;
+      top: 24px;
+      right: 30px;
+      font-size: 30px;
+    }
+
+    :hover {
+      border-color: ${props => props.theme.colors.ui.element5};
+
+      > i {
+        color: ${props => props.theme.colors.ui.element5};
+      }
+    }
+
+    &[aria-disabled='true'] {
+      pointer-events: none;
+      border: none;
+      padding: 10px;
+
+      > i {
+        display: none;
+      }
+    }
+
+`;
+
+const PreviewBackground = styled(Background)`
+  padding: 40px;
+  padding-top: 0;
+  border-radius: 6px;
+`;
+
+const NewGroup = styled.div`
+  border: 4px dashed ${props => props.theme.colors.ui.background3};
+`;
