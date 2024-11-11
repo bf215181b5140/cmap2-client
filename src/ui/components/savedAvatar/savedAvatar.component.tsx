@@ -21,7 +21,7 @@ export default function AvatarName({ avatarId }: AvatarNameProps) {
   if (!avatarId) return;
 
   return (<AvatarNameStyled>
-    <Link to={'/osc/avatars/' + avatar?.id} className={'avatarNameLink'}>
+    <Link to={'/avatars/' + avatar?.id} className={'avatarNameLink'}>
       <i className={'ri-contacts-book-fill'} />
       {avatar?.name || avatarId}
     </Link>
