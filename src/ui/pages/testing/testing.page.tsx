@@ -20,6 +20,11 @@ export default function TestingPage() {
   const [buttons, setButtons] = useState<string[]>(['150px', '200px', '300px', '150px', '200px', '300px', '150px', '200px', '300px', '150px', '200px',
                                                     '300px']);
 
+  const [gridElements] = useState([{ size: '150px', span: 1 },{ size: '250px', span: 2 },{ size: '200px', span: 1 },{ size: '100px', span: 3 },
+                                   { size: '350px', span: 2 },{ size: '250px', span: 2 },{ size: '120px', span: 1 },{ size: '180px', span: 1 },
+                                   { size: '100px', span: 3 },{ size: '300px', span: 1 },{ size: '250px', span: 2 },{ size: '110px', span: 1 },
+                                   { size: '190px', span: 1 },])
+
   return (<Page flexDirection={'column'}>
 
     <PageMenu>
@@ -96,6 +101,14 @@ export default function TestingPage() {
       <TestDivBgBorder></TestDivBgBorder>
     </Segment>
 
+    <Segment segmentTitle={'Gap test'}>
+      <TestLayout>
+        {gridElements.map(gridElement => (<div>
+          <ParameterButton />
+        </div>))}
+      </TestLayout>
+    </Segment>
+
 
     {/*   <Layout> */}
     {/*   {groups.map((group, gi) => <LayoutGroup key={gi} width={group}> */}
@@ -111,6 +124,27 @@ export default function TestingPage() {
     {/* </Layout> */}
   </Page>);
 }
+
+const TestLayout = styled.div`
+  border: 1px solid black;
+    margin: 0;
+    padding: 20px;
+    column-gap: 20px;
+    column-fill: balance;
+    
+    //column-count: 3;
+    column-width: 240px;
+    
+    gap: 20px;
+    
+    > div {
+        width: 100%;
+        min-height: 80px;
+        margin-bottom: 20px;
+        break-inside: avoid-column;
+        border: 1px solid darkslategray;
+    }
+`;
 
 const ParameterButton = styled.div`
   width: 100%;

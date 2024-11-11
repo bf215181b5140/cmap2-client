@@ -1,6 +1,5 @@
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components';
 import { GroupDTO, GroupWidth, StyleDTO } from 'cmap2-shared';
-import './layoutGroup.style.css';
 import { ReactProps } from '../../../types';
 import { MouseEvent } from 'react';
 import { LAYOUT_ELEMENT_GAP } from '../layout/layout.component';
@@ -26,6 +25,14 @@ export default function LayoutGroup({ style, group, onClick, children }: LayoutG
 const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))<{ style: StyleDTO, width: GroupWidth }>`
   padding: 20px;
   border-radius: 8px;
+
+  .layoutButtonWrapper {
+      column-gap: 20px;
+      column-fill: balance;
+      column-width: 240px;
+      gap: 20px;
+  }
+
 
   flex: ${props => {
     switch (props.width) {

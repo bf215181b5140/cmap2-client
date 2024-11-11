@@ -7,7 +7,6 @@ import QuickEditToolbar from './quickEditToolbar/quickEditToolbar.component';
 import Layout from '../../../../components/preview/layout/layout.component';
 import LayoutGroup from '../../../../components/preview/group/layoutGroup.component';
 import LayoutButton from '../../../../components/preview/button/layoutButton.component';
-import ParameterButton from '../../../../components/preview/button/parameter.button';
 import AddCounter from '../../../../components/addCounter/addCounter.component';
 import styled from 'styled-components';
 import Background from '../../../../components/background/background.component';
@@ -68,9 +67,7 @@ export default function LayoutPreview() {
 
             {/* Buttons */}
             {group.buttons?.map(button => (
-              <LayoutButton key={button.id} onClick={event => onButtonClick(event, group, button)}>
-                <ParameterButton button={button} style={style} />
-              </LayoutButton>
+              <LayoutButton key={button.id} style={style} button={button} onClick={event => onButtonClick(event, group, button)} />
             ))}
 
             {/* Add Button */}
