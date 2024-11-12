@@ -4,6 +4,7 @@ import { VrcOscAvatar } from '../../shared/objects/vrcOscAvatar';
 import { TrackedParametersDTO, TrackedParametersMap, VrcParameter } from 'cmap2-shared';
 import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
+import { UpdateData } from '../updater/updater.model';
 
 export type IpcGetOptions = {
   getAppVersion: string;
@@ -56,8 +57,8 @@ export type IpcSendOptions = {
   setTrackedParameter: VrcParameter;
   deleteTrackedParameter: string;
 
-  // checkForUpdates: undefined;
-  // startUpdate: string;
+  checkForUpdates: undefined;
+  startUpdate: string;
 };
 
 export type IpcReceiveOptions = {
@@ -67,5 +68,5 @@ export type IpcReceiveOptions = {
   trackedParameters: TrackedParametersDTO;
 
   // lovenseStatus: LovenseStatus;
-  // updateData: UpdateData;
+  updateData: UpdateData;
 };

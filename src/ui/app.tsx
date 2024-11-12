@@ -9,7 +9,6 @@ import AppMenu from './components/menu/appMenu/appMenu.component';
 import Context from './components/context/context.component';
 import LaunchPadPage from './pages/launchPad/launchPad.page';
 import OscPage from './pages/osc/osc.page';
-import WebsitePage from './pages/website/website.page';
 import TestingPage from './pages/testing/testing.page';
 import NotificationsPage from './pages/notifications/notifications.page';
 import AvatarsPage from './pages/avatars/avatars.page';
@@ -17,6 +16,7 @@ import ProfilePage from './pages/profile/profile.page';
 import LayoutsPage from './pages/layouts/layouts.page';
 import ParametersPage from './pages/state/parameters.page';
 import TiersPage from './pages/tiers/tiers.page';
+import UpdaterPage from './pages/updater/updater.page';
 
 export default function App() {
 
@@ -34,7 +34,7 @@ export default function App() {
           {/* <Route path="/website/*" element={<WebsitePage />} /> */}
           {/* <Route path="/settings" element={<SettingsPage />} /> */}
           {/* <Route path="/lovense" element={<LovensePage />} /> */}
-          {/* <Route path="/updater" element={<UpdaterPage />} /> */}
+          <Route path="/updater" element={<UpdaterPage />} />
           {/* <Route path="/guide" element={<GuidePage />} /> */}
           <Route path="/notifications" element={<NotificationsPage />} />
           <Route path="/testing" element={<TestingPage />} />

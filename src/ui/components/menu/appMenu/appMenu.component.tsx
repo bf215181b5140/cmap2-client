@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import AppMenuLink from './appMenuLink.component';
 import { IS_DEV } from '../../../../shared/const';
+import useUpdateStatus from '../../../hooks/updateStatus.hook';
 
 export default function AppMenu() {
 
-  // const { updateStatusColor } = useUpdateStatus();
+  const { updateStatusColor } = useUpdateStatus();
 
   return (<AppMenuStyled>
     <AppMenuLink to={'/'} icon={'ri-rocket-2-fill'} tooltip={'Launch pad'} />
@@ -19,7 +20,7 @@ export default function AppMenu() {
 
     {/* <AppMenuLink to={'/website'} icon={'ri-global-line'} tooltip={'Website'} /> */}
     {/* <AppMenuLink to={'/lovense'} icon={'ri-wireless-charging-fill'} tooltip={'Lovense'} /> */}
-    {/* <NavBarLink to="/updater" icon="ri-download-2-fill" tooltip={'Updates'} attentionIcon={!!updateStatusColor} attentionColor={updateStatusColor} /> */}
+    <AppMenuLink to={'/updater'} icon={'ri-download-2-fill'} tooltip={'Updates'} attentionIcon={!!updateStatusColor} attentionColor={updateStatusColor} />
     <AppMenuLink to={'/notifications'} icon={'ri-discuss-line'} tooltip={'Notifications'} />
     <AppMenuLink to={'/guide'} icon={'ri-questionnaire-fill'} tooltip={'Quick start'} />
     <AppMenuLink to={'/settings'} icon="ri-settings-3-fill" tooltip={'Settings'} />

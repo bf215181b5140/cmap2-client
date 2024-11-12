@@ -9,6 +9,7 @@ import { AVATARS } from './store/avatars/avatars.store';
 import { OscController } from './osc/osc.controller';
 import { UtilityController } from './utility/utility.controller';
 import { NotificationsStore } from './store/notifications/notifications.store';
+import UpdaterService from './updater/updater.service';
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -31,6 +32,7 @@ app.whenReady().then(() => {
   new SocketController();
   new OscController();
   new UtilityController();
+  new UpdaterService();
 
   // create window and tray
   new WindowController();
