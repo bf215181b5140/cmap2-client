@@ -6,6 +6,7 @@ export default function useSocketConnection() {
   const [connected, setConnected] = useState<boolean>(false);
   const message = connected ? 'Connected' : 'Not Connected';
   const color = connected ? theme.colors.success : theme.colors.error;
+  const icon = 'ri-global-line';
 
   useEffect(() => {
     window.IPC.get('getSocketConnected').then(data => setConnected(data));
@@ -17,5 +18,5 @@ export default function useSocketConnection() {
     };
   }, []);
 
-  return { connected, message, color };
+  return { connected, message, color, icon };
 }

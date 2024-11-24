@@ -24,7 +24,7 @@ export default function ProfileForm({ profile, setBasicInfo }: ProfileFormProps)
     defaultValues: profile,
     resolver: zodResolver(BasicInfoFormSchema)
   });
-  const defaultLayoutOptions: KeyValueDTO[] = profile.layouts.map(l => ({ key: l.id, value: l.label }));
+  const defaultLayoutOptions: KeyValueDTO[] = [{ key: '', value: '- None -' }, ...profile.layouts.map(l => ({ key: l.id, value: l.label }))];
 
   const onSubmit = (formData: BasicInfoFormDTO) => {
     POST('profile/basicInfo', formData, undefined, () => {

@@ -1,11 +1,9 @@
+import StatusTable from '../components/statusTable.component';
+import useCmapUtil from '../../../../hooks/cmapUtil.hook';
 import { useEffect, useState } from 'react';
-import Segment from '../../../components/segment/segment.component';
-import useVrcDetector from '../../../hooks/vrcDetector.hook';
-import useCmapUtil from '../../../hooks/cmapUtil.hook';
 
-export default function VrcStatus() {
+export default function OscStatus() {
 
-  const { vrcStatus, vrcStatusColor } = useVrcDetector();
   const { timeSinceTimestamp } = useCmapUtil();
   const [lastOscActivity, setLastOscActivity] = useState<number | undefined>();
   const [key, setKey] = useState(0);
@@ -27,10 +25,18 @@ export default function VrcStatus() {
     };
   }, []);
 
-  return (<Segment width={'Half'}>
-    <h2 style={{ color: vrcStatusColor, marginTop: '0' }}>{vrcStatus}</h2>
-    <p key={key}>{timeSinceTimestamp(lastOscActivity, 'Last OSC activity: ', 'No OSC activity detected')}</p>
-  </Segment>);
+  return (<StatusTable>
+    <thead>
+    <tr>
+      <th><h2>OSC</h2></th>
+      <td></td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Last activity</td>
+      <td key={key}>{timeSinceTimestamp(lastOscActivity, undefined, 'No OSC activity detected')}</td>
+    </tr>
+    </tbody>
+  </StatusTable>);
 }
-
-

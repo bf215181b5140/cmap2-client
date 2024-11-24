@@ -15,7 +15,7 @@ export default function WebsiteConnection() {
   if (apiToken && segment !== 'welcome') setSegment('welcome');
   if (!apiToken && segment === 'welcome') setSegment('login');
 
-  return (<Segment width={'Half'} segmentTitle={'Website connection'}>
+  return (<Segment width={'Half'}>
 
     <SegmentMenu>
       <SegmentMenuLink onClick={() => setSegment('welcome')} active={segment === 'welcome'} icon={'ri-user-line'} disabled={!apiToken}>Account</SegmentMenuLink>

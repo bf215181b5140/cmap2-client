@@ -43,7 +43,7 @@ export default function RegisterForm({ registrationInfo, fingerprint, loginSegme
 
   return (<form onSubmit={handleSubmit(onSubmit)}>
     <HiddenInput register={register} name={'fingerprint'} />
-    <FormTable thAlign={'right'}>
+    <FormTable>
       <tr>
         <th style={{ width: '130px' }}>Username</th>
         <td><Input register={register} name={'username'} errors={errors} /></td>

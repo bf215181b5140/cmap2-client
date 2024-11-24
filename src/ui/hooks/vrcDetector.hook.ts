@@ -4,6 +4,7 @@ import { theme } from '../style/theme';
 export default function useVrcDetector() {
 
   const [isVrcDetected, setIsVrcDetected] = useState<boolean | null>(null);
+  const icon = 'ri-gamepad-line';
 
   useEffect(() => {
     window.IPC.send('checkIsVrcDetected');
@@ -15,12 +16,12 @@ export default function useVrcDetector() {
   }, []);
 
   function vrcStatus() {
-    if (isVrcDetected === null) return 'Not tracking if VRChat is running';
+    if (isVrcDetected === null) return 'Not checking if VRChat is running';
 
     if (isVrcDetected) {
-      return 'VRChat is running';
+      return 'Detected';
     } else {
-      return 'VRChat is not running';
+      return 'Not detected';
     }
   }
 
@@ -34,5 +35,5 @@ export default function useVrcDetector() {
     }
   }
 
-  return { isVrcDetected, vrcStatus: vrcStatus(), vrcStatusColor: vrcStatusColor() };
+  return { isVrcDetected, vrcStatus: vrcStatus(), vrcStatusColor: vrcStatusColor(), icon };
 }

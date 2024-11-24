@@ -54,13 +54,12 @@ export default function GroupForm() {
       PUT('layouts/group', formData, GroupSchema, data => {
         layoutsDispatch({ type: 'addGroup', group: data, layoutId: formData.layoutId });
         addNotification('Success', 'New group added.');
-        reset(data);
-        navigate(`/layouts/${layoutId}/${data.id}`);
+        navigate(-1);
       });
     } else {
       POST('layouts/group', formData, GroupSchema, data => {
         layoutsDispatch({ type: 'editGroup', group: data, layoutId: formData.layoutId });
-        reset(data);
+        navigate(-1);
       });
     }
   }

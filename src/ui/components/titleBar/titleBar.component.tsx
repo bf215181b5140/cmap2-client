@@ -6,8 +6,8 @@ import useSocketConnection from '../../hooks/socketConnection.hook';
 
 export default function TitleBar() {
 
-  const { color: color } = useSocketConnection();
-  const { vrcStatusColor } = useVrcDetector();
+  const { color: color, icon: socketIcon } = useSocketConnection();
+  const { vrcStatusColor, icon: vrcIcon } = useVrcDetector();
 
   function setWindowState(state: WindowState) {
     window.IPC.send('setWindowState', state);
@@ -15,8 +15,8 @@ export default function TitleBar() {
 
   return (<TitleBarStyled>
     <StatusStyled>
-      <i className={'ri-gamepad-line'} style={{ color: vrcStatusColor }} />
-      <i className={'ri-global-line'} style={{ color: color }} />
+      <i className={vrcIcon} style={{ color: vrcStatusColor }} />
+      <i className={socketIcon} style={{ color: color }} />
     </StatusStyled>
     <ButtonsStyled>
       <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Tray')} icon={'ri-arrow-right-down-line'} />

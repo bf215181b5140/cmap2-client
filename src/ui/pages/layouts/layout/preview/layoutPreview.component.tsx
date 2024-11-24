@@ -18,6 +18,8 @@ export default function LayoutPreview() {
   const [mode, setMode] = useState<'edit' | 'simulate'>('edit');
   const [activeItem, setActiveItem] = useState<QuickEditItem | undefined>();
 
+  if (!layout) return;
+
   function canAddGroup(layout: LayoutDTO) {
     return (layout.groups?.length || 0) < tier.groups;
   }
@@ -33,21 +35,20 @@ export default function LayoutPreview() {
       if (event.detail > 1) {
         navigate(`/layouts/${layout?.id}/${group?.id}`);
       } else {
-        setActiveItem({ groupId: group.id });
+        setActiveItem({ type: 'group', groupId: group.id });
       }
     }
   }
 
-  if (!layout) return;
-
   function onButtonClick(event: MouseEvent<HTMLDivElement>, group: GroupDTO, button?: ButtonDTO) {
+    event.stopPropagation();
     if (!button) {
       navigate(`/layouts/${layout?.id}/${group?.id}/new`);
     } else {
       if (event.detail > 1) {
         navigate(`/layouts/${layout?.id}/${group.id}/${button.id}`);
       } else {
-        setActiveItem({ groupId: group.id, buttonId: button.id });
+        setActiveItem({ type: 'button', groupId: group.id, buttonId: button.id });
       }
     }
   }
@@ -55,9 +56,9 @@ export default function LayoutPreview() {
   return (<LayoutPreviewStyled>
     <PreviewBackground background={background}>
 
-      {activeItem && <QuickEditToolbar item={activeItem} />}
-      <div style={{ height: '100px' }} />
+      <QuickEditToolbar item={activeItem} />
 
+      <div style={{ height: '100px' }} />
 
       <Layout style={style}>
 

@@ -107,7 +107,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
       </fieldset>
       <fieldset disabled={!tier.health}>
         <legend>Health system</legend>
-        <p>When using an avatar that isn't set on any layout you can display a specific default layout.</p>
+        <p>A very niche functionality that will display Minecraft style health on your profile. Actual health system has to be on your VRChat avatar.</p>
         <FormTable>
           <tr>
             <th style={{ width: '80px' }}>Enabled</th>
@@ -125,7 +125,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
       </fieldset>
       <fieldset disabled={!tier.useCost}>
         <legend>Use cost system</legend>
-        <p>When using an avatar that isn't set on any layout you can display a specific default layout.</p>
+        <p>A very niche functionality that enables buttons to have a cost. It displays Minecraft style experience bar on your profile. Actual cost/experience system has to be on your VRChat avatar.</p>
         <FormTable>
           <tr>
             <th style={{ width: '80px' }}>Enabled</th>

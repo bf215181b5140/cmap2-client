@@ -1,12 +1,11 @@
-import styled from 'styled-components';
 import { Page } from '../../components/page/page.component';
-import WebsiteConnection from './websiteConnection/websiteConnection.segment';
-import VrcStatus from './vrcStatus/vrcStatus.component';
+import WebsiteConnection from './website/website.segment';
+import Status from './status/status.component';
 
 export default function LaunchPadPage() {
 
   return (<Page flexDirection={'row'}>
-    <VrcStatus />
+    <Status />
     <WebsiteConnection />
   </Page>);
 }

@@ -1,4 +1,4 @@
-import { LayoutDTO, ButtonDTO, GroupDTO, ParameterBadgeDTO, UploadedFileDTO, LayoutFormDTO } from 'cmap2-shared';
+import { ButtonDTO, GroupDTO, LayoutDTO, ParameterBadgeDTO, UploadedFileDTO } from 'cmap2-shared';
 
 export type LayoutsReducerAction = { type: 'setLayouts', layouts: LayoutDTO[] } |
   { type: 'addLayout', layout: LayoutDTO } |
@@ -26,7 +26,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       return [...state, action.layout];
     case 'editLayout':
       return state.map(layout => {
-        if (layout.id === action.layout.id) return {...layout, ...action.layout};
+        if (layout.id === action.layout.id) return { ...layout, ...action.layout };
         return layout;
       });
     case 'removeLayout':
@@ -63,7 +63,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       return state.map(layout => {
         if (layout.id === action.layoutId) {
           layout.groups = layout.groups?.map(group => {
-            if (group.id === action.group.id) return {...group, ...action.group};
+            if (group.id === action.group.id) return { ...group, ...action.group };
             return group;
           });
         }
@@ -71,13 +71,23 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       });
     case 'removeGroup':
       return state.map(layout => {
-        if (layout.id === action.layoutId) layout.groups = layout.groups?.filter(group => group.id !== action.groupId);
+        if (layout.id === action.layoutId) {
+          // get order number for deleted group
+          const missingOrder = layout.groups?.find(g => g.id === action.groupId)?.order;
+          layout.groups = layout.groups?.filter(group => group.id !== action.groupId);
+          // set order - 1 for groups that are bigger other than the deleted
+          if (missingOrder) {
+            layout.groups?.forEach(g => {
+              if (g.order > missingOrder) g.order--;
+            });
+          }
+        }
         return layout;
       });
     case 'setGroupOrder':
       return state.map(layout => {
         if (layout.id === action.layoutId) {
-          layout.groups = action.groups
+          layout.groups = action.groups;
         }
         return layout;
       });
@@ -98,7 +108,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
           layout.groups = layout.groups?.map(group => {
             if (group.id === action.groupId) {
               group.buttons = group.buttons?.map(button => {
-                if (button.id === action.button.id) return {...button, ...action.button, id: action.button.id!};
+                if (button.id === action.button.id) return { ...button, ...action.button, id: action.button.id! };
                 return button;
               });
             }
@@ -111,7 +121,17 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       return state.map(layout => {
         if (layout.id === action.layoutId) {
           layout.groups = layout.groups?.map(group => {
-            if (group.id === action.groupId) group.buttons = group.buttons?.filter(button => button.id !== action.buttonId);
+            if (group.id === action.groupId) {
+              // get order number for deleted button
+              const missingOrder = group.buttons?.find(b => b.id === action.buttonId)?.order;
+              group.buttons = group.buttons?.filter(button => button.id !== action.buttonId);
+              // set order - 1 for buttons that are bigger other than the deleted
+              if (missingOrder) {
+                group.buttons?.forEach(b => {
+                  if (b.order > missingOrder) b.order--;
+                });
+              }
+            }
             return group;
           });
         }
@@ -122,7 +142,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
         if (layout.id === action.layoutId) {
           layout.groups = layout.groups?.map(group => {
             if (group.id === action.groupId) {
-              group.buttons = action.buttons
+              group.buttons = action.buttons;
             }
             return group;
           });
@@ -135,7 +155,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
           layout.groups = layout.groups?.map(group => {
             if (group.id === action.groupId) {
               group.buttons = group.buttons?.map(button => {
-                if (button.id === action.buttonId) return {...button, image: action.image};
+                if (button.id === action.buttonId) return { ...button, image: action.image };
                 return button;
               });
             }
