@@ -2,13 +2,12 @@ import { Page } from '../../components/page/page.component';
 import React, { useState } from 'react';
 import { useNotifications } from '../../hooks/useNotifications.hook';
 import styled from 'styled-components';
-import { GroupWidth, LayoutFormDTO, LayoutFormSchema } from 'cmap2-shared';
+import { GroupWidth } from 'cmap2-shared';
 import './testing.style.css';
 import Segment from '../../components/segment/segment.component';
 import PageMenu from '../../components/menu/pageMenu/pageMenu.component';
 import AvatarInput from '../../components/input/avatarInput/avatarInput.component';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function TestingPage() {
 
@@ -20,10 +19,10 @@ export default function TestingPage() {
   const [buttons, setButtons] = useState<string[]>(['150px', '200px', '300px', '150px', '200px', '300px', '150px', '200px', '300px', '150px', '200px',
                                                     '300px']);
 
-  const [gridElements] = useState([{ size: '150px', span: 1 },{ size: '250px', span: 2 },{ size: '200px', span: 1 },{ size: '100px', span: 3 },
-                                   { size: '350px', span: 2 },{ size: '250px', span: 2 },{ size: '120px', span: 1 },{ size: '180px', span: 1 },
-                                   { size: '100px', span: 3 },{ size: '300px', span: 1 },{ size: '250px', span: 2 },{ size: '110px', span: 1 },
-                                   { size: '190px', span: 1 },])
+  const [gridElements] = useState([{ size: '150px', span: 1 }, { size: '250px', span: 2 }, { size: '200px', span: 1 }, { size: '100px', span: 3 },
+    { size: '350px', span: 2 }, { size: '250px', span: 2 }, { size: '120px', span: 1 }, { size: '180px', span: 1 },
+    { size: '100px', span: 3 }, { size: '300px', span: 1 }, { size: '250px', span: 2 }, { size: '110px', span: 1 },
+    { size: '190px', span: 1 },]);
 
   return (<Page flexDirection={'column'}>
 

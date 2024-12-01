@@ -19,7 +19,7 @@ import FormControlBar from '../../../../components/form/formControlBar.component
 import IconButton from '../../../../components/buttons/iconButton.component';
 import styled from 'styled-components';
 import ExternalLink from '../../../../components/externalLink/externalLink.component';
-import copyIconClassExample from '../../../../images/stateBadges-copyIconClassExample.png'
+import copyIconClassExample from '../../../../images/stateBadges-copyIconClassExample.png';
 
 export default function ParameterBadges() {
 
@@ -168,7 +168,8 @@ const segmentInfo = <>
     Custom badge.</p>
   <p>Custom badges can be displayed in two different ways:</p>
   <ul>
-    <li>If <b>Label</b> field includes the phrase <b>{'{v}'}</b> then badge will always be shown and it will display parameter value instead of <b>{'{v}'}</b> - the most common use case would be to display a counter, ex: <b>Headpats: {'{v}'}</b> would show up as <b>Headpats: 14</b></li>
+    <li>If <b>Label</b> field includes the phrase <b>{'{v}'}</b> then badge will always be shown and it will display parameter value instead of <b>{'{v}'}</b> - the most common use case would be to
+      display a counter, ex: <b>Headpats: {'{v}'}</b> would show up as <b>Headpats: 14</b></li>
     <li>Otherwise badge will only be visible when parameter value on avatar matches exactly what is specified in <b>Value</b> field</li>
   </ul>
   <p>For icons, you can pick any from <ExternalLink link={'https://remixicon.com/'}>https://remixicon.com/</ExternalLink> and just copy their class value.

@@ -3,7 +3,6 @@ import React from 'react';
 import ContentMenu from '../../components/menu/contentMenu/contentMenu.component';
 import ContentMenuLink from '../../components/menu/contentMenu/contentMenuLink.component';
 import GameStatusPage from './gameStatus/gameStatus.page';
-import AvatarsPage from '../avatars/avatars.page';
 import DebugPage from './debug/debug.page';
 
 export default function OscPage() {

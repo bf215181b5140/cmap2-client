@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { PAGE_ELEMENT_GAP } from '../../page/page.component';
 
 const PageMenu = styled.div<{ noMarginTop?: boolean }>`

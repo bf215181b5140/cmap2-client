@@ -1,7 +1,6 @@
 import { createContext, Dispatch } from 'react';
-import { useLayoutsPage } from './layouts.hook';
-import { BackgroundDTO, ButtonDTO, GroupDTO, InteractionKeyDTO, LayoutDTO, LayoutsPageDTO, StyleDTO, TierDTO } from 'cmap2-shared';
-import layoutsReducer, { LayoutsReducerAction } from './layouts.reducer';
+import { BackgroundDTO, ButtonDTO, GroupDTO, InteractionKeyDTO, LayoutDTO, StyleDTO, TierDTO } from 'cmap2-shared';
+import { LayoutsReducerAction } from './layouts.reducer';
 
 export interface LayoutsPageData {
   tier: TierDTO;

@@ -7,7 +7,6 @@ import IconButton from '../../../components/buttons/iconButton.component';
 import FormControlBar from '../../../components/form/formControlBar.component';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../../hooks/useNotifications.hook';
-import { LayoutSchema } from 'cmap2-shared';
 import BasicModal from '../../../components/modal/basicModal/basicModal.component';
 
 interface AvatarUploadFormProps {

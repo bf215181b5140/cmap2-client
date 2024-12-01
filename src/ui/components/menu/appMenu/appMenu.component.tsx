@@ -29,7 +29,7 @@ export default function AppMenu() {
 }
 
 const AppMenuStyled = styled.nav`
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 `;

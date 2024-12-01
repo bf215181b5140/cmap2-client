@@ -11,7 +11,6 @@ import FormControlBar from '../../../components/form/formControlBar.component';
 import IconButton from '../../../components/buttons/iconButton.component';
 import { z } from 'zod';
 import { nanoid } from 'nanoid';
-import AddCounter from '../../../components/addCounter/addCounter.component';
 import FormRemoveRow from '../../../components/form/removeRow/formRemoveRow.component';
 import FormAddRow from '../../../components/form/addRow/formAddRow.component';
 

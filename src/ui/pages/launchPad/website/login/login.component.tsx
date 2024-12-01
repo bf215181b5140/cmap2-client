@@ -44,8 +44,8 @@ export default function Login() {
       </tr>
     </FormTable>
     <FormControlBar>
-          <TextButton type={'submit'} text={'Log in'} />
-          <TextButton text={'Clear'} onClick={onClear} />
+      <TextButton type={'submit'} text={'Log in'} />
+      <TextButton text={'Clear'} onClick={onClear} />
     </FormControlBar>
   </form>);
 

@@ -1,9 +1,8 @@
-import React, { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { ReactProps } from '../../../types';
-import { VrcOscAvatar, VrcOscAvatarParameterProperties } from '../../../../shared/objects/vrcOscAvatar';
-import { globalInputStyle, InputStyled, SelectInputStyled } from '../input.style';
-import { theme } from '../../../style/theme';
+import { VrcOscAvatar } from '../../../../shared/objects/vrcOscAvatar';
+import { InputStyled } from '../input.style';
 
 interface AvatarInputDropdownProps extends ReactProps {
   showDropdown: boolean;

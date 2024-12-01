@@ -1,5 +1,4 @@
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
-import useModalHook from '../../../components/modal/modal.hook';
 import { useContext, useState } from 'react';
 import { LayoutsPageContext } from '../layouts.context';
 import { LayoutSchema } from 'cmap2-shared';
@@ -26,18 +25,18 @@ export default function LayoutSection() {
   function onCopy() {
     if (!layout) return;
     setModal(<BasicModal title={`Copying layout ${layout?.label}`} message={'You are about to make a copy of this layout.'} confirmFunction={() => {
-        POST('layouts/layout/copy', { id: layout.id }, LayoutSchema, data => {
-          layoutsDispatch({ type: 'addLayout', layout: data })
-        })
-      }} />);
+      POST('layouts/layout/copy', { id: layout.id }, LayoutSchema, data => {
+        layoutsDispatch({ type: 'addLayout', layout: data });
+      });
+    }} />);
   }
 
   function onDelete() {
     if (!layout) return;
 
     DELETE('layouts/layout', { id: layout.id }, undefined, () => {
-      layoutsDispatch({ type: 'removeLayout', layout })
-    })
+      layoutsDispatch({ type: 'removeLayout', layout });
+    });
   }
 
   return (<Section>

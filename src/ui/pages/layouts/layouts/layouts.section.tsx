@@ -26,9 +26,8 @@ export default function LayoutsSection() {
         <h2>{canAddLayout ? 'Add layout' : 'Limit reached'}</h2>
       </div>
     </LayoutPicker>
-  </Section>)
+  </Section>);
 }
-
 
 const LayoutPicker = styled.div`
   display: flex;

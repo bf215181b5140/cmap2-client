@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ReactProps } from '../../types';
 
 const AddCounter = styled.span<{ canAddMore: boolean }>`
     margin: 5px;

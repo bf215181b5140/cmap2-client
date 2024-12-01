@@ -57,7 +57,7 @@ export default function LayoutsPage() {
     layout,
     group,
     button
-  }
+  };
 
   function onMenuItemClick(event: MouseEvent<HTMLElement>, path: string) {
     event.stopPropagation();

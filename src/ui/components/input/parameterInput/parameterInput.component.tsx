@@ -21,7 +21,9 @@ interface ParameterInputProps<T extends FieldValues> {
   width?: string;
 }
 
-export default function ParameterInput<T extends FieldValues>({ name, register, setValue, defaultAvatarVrcId, defaultType, onSelection, placeholder, errors, readOnly, width }: ParameterInputProps<T>) {
+export default function ParameterInput<T extends FieldValues>({
+  name, register, setValue, defaultAvatarVrcId, defaultType, onSelection, placeholder, errors, readOnly, width
+}: ParameterInputProps<T>) {
 
   const [hasError, errorMessage] = useInputError(name, errors);
 

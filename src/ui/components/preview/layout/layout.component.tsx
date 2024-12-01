@@ -17,7 +17,7 @@ const Layout = styled.div<{ style: StyleDTO }>`
 
 export default Layout;
 
-const layoutStyles: {[key: string]: FlattenInterpolation<ThemeProps<DefaultTheme>>} = {};
+const layoutStyles: { [key: string]: FlattenInterpolation<ThemeProps<DefaultTheme>> } = {};
 
 layoutStyles.vrcGreen = css`
   background: ${props => props.theme.colors.ui.appBgOpaque};

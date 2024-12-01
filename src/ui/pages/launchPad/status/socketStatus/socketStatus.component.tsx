@@ -15,7 +15,6 @@ export default function SocketStatus() {
   const { register, formState: { errors }, handleSubmit, reset } = useForm<SocketSettings>({ resolver: zodResolver(SocketSettingsSchema) });
   const submitRef = useRef<HTMLInputElement>(null);
 
-
   useEffect(() => {
     window.IPC.get('getSocketSettings').then(data => reset(data));
   }, []);
@@ -32,7 +31,7 @@ export default function SocketStatus() {
     window.IPC.send('saveSocketSettings', data);
   }
 
-  return(<StatusTable>
+  return (<StatusTable>
     <thead>
     <tr>
       <th><h2>Website</h2></th>
@@ -47,8 +46,8 @@ export default function SocketStatus() {
       <td>Connect automatically</td>
       <td>
         <form onSubmit={handleSubmit(onSubmit)}>
-        <CheckboxInput name={'autoConnect'} register={register} errors={errors} onChange={() => submitRef.current?.click()} />
-        <input type={'submit'} ref={submitRef} style={{ display: 'none' }} />
+          <CheckboxInput name={'autoConnect'} register={register} errors={errors} onChange={() => submitRef.current?.click()} />
+          <input type={'submit'} ref={submitRef} style={{ display: 'none' }} />
         </form>
       </td>
     </tr>
@@ -61,5 +60,5 @@ export default function SocketStatus() {
       )}</td>
     </tr>
     </tbody>
-  </StatusTable>)
+  </StatusTable>);
 }

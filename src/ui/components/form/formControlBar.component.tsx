@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ReactProps } from '../../types';
 
 const FormControlBar = styled.div<{ justifyContent?: string, position?: 'above' | 'below' }>`
   display: flex;

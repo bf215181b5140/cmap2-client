@@ -5,7 +5,7 @@ export default function VrcStatus() {
 
   const { vrcStatusColor, vrcStatus, icon } = useVrcDetector();
 
-  return(<StatusTable>
+  return (<StatusTable>
     <thead>
     <tr>
       <th><h2>VRChat</h2></th>
@@ -16,5 +16,5 @@ export default function VrcStatus() {
     </tr>
     </thead>
     <tbody></tbody>
-  </StatusTable>)
+  </StatusTable>);
 }

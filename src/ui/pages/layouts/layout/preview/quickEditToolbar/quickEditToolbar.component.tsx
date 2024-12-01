@@ -67,11 +67,11 @@ export default function QuickEditToolbar({ item }: QuickEditToolbarProps) {
   }
 
   function onCopyButton(button: ButtonDTO) {
-    setModal(<ButtonCopyModal layouts={layouts} button={button} onSuccess={(layoutId, groupId, button) => layoutsDispatch({ type: 'addButton', layoutId, groupId, button })} />)
+    setModal(<ButtonCopyModal layouts={layouts} button={button} onSuccess={(layoutId, groupId, button) => layoutsDispatch({ type: 'addButton', layoutId, groupId, button })} />);
   }
 
   function onCopyGroup(group: GroupDTO) {
-    setModal(<GroupCopyModal layouts={layouts} group={group} onSuccess={(layoutId, group) => layoutsDispatch({ type: 'addGroup', layoutId, group })} />)
+    setModal(<GroupCopyModal layouts={layouts} group={group} onSuccess={(layoutId, group) => layoutsDispatch({ type: 'addGroup', layoutId, group })} />);
   }
 
   function onDeleteGroup(item: GroupDTO) {
@@ -124,7 +124,7 @@ export default function QuickEditToolbar({ item }: QuickEditToolbarProps) {
         Selected group: {itemGroup.label}
       </div>
       <div>
-        <IconButton role={'normal'} size={'small'} tooltip={'Create a copy'}  icon={'ri-file-copy-line'} onClick={() => onCopyGroup(itemGroup)} />
+        <IconButton role={'normal'} size={'small'} tooltip={'Create a copy'} icon={'ri-file-copy-line'} onClick={() => onCopyGroup(itemGroup)} />
         <IconButton role={'edit'} size={'small'} tooltip={'Detail edit'} onClick={() => navigate(`/layouts/${layout?.id}/${itemGroup?.id}`)} />
         <hr />
         <IconButton role={'delete'} size={'small'} tooltip={'Delete group'} onClick={() => onDeleteGroup(itemGroup)} />

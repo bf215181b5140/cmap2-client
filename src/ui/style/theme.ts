@@ -54,9 +54,7 @@ export const theme = {
       hoverIcon: '#4aaec2',
     },
 
-    pageMenu: {
-
-    },
+    pageMenu: {},
     sectionMenu: {
       bg: '#23303c',
       border: '#23303c',
@@ -68,9 +66,7 @@ export const theme = {
       active: '#4aaec2',
       disabled: '#616161',
     },
-    page: {
-
-    },
+    page: {},
     segment: {
       bg: '#1c222a',
     },

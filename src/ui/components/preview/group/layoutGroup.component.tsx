@@ -35,19 +35,19 @@ const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))
 
 
   flex: ${props => {
-    switch (props.width) {
-      case 'None':
-        return '1';
-      case 'Third':
-        return `calc(100% * (1 / 3) - ${LAYOUT_ELEMENT_GAP})`;
-      case 'Half':
-        return ` calc(100% * (1 / 2) - ${LAYOUT_ELEMENT_GAP})`;
-      case 'Full':
-        return ` calc(100%)`;
-      default:
-        return undefined;
-    }
-  }};
+  switch (props.width) {
+    case 'None':
+      return '1';
+    case 'Third':
+      return `calc(100% * (1 / 3) - ${LAYOUT_ELEMENT_GAP})`;
+    case 'Half':
+      return ` calc(100% * (1 / 2) - ${LAYOUT_ELEMENT_GAP})`;
+    case 'Full':
+      return ` calc(100%)`;
+    default:
+      return undefined;
+  }
+}};
 
   ${props => groupStyles[props.style.id]};
   

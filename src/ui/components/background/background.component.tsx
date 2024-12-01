@@ -13,7 +13,7 @@ const Background = styled.div<{ background: BackgroundDTO; }>`
 
 export default Background;
 
-const backgroundStyles: {[key: string]: FlattenInterpolation<ThemeProps<DefaultTheme>>} = {};
+const backgroundStyles: { [key: string]: FlattenInterpolation<ThemeProps<DefaultTheme>> } = {};
 
 backgroundStyles.ocean = css`
   background-color: #005281;

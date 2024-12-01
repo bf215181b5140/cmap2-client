@@ -20,7 +20,7 @@ export default function SelectInput<T extends FieldValues>({ name, register, opt
   const [hasError, errorMessage] = useInputError(name, errors);
 
   return (<div style={{ width: width || 'auto' }}>
-    <SelectInputStyled {...register(name, { onChange: event => onChange ? onChange(event) : undefined})} errors={hasError} className={readOnly ? 'readOnly' : undefined} width={width || 'auto'}>
+    <SelectInputStyled {...register(name, { onChange: event => onChange ? onChange(event) : undefined })} errors={hasError} className={readOnly ? 'readOnly' : undefined} width={width || 'auto'}>
       {options && options.map((option) => (<option value={option.key} key={option.key}>{option.value}</option>))}
     </SelectInputStyled>
     <InputErrorMessage errorMessage={errorMessage} />

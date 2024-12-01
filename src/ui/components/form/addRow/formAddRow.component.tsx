@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { ReactProps } from '../../../types';
 import React from 'react';
 import AddCounter from '../../addCounter/addCounter.component';
 
@@ -16,11 +15,11 @@ export default function FormAddRow({ onClick, colSpan = 1, items, limit }: FormA
   const limitReached = showCount && items >= limit;
   const canAddMore = !showCount || !limitReached;
 
-  return(<FormAddRowStyled onClick={() => onClick()} colSpan={colSpan} aria-disabled={!canAddMore}>
+  return (<FormAddRowStyled onClick={() => onClick()} colSpan={colSpan} aria-disabled={!canAddMore}>
     {showCount && <AddCounter canAddMore={!limitReached}>{items}/{limit}</AddCounter>}
     {canAddMore ? 'Add new' : 'Limit reached'}
     <i className={'ri-add-line'} />
-  </FormAddRowStyled>)
+  </FormAddRowStyled>);
 }
 
 const FormAddRowStyled = styled.td`

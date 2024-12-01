@@ -37,7 +37,7 @@ export default function ProfileForm({ profile, setBasicInfo }: ProfileFormProps)
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormTable>
         <tr>
-          <th style={{width: '120px'}}>Display name</th>
+          <th style={{ width: '120px' }}>Display name</th>
           <td><Input register={register} name={'displayName'} errors={errors} /></td>
         </tr>
         <tr>
@@ -67,7 +67,7 @@ export default function ProfileForm({ profile, setBasicInfo }: ProfileFormProps)
                              readOnly={defaultLayoutOptions.length === 0} options={defaultLayoutOptions} /></td>
           </tr>
           <tr>
-            <th style={{width: '120px'}}>Custom message</th>
+            <th style={{ width: '120px' }}>Custom message</th>
             <td><TextareaInput register={register} name={'unknownAvatarMessage'} errors={errors} rows={2} /></td>
           </tr>
         </FormTable>
@@ -77,7 +77,7 @@ export default function ProfileForm({ profile, setBasicInfo }: ProfileFormProps)
         <p>When you are offline a simple message is displayed that you are offline, or you can enter a custom message.</p>
         <FormTable>
           <tr>
-            <th style={{width: '120px'}}>Custom message</th>
+            <th style={{ width: '120px' }}>Custom message</th>
             <td colSpan={2}><TextareaInput register={register} name={'offlineMessage'} errors={errors} rows={2} /></td>
           </tr>
         </FormTable>

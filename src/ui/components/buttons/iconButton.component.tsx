@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import React, { useContext } from 'react';
 import { globalInputStyle } from '../input/input.style';
 import { ModalContext } from '../context/modal.context';
-import BasicModal from '../modal/basicModal/basicModal.component';
 import DeleteModal from '../modal/deleteModal/deleteModal.component';
 
 type IconButtonSize = 'normal' | 'small' | 'tiny';
@@ -118,36 +117,36 @@ const IconButtonStyled = styled.button<{ role: IconButtonRole, size: IconButtonS
 
   // Style type
   ${props => {
-    switch (props.role) {
-      case 'normal':
-        return null;
-      case 'add':
-        return styleAdd;
-      case 'delete':
-      case 'remove':
-        return styleDelete;
-      case 'edit':
-        return styleEdit;
-      case 'save':
-        return styleSave;
-      case 'info':
-        return styleInfo;
-      case 'reset':
-        return styleReset;
-    }
-  }};
+  switch (props.role) {
+    case 'normal':
+      return null;
+    case 'add':
+      return styleAdd;
+    case 'delete':
+    case 'remove':
+      return styleDelete;
+    case 'edit':
+      return styleEdit;
+    case 'save':
+      return styleSave;
+    case 'info':
+      return styleInfo;
+    case 'reset':
+      return styleReset;
+  }
+}};
 
   // size
   ${props => {
-    switch (props.size) {
-      case 'normal':
-        return sizeNormal;
-      case 'small':
-        return sizeSmall;
-      case 'tiny':
-        return sizeTiny;
-    }
-  }};
+  switch (props.size) {
+    case 'normal':
+      return sizeNormal;
+    case 'small':
+      return sizeSmall;
+    case 'tiny':
+      return sizeTiny;
+  }
+}};
 
   span {
     position: absolute;

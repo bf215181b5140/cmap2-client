@@ -5,31 +5,31 @@ import { ModalContext } from '../../../components/context/modal.context';
 import BasicModal from '../../../components/modal/basicModal/basicModal.component';
 
 interface UpdateBoxProps {
-    update: UpdateDTO;
-    latest?: boolean;
+  update: UpdateDTO;
+  latest?: boolean;
 }
 
 export default function UpdateBox({ update, latest }: UpdateBoxProps) {
 
-    const { setModal } = useContext(ModalContext);
+  const { setModal } = useContext(ModalContext);
 
-    function onDownload() {
-        setModal(<BasicModal title={'Confirm download'} message={'You are about to download the update, after download is complete the application will close and install the update.'}
-                             confirmValue={'Download'} confirmFunction={() => window.IPC.send('startUpdate', update.download)} />);
-    }
+  function onDownload() {
+    setModal(<BasicModal title={'Confirm download'} message={'You are about to download the update, after download is complete the application will close and install the update.'}
+                         confirmValue={'Download'} confirmFunction={() => window.IPC.send('startUpdate', update.download)} />);
+  }
 
-    return (<UpdateBoxStyled onClick={onDownload}>
-        {latest && <h3>Latest</h3>}
+  return (<UpdateBoxStyled onClick={onDownload}>
+    {latest && <h3>Latest</h3>}
 
-        <div className={'updateBoxTitle'}>
-            <h2>{update.version}</h2>
-            <span>{update.date.toLocaleDateString()}</span>
-        </div>
+    <div className={'updateBoxTitle'}>
+      <h2>{update.version}</h2>
+      <span>{update.date.toLocaleDateString()}</span>
+    </div>
 
-        <p>{update.description}</p>
+    <p>{update.description}</p>
 
-        <span>Click to download and install</span>
-    </UpdateBoxStyled>);
+    <span>Click to download and install</span>
+  </UpdateBoxStyled>);
 }
 
 const UpdateBoxStyled = styled.div`

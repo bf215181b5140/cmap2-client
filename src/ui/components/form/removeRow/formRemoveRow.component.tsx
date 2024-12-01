@@ -9,9 +9,9 @@ interface FormRemoveRowProps extends ReactProps {
 
 export default function FormRemoveRow({ onClick, disabled }: FormRemoveRowProps) {
 
-   return(<FormRemoveRowStyled aria-disabled={disabled === true}>
-     <i className={'ri-delete-back-2-line'} onClick={() => onClick()} />
-   </FormRemoveRowStyled>)
+  return (<FormRemoveRowStyled aria-disabled={disabled === true}>
+    <i className={'ri-delete-back-2-line'} onClick={() => onClick()} />
+  </FormRemoveRowStyled>);
 }
 
 const FormRemoveRowStyled = styled.td`

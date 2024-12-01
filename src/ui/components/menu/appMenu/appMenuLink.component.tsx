@@ -27,73 +27,75 @@ export default function AppMenuLink({ to, icon, tooltip, attentionIcon = false, 
 }
 
 const AppMenuLinkStyled = styled(Link)<{ selected: boolean }>`
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    border-radius: 0 0 7px 7px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 0 0 7px 7px;
+  transition: 0.1s linear;
+  position: relative;
+  padding: ${props => props.selected ? '12px 12px 8px 12px' : '8px 12px'};
+  margin-bottom: ${props => props.selected ? '0' : '6px'};
+  background-color: ${props => props.selected ? props.theme.colors.navBar.activeBg : props.theme.colors.navBar.bg};
+
+  i {
+    color: ${props => props.selected ? props.theme.colors.navBar.activeIcon : props.theme.colors.navBar.icon};
+    font-size: 32px;
     transition: 0.1s linear;
-    position: relative;
-    padding: ${props => props.selected ? '12px 12px 8px 12px' : '8px 12px'};
-    margin-bottom: ${props => props.selected ? '0' : '6px'};
-    background-color: ${props => props.selected ? props.theme.colors.navBar.activeBg : props.theme.colors.navBar.bg};
+  }
+
+  .tooltip {
+    display: none;
+    position: absolute;
+    top: -35px;
+    text-shadow: 0 0 5px ${props => props.theme.colors.ui.appBgOpaque};
+    background: #111;
+    padding: 4px 12px;
+    border-radius: 8px;
+    color: ${props => props.theme.colors.font.text};
+    width: max-content;
+    z-index: 20;
+
+  }
+
+  .attention {
+    color: ${props => props.theme.colors.attention};
+    font-size: 10px;
+    position: absolute;
+    top: ${props => props.selected ? '16px' : '10px'};
+    right: 10px;
+    transition: 0.1s linear;
+  }
+
+  :hover {
+    padding: 12px 12px 8px 12px;
+    margin-bottom: 0;
+    background-color: ${props => props.selected ? props.theme.colors.navBar.activeBg : props.theme.colors.navBar.hoverBg};
 
     i {
-        color: ${props => props.selected ? props.theme.colors.navBar.activeIcon : props.theme.colors.navBar.icon};
-        font-size: 32px;
-        transition: 0.1s linear;
+      color: ${props => props.theme.colors.navBar.hoverIcon};
+      color: ${props => props.selected ? props.theme.colors.navBar.activeIcon : props.theme.colors.navBar.hoverIcon};
     }
 
     .tooltip {
-        display: none;
-        position: absolute;
-        top: -35px;
-        text-shadow: 0 0 5px ${props => props.theme.colors.ui.appBgOpaque};
-        background: #111;
-        padding: 4px 12px;
-        border-radius: 8px;
-        color: ${props => props.theme.colors.font.text};
-        width: max-content;
+      animation: AppMenuLinkTooltip 150ms;
+      display: block;
     }
 
     .attention {
-        color: ${props => props.theme.colors.attention};
-        font-size: 10px;
-        position: absolute;
-        top: ${props => props.selected ? '16px' : '10px'};
-        right: 10px;
-        transition: 0.1s linear;
+      top: 16px;
     }
+  }
 
-    :hover {
-        padding: 12px 12px 8px 12px;
-        margin-bottom: 0;
-        background-color: ${props => props.selected ? props.theme.colors.navBar.activeBg : props.theme.colors.navBar.hoverBg};
 
-        i {
-            color: ${props => props.theme.colors.navBar.hoverIcon};
-            color: ${props => props.selected ? props.theme.colors.navBar.activeIcon : props.theme.colors.navBar.hoverIcon};
-        }
-
-        .tooltip {
-            animation: AppMenuLinkTooltip 150ms;
-            display: block;
-        }
-
-        .attention {
-            top: 16px;
-        }
+  @keyframes AppMenuLinkTooltip {
+    from {
+      top: -10px;
+      opacity: 0;
     }
-
-
-    @keyframes AppMenuLinkTooltip {
-        from {
-            top: -10px;
-            opacity: 0;
-        }
-        to {
-            top: -35px;
-            opacity: 1;
-        }
+    to {
+      top: -35px;
+      opacity: 1;
     }
+  }
 `;
