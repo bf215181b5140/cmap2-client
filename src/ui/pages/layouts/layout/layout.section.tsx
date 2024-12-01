@@ -9,13 +9,15 @@ import IconButton from '../../../components/buttons/iconButton.component';
 import LayoutPreview from './preview/layoutPreview.component';
 import LayoutForm from './form/layoutForm.component';
 import ParameterBadges from './parameterBadges/parameterBadges.component';
+import { ModalContext } from '../../../components/context/modal.context';
+import BasicModal from '../../../components/modal/basicModal/basicModal.component';
 
 type LayoutSegments = 'preview' | 'settings' | 'parameterBadges';
 
 export default function LayoutSection() {
 
-  const { PUT, DELETE } = useCmapFetch();
-  const { setModal } = useModalHook();
+  const { POST, DELETE } = useCmapFetch();
+  const { setModal } = useContext(ModalContext);
   const { layoutsDispatch, layout } = useContext(LayoutsPageContext);
   const [segment, setSegment] = useState<LayoutSegments>('preview');
 
@@ -23,15 +25,11 @@ export default function LayoutSection() {
 
   function onCopy() {
     if (!layout) return;
-    setModal({
-      title: `Copying layout ${layout?.label}`,
-      message: 'You are about to make a copy of this layout.',
-      confirmFunction: () => {
-        PUT('layouts/layout/copy', { id: layout.id }, LayoutSchema, data => {
+    setModal(<BasicModal title={`Copying layout ${layout?.label}`} message={'You are about to make a copy of this layout.'} confirmFunction={() => {
+        POST('layouts/layout/copy', { id: layout.id }, LayoutSchema, data => {
           layoutsDispatch({ type: 'addLayout', layout: data })
         })
-      },
-    });
+      }} />);
   }
 
   function onDelete() {
@@ -51,7 +49,7 @@ export default function LayoutSection() {
       </div>
       <div>
         <IconButton role={'normal'} size={'small'} margin={'0 5px'} tooltip={'Create a copy'} icon={'ri-file-copy-line'} disabled={!layout} onClick={onCopy} />
-        <IconButton role={'delete'} size={'small'} margin={'0 5px'} deleteKeyword={'layout'} disabled={!layout} onClick={onDelete} />
+        <IconButton role={'delete'} size={'small'} margin={'0 5px'} tooltip={'Delete layout'} deleteKeyword={'layout'} disabled={!layout} onClick={onDelete} />
       </div>
     </SectionMenu>
 

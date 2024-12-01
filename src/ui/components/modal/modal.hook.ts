@@ -1,28 +1,11 @@
-import { useState } from 'react';
-
-export interface Modal {
-  title?: string;
-  message?: string;
-  confirmValue?: string;
-  confirmFunction: () => void;
-  cancelFunction?: () => void;
-}
+import { ReactNode, useState } from 'react';
 
 export default function useModalHook() {
-  const [modal, setModal] = useState<Modal | null>(null);
+  const [modal, setModal] = useState<ReactNode | undefined>();
 
   function clearModal() {
-    setModal(null);
+    setModal(undefined);
   }
 
-  function deleteModal(keyword: string, confirmFunction: () => void) {
-    setModal({
-      title: `Delete ${keyword}`,
-      message: `Are you sure you want to delete ${keyword}?`,
-      confirmValue: 'Delete',
-      confirmFunction: confirmFunction
-    });
-  }
-
-  return { modal, setModal, clearModal, deleteModal };
+  return { modal, setModal, clearModal };
 }

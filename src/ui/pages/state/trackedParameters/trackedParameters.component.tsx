@@ -1,7 +1,7 @@
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
 import TypedEmitter from 'typed-emitter/rxjs';
 import { ParametersPageEmitter } from '../types/parametersPageEmitter';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ModalContext } from '../../../components/context/modal.context';
 import useCmapUtil from '../../../hooks/cmapUtil.hook';
 import { TrackedParametersMap, TrackedParametersSchema, VrcParameter } from 'cmap2-shared';
@@ -11,6 +11,7 @@ import FormControlBar from '../../../components/form/formControlBar.component';
 import IconButton from '../../../components/buttons/iconButton.component';
 import styled from 'styled-components';
 import SegmentTable from '../../../components/segment/segmentTable.component';
+import BasicModal from '../../../components/modal/basicModal/basicModal.component';
 
 interface ParametersStateProps {
   parametersPageEmitter: TypedEmitter<ParametersPageEmitter>;
@@ -77,30 +78,22 @@ export default function TrackedParameters({ parametersPageEmitter }: ParametersS
   }
 
   function onSyncState() {
-    setModal({
-      title: 'Uploading tracked parameters',
-      message: 'This will upload and set website tracked parameters to currently detected ones from the program',
-      confirmValue: 'Upload',
-      confirmFunction: () => {
-        const parameters = [...localParameters.entries()];
-        POST('trackedParameters', parameters, undefined, () => {
-          setWebsiteParameters(new TrackedParametersMap(parameters));
-        });
-      }
-    });
+    setModal(<BasicModal title={'Uploading tracked parameters'} message={'This will upload and set website tracked parameters to currently detected ones from the program'}
+                         confirmValue={'Upload'} confirmFunction={() => {
+      const parameters = [...localParameters.entries()];
+      POST('trackedParameters', parameters, undefined, () => {
+        setWebsiteParameters(new TrackedParametersMap(parameters));
+      });
+    }} />);
   }
 
   function onClearState() {
-    setModal({
-      title: 'Clearing tracked parameters',
-      message: 'This will clear website tracked parameters',
-      confirmValue: 'Clear',
-      confirmFunction: () => {
-        DELETE('trackedParameters', undefined, undefined, () => {
-          setWebsiteParameters(new TrackedParametersMap());
-        });
-      }
-    });
+    setModal(<BasicModal title={'Clearing tracked parameters'} message={'This will clear website tracked parameters'}
+                         confirmValue={'Clear'} confirmFunction={() => {
+      DELETE('trackedParameters', undefined, undefined, () => {
+        setWebsiteParameters(new TrackedParametersMap());
+      });
+    }} />);
   }
 
   function localValueCell(key: string): React.JSX.Element {

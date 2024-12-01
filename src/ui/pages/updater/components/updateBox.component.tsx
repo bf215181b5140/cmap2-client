@@ -1,7 +1,8 @@
 import { UpdateDTO } from 'cmap2-shared';
 import styled from 'styled-components';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { ModalContext } from '../../../components/context/modal.context';
+import BasicModal from '../../../components/modal/basicModal/basicModal.component';
 
 interface UpdateBoxProps {
     update: UpdateDTO;
@@ -13,12 +14,8 @@ export default function UpdateBox({ update, latest }: UpdateBoxProps) {
     const { setModal } = useContext(ModalContext);
 
     function onDownload() {
-        setModal({
-            title: 'Confirm download',
-            message: 'You are about to download the update, after download is complete the application will close and install the update.',
-            confirmValue: 'Download',
-            confirmFunction: () => window.IPC.send('startUpdate', update.download)
-        });
+        setModal(<BasicModal title={'Confirm download'} message={'You are about to download the update, after download is complete the application will close and install the update.'}
+                             confirmValue={'Download'} confirmFunction={() => window.IPC.send('startUpdate', update.download)} />);
     }
 
     return (<UpdateBoxStyled onClick={onDownload}>

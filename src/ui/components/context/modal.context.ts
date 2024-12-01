@@ -7,6 +7,4 @@ export const ModalContext = createContext<ReturnType<typeof useModalHook>>({
   },
   clearModal() {
   },
-  deleteModal() {
-  }
 });

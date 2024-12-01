@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 import React, { useContext } from 'react';
 import { globalInputStyle } from '../input/input.style';
 import { ModalContext } from '../context/modal.context';
+import BasicModal from '../modal/basicModal/basicModal.component';
+import DeleteModal from '../modal/deleteModal/deleteModal.component';
 
 type IconButtonSize = 'normal' | 'small' | 'tiny';
 
@@ -24,7 +26,7 @@ interface IconButtonProps {
 
 export default function IconButton({ role, onClick, icon, tooltip, disabled, active, size = 'normal', deleteKeyword, className, name, margin, type }: IconButtonProps) {
 
-  const { deleteModal } = useContext(ModalContext);
+  const { setModal } = useContext(ModalContext);
 
   if (!icon) {
     switch (role) {
@@ -92,7 +94,7 @@ export default function IconButton({ role, onClick, icon, tooltip, disabled, act
 
     switch (role) {
       case 'delete':
-        deleteModal(deleteKeyword || 'item', onClick);
+        setModal(<DeleteModal keyword={deleteKeyword || 'item'} confirmFunction={onClick} />);
         break;
       default:
         onClick();

@@ -43,6 +43,7 @@ const PageMenu = styled.div<{ noMarginTop?: boolean }>`
       bottom: 0;
       left: 0;
       right: 0;
+      z-index: 3;
 
       :hover {
         height: fit-content;

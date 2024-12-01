@@ -7,6 +7,8 @@ import IconButton from '../../../components/buttons/iconButton.component';
 import FormControlBar from '../../../components/form/formControlBar.component';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../../hooks/useNotifications.hook';
+import { LayoutSchema } from 'cmap2-shared';
+import BasicModal from '../../../components/modal/basicModal/basicModal.component';
 
 interface AvatarUploadFormProps {
   avatars: VrcOscAvatar[];
@@ -51,12 +53,8 @@ export default function AvatarUploadForm({ avatars, avatarsDispatch }: AvatarUpl
 
     const existing = avatars.find(avatar => avatar.id === fileAvatar.id);
     if (existing) {
-      setModal({
-        title: `Saving ${fileAvatar.name}`,
-        message: `Avatar with this ID already exists (${existing.name}), update avatar info and parameters?`,
-        confirmValue: 'Update',
-        confirmFunction: () => addAvatar(fileAvatar)
-      });
+      setModal(<BasicModal title={`Saving ${fileAvatar.name}`} message={`Avatar with this ID already exists (${existing.name}), update avatar info and parameters?`}
+                           confirmValue={'Update'} confirmFunction={() => addAvatar(fileAvatar)} />);
     } else {
       addAvatar(fileAvatar);
     }

@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react';
-import { GeneratedInviteKeyDTO, GeneratedInviteKeySchema, TierDTO } from 'cmap2-shared';
+import React, { useContext, useState } from 'react';
+import { GeneratedInviteKeyDTO, GeneratedInviteKeySchema, TierDTO, TrackedParametersMap } from 'cmap2-shared';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
 import { ModalContext } from '../../../components/context/modal.context';
 import { useNotifications } from '../../../hooks/useNotifications.hook';
@@ -9,6 +9,7 @@ import SegmentTable from '../../../components/segment/segmentTable.component';
 import { SelectInputStyled } from '../../../components/input/input.style';
 import IconButton from '../../../components/buttons/iconButton.component';
 import AddCounter from '../../../components/addCounter/addCounter.component';
+import BasicModal from '../../../components/modal/basicModal/basicModal.component';
 
 interface GenerateInviteKeyProps {
   tiers: TierDTO[];
@@ -34,12 +35,8 @@ export default function GenerateInviteKey({ generatedInviteKeys, tiers, clientTi
   }
 
   function confirmGenerateKey() {
-    setModal({
-      title: 'Generate new invite key',
-      message: `Are you sure you want to generate a new invite key of tier ${tiers.find(t => t.id === selectedTierId)?.label}?`,
-      confirmValue: 'Generate',
-      confirmFunction: () => generateKey()
-    });
+    setModal(<BasicModal title={'Generate new invite key'} message={`Are you sure you want to generate a new invite key of tier ${tiers.find(t => t.id === selectedTierId)?.label}?`}
+                         confirmValue={'Generate'} confirmFunction={() => generateKey()} />);
   }
 
   function generateKey() {
