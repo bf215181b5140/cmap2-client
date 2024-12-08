@@ -1,13 +1,13 @@
 import styled, { css } from 'styled-components';
 import expOrb from '../../../images/expOrb.png';
 import ParameterSlider from './parameter.slider';
-import { ButtonDTO, ImageOrientation, StyleDTO, UsedButtonDTO } from 'cmap2-shared';
+import { ButtonDTO, ImageOrientation, ThemeDTO, UsedButtonDTO } from 'cmap2-shared';
 
 export const URL = process.env.NODE_ENV === 'production' ? 'https://changemyavatarparams.com' : 'http://localhost:8080';
 
 interface ParameterButtonProps {
   button: ButtonDTO;
-  style: StyleDTO;
+  theme: ThemeDTO;
   active?: boolean;
   disabled?: boolean;
   value?: string | number | boolean | undefined;
@@ -54,7 +54,7 @@ export default function ParameterButton(props: ParameterButtonProps) {
       <SliderWrapper>
         {props.button.label && <ParameterSliderLabel>{props.button.label}</ParameterSliderLabel>}
         <ParameterSlider disabled={!!props.disabled || !useCostUsable()}
-                         className={props.style.id}
+                         className={props.theme.id}
                          onClick={(value: string) => onClick(value)}
                          value={typeof props.value === 'number' ? props.value : 0}
                          step={Math.abs(Number(props.button.value) - Number(props.button.valueAlt)) > 1 ? 1 : 0.01}
@@ -66,7 +66,7 @@ export default function ParameterButton(props: ParameterButtonProps) {
   }
 
   return (<UseCostWrapper>
-    <ParameterLayoutStyled disabled={!!props.disabled || !useCostUsable()} className={`${props.style.id} ${props.active ? 'active' : ''}`}
+    <ParameterLayoutStyled disabled={!!props.disabled || !useCostUsable()} className={`${props.theme.id} ${props.active ? 'active' : ''}`}
                            onClick={() => onClick()}>
       {props.button.image?.urlPath &&
         <ParameterButtonPicture src={imageUrl()} imageOrientation={props.button.imageOrientation || 'Square'} />}

@@ -6,16 +6,16 @@ import ProfileForm from './basicInfo/form/profileForm.component';
 import { WEBSITE_URL } from '../../../shared/const';
 import InteractionKeys from './interactionKeys/interactionKeys.component';
 import BackgroundPicker from './background/backgroundPicker.component';
-import StylePicker from './style/stylePicker.component';
+import StylePicker from './theme/themePicker.component';
 import ProfilePreview from './components/profilePreview.component';
 import SectionMenu from '../../components/menu/sectionMenu/sectionMenu.component';
 import NoConnection from '../../components/noConnection/noConnection.component';
 
-type ProfilePageSections = 'basicInfo' | 'interactionKeys' | 'background' | 'style';
+type ProfilePageSections = 'basicInfo' | 'interactionKeys' | 'background' | 'theme';
 
 export default function ProfilePage() {
 
-  const { profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setStyle } = useProlfilePage();
+  const { profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setTheme } = useProlfilePage();
   const [section, setSection] = useState<ProfilePageSections>('basicInfo');
   const pageFlexDirection = section === 'basicInfo' ? 'row' : 'column';
 
@@ -30,7 +30,7 @@ export default function ProfilePage() {
         <div className={'SectionMenuLink'} onClick={() => setSection('basicInfo')} aria-current={section === 'basicInfo'}>Basic info</div>
         <div className={'SectionMenuLink'} onClick={() => setSection('interactionKeys')} aria-current={section === 'interactionKeys'}>Interaction keys</div>
         <div className={'SectionMenuLink'} onClick={() => setSection('background')} aria-current={section === 'background'}>Background</div>
-        <div className={'SectionMenuLink'} onClick={() => setSection('style')} aria-current={section === 'style'}>Style</div>
+        <div className={'SectionMenuLink'} onClick={() => setSection('theme')} aria-current={section === 'theme'}>Theme</div>
       </div>
       <div>
         <a href={WEBSITE_URL + '/' + profile.username} target={'_blank'}>View profile on website <i className={'ri-external-link-line'} /></a>
@@ -51,8 +51,8 @@ export default function ProfilePage() {
       <ProfilePreview profile={profile} />
     </>}
 
-    {section === 'style' && <>
-      <StylePicker profile={profile} setStyle={setStyle} />
+    {section === 'theme' && <>
+      <StylePicker profile={profile} setTheme={setTheme} />
       <ProfilePreview profile={profile} />
     </>}
 

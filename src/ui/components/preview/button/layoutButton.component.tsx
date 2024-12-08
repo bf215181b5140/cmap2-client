@@ -1,18 +1,18 @@
 import styled from 'styled-components';
-import { ButtonDTO, StyleDTO } from 'cmap2-shared';
+import { ButtonDTO, ThemeDTO } from 'cmap2-shared';
 import { MouseEvent } from 'react';
 import ParameterButton from './parameter.button';
 
 interface LayoutButtonProps {
-  style: StyleDTO;
+  theme: ThemeDTO;
   button: ButtonDTO;
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
-export default function LayoutButton({ style, button, onClick }: LayoutButtonProps) {
+export default function LayoutButton({ theme, button, onClick }: LayoutButtonProps) {
 
   return (<LayoutButtonStyled onClick={onClick}>
-    <ParameterButton button={button} style={style} />
+    <ParameterButton button={button} theme={theme} />
   </LayoutButtonStyled>);
 }
 

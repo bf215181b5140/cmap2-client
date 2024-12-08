@@ -1,20 +1,20 @@
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components';
-import { GroupDTO, GroupWidth, StyleDTO } from 'cmap2-shared';
+import { GroupDTO, GroupWidth, ThemeDTO } from 'cmap2-shared';
 import { ReactProps } from '../../../types';
 import { MouseEvent } from 'react';
 import { LAYOUT_ELEMENT_GAP } from '../layout/layout.component';
 
 interface LayoutGroupProps extends ReactProps {
-  style: StyleDTO;
+  theme: ThemeDTO;
   group: GroupDTO;
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
-export default function LayoutGroup({ style, group, onClick, children }: LayoutGroupProps) {
+export default function LayoutGroup({ theme, group, onClick, children }: LayoutGroupProps) {
 
   const readonly = !onClick;
 
-  return (<LayoutGroupStyled style={style} width={group.width} onClick={onClick} aria-readonly={readonly}>
+  return (<LayoutGroupStyled theme={theme} width={group.width} onClick={onClick} aria-readonly={readonly}>
     {group.showLabel && <h2 className={'layoutGroupLabel'}>{group.label}</h2>}
     <div className={'layoutButtonWrapper'}>
       {children}
@@ -22,7 +22,7 @@ export default function LayoutGroup({ style, group, onClick, children }: LayoutG
   </LayoutGroupStyled>);
 }
 
-const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))<{ style: StyleDTO, width: GroupWidth }>`
+const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))<{ theme: ThemeDTO, width: GroupWidth }>`
   padding: 20px;
   border-radius: 8px;
 
@@ -49,7 +49,7 @@ const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))
   }
 }};
 
-  ${props => groupStyles[props.style.id]};
+  ${props => groupThemes[props.theme.id]};
   
   &[aria-readonly='false'] {
     cursor: pointer;
@@ -65,12 +65,12 @@ const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))
   }
 `;
 
-const groupStyles: { [key: string]: FlattenInterpolation<ThemeProps<DefaultTheme>> } = {};
+const groupThemes: { [key: string]: FlattenInterpolation<ThemeProps<DefaultTheme>> } = {};
 
-groupStyles.vrcGreen = css`
+groupThemes.vrcGreen = css`
   background: ${props => props.theme.colors.ui.background3};
 `;
 
-groupStyles.vrcGrey = css`
+groupThemes.vrcGrey = css`
   background: ${props => props.theme.colors.ui.background3};
 `;

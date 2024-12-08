@@ -1,9 +1,9 @@
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components';
-import { StyleDTO } from 'cmap2-shared';
+import { ThemeDTO } from 'cmap2-shared';
 
 export const LAYOUT_ELEMENT_GAP = '20px';
 
-const Layout = styled.div<{ style: StyleDTO }>`
+const Layout = styled.div<{ theme: ThemeDTO }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -12,17 +12,17 @@ const Layout = styled.div<{ style: StyleDTO }>`
   width: 100%;
   border-radius: 8px;
 
-  ${props => layoutStyles[props.style.id]};
+  ${props => layoutThemes[props.theme.id]};
 `;
 
 export default Layout;
 
-const layoutStyles: { [key: string]: FlattenInterpolation<ThemeProps<DefaultTheme>> } = {};
+const layoutThemes: { [key: string]: FlattenInterpolation<ThemeProps<DefaultTheme>> } = {};
 
-layoutStyles.vrcGreen = css`
+layoutThemes.vrcGreen = css`
   background: ${props => props.theme.colors.ui.appBgOpaque};
 `;
 
-layoutStyles.vrcGrey = css`
+layoutThemes.vrcGrey = css`
   background: ${props => props.theme.colors.ui.appBgOpaque};
 `;

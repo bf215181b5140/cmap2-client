@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import useCmapFetch from '../../hooks/cmapFetch.hook';
 import { MouseEvent, useEffect, useReducer, useState } from 'react';
-import { BackgroundDTO, InteractionKeyDTO, LayoutsPageSchema, StyleDTO, TierDTO } from 'cmap2-shared';
+import { BackgroundDTO, InteractionKeyDTO, LayoutsPageSchema, ThemeDTO, TierDTO } from 'cmap2-shared';
 import layoutsReducer from './layouts.reducer';
 import { LayoutsPageContext, LayoutsPageData } from './layouts.context';
 import { Page } from '../../components/page/page.component';
@@ -19,7 +19,7 @@ export default function LayoutsPage() {
   const { layoutId, groupId, buttonId } = useParams();
   const [tier, setTier] = useState<TierDTO | undefined>();
   const [background, setBackground] = useState<BackgroundDTO | undefined>();
-  const [style, setStyle] = useState<StyleDTO | undefined>();
+  const [theme, setTheme] = useState<ThemeDTO | undefined>();
   const [interactionKeys, setInteractionKeys] = useState<InteractionKeyDTO[]>([]);
   const [layouts, layoutsDispatch] = useReducer(layoutsReducer, []);
   const [noConnection, setNoConnection] = useState<boolean>(false);
@@ -28,7 +28,7 @@ export default function LayoutsPage() {
     GET('layouts', LayoutsPageSchema, (data) => {
       setTier(data.tier);
       setBackground(data.background);
-      setStyle(data.style);
+      setTheme(data.theme);
       setInteractionKeys(data.interactionKeys);
       layoutsDispatch({ type: 'setLayouts', layouts: data.layouts });
     }, () => setNoConnection(true));
@@ -36,7 +36,7 @@ export default function LayoutsPage() {
 
   if (noConnection) return <NoConnection />;
 
-  if (!tier || !background || !style) return;
+  if (!tier || !background || !theme) return;
 
   const layout = layouts?.find(l => l.id === layoutId);
   const group = layout?.groups?.find(g => g.id === groupId);
@@ -47,7 +47,7 @@ export default function LayoutsPage() {
   const pageData: LayoutsPageData = {
     tier,
     background,
-    style,
+    theme: theme,
     interactionKeys,
     layouts,
     layoutsDispatch,

@@ -1,11 +1,11 @@
 import { createContext, Dispatch } from 'react';
-import { BackgroundDTO, ButtonDTO, GroupDTO, InteractionKeyDTO, LayoutDTO, StyleDTO, TierDTO } from 'cmap2-shared';
+import { BackgroundDTO, ButtonDTO, GroupDTO, InteractionKeyDTO, LayoutDTO, ThemeDTO, TierDTO } from 'cmap2-shared';
 import { LayoutsReducerAction } from './layouts.reducer';
 
 export interface LayoutsPageData {
   tier: TierDTO;
   background: BackgroundDTO;
-  style: StyleDTO;
+  theme: ThemeDTO;
   interactionKeys: InteractionKeyDTO[];
   layouts: LayoutDTO[];
   layoutsDispatch: Dispatch<LayoutsReducerAction>;

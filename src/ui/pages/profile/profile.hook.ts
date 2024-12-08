@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import useCmapFetch from '../../hooks/cmapFetch.hook';
-import { BackgroundDTO, BasicInfoFormDTO, InteractionKeyDTO, ProfilePageDTO, ProfilePageSchema, StyleDTO, UploadedFileDTO } from 'cmap2-shared';
+import { BackgroundDTO, BasicInfoFormDTO, InteractionKeyDTO, ProfilePageDTO, ProfilePageSchema, ThemeDTO, UploadedFileDTO } from 'cmap2-shared';
 import { useParams } from 'react-router-dom';
 
 export default function useProlfilePage() {
@@ -41,12 +41,12 @@ export default function useProlfilePage() {
     });
   }
 
-  function setStyle(style: StyleDTO) {
+  function setTheme(theme: ThemeDTO) {
     setProfile(prevState => {
       if (!prevState) return undefined;
-      return { ...prevState, style: style };
+      return { ...prevState, theme: theme };
     });
   }
 
-  return { page, profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setStyle };
+  return { page, profile, setBasicInfo, setImage, setInteractionKeys, setBackground, setTheme };
 }

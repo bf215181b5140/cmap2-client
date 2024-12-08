@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ButtonDTO, ProfilePageDTO, StyleDTO, StylesDTO, StylesSchema } from 'cmap2-shared';
+import { ButtonDTO, ProfilePageDTO, ThemeDTO, ThemesDTO, ThemesSchema } from 'cmap2-shared';
 import styled from 'styled-components';
 import Segment from '../../../components/segment/segment.component';
 import PickerOverlayTier from '../../../components/pickerOverlay/PickerOverlayTier.component';
@@ -7,27 +7,27 @@ import PickerOverlayCheck from '../../../components/pickerOverlay/PickerOverlayC
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
 import ParameterButton from '../../../components/preview/button/parameter.button';
 
-interface StylePickerProps {
+interface ThemePickerProps {
   profile: ProfilePageDTO;
-  setStyle: (style: StyleDTO) => void;
+  setTheme: (theme: ThemeDTO) => void;
 }
 
-export default function StylePicker({ profile, setStyle }: StylePickerProps) {
+export default function ThemePicker({ profile, setTheme }: ThemePickerProps) {
 
   const { GET, POST } = useCmapFetch();
-  const [styles, setStyles] = useState<StylesDTO | undefined>();
+  const [themes, setThemes] = useState<ThemesDTO | undefined>();
 
   useEffect(() => {
-    GET('profile/style', StylesSchema, data => {
-      setStyles(data);
+    GET('profile/theme', ThemesSchema, data => {
+      setThemes(data);
     });
   }, []);
 
-  function saveSelected(style: StylesDTO[0]) {
-    if (profile.tier.rank < style.tier.rank) return;
+  function saveSelected(theme: ThemesDTO[0]) {
+    if (profile.tier.rank < theme.tier.rank) return;
 
-    POST('profile/style', { id: style.id }, undefined, () => {
-      setStyle(style);
+    POST('profile/theme', { id: theme.id }, undefined, () => {
+      setTheme(theme);
     });
   }
 
@@ -47,26 +47,26 @@ export default function StylePicker({ profile, setStyle }: StylePickerProps) {
     interactionKeyId: null
   };
 
-  return (<Segment segmentTitle={'Website style'} loading={!styles}>
-    <ButtonStyleFlex>
-      {styles?.map(style => (
-        <ButtonStylePickerStyled color={style.tier.color} validPick={profile.tier.rank >= style.tier.rank} onClick={() => saveSelected(style)} key={style.id}>
-          <ParameterButton style={style} button={exampleButton} />
-          <PickerOverlayTier tier={style.tier} valid={style.tier.rank <= profile.tier.rank} />
-          <PickerOverlayCheck selected={profile.style.id === style.id} />
-        </ButtonStylePickerStyled>
+  return (<Segment segmentTitle={'Website theme'} loading={!themes}>
+    <ButtonThemeFlex>
+      {themes?.map(theme => (
+        <ButtonThemePickerThemed color={theme.tier.color} validPick={profile.tier.rank >= theme.tier.rank} onClick={() => saveSelected(theme)} key={theme.id}>
+          <ParameterButton theme={theme} button={exampleButton} />
+          <PickerOverlayTier tier={theme.tier} valid={theme.tier.rank <= profile.tier.rank} />
+          <PickerOverlayCheck selected={profile.theme.id === theme.id} />
+        </ButtonThemePickerThemed>
       ))}
-    </ButtonStyleFlex>
+    </ButtonThemeFlex>
   </Segment>);
 }
 
-const ButtonStyleFlex = styled.div`
+const ButtonThemeFlex = styled.div`
     display: flex;
     flex-direction: row;
     gap: 15px;
 `;
 
-const ButtonStylePickerStyled = styled.div<{ color: string, validPick: boolean }>`
+const ButtonThemePickerThemed = styled.div<{ color: string, validPick: boolean }>`
     position: relative;
     margin: 0;
     padding: 20px 15px;

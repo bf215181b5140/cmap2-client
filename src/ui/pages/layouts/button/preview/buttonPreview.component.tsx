@@ -12,7 +12,7 @@ interface ButtonPreviewProps {
 
 export default function ButtonPreview({ buttonSectionEvents }: ButtonPreviewProps) {
 
-  const { style, button } = useContext(LayoutsPageContext);
+  const { theme, button } = useContext(LayoutsPageContext);
   const [previewButton, setPreviewButton] = useState<ButtonDTO | undefined>(button);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function ButtonPreview({ buttonSectionEvents }: ButtonPreviewProp
 
   return (<Segment segmentTitle={'Preview'} width={'Full'}>
     <div style={{ maxWidth: '350px' }}>
-      <ParameterButton button={previewButton} style={style} />
+      <ParameterButton button={previewButton} style={theme} />
     </div>
   </Segment>);
 }

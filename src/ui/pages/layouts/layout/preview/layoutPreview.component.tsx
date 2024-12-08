@@ -14,7 +14,7 @@ import Background from '../../../../components/background/background.component';
 export default function LayoutPreview() {
 
   const navigate = useNavigate();
-  const { tier, background, style, layout } = useContext(LayoutsPageContext);
+  const { tier, background, theme, layout } = useContext(LayoutsPageContext);
   const [mode, setMode] = useState<'edit' | 'simulate'>('edit');
   const [activeItem, setActiveItem] = useState<QuickEditItem | undefined>();
 
@@ -60,15 +60,15 @@ export default function LayoutPreview() {
 
       <div style={{ height: '100px' }} />
 
-      <Layout style={style}>
+      <Layout theme={theme}>
 
         {/* Groups */}
         {layout?.groups?.map(group => (
-          <LayoutGroup key={group.id} style={style} group={group} onClick={event => onGroupClick(event, group)}>
+          <LayoutGroup key={group.id} theme={theme} group={group} onClick={event => onGroupClick(event, group)}>
 
             {/* Buttons */}
             {group.buttons?.map(button => (
-              <LayoutButton key={button.id} style={style} button={button} onClick={event => onButtonClick(event, group, button)} />
+              <LayoutButton key={button.id} theme={theme} button={button} onClick={event => onButtonClick(event, group, button)} />
             ))}
 
             {/* Add Button */}
