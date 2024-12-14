@@ -9,7 +9,8 @@ export default function OscPage() {
 
   return (<>
     <ContentMenu>
-      <ContentMenuLink to={'/osc/status'} icon={'ri-wifi-fill'} tooltip={'Game status'} />
+      <ContentMenuLink to={'/osc/status'} icon={'ri-wifi-fill'} tooltip={'Status'} />
+      <ContentMenuLink to={'/osc/parameters'} icon={'ri-list-unordered'} tooltip={'Parameter settings'} />
       <ContentMenuLink to={'/osc/debug'} icon={'ri-terminal-box-line'} tooltip={'Debug'} />
     </ContentMenu>
     <Routes>

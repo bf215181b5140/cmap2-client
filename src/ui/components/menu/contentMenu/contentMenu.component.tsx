@@ -1,14 +1,6 @@
 import styled from 'styled-components';
-import { ReactProps } from '../../../types';
 
-export default function ContentMenu({ children }: ReactProps) {
-
-  return (<ContentMenuStyled>
-    {children}
-  </ContentMenuStyled>);
-}
-
-const ContentMenuStyled = styled.div`
+const ContentMenu = styled.div`
   background: ${props => props.theme.colors.segment.bg};
   position: sticky;
   top: 0;
@@ -25,3 +17,5 @@ const ContentMenuStyled = styled.div`
     padding: 0 !important;
   }
 `;
+
+export default ContentMenu;

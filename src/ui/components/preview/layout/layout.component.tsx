@@ -3,7 +3,7 @@ import { ThemeDTO } from 'cmap2-shared';
 
 export const LAYOUT_ELEMENT_GAP = '20px';
 
-const Layout = styled.div<{ theme: ThemeDTO }>`
+const Layout = styled.div<{ cmapTheme: ThemeDTO }>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -12,7 +12,7 @@ const Layout = styled.div<{ theme: ThemeDTO }>`
   width: 100%;
   border-radius: 8px;
 
-  ${props => layoutThemes[props.theme.id]};
+  ${props => layoutThemes[props.cmapTheme.id]};
 `;
 
 export default Layout;

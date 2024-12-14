@@ -12,7 +12,7 @@ interface LayoutButtonProps {
 export default function LayoutButton({ theme, button, onClick }: LayoutButtonProps) {
 
   return (<LayoutButtonStyled onClick={onClick}>
-    <ParameterButton button={button} theme={theme} />
+    <ParameterButton button={button} cmapTheme={theme} />
   </LayoutButtonStyled>);
 }
 

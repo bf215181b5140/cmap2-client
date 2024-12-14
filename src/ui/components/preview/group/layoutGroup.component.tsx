@@ -14,7 +14,7 @@ export default function LayoutGroup({ theme, group, onClick, children }: LayoutG
 
   const readonly = !onClick;
 
-  return (<LayoutGroupStyled theme={theme} width={group.width} onClick={onClick} aria-readonly={readonly}>
+  return (<LayoutGroupStyled cmapTheme={theme} width={group.width} onClick={onClick} aria-readonly={readonly}>
     {group.showLabel && <h2 className={'layoutGroupLabel'}>{group.label}</h2>}
     <div className={'layoutButtonWrapper'}>
       {children}
@@ -22,7 +22,7 @@ export default function LayoutGroup({ theme, group, onClick, children }: LayoutG
   </LayoutGroupStyled>);
 }
 
-const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))<{ theme: ThemeDTO, width: GroupWidth }>`
+const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))<{ cmapTheme: ThemeDTO, width: GroupWidth }>`
   padding: 20px;
   border-radius: 8px;
 
@@ -49,7 +49,7 @@ const LayoutGroupStyled = styled.div.attrs(() => ({ className: 'layoutGroup' }))
   }
 }};
 
-  ${props => groupThemes[props.theme.id]};
+  ${props => groupThemes[props.cmapTheme.id]};
   
   &[aria-readonly='false'] {
     cursor: pointer;

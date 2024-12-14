@@ -1,35 +1,51 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import React, { useContext } from 'react';
 import ContentMenu from '../../components/menu/contentMenu/contentMenu.component';
 import ContentMenuLink from '../../components/menu/contentMenu/contentMenuLink.component';
 import { CredentialsContext } from '../../components/context/credentials.context';
-// import ConnectionPage from '../launchPad/connection/connection.page';
+import ProfilePage from './profile/profile.page';
+import InteractionKeysPage from './interactionKeys/interactionKeys.page';
+import ParametersPage from './state/parameters.page';
+import StylePage from './style/style.page';
+import LayoutsPage from './layouts/layouts.page';
+import ConnectionPage from './connection/connection.page';
+import TiersPage from './tiers/tiers.page';
 
 export default function WebsitePage() {
 
-  const { credentials: { apiToken, isAdmin } } = useContext(CredentialsContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { credentials: { apiToken } } = useContext(CredentialsContext);
+
+  if (!apiToken && location.pathname !== '/website/connection') {
+    navigate('/website/connection');
+  }
 
   return (<>
     <ContentMenu>
       <ContentMenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Connection'} />
-      {/* <ContentMenuLink to={'/website/profile'} icon={'ri-profile-fill'} tooltip={'Profile'} disabled={!apiToken} /> */}
-      {/* <ContentMenuLink to={'/website/layouts'} icon={'ri-layout-masonry-fill'} tooltip={'Layouts'} disabled={!apiToken} /> */}
-      {/* <ContentMenuLink to={'/website/parameters'} icon={'ri-archive-stack-fill'} tooltip={'Tracked parameters'} disabled={!apiToken} /> */}
-      {/* <ContentMenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Tiers & invite keys'} disabled={!apiToken} /> */}
+      <ContentMenuLink to={'/website/state'} icon={'ri-archive-stack-fill'} tooltip={'Status and parameters'} disabled={!apiToken} />
+      <ContentMenuLink to={'/website/profile'} icon={'ri-profile-fill'} tooltip={'Profile'} disabled={!apiToken} />
+      <ContentMenuLink to={'/website/layouts'} icon={'ri-layout-masonry-fill'} tooltip={'Layouts'} disabled={!apiToken} />
+      <ContentMenuLink to={'/website/interactionKeys'} icon={'ri-key-2-fill'} tooltip={'Interaction keys'} disabled={!apiToken} />
+      <ContentMenuLink to={'/website/style'} icon={'ri-paint-brush-fill'} tooltip={'Background and theme'} disabled={!apiToken} />
+      <ContentMenuLink to={'/website/tiers'} icon={'ri-medal-fill'} tooltip={'Tiers & invite keys'} disabled={!apiToken} />
 
-      {isAdmin && (<>
-        <hr />
-        <ContentMenuLink to={'/website/approveFiles'} icon={'ri-gallery-fill'} tooltip={'Approve file uploads'} />
-        <ContentMenuLink to={'/website/clientVersions'} icon={'ri-git-branch-line'} tooltip={'Client versions'} />
-      </>)}
+      {/* {isAdmin && (<> */}
+      {/*   <hr /> */}
+      {/*   <ContentMenuLink to={'/website/approveFiles'} icon={'ri-gallery-fill'} tooltip={'Approve file uploads'} /> */}
+      {/*   <ContentMenuLink to={'/website/clientVersions'} icon={'ri-git-branch-line'} tooltip={'Client versions'} /> */}
+      {/* </>)} */}
     </ContentMenu>
 
     <Routes>
-      {/* <Route path="/connection" element={<ConnectionPage />} /> */}
-      {/* <Route path="/profile" element={<ProfilePage />} /> */}
-      {/* <Route path="/layouts/:layoutId?/:groupId?/:buttonId?" element={<LayoutsPage />} /> */}
-      {/* <Route path="/parameters" element={<ParametersPage />} /> */}
-      {/* <Route path="/tiers" element={<TiersPage />} /> */}
+      <Route path="/connection" element={<ConnectionPage />} />
+      <Route path="/state" element={<ParametersPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/interactionKeys" element={<InteractionKeysPage />} />
+      <Route path="/style" element={<StylePage />} />
+      <Route path="/layouts/:layoutId?/:groupId?/:buttonId?" element={<LayoutsPage />} />
+      <Route path="/tiers" element={<TiersPage />} />
 
       {/* /!* Admin pages *!/ */}
       {/* <Route path="/approveFiles" element={<ApproveFilesPage />} /> */}

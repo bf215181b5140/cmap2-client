@@ -7,7 +7,7 @@ export const URL = process.env.NODE_ENV === 'production' ? 'https://changemyavat
 
 interface ParameterButtonProps {
   button: ButtonDTO;
-  theme: ThemeDTO;
+  cmapTheme: ThemeDTO;
   active?: boolean;
   disabled?: boolean;
   value?: string | number | boolean | undefined;
@@ -54,7 +54,7 @@ export default function ParameterButton(props: ParameterButtonProps) {
       <SliderWrapper>
         {props.button.label && <ParameterSliderLabel>{props.button.label}</ParameterSliderLabel>}
         <ParameterSlider disabled={!!props.disabled || !useCostUsable()}
-                         className={props.theme.id}
+                         className={props.cmapTheme.id}
                          onClick={(value: string) => onClick(value)}
                          value={typeof props.value === 'number' ? props.value : 0}
                          step={Math.abs(Number(props.button.value) - Number(props.button.valueAlt)) > 1 ? 1 : 0.01}
@@ -66,7 +66,7 @@ export default function ParameterButton(props: ParameterButtonProps) {
   }
 
   return (<UseCostWrapper>
-    <ParameterLayoutStyled disabled={!!props.disabled || !useCostUsable()} className={`${props.theme.id} ${props.active ? 'active' : ''}`}
+    <ParameterLayoutStyled disabled={!!props.disabled || !useCostUsable()} className={`${props.cmapTheme.id} ${props.active ? 'active' : ''}`}
                            onClick={() => onClick()}>
       {props.button.image?.urlPath &&
         <ParameterButtonPicture src={imageUrl()} imageOrientation={props.button.imageOrientation || 'Square'} />}

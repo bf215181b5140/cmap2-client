@@ -5,7 +5,7 @@ const Section = styled.div<{ direction?: 'row' | 'column', flex?: string }>`
   display: flex;
   flex-direction: ${props => props.direction ? props.direction : 'column'};
   gap: ${PAGE_ELEMENT_GAP};
-  flex-wrap: wrap;
+  flex-wrap: ${props => props?.direction === 'row' ? 'wrap' : 'nowrap'};
 `;
 
 export default Section;

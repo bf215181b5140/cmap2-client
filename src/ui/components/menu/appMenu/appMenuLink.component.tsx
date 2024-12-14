@@ -55,7 +55,7 @@ const AppMenuLinkStyled = styled(Link)<{ selected: boolean }>`
     color: ${props => props.theme.colors.font.text};
     width: max-content;
     z-index: 20;
-
+    font-weight: normal;
   }
 
   .attention {
