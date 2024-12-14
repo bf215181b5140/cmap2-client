@@ -25,7 +25,6 @@ export const FormTableStyled = styled.table<{ width?: string, thAlign?: string, 
     padding: 5px 8px;
     border-radius: 8px;
   `}
-
   tbody th {
     font-weight: normal;
     text-align: ${props => props.thAlign ? props.thAlign : 'left'};

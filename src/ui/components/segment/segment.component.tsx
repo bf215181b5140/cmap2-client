@@ -62,32 +62,32 @@ export default function Segment({ segmentTitle, toggleTitle, infoContent, width,
 }
 
 const SegmentWrapper = styled.div<{ flex?: string }>`
-    flex: ${props => props.flex || '0'};
+  flex: ${props => props.flex || '0'};
 `;
 
 const SegmentTitle = styled.div<{ shown: boolean }>`
-    color: ${props => props.theme.colors.font.h2};
+  color: ${props => props.theme.colors.font.h2};
 
-    h2 {
-        display: inline-block;
-        margin: 5px;
-        cursor: pointer;
+  h2 {
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
 
-        i {
-            display: inline-block;
-            transition: transform 0.1s linear;
-            transform: rotate(${props => props.shown ? '0' : '-90deg'});
-        }
+    i {
+      display: inline-block;
+      transition: transform 0.1s linear;
+      transform: rotate(${props => props.shown ? '0' : '-90deg'});
     }
+  }
 `;
 
 const FloatIconButton = styled(IconButton)`
-    float: right;
-    margin: 0 0 7px 7px;
+  float: right;
+  margin: 0 0 7px 7px;
 `;
 
 const SegmentStyled = styled.div`
-    background-color: ${props => props.theme.colors.ui.background3};
-    border-radius: 8px;
-    padding: 15px;
+  background-color: ${props => props.theme.colors.ui.background3};
+  border-radius: 8px;
+  padding: 15px;
 `;

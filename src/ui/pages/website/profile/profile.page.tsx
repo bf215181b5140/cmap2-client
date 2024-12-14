@@ -34,8 +34,8 @@ export default function ProfilePage() {
   if (profile === null) return <NoConnection />;
 
   return (<Page>
-      <ProfileOverview profile={profile} setImage={setImage} />
-      <ProfileForm profile={profile} saveProfileForm={applyProfileForm} />
+    <ProfileOverview profile={profile} setImage={setImage} />
+    <ProfileForm profile={profile} saveProfileForm={applyProfileForm} />
   </Page>);
 }
 

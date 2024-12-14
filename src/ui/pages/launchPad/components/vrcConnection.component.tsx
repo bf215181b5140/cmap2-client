@@ -1,7 +1,5 @@
 import ConnectionBox from './launchPadBox.component';
-import { useEffect, useState } from 'react';
 import useVrcDetector from '../../../hooks/vrcDetector.hook';
-import useCmapUtil from '../../../hooks/cmapUtil.hook';
 import useOscActivity from '../../../hooks/oscActivity.hook';
 
 export default function VrcConnection() {

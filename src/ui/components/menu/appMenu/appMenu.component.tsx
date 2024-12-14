@@ -10,7 +10,6 @@ export default function AppMenu() {
   const { updateStatusColor } = useUpdateStatus();
   const { credentials: { isAdmin } } = useContext(CredentialsContext);
 
-
   return (<AppMenuStyled>
     <AppMenuLink to={'/'} icon={'ri-rocket-2-fill'} tooltip={'Launch pad'} />
     <AppMenuLink to={'/osc'} icon={'ri-gamepad-line'} tooltip={'VRChat and OSC'} />

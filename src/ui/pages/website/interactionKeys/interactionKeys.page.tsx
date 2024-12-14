@@ -26,7 +26,7 @@ export default function InteractionKeysPage() {
   if (profile === null) return <NoConnection />;
 
   return (<Page>
-      <InteractionKeysForm profile={profile} setInteractionKeys={setInteractionKeys} />
+    <InteractionKeysForm profile={profile} setInteractionKeys={setInteractionKeys} />
   </Page>);
 }
 

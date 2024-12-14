@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import React from 'react';
 import ContentMenu from '../../components/menu/contentMenu/contentMenu.component';
 import ContentMenuLink from '../../components/menu/contentMenu/contentMenuLink.component';
-import GameStatusPage from './gameStatus/gameStatus.page';
 import DebugPage from './debug/debug.page';
 import StatusPage from './status/status.page';
 

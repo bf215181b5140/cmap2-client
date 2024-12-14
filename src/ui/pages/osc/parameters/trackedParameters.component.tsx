@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Segment from '../../../../components/segment/segment.component';
-import SegmentTable from '../../../../components/segment/segmentTable.component';
-import AvatarName from '../../../../components/savedAvatar/savedAvatar.component';
+import Segment from '../../../components/segment/segment.component';
+import SegmentTable from '../../../components/segment/segmentTable.component';
+import AvatarName from '../../../components/savedAvatar/savedAvatar.component';
 import { useForm } from 'react-hook-form';
-import { TrackedParametersSettings, TrackedParametersSettingsSchema } from '../../../../../shared/objects/settings';
+import { TrackedParametersSettings, TrackedParametersSettingsSchema } from '../../../../shared/objects/settings';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormTable from '../../../../components/form/formTable.component';
-import CheckboxInput from '../../../../components/input/checkbox.component';
+import FormTable from '../../../components/form/formTable.component';
+import CheckboxInput from '../../../components/input/checkbox.component';
 import { TrackedParametersMap } from 'cmap2-shared';
 
 export default function TrackedParameters() {

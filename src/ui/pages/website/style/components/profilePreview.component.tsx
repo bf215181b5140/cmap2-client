@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ProfilePageDTO, StylePageDTO } from 'cmap2-shared';
+import { StylePageDTO } from 'cmap2-shared';
 import React from 'react';
 import Segment from '../../../../components/segment/segment.component';
 import { Page } from '../../../../components/page/page.component';
