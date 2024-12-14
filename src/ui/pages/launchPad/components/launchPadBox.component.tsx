@@ -64,7 +64,8 @@ const LaunchPadBoxStyled = styled.div`
     }
 
     h2 {
-      font-size: 18px;
+      font-size: 16px;
+      font-weight: normal;
     }
   }
 `;

@@ -4,6 +4,7 @@ import ContentMenu from '../../components/menu/contentMenu/contentMenu.component
 import ContentMenuLink from '../../components/menu/contentMenu/contentMenuLink.component';
 import GameStatusPage from './gameStatus/gameStatus.page';
 import DebugPage from './debug/debug.page';
+import StatusPage from './status/status.page';
 
 export default function OscPage() {
 
@@ -14,7 +15,7 @@ export default function OscPage() {
       <ContentMenuLink to={'/osc/debug'} icon={'ri-terminal-box-line'} tooltip={'Debug'} />
     </ContentMenu>
     <Routes>
-      <Route path="/status" element={<GameStatusPage />} />
+      <Route path="/status" element={<StatusPage />} />
       <Route path="/debug" element={<DebugPage />} />
       <Route path="*" element={<Navigate to={'/osc/status'} />} />
     </Routes>

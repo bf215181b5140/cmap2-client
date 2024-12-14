@@ -13,7 +13,7 @@ export default function AppMenu() {
 
   return (<AppMenuStyled>
     <AppMenuLink to={'/'} icon={'ri-rocket-2-fill'} tooltip={'Launch pad'} />
-    <AppMenuLink to={'/osc'} icon={'ri-gamepad-line'} tooltip={'OSC'} />
+    <AppMenuLink to={'/osc'} icon={'ri-gamepad-line'} tooltip={'VRChat and OSC'} />
     <AppMenuLink to={'/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Avatars'} />
     <AppMenuLink to={'/website'} icon={'ri-global-line'} tooltip={'Website'} />
     {isAdmin && <AppMenuLink to={'/admin'} icon={'ri-admin-line'} tooltip={'Admin'} />}
