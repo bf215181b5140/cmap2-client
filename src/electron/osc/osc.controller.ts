@@ -5,11 +5,18 @@ import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { OscSettings } from '../../shared/objects/settings';
 import { SETTINGS } from '../store/settings/settings.store';
 
+// const ignoredOscParameters = ['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
+//                               '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
+//                               '/avatar/parameters/AngularY', '/avatar/parameters/Grounded', '/avatar/parameters/Face',
+//                               '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureRight',
+//                               '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
+//                               '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude'];
+
 const ignoredOscParameters = ['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
-                              '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
-                              '/avatar/parameters/AngularY', '/avatar/parameters/Grounded', '/avatar/parameters/Face',
-                              '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureRight',
-                              '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
+
+                              '/avatar/parameters/AngularY',
+                              '/avatar/parameters/GestureRightWeight',
+                              '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/Voice',
                               '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude'];
 
 export class OscController {
@@ -17,37 +24,16 @@ export class OscController {
   private oscClient: Client | undefined;
 
   private ignoredParameters: Set<string> = new Set(ignoredOscParameters);
-  // private trackedParameters = new TrackedParametersMap();
-  // private trackedParametersActivity: Map<string, number> = new Map();
 
   private lastActivity: number | undefined;
-  // private clearOnAvatarChange: boolean;
 
   constructor() {
-
-    // IPC.on('saveOscSettings', settings => {
-    //   if (!this.oscSettings) {
-    //     this.start(settings);
-    //   } else if (this.oscSettings.ip !== settings.ip ||
-    //     this.oscSettings.inPort !== settings.inPort ||
-    //     this.oscSettings.outPort !== settings.outPort) {
-    //     this.start(settings);
-    //   }
-    // });
     SETTINGS.onChange('osc', this.start)
 
-    // IPC.on('saveTrackedParametersSettings', data => this.clearOnAvatarChange = data.clearOnAvatarChange);
-
     IPC.handle('getLastOscActivity', async () => this.lastActivity);
-    // IPC.handle('getTrackedParameters', async () => this.trackedParameters);
-
-    // IPC.on('setTrackedParameter', parameter => this.trackedParameters.set(parameter.path, parameter.value));
-    // IPC.on('deleteTrackedParameter', path => this.trackedParameters.delete(path));
 
     BRIDGE.on('sendOscMessage', message => this.send(message));
     IPC.on('sendVrcParameter', data => this.send(new Message(data.path, data.value)));
-
-    // this.clearOnAvatarChange = SETTINGS.get('trackedParameters').clearOnAvatarChange;
 
     this.start(SETTINGS.get('osc'));
   }
@@ -72,39 +58,10 @@ export class OscController {
     if (this.ignoredParameters.has(path)) return;
 
     const value = this.valueFromArgumentType(message[1]);
-
     const vrcParameter: VrcParameter = { path, value };
 
-    // this.trackedParameters.set(vrcParameter.path, vrcParameter.value);
-    // if (this.clearOnAvatarChange) this.trackedParametersActivity.set(vrcParameter.path, Date.now());
-
     BRIDGE.emit('oscMessage', vrcParameter);
-
-    // if (this.clearOnAvatarChange && vrcParameter.path.startsWith('/avatar/change')) this.clearParametersAfterAvatarChange();
   }
-
-  // private clearParametersAfterAvatarChange() {
-  //   // first wait 300ms so all avatar change parameters get here
-  //   setTimeout(() => {
-  //     // set cutoutTime to 600ms ago
-  //     const cutoutTime = Date.now() - 600;
-  //
-  //     // filter parameters from activity map, that are older than cutoutTime
-  //     const deleteParameters: string[] = [];
-  //     this.trackedParametersActivity.forEach((time, path) => time < cutoutTime && deleteParameters.push(path));
-  //
-  //     // delete tracked parameters
-  //     deleteParameters.forEach(param => {
-  //       this.trackedParameters.delete(param);
-  //       this.trackedParametersActivity.delete(param);
-  //     });
-  //
-  //     // emit new tracked parameters
-  //     const trackedparametersDto = this.trackedParameters.dto();
-  //     BRIDGE.emit('trackedParameters', trackedparametersDto);
-  //     IPC.emit('trackedParameters', trackedparametersDto);
-  //   }, 300);
-  // }
 
   private send(message: Message) {
     if (this.oscClient) this.oscClient.send(message);

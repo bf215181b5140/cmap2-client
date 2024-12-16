@@ -28,7 +28,7 @@ export class SocketController {
     BRIDGE.on('sendSocketParameters', data => this.sendData('parameters', data));
     // BRIDGE.on('vrcParameters', vrcParameters => this.onVrcParameters(vrcParameters));
 
-    SETTINGS.onChange('parameterBlacklist', data => this.parameterBlacklist = new Set(data));
+    SETTINGS.onChange('socketParameterBlacklist', data => this.parameterBlacklist = new Set(data));
 
     if (SETTINGS.get('socket').autoConnect) this.connect(SETTINGS.get('credentials'));
   }
@@ -83,6 +83,7 @@ export class SocketController {
   // }
 
   private sendData(event: string, data: any) {
+    console.log('socket sending:', event, data);
     this.socket?.emit(event, data);
   }
 }
