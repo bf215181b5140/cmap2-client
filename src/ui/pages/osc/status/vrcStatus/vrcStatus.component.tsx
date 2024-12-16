@@ -49,7 +49,7 @@ export default function VrcStatus() {
           </td>
           <td>seconds</td>
           <td>
-            <FormControlBar style={{ margin: '0' }}>
+            <FormControlBar margin={'0'}>
               <IconButton role={'save'} disabled={!isDirty} />
               <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>

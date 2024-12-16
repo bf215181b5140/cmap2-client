@@ -5,12 +5,13 @@ import LoadingSpinner from '../../../../components/loadingSpinner/loadingSpinner
 import RegisterForm from './registerForm.component';
 import SpanNotification from '../../../../components/spanNotification/spanNotification.component';
 import NoConnection from '../../../../components/noConnection/noConnection.component';
+import Segment from '../../../../components/segment/segment.component';
 
 interface RegisterProps {
-  loginSegment: () => void;
+  toLogin: () => void;
 }
 
-export default function Register({ loginSegment }: RegisterProps) {
+export default function Register({ toLogin }: RegisterProps) {
 
   const { GET, fetchBusy } = useCmapFetch();
   const [registrationInfo, setRegistrationInfo] = useState<RegisterInfoDTO | undefined>();
@@ -35,9 +36,9 @@ export default function Register({ loginSegment }: RegisterProps) {
     </>);
   }
 
-  return (<>
+  return (<Segment segmentTitle={'Register'}>
     {registrationInfo.keyRequired && <SpanNotification type={'Warning'}>Registration is currently only available if you have an invite key.</SpanNotification>}
     {registrationInfo.message && <SpanNotification type={'Info'}>{registrationInfo.message}</SpanNotification>}
-    <RegisterForm registrationInfo={registrationInfo} fingerprint={fingerprint} loginSegment={loginSegment} />
-  </>);
+    <RegisterForm registrationInfo={registrationInfo} fingerprint={fingerprint} toLogin={toLogin} />
+  </Segment>);
 }

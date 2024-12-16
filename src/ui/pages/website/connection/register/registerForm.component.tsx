@@ -11,14 +11,15 @@ import TextButton from '../../../../components/buttons/textButton.component';
 import HiddenInput from '../../../../components/input/hidden.component';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';
 import FormControlBar from '../../../../components/form/formControlBar.component';
+import Segment from '../../../../components/segment/segment.component';
 
 interface RegisterFormProps {
   registrationInfo: RegisterInfoDTO | undefined;
   fingerprint: string;
-  loginSegment: () => void;
+  toLogin: () => void;
 }
 
-export default function RegisterForm({ registrationInfo, fingerprint, loginSegment }: RegisterFormProps) {
+export default function RegisterForm({ registrationInfo, fingerprint, toLogin }: RegisterFormProps) {
 
   const { PUT } = useCmapFetch();
   const { addNotification } = useNotifications();
@@ -37,33 +38,38 @@ export default function RegisterForm({ registrationInfo, fingerprint, loginSegme
         ...new Credentials(),
         username: formData.username,
       });
-      loginSegment();
+      toLogin();
     });
   }
 
   return (<form onSubmit={handleSubmit(onSubmit)}>
     <HiddenInput register={register} name={'fingerprint'} />
-    <FormTable>
+    <FormTable visible={true}>
       <tr>
         <th style={{ width: '130px' }}>Username</th>
-        <td><Input register={register} name={'username'} errors={errors} /></td>
+        <td style={{ width: '300px' }}><Input register={register} name={'username'} errors={errors} /></td>
+        <td></td>
       </tr>
       <tr>
         <th>Password</th>
         <td><Input type="password" register={register} name={'password'} errors={errors} /></td>
+        <td></td>
       </tr>
       <tr>
         <th>Confirm password</th>
         <td><Input type="password" register={register} name={'passwordRepeat'} errors={errors} /></td>
+        <td></td>
       </tr>
       <tr>
         <th>Invite key</th>
         <td><Input register={register} name={'inviteKey'} errors={errors} /></td>
+        <td>
+          <FormControlBar margin={'0'}>
+          <TextButton type={'submit'} text={'Register'} />
+        </FormControlBar>
+        </td>
       </tr>
     </FormTable>
-    <FormControlBar>
-      <TextButton type={'submit'} text={'Register'} />
-    </FormControlBar>
   </form>);
 
 }

@@ -50,7 +50,7 @@ export default function OscStatus() {
           <td><NumberInput register={register} name={'inPort'} placeholder={'9000'} width={'100px'} errors={errors} /></td>
           <td><p>Default: 9000</p></td>
           <td>
-            <FormControlBar style={{ margin: '0' }}>
+            <FormControlBar margin={'0'}>
               <IconButton role={'save'} disabled={!isDirty} />
               <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
             </FormControlBar>

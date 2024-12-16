@@ -8,12 +8,10 @@ import { Page } from '../../../components/page/page.component';
 import NoConnection from '../../../components/noConnection/noConnection.component';
 import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
 
-type TiersPageSections = 'tiers' | 'inviteKeys';
-
 export default function TiersPage() {
 
   const { GET } = useCmapFetch();
-  const [section, setSection] = useState<TiersPageSections>('tiers');
+  const [section, setSection] = useState<'tiers' | 'inviteKeys'>('tiers');
   const [tiers, setTiers] = useState<TierDTO[] | undefined>();
   const [clientTier, setClientTier] = useState<TierDTO | undefined>();
   const [generatedKeys, setGeneratedKeys] = useState<GeneratedInviteKeyDTO[] | undefined>();

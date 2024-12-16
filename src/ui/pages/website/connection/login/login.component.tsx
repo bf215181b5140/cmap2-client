@@ -9,6 +9,8 @@ import TextButton from '../../../../components/buttons/textButton.component';
 import FormTable from '../../../../components/form/formTable.component';
 import Input from '../../../../components/input/input.component';
 import FormControlBar from '../../../../components/form/formControlBar.component';
+import Segment from '../../../../components/segment/segment.component';
+import IconButton from '../../../../components/buttons/iconButton.component';
 
 export default function Login() {
 
@@ -31,22 +33,30 @@ export default function Login() {
     reset(new Credentials());
   }
 
-  return (<form onSubmit={handleSubmit(onSubmit)}>
+  return (<Segment segmentTitle={'Login'}>
+    <form onSubmit={handleSubmit(onSubmit)}>
     <p>To use website features you need to log in to or register a new website account.</p>
-    <FormTable>
+    <FormTable visible={true}>
       <tr>
         <th style={{ width: '80px' }}>Username</th>
-        <td><Input register={register} name={'username'} readOnly={!!credentials.apiToken} errors={errors} /></td>
+        <td style={{ width: '300px' }}><Input register={register} name={'username'} readOnly={!!credentials.apiToken} errors={errors} /></td>
+        <td></td>
       </tr>
       <tr>
         <th>Password</th>
         <td><Input type="password" register={register} name={'password'} readOnly={!!credentials.apiToken} errors={errors} /></td>
+        <td>
+          <FormControlBar margin={'0'}>
+          <TextButton type={'submit'} text={'Log in'} />
+          <TextButton text={'Clear'} onClick={onClear} />
+          {/* <IconButton role={'save'} icon={'ri-login-box-line'} tooltip={'Log in'} type={'submit'} /> */}
+          {/* <IconButton role={'reset'} icon={'ri-brush-2-fill'} tooltip={'Clear'} onClick={onClear} /> */}
+        </FormControlBar>
+        </td>
       </tr>
     </FormTable>
-    <FormControlBar>
-      <TextButton type={'submit'} text={'Log in'} />
-      <TextButton text={'Clear'} onClick={onClear} />
-    </FormControlBar>
-  </form>);
+
+  </form>
+  </Segment>);
 
 }

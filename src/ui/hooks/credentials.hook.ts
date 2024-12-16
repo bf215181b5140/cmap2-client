@@ -23,7 +23,7 @@ export default function useCredentials() {
   }
 
   function clearLoginToken() {
-    const newCredentials = { ...credentials, apiToken: null, displayName: null };
+    const newCredentials: Credentials = { ...credentials, apiToken: null, displayName: null, isAdmin: null };
     setCredentials(newCredentials);
     window.IPC.send('setCredentials', newCredentials);
   }

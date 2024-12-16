@@ -1,34 +1,30 @@
-import Segment from '../../../components/segment/segment.component';
-import SegmentMenu from '../../../components/menu/segmentMenu/segmentMenu.component';
-import SegmentMenuLink from '../../../components/menu/segmentMenu/segmentMenuLink.component';
 import Login from './login/login.component';
 import Register from './register/register.component';
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { CredentialsContext } from '../../../components/context/credentials.context';
-import Account from './account/account.component';
+import Status from './status/status.component';
 import { Page } from '../../../components/page/page.component';
+import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
 
 export default function ConnectionPage() {
 
   const { credentials: { apiToken } } = useContext(CredentialsContext);
-  const [segment, setSegment] = useState<'welcome' | 'login' | 'register'>('login');
+  const [section, setSection] = useState<'connection' | 'login' | 'register'>('login');
 
-  if (apiToken && segment !== 'welcome') setSegment('welcome');
-  if (!apiToken && segment === 'welcome') setSegment('login');
+  if (apiToken && section !== 'connection') setSection('connection');
+  if (!apiToken && section === 'connection') setSection('login');
 
-  return (<Page>
-    <Segment width={'Half'}>
+  return (<Page flexDirection={'column'}>
 
-      <SegmentMenu>
-        <SegmentMenuLink onClick={() => setSegment('welcome')} active={segment === 'welcome'} icon={'ri-user-line'} disabled={!apiToken}>Account</SegmentMenuLink>
-        <SegmentMenuLink onClick={() => setSegment('login')} active={segment === 'login'} icon={'ri-user-follow-line'} disabled={!!apiToken}>Login</SegmentMenuLink>
-        <SegmentMenuLink onClick={() => setSegment('register')} active={segment === 'register'} icon={'ri-user-add-line'} disabled={!!apiToken}>Register</SegmentMenuLink>
-      </SegmentMenu>
+    <PageMenu>
+      <div onClick={() => setSection('connection')} aria-current={section === 'connection'} aria-disabled={!apiToken}>Connection</div>
+      <div onClick={() => setSection('login')} aria-current={section === 'login'} aria-disabled={!!apiToken}>Login</div>
+      <div onClick={() => setSection('register')} aria-current={section === 'register'} aria-disabled={!!apiToken}>Register</div>
+    </PageMenu>
 
-      {segment === 'welcome' && <Account />}
-      {segment === 'login' && <Login />}
-      {segment === 'register' && <Register loginSegment={() => setSegment('login')} />}
+    {section === 'connection' && <Status />}
+    {section === 'login' && <Login />}
+    {section === 'register' && <Register toLogin={() => setSection('login')} />}
 
-    </Segment>
   </Page>);
 }
