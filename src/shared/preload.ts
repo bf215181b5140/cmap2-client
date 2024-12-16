@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from '../electron/ipc/typedIpc.model';
+import { SettingsStoreData } from '../electron/store/settings/settings.model';
 
 const ipc = {
   get: <K extends keyof IpcGetOptions>(channel: K) => ipcRenderer.invoke(channel).then((result: IpcGetOptions[K]) => result),
@@ -15,6 +16,11 @@ const ipc = {
     ipcRenderer.once(channel, (event: Electron.IpcRendererEvent, args: IpcReceiveOptions[K]) => func(args));
   },
   removeAllListeners: (channel: keyof IpcReceiveOptions) => ipcRenderer.removeAllListeners(channel),
+  store: {
+    get: <K extends keyof SettingsStoreData>(key: K) => ipcRenderer.invoke('store-get', key).then((result: SettingsStoreData[K]) => result),
+    getSync: <K extends keyof SettingsStoreData>(key: K) => ipcRenderer.sendSync('store-get-sync', key) as SettingsStoreData[K],
+    set: <K extends keyof SettingsStoreData>(key: K, data: SettingsStoreData[K]) => ipcRenderer.send('store-set', key, data),
+  }
 };
 
 export type IPC = typeof ipc;

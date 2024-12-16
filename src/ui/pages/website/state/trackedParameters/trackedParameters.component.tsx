@@ -71,10 +71,10 @@ export default function TrackedParameters({ parametersPageEmitter }: ParametersS
       setLastRefresh(Date.now());
     });
 
-    window.IPC.get('getTrackedParameters').then(data => {
-      setLocalParameters(data);
-      setLastRefresh(Date.now());
-    });
+    // window.IPC.get('getTrackedParameters').then(data => {
+    //   setLocalParameters(data);
+    //   setLastRefresh(Date.now());
+    // });
   }
 
   function onSyncState() {

@@ -14,7 +14,7 @@ interface AvatarParametersProps {
 }
 
 const sortOrder = [
-  { key: 'none', value: 'None' },
+  { key: 'none', value: 'No sorting' },
   { key: 'asc', value: 'Ascending' },
   { key: 'desc', value: 'Descending' }
 ];
@@ -49,7 +49,6 @@ export default function AvatarParameters({ avatarId, parameters, avatarsDispatch
     <FiltersStyled>
       <div>
         <FilterInputStyled placeholder={'Search by name'} onChange={(event) => setFilter(event.target.value)} />
-        Sort
         <SelectInputStyled errors={false} width={'125px'} onChange={(event) => setSort(event.target.value)}>
           {sortOrder.map(option => (<option value={option.key} key={option.key}>{option.value}</option>))}
         </SelectInputStyled>
@@ -75,6 +74,13 @@ const FiltersStyled = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  
+  > div {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+  }
 `;
 
 const AvatarParametersStyled = styled.div`

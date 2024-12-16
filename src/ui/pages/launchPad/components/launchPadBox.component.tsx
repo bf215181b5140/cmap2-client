@@ -65,6 +65,7 @@ const LaunchPadBoxStyled = styled.div`
 
     h2 {
       font-size: 16px;
+      color: ${props => props.theme.colors.font.textInactive};
       font-weight: normal;
     }
   }

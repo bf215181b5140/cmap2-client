@@ -1,5 +1,5 @@
 import { Credentials } from '../../../shared/objects/credentials';
-import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, TrackedParametersSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
+import { AppSettings, OscSettings, SocketSettings, TrackedParametersSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
 
 export interface SettingsStoreData {
   credentials: Credentials;
@@ -8,7 +8,7 @@ export interface SettingsStoreData {
   osc: OscSettings;
   trackedParameters: TrackedParametersSettings;
   socket: SocketSettings;
-  socketParameterBlacklist: SocketParameterBlacklist;
+  socketParameterBlacklist: string[];
   // lovense: {
   //     sendConnectionOscMessage: boolean;
   //     connectionOscMessagePath: string;
@@ -39,7 +39,7 @@ export const settingsStoreDefaults: SettingsStoreData = {
   socket: {
     autoConnect: true,
   },
-  socketParameterBlacklist: [],
+  socketParameterBlacklist: []
   // lovense: {
   //     sendConnectionOscMessage: false,
   //     connectionOscMessagePath: '',

@@ -43,6 +43,8 @@ export default class VrcDetectorController {
       if (this.intervalId !== null) clearInterval(this.intervalId);
       // set new interval
       this.intervalId = setInterval(() => this.detectVrchat(), settings.frequency * 1000);
+      // and detect it right away
+      this.detectVrchat();
     } else {
       // clear old interval if exists
       if (this.intervalId !== null) clearInterval(this.intervalId);

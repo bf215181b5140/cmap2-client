@@ -42,12 +42,11 @@ export default function NotificationsPage() {
 
       <FiltersStyled>
         <div>
-          Filter
           <SelectInputStyled errors={false} width={'125px'} onChange={(event) => setTypeFilter(event.target.value)}>
             <option value={'any'} key={'any'}>{'Any type'}</option>
             {NotificationTypeSchema.options.map(type => (<option value={type} key={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>))}
           </SelectInputStyled>
-          <InputStyled placeholder={'Search message'} value={messageFilter} onChange={(event) => setMessageFilter(event.target.value)} />
+          <InputStyled placeholder={'Search by message'} value={messageFilter} onChange={(event) => setMessageFilter(event.target.value)} />
         </div>
         <IconButton role={'delete'} size={'small'} tooltip={'Clear all'} deleteKeyword={'all notifications'} onClick={() => clearNotifications()} />
       </FiltersStyled>
@@ -91,12 +90,18 @@ export default function NotificationsPage() {
 }
 
 const FiltersStyled = styled.div`
-    margin: 0 16px;
+    margin: 8px 0;
     display: flex;
     flex-direction: row;
     gap: 8px;
     align-items: center;
     justify-content: space-between;
+  
+  >div {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+  }
 `;
 
 const NotificationIcon = styled.i<{ color: string }>`

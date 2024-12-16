@@ -35,6 +35,7 @@ export type IpcSendOptions = {
   saveOscSettings: OscSettings;
   saveTrackedParametersSettings: TrackedParametersSettings;
   saveSocketSettings: SocketSettings;
+  saveSocketAutoConnect: SocketSettings['autoConnect'];
   saveSocketParameterBlacklist: SocketParameterBlacklist;
   checkIsVrcDetected: void;
   connectSocket: undefined;
@@ -65,6 +66,7 @@ export type IpcReceiveOptions = {
   isVrcDetected: boolean | null;
   socketConnected: boolean;
   vrcParameter: VrcParameter;
+  vrcParameters: VrcParameter[];
   trackedParameters: TrackedParametersDTO;
 
   // lovenseStatus: LovenseStatus;

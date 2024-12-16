@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState }
 import styled from 'styled-components';
 import { ReactProps } from '../../../types';
 import { VrcOscAvatar, VrcOscAvatarParameterProperties } from '../../../../shared/objects/vrcOscAvatar';
-import { globalInputStyle, SelectInputStyled } from '../input.style';
+import { InputStyled, SelectInputStyled } from '../input.style';
 import { theme } from '../../../style/theme';
 
 export interface ParameterDropdownParameter {
@@ -107,21 +107,23 @@ export default function ParameterDropdown({ showDropdown, setShowDropdown, onApp
 
   return (<DropdownStyled ref={dropdownRef} style={dropdownPosition}>
 
-    {/* Avatar filter */}
-    <SelectInputStyled value={filterAvatarId} onChange={(event) => setFilterAvatarId(event.target.value)} errors={false} width={'auto'}>
-      <option value={''} key={'any'}>All</option>
-      {unknownAvatar && (<option value={defaultAvatarVrcId} key={defaultAvatarVrcId}>Unknown avatar</option>)}
-      {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
-    </SelectInputStyled>
+    <div className={'filters'}>
+      {/* Avatar filter */}
+      <SelectInputStyled value={filterAvatarId} onChange={(event) => setFilterAvatarId(event.target.value)} errors={false} width={'auto'}>
+        <option value={''} key={'any'}>All</option>
+        {unknownAvatar && (<option value={defaultAvatarVrcId} key={defaultAvatarVrcId}>Unknown avatar</option>)}
+        {avatars.map(avatar => (<option value={avatar.id} key={avatar.id}>{avatar.name}</option>))}
+      </SelectInputStyled>
 
-    {/* Parameter name filter */}
-    <FilterInputStyled autoFocus placeholder={'Search by name'} value={filterName} onChange={(event) => setFilterName(event.target.value)} />
+      {/* Parameter name filter */}
+      <InputStyled autoFocus placeholder={'Search by parameter name'} value={filterName} width={'230px'} onChange={(event) => setFilterName(event.target.value)} />
 
-    {/* Parameter type filter */}
-    <SelectInputStyled value={filterType} onChange={(event) => setFilterType(event.target.value as 'input' | 'output')} errors={false} width={'100px'}>
-      <option value={'input'} key={'input'}>Input</option>
-      <option value={'output'} key={'output'}>Output</option>
-    </SelectInputStyled>
+      {/* Parameter type filter */}
+      <SelectInputStyled value={filterType} onChange={(event) => setFilterType(event.target.value as 'input' | 'output')} errors={false} width={'100px'}>
+        <option value={'input'} key={'input'}>Input</option>
+        <option value={'output'} key={'output'}>Output</option>
+      </SelectInputStyled>
+    </div>
 
     {/* List all parameters */}
     <ul>
@@ -163,11 +165,6 @@ function color(type: string) {
   }
 }
 
-const FilterInputStyled = styled.input`
-  ${globalInputStyle};
-  width: 200px;
-`;
-
 const DropdownStyled = styled.div`
   position: absolute;
   margin: 7px;
@@ -181,9 +178,16 @@ const DropdownStyled = styled.div`
   border-radius: 7px;
   z-index: 2;
   box-shadow: 0 0 10px black;
+  
+  .filters {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    gap: 5px;
+  }
 
   ul {
-    padding-inline-start: 0;
+    padding-inline-start: 5px;
     margin: 0;
     padding: 5px;
     overflow: auto;

@@ -9,9 +9,15 @@ type MessageEvents = {
   setWindowState: (windowState: WindowState) => void;
   setWindowSize: (windowSize: WindowSize) => void;
   isVrcDetected: (isVrcDetected: boolean | null) => void;
-  vrcParameter: (vrcParameter: VrcParameter) => void;
   sendOscMessage: (oscMessage: Message) => void;
-  trackedParameters: (parameters: TrackedParametersDTO) => void;
+  // OSC
+  oscMessage: (vrcParameter: VrcParameter) => void;
+  // Parameters
+  vrcParameter: (vrcParameter: VrcParameter) => void;
+  vrcParameters: (vrcParameters: VrcParameter[]) => void;
+  // Socket
+  sendSocketParameter: (vrcParameter: VrcParameter) => void;
+  sendSocketParameters: (vrcParameters: VrcParameter[]) => void;
 }
 
 export const BRIDGE = new EventEmitter() as TypedEmitter<MessageEvents>;

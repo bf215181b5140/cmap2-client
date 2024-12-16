@@ -48,54 +48,22 @@ const AppStyled = styled.div`
 
   hr {
     border: 1px solid ${props => props.theme.colors.ui.appBgOpaque};
-    margin: 8px;
-    padding: 0;
-  }
-
-  h1 {
-    text-shadow: 0 0 3px black;
   }
 
   h2 {
-    font-size: 24px;
     color: ${props => props.theme.colors.font.h2};
-    padding: 0;
-    margin: 12px 0;
-    text-shadow: 0 0 3px black;
   }
 
   h3 {
-    font-size: 16px;
     color: ${props => props.theme.colors.font.h3};
-    text-transform: uppercase;
-    padding: 0;
-    margin: 8px 0;
-  }
-
-  p {
-    margin: 5px 0;
   }
 
   img {
-    margin: 5px 0;
     border: 3px solid ${props => props.theme.colors.ui.element3};
-    border-radius: 8px;
-    display: inline-block;
-  }
-
-  ul, ol {
-    margin: 5px 0;
-    padding-inline-start: 25px;
   }
 
   a {
-    text-decoration: none;
-    font-weight: bold;
     color: ${props => props.theme.colors.font.textActive};
-
-    i {
-      font-weight: normal;
-    }
 
     :hover {
       color: ${props => props.theme.colors.font.textBright};
@@ -103,20 +71,6 @@ const AppStyled = styled.div`
   }
 
   fieldset {
-    margin: 8px 0;
-    padding: 0 10px 8px 10px;
-    border-width: 2px;
-    border-style: solid;
     border-color: ${props => props.theme.colors.input.bg};
-    border-radius: 8px;
-
-    legend {
-      padding: 0 10px;
-    }
-
-    :disabled {
-      filter: saturate(0%);
-    }
   }
-
 `;

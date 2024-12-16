@@ -10,6 +10,7 @@ import { OscController } from './osc/osc.controller';
 import { UtilityController } from './utility/utility.controller';
 import { NotificationsStore } from './store/notifications/notifications.store';
 import UpdaterService from './updater/updater.service';
+import { TrackedParametersService } from './trackedParameters/trackedParameters.service';
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -31,6 +32,7 @@ app.whenReady().then(() => {
   new VrcDetectorController();
   new SocketController();
   new OscController();
+  new TrackedParametersService();
   new UtilityController();
   new UpdaterService();
 

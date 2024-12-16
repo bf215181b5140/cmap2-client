@@ -22,4 +22,13 @@ export default class CmapStore<T extends Record<string, any> = Record<string, un
       }
     });
   }
+
+  /*
+  * Custom onChange subscriber that triggers only when value exists (does not trigger on store key deletion)
+   */
+  onChange<Key extends keyof T>(key: Key, callback: (newValue: T[Key]) => void) {
+    this.onDidChange(key, newValue => {
+      if (newValue !== undefined) callback(newValue);
+    });
+  }
 }

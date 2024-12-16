@@ -33,7 +33,7 @@ export default function AvatarParameter({ avatarId, parameter, avatarsDispatch, 
     </h4>
 
     <div className={'editOptions'}>
-      <IconButton role={'delete'} size={'tiny'} deleteKeyword={'parameter'} onClick={deleteParameter} />
+      <IconButton role={'delete'} size={'tiny'} deleteKeyword={'parameter'} margin={'5px'} onClick={deleteParameter} />
     </div>
 
     {showProperties && <div className={'properties'}>

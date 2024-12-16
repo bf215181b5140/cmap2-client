@@ -1,4 +1,4 @@
-import io from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { VrcParameter } from 'cmap2-shared';
 import { WEBSITE_URL } from '../../shared/const';
 import { BRIDGE } from '../bridge/bridge.service';
@@ -9,8 +9,8 @@ import { SETTINGS } from '../store/settings/settings.store';
 import log from 'electron-log';
 
 export class SocketController {
-  private socket: SocketIOClient.Socket | undefined;
-  private parameterBlacklist: Set<string> = new Set();
+  private socket: Socket | undefined;
+  private parameterBlacklist: Set<string> = new Set(SETTINGS.get('parameterBlacklist'));
 
   constructor() {
     IPC.on('setCredentials', (data) => {
@@ -22,16 +22,13 @@ export class SocketController {
     IPC.on('connectSocket', () => this.connect(SETTINGS.get('credentials')));
     IPC.on('disconnectSocket', () => this.socket?.close());
     IPC.handle('getSocketConnected', async () => !!this.socket?.connected);
-    IPC.on('saveSocketParameterBlacklist', data => this.parameterBlacklist = new Set(data));
 
     BRIDGE.on('isVrcDetected', data => this.sendData('isVrcDetected', data));
-    BRIDGE.on('vrcParameter', vrcParameter => {
-      if (this.parameterBlacklist.has(vrcParameter.path)) return;
-      this.sendParameter(vrcParameter);
-    });
-    BRIDGE.on('trackedParameters', parameters => {
-      this.sendData('trackedParameters', parameters);
-    });
+    BRIDGE.on('sendSocketParameter', data => this.sendData('parameter', data));
+    BRIDGE.on('sendSocketParameters', data => this.sendData('parameters', data));
+    // BRIDGE.on('vrcParameters', vrcParameters => this.onVrcParameters(vrcParameters));
+
+    SETTINGS.onChange('parameterBlacklist', data => this.parameterBlacklist = new Set(data));
 
     if (SETTINGS.get('socket').autoConnect) this.connect(SETTINGS.get('credentials'));
   }
@@ -70,17 +67,22 @@ export class SocketController {
     });
   }
 
-  // Send parameter to server
-  private sendParameter(parameter: VrcParameter) {
-    if (this.socket) {
-      this.socket.emit('parameter', parameter);
-    }
-  }
+  // private onVrcParameter(vrcParameter: VrcParameter) {
+  //   if (this.parameterBlacklist.has(vrcParameter.path)) return;
+  //
+  //   if (this.parameterBulkQueue.has(vrcParameter.path)) {
+  //     this.parameterBulkQueue.set(vrcParameter.path, vrcParameter.value);
+  //   }
+  //
+  //   this.sendData('parameter', vrcParameter);
+  // }
+  //
+  // private onVrcParameters(vrcParameters: VrcParameter[]) {
+  //   const filteredParameters = vrcParameters.filter(p => !this.parameterBlacklist.has(p.path));
+  //   this.sendData('parameters', filteredParameters);
+  // }
 
-  // Send data to server with custom event
   private sendData(event: string, data: any) {
-    if (this.socket) {
-      this.socket.emit(event, data);
-    }
+    this.socket?.emit(event, data);
   }
 }
