@@ -16,15 +16,11 @@ export default function VrcStatus() {
   const { vrcStatus, vrcStatusColor, icon } = useVrcDetector();
   const { register, formState: { errors, isDirty }, handleSubmit, reset } = useForm<VrcDetectorSettings>({
     resolver: zodResolver(VrcDetectorSettingsSchema),
-    defaultValues: settingsStoreDefaults.vrcDetector
+    defaultValues: window.IPC.store.getSync('vrcDetector')
   });
 
-  useEffect(() => {
-    window.IPC.get('getVrcDetectorSettings').then(data => reset(data));
-  }, []);
-
   function onSubmit(formData: VrcDetectorSettings) {
-    window.IPC.send('saveVrcDetectorSettings', formData);
+    window.IPC.store.set('vrcDetector', formData);
     reset(formData);
   }
 

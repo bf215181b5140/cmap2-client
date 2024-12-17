@@ -6,18 +6,15 @@ import { Message } from 'node-osc';
 import type { WindowState } from '../../shared/enums/windowState';
 
 type MessageEvents = {
-  setWindowState: (windowState: WindowState) => void;
-  setWindowSize: (windowSize: WindowSize) => void;
-  isVrcDetected: (isVrcDetected: boolean | null) => void;
-  sendOscMessage: (oscMessage: Message) => void;
-  // OSC
-  oscMessage: (vrcParameter: VrcParameter) => void;
-  // Parameters
-  vrcParameter: (vrcParameter: VrcParameter) => void;
-  vrcParameters: (vrcParameters: VrcParameter[]) => void;
-  // Socket
-  sendSocketParameter: (vrcParameter: VrcParameter) => void;
-  sendSocketParameters: (vrcParameters: VrcParameter[]) => void;
+  'window:state': (windowState: WindowState) => void;
+  'window:size': (windowSize: WindowSize) => void;
+  'osc:sendMessage': (oscMessage: Message) => void;
+  'osc:message': (vrcParameter: VrcParameter) => void;
+  'trackedParameters:parameter': (vrcParameter: VrcParameter) => void;
+  'trackedParameters:parameters': (vrcParameters: VrcParameter[]) => void;
+  'socket:sendParameter': (vrcParameter: VrcParameter) => void;
+  'socket:sendParameters': (vrcParameters: VrcParameter[]) => void;
+  'vrcDetector:detection': (isVrcDetected: boolean | null) => void;
 }
 
 export const BRIDGE = new EventEmitter() as TypedEmitter<MessageEvents>;

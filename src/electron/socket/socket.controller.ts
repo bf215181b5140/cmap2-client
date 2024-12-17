@@ -7,63 +7,67 @@ import { IPC } from '../ipc/typedIpc.service';
 import { Credentials } from '../../shared/objects/credentials';
 import { SETTINGS } from '../store/settings/settings.store';
 import log from 'electron-log';
+import { SocketSettings } from '../../shared/objects/settings';
 
 export class SocketController {
   private socket: Socket | undefined;
-  private parameterBlacklist: Set<string> = new Set(SETTINGS.get('parameterBlacklist'));
+  private settings: SocketSettings;
+  private credentials: Credentials;
 
   constructor() {
-    IPC.on('setCredentials', (data) => {
+    this.settings = SETTINGS.get('socket');
+    this.credentials = SETTINGS.get('credentials');
+
+    SETTINGS.onChange('socket', data => this.settings = data);
+    SETTINGS.onChange('credentials', data => {
+      this.credentials = data;
       // if were already connected or set to auto connect then (re)make the connection
-      if (this.socket?.connected || SETTINGS.get('socket').autoConnect) {
-        this.connect(data);
+      if (this.socket?.connected || this.settings.autoConnect) {
+        this.connect();
       }
     });
-    IPC.on('connectSocket', () => this.connect(SETTINGS.get('credentials')));
-    IPC.on('disconnectSocket', () => this.socket?.close());
-    IPC.handle('getSocketConnected', async () => !!this.socket?.connected);
 
-    BRIDGE.on('isVrcDetected', data => this.sendData('isVrcDetected', data));
-    BRIDGE.on('sendSocketParameter', data => this.sendData('parameter', data));
-    BRIDGE.on('sendSocketParameters', data => this.sendData('parameters', data));
-    // BRIDGE.on('vrcParameters', vrcParameters => this.onVrcParameters(vrcParameters));
+    IPC.on('socket:connect', () => this.connect());
+    IPC.on('socket:disconnect', () => this.socket?.close());
+    IPC.handle('socket:connection', async () => !!this.socket?.connected);
 
-    SETTINGS.onChange('socketParameterBlacklist', data => this.parameterBlacklist = new Set(data));
+    BRIDGE.on('vrcDetector:detection', data => this.sendData('vrcDetector:detection', data));
+    BRIDGE.on('socket:sendParameter', data => this.sendData('parameter', data));
+    BRIDGE.on('socket:sendParameters', data => this.sendData('parameters', data));
 
-    if (SETTINGS.get('socket').autoConnect) this.connect(SETTINGS.get('credentials'));
+    if (this.settings.autoConnect) this.connect();
   }
 
   // (re)start socket connection
-  private connect(credentials: Credentials) {
+  private connect() {
     if (this.socket) this.socket.close();
 
-    if (typeof credentials.apiToken !== 'string') return;
+    if (typeof this.credentials.apiToken !== 'string') return;
 
     this.socket = io(WEBSITE_URL + '/client', {
       query: {
-        apiToken: credentials.apiToken
+        apiToken: this.credentials.apiToken
       },
       transports: ['websocket']
     });
 
     this.socket.on('joined', () => {
       log.info('Socket connected to server');
-      IPC.emit('socketConnected', !!this.socket?.connected);
-      // BRIDGE.emit('getOscActivity'); todo what's this
+      IPC.emit('socket:connection', !!this.socket?.connected);
     });
 
     this.socket.on('error', (err: Error) => {
       log.error('Socket error:', err.message);
-      IPC.emit('socketConnected', !!this.socket?.connected);
+      IPC.emit('socket:connection', !!this.socket?.connected);
     });
 
     this.socket.on('disconnect', (reason: string) => {
       log.info('Socket disconnected from server, reason:', reason);
-      IPC.emit('socketConnected', !!this.socket?.connected);
+      IPC.emit('socket:connection', !!this.socket?.connected);
     });
 
     this.socket.on('parameter', (parameter: VrcParameter) => {
-      BRIDGE.emit('sendOscMessage', new Message(parameter.path, parameter.value));
+      BRIDGE.emit('osc:sendMessage', new Message(parameter.path, parameter.value));
     });
   }
 
@@ -83,7 +87,6 @@ export class SocketController {
   // }
 
   private sendData(event: string, data: any) {
-    console.log('socket sending:', event, data);
     this.socket?.emit(event, data);
   }
 }

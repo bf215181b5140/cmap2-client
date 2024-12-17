@@ -6,6 +6,7 @@ import { IpcReceiveOptions } from '../ipc/typedIpc.model';
 import { fileURLToPath } from 'url';
 import { SETTINGS } from '../store/settings/settings.store';
 import { WindowState } from '../../shared/enums/windowState';
+import { AppSettings } from '../../shared/objects/settings';
 
 export class WindowController {
   private window: BrowserWindow | undefined;
@@ -19,22 +20,22 @@ export class WindowController {
       preload: fileURLToPath(new URL('../shared/preload.cjs', import.meta.url))
     }
   };
+  private settings: AppSettings;
 
   constructor() {
-    if (!SETTINGS.get('app').startInBackground) {
-      this.createWindow();
-    }
+    this.settings = SETTINGS.get('app');
 
     IPC.cmapWindow = this;
 
-    IPC.on('setWindowState', (windowState) => this.setWindowState(windowState));
+    IPC.on('window:state', windowState => this.setWindowState(windowState));
+    IPC.on('window:size', windowSize => this.setSize(windowSize));
 
-    IPC.on('saveAppSettings', (data) => this.setSize(data.windowSize));
+    BRIDGE.on('window:state', windowState => this.setWindowState(windowState));
+    BRIDGE.on('window:size', windowSize => this.setSize(windowSize));
 
-    BRIDGE.on('setWindowState', (windowState) => this.setWindowState(windowState));
-    BRIDGE.on('setWindowSize', (windowSize) => this.setSize(windowSize));
-
-    IPC.handle('getAppVersion', async () => app.getVersion());
+    if (!this.settings.startInBackground) {
+      this.createWindow();
+    }
   }
 
   /**

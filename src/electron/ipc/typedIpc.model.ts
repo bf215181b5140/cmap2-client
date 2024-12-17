@@ -5,70 +5,41 @@ import { TrackedParametersDTO, TrackedParametersMap, VrcParameter } from 'cmap2-
 import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
 import { UpdateData } from '../updater/updater.model';
+import { WindowSize } from '../../shared/enums/windowSize';
+import { TrackedParameter } from '../trackedParameters/trackedParameters.model';
 
 export type IpcGetOptions = {
-  getAppVersion: string;
-  getCredentials: Credentials;
-  getAppSettings: AppSettings;
-  getVrcDetectorSettings: VrcDetectorSettings;
-  getOscSettings: OscSettings;
-  getTrackedParametersSettings: TrackedParametersSettings;
-  getSocketSettings: SocketSettings;
-  getSocketConnected: boolean;
+  'socket:connection': boolean;
+  'osc:activity': number | undefined;
+  'trackedParameters:get': [string, TrackedParameter];
+  'utility:fingerprint': string;
+  // these stores should get reworked wihtout IPC calls
   getAvatars: VrcOscAvatar[];
-  getLastOscActivity: number | undefined;
-  getTrackedParameters: TrackedParametersMap;
-  getFingerprint: string;
   getNotifications: Notification[];
-
-  // getLovenseSettings: LovenseSettings;
-  // getToyCommandParameters: ToyCommandParameter[];
-  // getToyCommandOscMessages: ToyCommandOscMessage[];
-
 };
 
 export type IpcSendOptions = {
-  setWindowState: WindowState;
-  setCredentials: Credentials;
-  saveAppSettings: AppSettings;
-  saveVrcDetectorSettings: VrcDetectorSettings;
-  saveOscSettings: OscSettings;
-  saveTrackedParametersSettings: TrackedParametersSettings;
-  saveSocketSettings: SocketSettings;
-  saveSocketAutoConnect: SocketSettings['autoConnect'];
-  saveSocketParameterBlacklist: SocketParameterBlacklist;
-  checkIsVrcDetected: void;
-  connectSocket: undefined;
-  disconnectSocket: undefined;
+  'window:state': WindowState;
+  'window:size': WindowSize;
+  'osc:sendParameter': VrcParameter;
+  'trackedParameters:set': VrcParameter;
+  'trackedParameters:delete': string;
+  'socket:connect': undefined;
+  'socket:disconnect': undefined;
+  'vrcDetector:check': void;
+  'updater:check': undefined;
+  'updater:start': string;
+  // these stores should get reworked wihtout IPC calls
   saveAvatars: VrcOscAvatar[];
   saveNotification: Notification;
   deleteNotification: Notification;
   clearNotifications: void;
-  sendVrcParameter: VrcParameter;
-
-  // setLovenseSettings: LovenseSettings;
-  // getLovenseStatus: undefined;
-  // lovenseConnect: undefined;
-  // lovenseDisconnect: undefined;
-  // sendLovenseToyCommand: ToyCommand;
-  // setToyCommandParameters: ToyCommandParameter[];
-  // setToyCommandOscMessages: ToyCommandOscMessage[];
-
-  // setTrackedParameters: Map<string, boolean | number | string>;
-  setTrackedParameter: VrcParameter;
-  deleteTrackedParameter: string;
-
-  checkForUpdates: undefined;
-  startUpdate: string;
 };
 
 export type IpcReceiveOptions = {
-  isVrcDetected: boolean | null;
-  socketConnected: boolean;
-  vrcParameter: VrcParameter;
-  vrcParameters: VrcParameter[];
-  trackedParameters: TrackedParametersDTO;
-
-  // lovenseStatus: LovenseStatus;
-  updateData: UpdateData;
+  'trackedParameters:parameter': VrcParameter;
+  'trackedParameters:parameters': VrcParameter[];
+  'socket:connection': boolean;
+  'vrcDetector:detection': boolean | null;
+  'updater:data': UpdateData;
 };

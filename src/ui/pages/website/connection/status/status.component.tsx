@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import { CredentialsContext } from '../../../../components/context/credentials.context';
 import TextButton from '../../../../components/buttons/textButton.component';
 import FormControlBar from '../../../../components/form/formControlBar.component';
@@ -15,23 +15,23 @@ export default function Status() {
 
   const { credentials, clearLoginToken } = useContext(CredentialsContext);
   const { connected, message, color, icon } = useSocketConnection();
-  const { register, formState: { errors }, handleSubmit, reset } = useForm<SocketSettings>({ resolver: zodResolver(SocketSettingsSchema) });
+  const { register, formState: { errors }, handleSubmit, reset } = useForm<SocketSettings>({
+    resolver: zodResolver(SocketSettingsSchema),
+    defaultValues: window.IPC.store.getSync('socket'),
+  });
   const submitRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    window.IPC.get('getSocketSettings').then(data => reset(data));
-  }, []);
-
   function onConnect() {
-    window.IPC.send('connectSocket');
+    window.IPC.send('socket:connect');
   }
 
   function onDisconnect() {
-    window.IPC.send('disconnectSocket');
+    window.IPC.send('socket:disconnect');
   }
 
-  function onSubmit(data: SocketSettings) {
-    window.IPC.send('saveSocketSettings', data);
+  function onSubmit(value: SocketSettings) {
+    window.IPC.store.set('socket', value);
+    reset(value);
   }
 
   return (<Segment segmentTitle={'Connection status'}>

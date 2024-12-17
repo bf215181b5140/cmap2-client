@@ -5,7 +5,7 @@ import { IPC } from '../ipc/typedIpc.service';
 export class UtilityController {
 
   constructor() {
-    IPC.handle('getFingerprint', () => this.getFingerprint());
+    IPC.handle('utility:fingerprint', () => this.getFingerprint());
   }
 
   async getFingerprint(): Promise<string> {

@@ -12,41 +12,14 @@ class SettingsStore extends CmapStore<SettingsStoreData> {
       defaults: settingsStoreDefaults
     });
 
-    // Credentials
-    IPC.handle('getCredentials', async () => this.get('credentials'));
-    IPC.on('setCredentials', data => this.set('credentials', data));
-
-    // App settings
-    IPC.handle('getAppSettings', async () => this.get('app'));
-    IPC.on('saveAppSettings', data => {
-      this.set('app', data);
-      app.setLoginItemSettings({ openAtLogin: data.startOnBoot });
-    });
-
-    // VRC detector
-    IPC.handle('getVrcDetectorSettings', async () => this.get('vrcDetector'));
-    IPC.on('saveVrcDetectorSettings', data => this.set('vrcDetector', data));
-
-    // OSC
-    IPC.handle('getOscSettings', async () => this.get('osc'));
-    IPC.on('saveOscSettings', data => this.set('osc', data));
-
-    // Tracked parameters
-    // IPC.handle('getTrackedParametersSettings', async () => this.get('trackedParameters'));
-    // IPC.on('saveTrackedParametersSettings', data => this.set('trackedParameters', data));
-
-    // Socket
-    IPC.handle('getSocketSettings', async () => this.get('socket'));
-    IPC.on('saveSocketSettings', data => this.set('socket', data));
+    this.onChange('app', settings => app.setLoginItemSettings({ openAtLogin: settings.startOnBoot }));
 
     IPC.store.get((key) => this.get(key));
     IPC.store.getSync((key) => this.get(key));
     IPC.store.set((key, data) => this.set(key, data));
 
-    IPC.on('saveSocketParameterBlacklist', data => this.set('socketParameterBlacklist', data));
-
-    // change window size
-    BRIDGE.on('setWindowSize', (data) => this.set('app.windowSize', data));
+    IPC.on('window:size', data => this.set('app.windowSize', data));
+    BRIDGE.on('window:size', data => this.set('app.windowSize', data));
   }
 }
 

@@ -9,9 +9,9 @@ export default function useSocketConnection() {
   const icon = 'ri-global-line';
 
   useEffect(() => {
-    window.IPC.get('getSocketConnected').then(data => setConnected(data));
+    window.IPC.get('socket:connection').then(data => setConnected(data));
 
-    const removeListener = window.IPC.receive('socketConnected', (data) => setConnected(data));
+    const removeListener = window.IPC.receive('socket:connection', (data) => setConnected(data));
 
     return () => {
       if (removeListener) removeListener();

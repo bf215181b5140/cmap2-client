@@ -9,12 +9,6 @@ export interface SettingsStoreData {
   trackedParameters: TrackedParametersSettings;
   socket: SocketSettings;
   socketParameterBlacklist: string[];
-  // lovense: {
-  //     sendConnectionOscMessage: boolean;
-  //     connectionOscMessagePath: string;
-  //     toyCommandOscMessage: [];
-  //     toyCommandParameter: [];
-  // };
 }
 
 export const settingsStoreDefaults: SettingsStoreData = {
@@ -40,10 +34,4 @@ export const settingsStoreDefaults: SettingsStoreData = {
     autoConnect: true,
   },
   socketParameterBlacklist: []
-  // lovense: {
-  //     sendConnectionOscMessage: false,
-  //     connectionOscMessagePath: '',
-  //     toyCommandOscMessage: [],
-  //     toyCommandParameter: []
-  // },
 };

@@ -16,15 +16,11 @@ export default function OscStatus() {
   const { oscActivityText, oscActivityColor } = useOscActivity();
   const { register, formState: { errors, isDirty }, handleSubmit, reset } = useForm<OscSettings>({
     resolver: zodResolver(OscSettingsSchema),
-    defaultValues: settingsStoreDefaults.osc
+    defaultValues: window.IPC.store.getSync('osc')
   });
 
-  useEffect(() => {
-    window.IPC.get('getOscSettings').then(data => reset(data));
-  }, []);
-
   function onSubmit(formData: OscSettings) {
-    window.IPC.send('saveOscSettings', formData);
+    window.IPC.store.set('osc', formData);
     reset(formData);
   }
 

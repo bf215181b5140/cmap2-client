@@ -15,7 +15,7 @@ export default function UpdateBox({ update, latest }: UpdateBoxProps) {
 
   function onDownload() {
     setModal(<BasicModal title={'Confirm download'} message={'You are about to download the update, after download is complete the application will close and install the update.'}
-                         confirmValue={'Download'} confirmFunction={() => window.IPC.send('startUpdate', update.download)} />);
+                         confirmValue={'Download'} confirmFunction={() => window.IPC.send('updater:start', update.download)} />);
   }
 
   return (<UpdateBoxStyled onClick={onDownload}>

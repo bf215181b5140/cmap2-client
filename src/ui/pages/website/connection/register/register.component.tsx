@@ -19,7 +19,7 @@ export default function Register({ toLogin }: RegisterProps) {
   const [noConnection, setNoConnection] = useState<boolean>(false);
 
   useEffect(() => {
-    window.IPC.get('getFingerprint').then(data => setFingerprint(data));
+    window.IPC.get('utility:fingerprint').then(data => setFingerprint(data));
     GET('register', RegisterInfoSchema, data => setRegistrationInfo(data), () => setNoConnection(true));
   }, []);
 

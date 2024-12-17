@@ -13,9 +13,9 @@ export default function useUpdateStatus() {
   const newPatch = !!updateData?.latest?.version && semver.patch(updateData?.latest?.version) > semver.patch(updateData?.currentVersion);
 
   useEffect(() => {
-    const removeListener = window.IPC.receive('updateData', data => setUpdateData(data));
+    const removeListener = window.IPC.receive('updater:data', data => setUpdateData(data));
 
-    window.IPC.send('checkForUpdates');
+    window.IPC.send('updater:check');
 
     return () => {
       if (removeListener) removeListener();

@@ -18,7 +18,7 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
   constructor() {
     super();
 
-    BRIDGE.on('oscMessage', (vrcParameter) => this.onNewParameter(vrcParameter));
+    BRIDGE.on('osc:message', (vrcParameter) => this.onNewParameter(vrcParameter));
     SETTINGS.onChange('trackedParameters', settings => this.clearOnAvatarChange = settings.clearOnAvatarChange);
     SETTINGS.onChange('socketParameterBlacklist', data => this.socketParameterBlacklist = new Set(data));
 
@@ -30,8 +30,8 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
     if (this.clearOnAvatarChange && vrcParameter.path.startsWith('/avatar/change')) this.clearParametersAfterAvatarChange();
 
     // emit new parameter for application
-    BRIDGE.emit('vrcParameter', vrcParameter);
-    IPC.emit('vrcParameter', vrcParameter);
+    BRIDGE.emit('trackedParameters:parameter', vrcParameter);
+    IPC.emit('trackedParameters:parameter', vrcParameter);
 
     this.sendParameterToSocket(vrcParameter, trackedParameter);
   }
@@ -48,11 +48,11 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
       trackedParameter.buffered = true;
       setTimeout(() => {
         // send out value as it will be then
-        BRIDGE.emit('sendSocketParameter', { path: vrcParameter.path, value: trackedParameter.value });
+        BRIDGE.emit('socket:sendParameter', { path: vrcParameter.path, value: trackedParameter.value });
         trackedParameter.buffered = false;
       }, this.bufferTimeMs);
     } else {
-      BRIDGE.emit('sendSocketParameter', vrcParameter);
+      BRIDGE.emit('socket:sendParameter', vrcParameter);
     }
   }
 
@@ -71,9 +71,9 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
 
       // emit new tracked parameters
       const trackedparametersDto = this.toDto();
-      BRIDGE.emit('vrcParameters', trackedparametersDto);
-      BRIDGE.emit('sendSocketParameters', trackedparametersDto);
-      IPC.emit('vrcParameters', trackedparametersDto.filter(p => !this.socketParameterBlacklist.has(p.path)));
+      BRIDGE.emit('trackedParameters:parameters', trackedparametersDto);
+      BRIDGE.emit('socket:sendParameters', trackedparametersDto);
+      IPC.emit('trackedParameters:parameters', trackedparametersDto.filter(p => !this.socketParameterBlacklist.has(p.path)));
 
     }, waitTime);
   }

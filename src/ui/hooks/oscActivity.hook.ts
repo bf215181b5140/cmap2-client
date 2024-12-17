@@ -14,7 +14,7 @@ export default function useOscActivity() {
 
   useEffect(() => {
     function getLastOscActivity() {
-      window.IPC.get('getLastOscActivity').then(data => {
+      window.IPC.get('osc:activity').then(data => {
         setLastOscActivity(data);
         setLastOscActivityUpdate(Date.now());
       });

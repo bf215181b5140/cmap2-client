@@ -7,8 +7,8 @@ export default function useVrcDetector() {
   const icon = 'ri-gamepad-line';
 
   useEffect(() => {
-    window.IPC.send('checkIsVrcDetected');
-    const removeListener = window.IPC.receive('isVrcDetected', (data) => setIsVrcDetected(data));
+    window.IPC.send('vrcDetector:check');
+    const removeListener = window.IPC.receive('vrcDetector:detection', (data) => setIsVrcDetected(data));
 
     return () => {
       if (removeListener) removeListener();

@@ -9,15 +9,15 @@ export class TrayController extends Tray {
     this.setToolTip('Change my avatar params');
 
     this.setContextMenu(Menu.buildFromTemplate([
-      { label: 'Open', click: () => BRIDGE.emit('setWindowState', 'Open') },
-      { label: 'Minimize', click: () => BRIDGE.emit('setWindowState', 'Minimize') },
-      { label: 'Tray', click: () => BRIDGE.emit('setWindowState', 'Tray') },
+      { label: 'Open', click: () => BRIDGE.emit('window:state', 'Open') },
+      { label: 'Minimize', click: () => BRIDGE.emit('window:state', 'Minimize') },
+      { label: 'Tray', click: () => BRIDGE.emit('window:state', 'Tray') },
       { type: 'separator', },
       {
         label: 'Resize', type: 'submenu', submenu: [
-          { label: 'Big', click: () => BRIDGE.emit('setWindowSize', 'Big') },
-          { label: 'Medium', click: () => BRIDGE.emit('setWindowSize', 'Medium') },
-          { label: 'Small', click: () => BRIDGE.emit('setWindowSize', 'Small') },
+          { label: 'Big', click: () => BRIDGE.emit('window:size', 'Big') },
+          { label: 'Medium', click: () => BRIDGE.emit('window:size', 'Medium') },
+          { label: 'Small', click: () => BRIDGE.emit('window:size', 'Small') },
         ]
       },
       { type: 'separator', },
@@ -30,7 +30,7 @@ export class TrayController extends Tray {
     ]));
 
     this.on('double-click', () => {
-      BRIDGE.emit('setWindowState', 'Open');
+      BRIDGE.emit('window:state', 'Open');
     });
   }
 }

@@ -3,6 +3,7 @@ import { IpcGetOptions, IpcReceiveOptions, IpcSendOptions } from './typedIpc.mod
 import type { WindowController } from '../window/window.controller';
 import IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
 import { SettingsStoreData } from '../store/settings/settings.model';
+import { AvatarStoreData } from '../store/avatars/avatars.model';
 
 class TypedIpcService {
   private _cmapWindow: WindowController | undefined;

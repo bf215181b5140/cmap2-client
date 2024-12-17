@@ -29,7 +29,7 @@ export default function SendParameter() {
   function onSubmit(formData: VrcParameterForm) {
     const convertedValue = convertParameterValueFromString(formData.value);
     const value = convertedValue === undefined ? formData.value : convertedValue;
-    window.IPC.send('sendVrcParameter', { path: formData.path, value: value });
+    window.IPC.send('osc:sendParameter', { path: formData.path, value: value });
   }
 
   return (<Segment segmentTitle={'Send parameter to VRChat'}>

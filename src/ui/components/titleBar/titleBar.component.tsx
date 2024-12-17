@@ -10,7 +10,7 @@ export default function TitleBar() {
   const { vrcStatusColor, icon: vrcIcon } = useVrcDetector();
 
   function setWindowState(state: WindowState) {
-    window.IPC.send('setWindowState', state);
+    window.IPC.send('window:state', state);
   }
 
   return (<TitleBarStyled>

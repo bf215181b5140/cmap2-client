@@ -18,8 +18,8 @@ export default class UpdaterService {
   };
 
   constructor() {
-    IPC.on('checkForUpdates', () => this.checkForUpdates());
-    IPC.on('startUpdate', (data) => this.startUpdate(data));
+    IPC.on('updater:check', () => this.checkForUpdates());
+    IPC.on('updater:start', (data) => this.startUpdate(data));
 
     this.manageInterval();
   }
@@ -64,7 +64,7 @@ export default class UpdaterService {
       latest: data,
     };
 
-    IPC.emit('updateData', this.updateData);
+    IPC.emit('updater:data', this.updateData);
   }
 
   async startUpdate(downloadUrl: string) {

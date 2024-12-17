@@ -30,10 +30,10 @@ export class OscController {
   constructor() {
     SETTINGS.onChange('osc', this.start)
 
-    IPC.handle('getLastOscActivity', async () => this.lastActivity);
+    IPC.handle('osc:activity', async () => this.lastActivity);
 
-    BRIDGE.on('sendOscMessage', message => this.send(message));
-    IPC.on('sendVrcParameter', data => this.send(new Message(data.path, data.value)));
+    BRIDGE.on('osc:sendMessage', message => this.send(message));
+    IPC.on('osc:sendParameter', data => this.send(new Message(data.path, data.value)));
 
     this.start(SETTINGS.get('osc'));
   }
@@ -60,7 +60,7 @@ export class OscController {
     const value = this.valueFromArgumentType(message[1]);
     const vrcParameter: VrcParameter = { path, value };
 
-    BRIDGE.emit('oscMessage', vrcParameter);
+    BRIDGE.emit('osc:message', vrcParameter);
   }
 
   private send(message: Message) {

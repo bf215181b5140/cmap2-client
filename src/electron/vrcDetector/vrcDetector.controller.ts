@@ -7,21 +7,26 @@ import { SETTINGS } from '../store/settings/settings.store';
 export default class VrcDetectorController {
   private intervalId: NodeJS.Timeout | null = null;
   private processName: string = 'vrchat.exe';
-  private detecting: boolean = false;
-  private lastDetectedVrc: number | undefined;
+  private settings: VrcDetectorSettings;
 
   constructor() {
-    this.resetInterval(SETTINGS.get('vrcDetector'));
+    this.settings = SETTINGS.get('vrcDetector');
 
-    IPC.on('saveVrcDetectorSettings', (data) => this.resetInterval(data));
-    IPC.on('checkIsVrcDetected', () => this.detectVrchat());
+    SETTINGS.onChange('vrcDetector', data => {
+      this.settings = data;
+      this.resetInterval();
+    });
+
+    IPC.on('vrcDetector:check', () => this.detectVrchat());
+
+    this.resetInterval();
   }
 
   detectVrchat() {
-    if (!this.detecting) {
+    if (!this.settings.detect) {
       // null means we're not tracking
-      IPC.emit('isVrcDetected', null);
-      BRIDGE.emit('isVrcDetected', null);
+      IPC.emit('vrcDetector:detection', null);
+      BRIDGE.emit('vrcDetector:detection', null);
       return;
     }
 
@@ -29,28 +34,25 @@ export default class VrcDetectorController {
       if (err) return;
 
       const detected = stdout.toLowerCase().includes(this.processName.toLowerCase());
-      this.lastDetectedVrc = Date.now();
-      IPC.emit('isVrcDetected', detected);
-      BRIDGE.emit('isVrcDetected', detected);
+      IPC.emit('vrcDetector:detection', detected);
+      BRIDGE.emit('vrcDetector:detection', detected);
     });
   }
 
-  resetInterval(settings: VrcDetectorSettings) {
-    this.detecting = settings.detect;
-
-    if (this.detecting) {
+  resetInterval() {
+    if (this.settings.detect) {
       // clear old interval if exists
       if (this.intervalId !== null) clearInterval(this.intervalId);
       // set new interval
-      this.intervalId = setInterval(() => this.detectVrchat(), settings.frequency * 1000);
+      this.intervalId = setInterval(() => this.detectVrchat(), this.settings.frequency * 1000);
       // and detect it right away
       this.detectVrchat();
     } else {
       // clear old interval if exists
       if (this.intervalId !== null) clearInterval(this.intervalId);
       // Emmit that we are not tracking
-      IPC.emit('isVrcDetected', null);
-      BRIDGE.emit('isVrcDetected', null);
+      IPC.emit('vrcDetector:detection', null);
+      BRIDGE.emit('vrcDetector:detection', null);
     }
   }
 }
