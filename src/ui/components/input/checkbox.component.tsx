@@ -28,7 +28,7 @@ export default function CheckboxInput<T extends FieldValues>({ name, register, e
     <CheckboxInputStyled errors={hasError}>
       <input type="checkbox" {...register(name)} id={name + '-CheckboxInput'} readOnly={readOnly} />
       <div onClick={() => booleanClick(name + '-CheckboxInput')} className={readOnly ? 'readOnly' : undefined}>
-        <Icon icon="ri-check-fill" />
+        <Icon className="ri-check-fill" />
       </div>
     </CheckboxInputStyled>
     <InputErrorMessage errorMessage={errorMessage} />

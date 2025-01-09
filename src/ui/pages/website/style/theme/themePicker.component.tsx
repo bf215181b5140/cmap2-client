@@ -19,7 +19,7 @@ export default function ThemePicker({ stylesData, setTheme }: ThemePickerProps) 
   function saveSelected(theme: StylePageDTO['themes'][0]) {
     if (stylesData.client.tier.rank < theme.tier.rank) return;
 
-    POST('profile/theme', { id: theme.id }, undefined, () => {
+    POST('style/theme', { id: theme.id }, undefined, () => {
       setTheme(theme);
     });
   }

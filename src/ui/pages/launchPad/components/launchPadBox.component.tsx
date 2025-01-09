@@ -18,7 +18,7 @@ export default function LaunchPadBox({ icon, redirectPath, children }: LaunchPad
 
   return (<LaunchPadBoxStyled onClick={redirect}>
     <div className={'launchPadBoxIcon'}>
-      <Icon icon={icon} />
+      <Icon className={icon} />
     </div>
     <div className={'launchPadBoxContent'}>
       {children}

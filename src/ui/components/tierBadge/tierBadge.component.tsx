@@ -9,7 +9,7 @@ interface TierBadgeProps {
 export default function TierBadge({ tier }: TierBadgeProps) {
 
   return (<TierBadgeStyled color={tier.color}>
-    <Icon icon="ri-medal-fill" color={tier.color} />
+    <Icon className="ri-medal-fill" color={tier.color} />
     {tier.label}
   </TierBadgeStyled>);
 }

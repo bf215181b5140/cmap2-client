@@ -26,7 +26,7 @@ export default function ParameterBadgePreview({ badge }: ParameterBadgePreviewPr
   }
 
   return (<ParameterBadgePreviewStyled>
-    {badgeData.icon && <Icon icon={badgeData.icon} />}
+    {badgeData.icon && <Icon className={badgeData.icon} />}
     {badgeData.label}
   </ParameterBadgePreviewStyled>);
 }

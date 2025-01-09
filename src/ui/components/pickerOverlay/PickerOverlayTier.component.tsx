@@ -11,7 +11,7 @@ interface PickerOverlayTierProps {
 export default function PickerOverlayTier({ tier, valid = true }: PickerOverlayTierProps) {
 
   return (<PickerOverlayTierStyled valid={valid}>
-    <Icon icon="ri-medal-fill" color={tier.color} />
+    <Icon className="ri-medal-fill" color={tier.color} />
     {tier.label}
   </PickerOverlayTierStyled>);
 }

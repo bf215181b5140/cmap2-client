@@ -19,7 +19,7 @@ export default function BackgroundPicker({ stylesData, setBackground }: Backgrou
   function saveSelected(background: StylePageDTO['backgrounds'][0]) {
     if (stylesData.client.tier.rank < background.tier.rank) return;
 
-    POST('profile/background', { id: background.id }, undefined, () => {
+    POST('style/background', { id: background.id }, undefined, () => {
       setBackground(background);
     });
   }

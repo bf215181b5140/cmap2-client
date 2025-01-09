@@ -14,6 +14,9 @@ type MessageEvents = {
   'trackedParameters:parameters': (vrcParameters: VrcParameter[]) => void;
   'socket:sendParameter': (vrcParameter: VrcParameter) => void;
   'socket:sendParameters': (vrcParameters: VrcParameter[]) => void;
+  'socket:deleteParameter': (path: string) => void;
+  'socket:applyParameters': (callback: (parameters: VrcParameter[]) => void) => void;
+  'socket:useCostParameter': (parameter: VrcParameter) => void;
   'vrcDetector:detection': (isVrcDetected: boolean | null) => void;
 }
 

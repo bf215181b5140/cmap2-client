@@ -42,7 +42,7 @@ export default function GroupCopyModal({ layouts, group, onSuccess }: GroupCopyM
   return (<>
       <div id="modalHeader">
         <h2>Copying group {group.label}</h2>
-        <span onClick={onClose}><Icon icon={'ri-close-line'} /></span>
+        <span onClick={onClose}><Icon className={'ri-close-line'} /></span>
       </div>
 
       <p>Select where you'd like to create the copy and confirm.</p>

@@ -1,7 +1,5 @@
-import { AppSettings, OscSettings, SocketParameterBlacklist, SocketSettings, TrackedParametersSettings, VrcDetectorSettings } from '../../shared/objects/settings';
-import { Credentials } from '../../shared/objects/credentials';
 import { VrcOscAvatar } from '../../shared/objects/vrcOscAvatar';
-import { TrackedParametersDTO, TrackedParametersMap, VrcParameter } from 'cmap2-shared';
+import { VrcParameter } from 'cmap2-shared';
 import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
 import { UpdateData } from '../updater/updater.model';

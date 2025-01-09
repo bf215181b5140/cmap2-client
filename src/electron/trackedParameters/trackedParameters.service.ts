@@ -5,6 +5,7 @@ import { parameterValueObjectOrAvatarSchema } from 'cmap2-shared/src/shared';
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
 import { SETTINGS } from '../store/settings/settings.store';
+import { Message } from 'node-osc';
 
 export class TrackedParametersService extends Map<VrcParameter['path'], TrackedParameter> {
   private clearOnAvatarChange: boolean = SETTINGS.get('trackedParameters').clearOnAvatarChange;
@@ -18,9 +19,17 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
   constructor() {
     super();
 
-    BRIDGE.on('osc:message', (vrcParameter) => this.onNewParameter(vrcParameter));
     SETTINGS.onChange('trackedParameters', settings => this.clearOnAvatarChange = settings.clearOnAvatarChange);
     SETTINGS.onChange('socketParameterBlacklist', data => this.socketParameterBlacklist = new Set(data));
+
+    BRIDGE.on('osc:message', vrcParameter => this.onNewParameter(vrcParameter));
+    BRIDGE.on('socket:applyParameters', callback => callback(this.toDto()));
+    BRIDGE.on('socket:useCostParameter', vrcParameter => {
+      const value = this.get(vrcParameter.path)?.value;
+      let newValue: number | undefined = undefined;
+      if (typeof value === 'number' && typeof vrcParameter.value === 'number') newValue = value - vrcParameter.value;
+      if (newValue) BRIDGE.emit('osc:sendMessage', new Message(vrcParameter.path, newValue));
+    });
 
     setInterval(() => this.resetFrequencies(), this.resetFrequencyIntervalMs);
   }

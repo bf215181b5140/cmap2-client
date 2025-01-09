@@ -57,7 +57,7 @@ export default function AvatarParameters({ avatarId, parameters, avatarsDispatch
       <div>
         Show parameter info
         <CollapseCheckboxStyled onClick={() => setShowProperties((state) => !state)} checked={showProperties}>
-          <Icon icon="ri-check-fill" />
+          <Icon className="ri-check-fill" />
         </CollapseCheckboxStyled>
       </div>
     </FiltersStyled>

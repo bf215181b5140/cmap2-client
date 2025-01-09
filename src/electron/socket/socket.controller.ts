@@ -31,9 +31,10 @@ export class SocketController {
     IPC.on('socket:disconnect', () => this.socket?.close());
     IPC.handle('socket:connection', async () => !!this.socket?.connected);
 
-    BRIDGE.on('vrcDetector:detection', data => this.sendData('vrcDetector:detection', data));
-    BRIDGE.on('socket:sendParameter', data => this.sendData('parameter', data));
-    BRIDGE.on('socket:sendParameters', data => this.sendData('parameters', data));
+    BRIDGE.on('vrcDetector:detection', data => this.socket?.emit('isVrcDetected', data));
+    BRIDGE.on('socket:sendParameter', data => this.socket?.emit('parameter', data));
+    BRIDGE.on('socket:sendParameters', data => this.socket?.emit('parameters', data));
+    BRIDGE.on('socket:deleteParameter', data => this.socket?.emit('deleteParameter', data));
 
     if (this.settings.autoConnect) this.connect();
   }
@@ -54,6 +55,11 @@ export class SocketController {
     this.socket.on('joined', () => {
       log.info('Socket connected to server');
       IPC.emit('socket:connection', !!this.socket?.connected);
+      BRIDGE.emit('socket:applyParameters', (parameters: VrcParameter[]) => this.socket?.emit('parameters', parameters));
+    });
+
+    this.socket.on('parameters', (callback: (parameters: VrcParameter[]) => void) => {
+      BRIDGE.emit('socket:applyParameters', callback);
     });
 
     this.socket.on('error', (err: Error) => {
@@ -69,24 +75,9 @@ export class SocketController {
     this.socket.on('parameter', (parameter: VrcParameter) => {
       BRIDGE.emit('osc:sendMessage', new Message(parameter.path, parameter.value));
     });
-  }
 
-  // private onVrcParameter(vrcParameter: VrcParameter) {
-  //   if (this.parameterBlacklist.has(vrcParameter.path)) return;
-  //
-  //   if (this.parameterBulkQueue.has(vrcParameter.path)) {
-  //     this.parameterBulkQueue.set(vrcParameter.path, vrcParameter.value);
-  //   }
-  //
-  //   this.sendData('parameter', vrcParameter);
-  // }
-  //
-  // private onVrcParameters(vrcParameters: VrcParameter[]) {
-  //   const filteredParameters = vrcParameters.filter(p => !this.parameterBlacklist.has(p.path));
-  //   this.sendData('parameters', filteredParameters);
-  // }
-
-  private sendData(event: string, data: any) {
-    this.socket?.emit(event, data);
+    this.socket.on('useCostParameter', (parameter: VrcParameter) => {
+      BRIDGE.emit('socket:useCostParameter', parameter);
+    });
   }
 }

@@ -29,7 +29,7 @@ export default function BasicModal({ title, message, confirmValue, confirmFuncti
 
     <div id="modalHeader">
       <h2>{title || 'Confirmation required'}</h2>
-      <span onClick={onClose}><Icon icon={'ri-close-line'} /></span>
+      <span onClick={onClose}><Icon className={'ri-close-line'} /></span>
     </div>
 
     <p>{message || 'Confirm your action'}</p>

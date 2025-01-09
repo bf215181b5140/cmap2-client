@@ -19,7 +19,7 @@ export default function Tiers({ clientTier, tiers }: TiersProps) {
         <Tier current={tier.id === clientTier.id} key={tier.id}>
           {tier.id === clientTier.id && <h3>current</h3>}
           <h2>
-            <Icon icon="ri-medal-fill" color={tier.color} />
+            <Icon className="ri-medal-fill" color={tier.color} />
             {tier.label}
           </h2>
           <p>Up to <Highlight color={tier.color}>{tier.interactionKeys}</Highlight> interaction keys</p>

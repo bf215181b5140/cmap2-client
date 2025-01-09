@@ -9,7 +9,7 @@ interface PickerOverlayCheckProps {
 export default function PickerOverlayCheck({ selected }: PickerOverlayCheckProps) {
 
   return (<PickerOverlayCheckStyled selected={selected}>
-    <Icon icon="ri-check-line" />
+    <Icon className="ri-check-line" />
   </PickerOverlayCheckStyled>);
 }
 

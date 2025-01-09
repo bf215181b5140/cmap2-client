@@ -45,7 +45,7 @@ export default function ButtonCopyModal({ layouts, button, onSuccess }: ButtonCo
   return (<>
       <div id="modalHeader">
         <h2>Copying button {button.label}</h2>
-        <span onClick={onClose}><Icon icon={'ri-close-line'} /></span>
+        <span onClick={onClose}><Icon className={'ri-close-line'} /></span>
       </div>
 
       <p>Select where you'd like to create the copy and confirm.</p>
