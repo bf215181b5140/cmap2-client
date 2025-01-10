@@ -153,7 +153,7 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
         <tr>
           <th>Parameter</th>
           <td>
-            <ParameterInput register={register} name={'path'} errors={errors} setValue={setValue} defaultType={'input'} />
+            <ParameterInput register={register} name={'path'} errors={errors} setValue={setValue} defaultAvatarVrcId={layout?.avatars.at(0)} defaultType={'input'} />
           </td>
         </tr>
         <tr>
@@ -203,7 +203,7 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
           {callbackParameters.fields.map((item, index) => (
             <tr key={index}>
               <td>
-                <ParameterInput register={register} name={`callbackParameters.${index}.path`} defaultType={'input'} setValue={setValue} errors={errors} />
+                <ParameterInput register={register} name={`callbackParameters.${index}.path`} defaultAvatarVrcId={layout?.avatars.at(0)} defaultType={'input'} setValue={setValue} errors={errors} />
               </td>
               <td>
                 <Input register={register} name={`callbackParameters.${index}.value`} errors={errors} />
@@ -237,7 +237,7 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
           {visibilityParameters.fields.map((item, index) => (
             <tr key={index}>
               <td>
-                <ParameterInput register={register} name={`visibilityParameters.${index}.path`} defaultType={'input'} setValue={setValue} errors={errors} />
+                <ParameterInput register={register} name={`visibilityParameters.${index}.path`} defaultAvatarVrcId={layout?.avatars.at(0)} defaultType={'input'} setValue={setValue} errors={errors} />
               </td>
               <td>
                 <Input register={register} name={`visibilityParameters.${index}.value`} errors={errors} />

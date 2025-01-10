@@ -115,7 +115,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
           </tr>
           <tr>
             <th>Parameter</th>
-            <td><ParameterInput register={register} name={'healthPath'} setValue={setValue} defaultType={'output'} errors={errors} /></td>
+            <td><ParameterInput register={register} name={'healthPath'} setValue={setValue} defaultType={'output'} defaultAvatarVrcId={layout?.avatars.at(0)} errors={errors} /></td>
           </tr>
           <tr>
             <th>Max health</th>
@@ -134,7 +134,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
           </tr>
           <tr>
             <th>Parameter</th>
-            <td><ParameterInput register={register} name={'useCostPath'} setValue={setValue} defaultType={'output'} errors={errors} /></td>
+            <td><ParameterInput register={register} name={'useCostPath'} setValue={setValue} defaultType={'output'} defaultAvatarVrcId={layout?.avatars.at(0)} errors={errors} /></td>
           </tr>
           <tr>
             <th>Max cost?</th>

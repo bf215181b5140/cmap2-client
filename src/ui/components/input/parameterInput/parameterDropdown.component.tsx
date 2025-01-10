@@ -57,7 +57,6 @@ export default function ParameterDropdown({ showDropdown, setShowDropdown, onApp
   // Which parameters are shown in the dropdown (based on filters)
   const dropdownParameters = useMemo(() => {
     const tempSelectParameters: ParameterDropdownParameter[] = [];
-    console.log('filters:', filterAvatarId, filterName, filterType, avatars)
     // Filter avatars
     avatars.forEach(avatar => {
       if (filterAvatarId === '' || filterAvatarId === avatar.id) {

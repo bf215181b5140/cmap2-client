@@ -121,7 +121,7 @@ export default function ParameterBadges() {
                            name={`parameterBadges.${index}.type`} errors={errors} />
             </td>
             <td>
-              <ParameterInput register={register} name={`parameterBadges.${index}.path`} errors={errors} setValue={setValue} defaultType={'output'} />
+              <ParameterInput register={register} name={`parameterBadges.${index}.path`} errors={errors} setValue={setValue} defaultType={'output'} defaultAvatarVrcId={layout?.avatars.at(0)} />
             </td>
             <td>
               <Input register={register} name={`parameterBadges.${index}.value`} readOnly={parameterBadges[index].type !== ParameterBadgeTypeSchema.Enum.Custom} errors={errors} />

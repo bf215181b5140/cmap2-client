@@ -106,7 +106,7 @@ export default function GroupForm() {
           {fields.map((item, index) => (
             <tr key={index}>
               <td>
-                <ParameterInput register={register} name={`visibilityParameters.${index}.path`} width={'100%'} defaultType={'input'} setValue={setValue} errors={errors} />
+                <ParameterInput register={register} name={`visibilityParameters.${index}.path`} width={'100%'} defaultAvatarVrcId={layout?.avatars.at(0)} defaultType={'input'} setValue={setValue} errors={errors} />
               </td>
               <td>
                 <Input register={register} name={`visibilityParameters.${index}.value`} errors={errors} />
