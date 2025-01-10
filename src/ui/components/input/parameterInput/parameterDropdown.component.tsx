@@ -7,6 +7,7 @@ import { theme } from '../../../style/theme';
 
 export interface ParameterDropdownParameter {
   avatar: string;
+  avatarId: string;
   name: string;
   address: string;
   type: string;
@@ -56,6 +57,7 @@ export default function ParameterDropdown({ showDropdown, setShowDropdown, onApp
   // Which parameters are shown in the dropdown (based on filters)
   const dropdownParameters = useMemo(() => {
     const tempSelectParameters: ParameterDropdownParameter[] = [];
+    console.log('filters:', filterAvatarId, filterName, filterType, avatars)
     // Filter avatars
     avatars.forEach(avatar => {
       if (filterAvatarId === '' || filterAvatarId === avatar.id) {
@@ -67,6 +69,7 @@ export default function ParameterDropdown({ showDropdown, setShowDropdown, onApp
             // add to select parameters
             tempSelectParameters.push({
               avatar: avatar.name,
+              avatarId: avatar.id,
               name: param.name,
               address: param[filterType]!.address,
               type: filterType,
@@ -128,7 +131,7 @@ export default function ParameterDropdown({ showDropdown, setShowDropdown, onApp
     {/* List all parameters */}
     <ul>
       {dropdownParameters.length > 0 ? (
-        dropdownParameters.map(param => (<li key={param.avatar + param.name + param.type} onClick={() => onApplyParameter({ address: param.address, type: param.valueType })}>
+        dropdownParameters.map(param => (<li key={param.avatarId + param.name + param.type} onClick={() => onApplyParameter({ address: param.address, type: param.valueType })}>
           <span className={'avatar'}>{param.avatar}</span>
           <span className={'name'}>{param.name}</span>
           <span className={'valueType'}>{param.valueType}</span>
