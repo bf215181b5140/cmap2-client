@@ -32,7 +32,7 @@ export default function AvatarsMenu({ page, setPage, avatars, selectedAvatar, cl
             {/* Add new avatar */}
             {(clientTier?.avatars && avatars.length < clientTier.avatars) &&
                 <CustomAddButton role={'add'} tooltip={'Add new avatar'} icon={'ri-user-add-line'} onClick={() => navigate('/website/avatars/new')}
-                                 disabled={!selectedAvatar?.id || avatars.length >= clientTier.avatars} />
+                                 disabled={avatars.length >= clientTier.avatars} />
             }
 
             <hr />
