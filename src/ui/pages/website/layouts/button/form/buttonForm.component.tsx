@@ -38,8 +38,8 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
     label: '',
     showLabel: false,
     path: '',
-    value: '',
-    valueAlt: '',
+    value: '' as any,
+    valueAlt: null,
     buttonType: ButtonTypeSchema.Enum.Button,
     imageOrientation: ImageOrientationSchema.Enum.Square,
     order: (group?.buttons?.length ?? 0) + 1,
@@ -215,7 +215,7 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
             </tr>
           ))}
           <tr>
-            <FormAddRow colSpan={3} items={callbackParameters.fields.length} limit={tier.callbackParameters} onClick={() => callbackParameters.append({ path: '', value: '', seconds: 0 })} />
+            <FormAddRow colSpan={3} items={callbackParameters.fields.length} limit={tier.callbackParameters} onClick={() => callbackParameters.append({ path: '', value: 0, seconds: 0 })} />
           </tr>
           </tbody>
         </FormTableStyled>
@@ -251,7 +251,7 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
           ))}
           <tr>
             <FormAddRow colSpan={3} items={visibilityParameters.fields.length} limit={tier.visibilityParameters}
-                        onClick={() => visibilityParameters.append({ path: '', value: '', condition: 'Equal' })} />
+                        onClick={() => visibilityParameters.append({ path: '', value: '' as any, condition: 'Equal' })} />
           </tr>
           </tbody>
         </FormTableStyled>

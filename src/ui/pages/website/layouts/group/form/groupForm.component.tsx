@@ -119,7 +119,7 @@ export default function GroupForm() {
             </tr>
           ))}
           <tr>
-            <FormAddRow colSpan={3} items={fields.length} limit={tier.visibilityParameters} onClick={() => append({ path: '', value: '', condition: 'Equal' })} />
+            <FormAddRow colSpan={3} items={fields.length} limit={tier.visibilityParameters} onClick={() => append({ path: '', value: 0, condition: 'Equal' })} />
           </tr>
           </tbody>
         </FormTableStyled>

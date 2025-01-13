@@ -4,9 +4,9 @@ import { LayoutsPageContext } from '../../layouts.context';
 import { QuickEditItem } from './quickEditToolbar/quickEditToolbar.model';
 import { ButtonDTO, GroupDTO, LayoutDTO } from 'cmap2-shared';
 import QuickEditToolbar from './quickEditToolbar/quickEditToolbar.component';
-import Layout from '../../../../../components/preview/layout/layout.component';
-import LayoutGroup from '../../../../../components/preview/group/layoutGroup.component';
-import LayoutButton from '../../../../../components/preview/button/layoutButton.component';
+import { Layout } from 'cmap2-shared/react';
+import { LayoutGroup } from 'cmap2-shared/react';
+import { LayoutButton } from 'cmap2-shared/react';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
 import styled from 'styled-components';
 import Background from '../../../../../components/background/background.component';
@@ -60,7 +60,7 @@ export default function LayoutPreview() {
 
       <div style={{ height: '100px' }} />
 
-      <Layout cmapTheme={theme}>
+      <Layout>
 
         {/* Groups */}
         {layout?.groups?.map(group => (

@@ -38,11 +38,11 @@ export default function ParameterBadges() {
   const { fields, append, remove } = useFieldArray({ control, name: 'parameterBadges' });
   const parameterBadges = watch('parameterBadges'); // fields doesn't properly update object properties
 
-  const newBadge = {
+  const newBadge: ParameterBadgeFormDTO['parameterBadges'][0] = {
     id: null,
     type: ParameterBadgeTypeSchema.Enum.Custom,
     path: '',
-    value: '',
+    value: null,
     label: '',
     icon: '',
     order: fields.reduce((max, b) => Math.max(max, b.order) + 1, 0)
@@ -82,7 +82,7 @@ export default function ParameterBadges() {
         break;
     }
     setValue(`parameterBadges.${index}.path`, pathValue);
-    setValue(`parameterBadges.${index}.value`, '');
+    setValue(`parameterBadges.${index}.value`, null);
     setValue(`parameterBadges.${index}.label`, '');
     setValue(`parameterBadges.${index}.icon`, '');
   }

@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { VrcParameter } from 'cmap2-shared';
+import { UsedButtonDTO, VrcParameter } from 'cmap2-shared';
 import { WEBSITE_URL } from '../../shared/const';
 import { BRIDGE } from '../bridge/bridge.service';
 import { Message } from 'node-osc';
@@ -72,12 +72,8 @@ export class SocketController {
       IPC.emit('socket:connection', !!this.socket?.connected);
     });
 
-    this.socket.on('parameter', (parameter: VrcParameter) => {
-      BRIDGE.emit('osc:sendMessage', new Message(parameter.path, parameter.value));
-    });
-
-    this.socket.on('useCostParameter', (parameter: VrcParameter) => {
-      BRIDGE.emit('socket:useCostParameter', parameter);
+    this.socket.on('usedButton', (usedButton: UsedButtonDTO) => {
+      BRIDGE.emit('socket:usedButton', usedButton);
     });
   }
 }

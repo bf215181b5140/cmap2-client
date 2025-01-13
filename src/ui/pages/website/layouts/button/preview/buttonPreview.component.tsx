@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
 import { ButtonDTO, UploadedFileDTO } from 'cmap2-shared';
 import Segment from '../../../../../components/segment/segment.component';
-import ParameterButton from '../../../../../components/preview/button/parameter.button';
+import { LayoutButton } from 'cmap2-shared/react';
 
 interface ButtonPreviewProps {
   buttonSectionEvents: TypedEmitter<ButtonSectionEvents>;
@@ -44,7 +44,7 @@ export default function ButtonPreview({ buttonSectionEvents }: ButtonPreviewProp
 
   return (<Segment segmentTitle={'Preview'} width={'Full'}>
     <div style={{ maxWidth: '350px' }}>
-      <ParameterButton button={previewButton} cmapTheme={theme} />
+      <LayoutButton button={previewButton} theme={theme} />
     </div>
   </Segment>);
 }

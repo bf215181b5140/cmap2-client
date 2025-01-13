@@ -6,6 +6,7 @@ import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
 import { SETTINGS } from '../store/settings/settings.store';
 import { Message } from 'node-osc';
+import { UsedButtonDTO } from 'cmap2-shared';
 
 export class TrackedParametersService extends Map<VrcParameter['path'], TrackedParameter> {
   private clearOnAvatarChange: boolean = SETTINGS.get('trackedParameters').clearOnAvatarChange;
@@ -24,14 +25,42 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
 
     BRIDGE.on('osc:message', vrcParameter => this.onNewParameter(vrcParameter));
     BRIDGE.on('socket:applyParameters', callback => callback(this.toDto()));
-    BRIDGE.on('socket:useCostParameter', vrcParameter => {
-      const value = this.get(vrcParameter.path)?.value;
-      let newValue: number | undefined = undefined;
-      if (typeof value === 'number' && typeof vrcParameter.value === 'number') newValue = value - vrcParameter.value;
-      if (newValue) BRIDGE.emit('osc:sendMessage', new Message(vrcParameter.path, newValue));
-    });
+    BRIDGE.on('socket:usedButton', usedButton => this.onUsedButton(usedButton));
 
     setInterval(() => this.resetFrequencies(), this.resetFrequencyIntervalMs);
+  }
+
+  /**
+  * UsedButton is received from server when someone presses a button
+  *
+  * Check if parameter can be used based on current exp
+  *
+  * Emit button parameter and any additional callback parameters after a delay to vrchat
+  *
+  */
+  private onUsedButton(usedButton: UsedButtonDTO) {
+    const canSend = !usedButton.exp || this.consumeExpCost(usedButton.exp.path, usedButton.exp.value);
+    if (!canSend) return;
+    BRIDGE.emit('osc:sendMessage', new Message(usedButton.path, usedButton.value));
+    usedButton.callbackParameters.forEach(cp => {
+      setTimeout(() => BRIDGE.emit('osc:sendMessage', new Message(cp.path, cp.value)), 1000 * cp.seconds);
+    });
+  }
+
+  /**
+   * If parameter for exp is avaiable and is a number then reduce it and if it's still a viable value (>=0) emit new exp parameter to vrchat
+   *
+   */
+  private consumeExpCost(path: string, exp: number): boolean {
+    const value = this.get(path)?.value;
+
+    if (typeof value !== 'number') return true;
+
+    let newValue = value - exp;
+    if (newValue < 0) return false;
+
+    BRIDGE.emit('osc:sendMessage', new Message(path, newValue));
+    return true;
   }
 
   private onNewParameter(vrcParameter: VrcParameter) {

@@ -5,7 +5,7 @@ import Segment from '../../../../components/segment/segment.component';
 import PickerOverlayTier from '../../../../components/pickerOverlay/PickerOverlayTier.component';
 import PickerOverlayCheck from '../../../../components/pickerOverlay/PickerOverlayCheck.component';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
-import ParameterButton from '../../../../components/preview/button/parameter.button';
+import { LayoutButton } from 'cmap2-shared/react';
 
 interface ThemePickerProps {
   stylesData: StylePageDTO;
@@ -31,8 +31,8 @@ export default function ThemePicker({ stylesData, setTheme }: ThemePickerProps) 
     label: '',
     showLabel: true,
     path: '',
-    value: '',
-    valueAlt: '',
+    value: 0,
+    valueAlt: null,
     buttonType: 'Button',
     imageOrientation: 'Square',
     order: 0,
@@ -44,7 +44,7 @@ export default function ThemePicker({ stylesData, setTheme }: ThemePickerProps) 
     <ButtonThemeFlex>
       {stylesData.themes?.map(theme => (
         <ButtonThemePickerThemed color={theme.tier.color} validPick={stylesData.client.tier.rank >= theme.tier.rank} onClick={() => saveSelected(theme)} key={theme.id}>
-          <ParameterButton cmapTheme={theme} button={exampleButton} />
+          <LayoutButton button={exampleButton} theme={theme} />
           <PickerOverlayTier tier={theme.tier} valid={theme.tier.rank <= stylesData.client.tier.rank} />
           <PickerOverlayCheck selected={stylesData.client.theme.id === theme.id} />
         </ButtonThemePickerThemed>
