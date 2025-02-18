@@ -135,7 +135,7 @@ const LayoutPreviewStyled = styled.div`
         display: none;
       }
     }
-
+  }
 `;
 
 const PreviewBackground = styled(Background)`

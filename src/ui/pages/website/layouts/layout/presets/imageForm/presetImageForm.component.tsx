@@ -1,25 +1,26 @@
-import { ButtonSectionEvents } from '../button.model';
 import TypedEmitter from 'typed-emitter/rxjs';
-import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
-import useFileValidation from '../../../../../hooks/fileValidation.hook';
 import { RefObject, useContext, useEffect, useImperativeHandle, useRef } from 'react';
-import { LayoutsPageContext } from '../../layouts.context';
 import { useForm } from 'react-hook-form';
-import { UploadedFileSchema } from 'cmap2-shared';
-import Segment from '../../../../../components/segment/segment.component';
-import IconButton from '../../../../../components/buttons/iconButton.component';
-import TextButton from '../../../../../components/buttons/textButton.component';
+import { PresetDTO, UploadedFileSchema } from 'cmap2-shared';
 import styled from 'styled-components';
+import { PresetsSectionEvents } from '../presets.model';
+import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
+import useFileValidation from '../../../../../../hooks/fileValidation.hook';
+import { LayoutsPageContext } from '../../../layouts.context';
+import Segment from '../../../../../../components/segment/segment.component';
+import IconButton from '../../../../../../components/buttons/iconButton.component';
+import TextButton from '../../../../../../components/buttons/textButton.component';
 
-interface ButtonImageFormProps {
-  buttonSectionEvents: TypedEmitter<ButtonSectionEvents>;
+interface PresetImageFormProps {
+  presetSectionEvents: TypedEmitter<PresetsSectionEvents>;
+  preset: PresetDTO;
 }
 
-export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageFormProps) {
+export default function PresetImageForm({ presetSectionEvents, preset }: PresetImageFormProps) {
 
   const { cmapFetch, DELETE } = useCmapFetch();
   const { validateImage } = useFileValidation();
-  const { layoutsDispatch, layoutId, groupId, button } = useContext(LayoutsPageContext);
+  const { layoutsDispatch, layoutId } = useContext(LayoutsPageContext);
   const { register, watch, reset, handleSubmit } = useForm<{ file: FileList | null }>();
   const { ref, ...fileRegister } = register('file');
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
@@ -29,40 +30,40 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
   useImperativeHandle(ref, () => inputRef.current);
 
   useEffect(() => {
-    function onButtonSaved() {
+    function onPresetSaved() {
       submitRef.current?.click();
     }
 
-    buttonSectionEvents.on('onButtonSaved', onButtonSaved);
+    presetSectionEvents.on('onSaved', onPresetSaved);
 
     return () => {
-      buttonSectionEvents.removeListener('onButtonSaved', onButtonSaved);
+      presetSectionEvents.removeListener('onSaved', onPresetSaved);
     };
   }, []);
 
   useEffect(() => {
     reset();
-  }, [button]);
+  }, [preset]);
 
   useEffect(() => {
     if (file) {
       validateImage(file,
-        () => buttonSectionEvents.emit('onImageChange', { id: '', fileName: file.name, urlPath: URL.createObjectURL(file) }),
+        () => presetSectionEvents.emit('onImageChange', { id: '', fileName: file.name, urlPath: URL.createObjectURL(file) }),
         () => {
-          buttonSectionEvents.emit('onImageChange', null);
+          presetSectionEvents.emit('onImageChange', null);
           reset();
         });
     }
   }, [file]);
 
   function onSubmit(formData: any) {
-    if (formData.file[0] && button?.id) {
+    if (formData.file[0] && preset?.id) {
       const postData = new FormData();
       postData.append('file', formData.file[0]);
-      postData.append('id', button.id);
+      postData.append('id', preset.id);
 
-      cmapFetch('layouts/button/image', { method: 'POST', body: postData }, UploadedFileSchema, data => {
-        layoutsDispatch({ type: 'changeButtonPicture', layoutId: layoutId || '', groupId: groupId || '', buttonId: button.id, image: data });
+      cmapFetch('layouts/preset/image', { method: 'POST', body: postData }, UploadedFileSchema, data => {
+        layoutsDispatch({ type: 'changePresetPicture', layoutId: layoutId || '', presetId: preset.id, image: data });
         reset();
       });
     }
@@ -70,11 +71,11 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
 
   function onClear() {
     if (file) {
-      buttonSectionEvents.emit('onImageChange', null);
+      presetSectionEvents.emit('onImageChange', null);
       reset();
-    } else if (button?.image) {
-      DELETE('layouts/button/image', { id: button.id }, undefined, () => {
-        layoutsDispatch({ type: 'changeButtonPicture', layoutId: layoutId || '', groupId: groupId || '', buttonId: button.id, image: null });
+    } else if (preset?.image) {
+      DELETE('layouts/preset/image', { id: preset.id }, undefined, () => {
+        layoutsDispatch({ type: 'changePresetPicture', layoutId: layoutId || '', presetId: preset.id, image: null });
         reset();
       });
     }
@@ -87,7 +88,7 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
   const browseIcon = !!file ? 'ri-image-edit-line' : 'ri-image-add-line';
 
   return (<Segment segmentTitle={'Edit image'} width={'Full'}>
-    <ButtonImageFormStyled>
+    <PresetImageFormStyled>
       <div style={{ flexBasis: '100%' }}>
         <span style={{ flexBasis: '100%' }} className={'fileName'}>{file?.name}</span>
       </div>
@@ -95,18 +96,18 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
         <IconButton role={'normal'} tooltip={'Browse for file'} icon={browseIcon} onClick={onBrowse} />
       </div>
       <div>
-        <IconButton role={'save'} tooltip={'Save image'} onClick={() => submitRef.current?.click()} disabled={!file || !button?.id} />
-        <TextButton text={'Remove image'} onClick={onClear} disabled={!file && !button?.image} />
+        <IconButton role={'save'} tooltip={'Save image'} onClick={() => submitRef.current?.click()} disabled={!file || !preset?.id} />
+        <TextButton text={'Remove image'} onClick={onClear} disabled={!file && !preset?.image} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>
         <input type="file" {...fileRegister} ref={inputRef} />
         <input type="submit" ref={submitRef} />
       </form>
-    </ButtonImageFormStyled>
+    </PresetImageFormStyled>
   </Segment>);
 }
 
-const ButtonImageFormStyled = styled.div`
+const PresetImageFormStyled = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;

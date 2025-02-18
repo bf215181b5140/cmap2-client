@@ -1,4 +1,4 @@
-import { ButtonDTO, GroupDTO, LayoutDTO, ParameterBadgeDTO, UploadedFileDTO } from 'cmap2-shared';
+import { ButtonDTO, GroupDTO, LayoutDTO, ParameterBadgeDTO, PresetDTO, UploadedFileDTO } from 'cmap2-shared';
 
 export type LayoutsReducerAction = { type: 'setLayouts', layouts: LayoutDTO[] } |
   { type: 'addLayout', layout: LayoutDTO } |
@@ -16,7 +16,12 @@ export type LayoutsReducerAction = { type: 'setLayouts', layouts: LayoutDTO[] } 
   { type: 'editButton', layoutId: string, groupId: string, button: ButtonDTO } |
   { type: 'removeButton', layoutId: string, groupId: string, buttonId: string } |
   { type: 'setButtonOrder', layoutId: string, groupId: string, buttons: ButtonDTO[] } |
-  { type: 'changeButtonPicture', layoutId: string, groupId: string, buttonId: string, image: UploadedFileDTO | null };
+  { type: 'addPreset', layoutId: string, preset: PresetDTO } |
+  { type: 'editPreset', layoutId: string, preset: PresetDTO } |
+  { type: 'removePreset', layoutId: string, presetId: string } |
+  { type: 'setPresetOrder', layoutId: string, presets: PresetDTO[] } |
+  { type: 'changeButtonPicture', layoutId: string, groupId: string, buttonId: string, image: UploadedFileDTO | null } |
+  { type: 'changePresetPicture', layoutId: string, presetId: string, image: UploadedFileDTO | null };
 
 export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReducerAction) {
   switch (action.type) {
@@ -31,16 +36,6 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       });
     case 'removeLayout':
       return state.filter(layout => layout.id !== action.layout.id);
-    // case 'saveControlParameters':
-    //   return state.map(layout => {
-    //     if (layout.id === action.layoutId) layout.controlParameters = action.controlParameters;
-    //     return layout;
-    //   });
-    // case 'removeControlParameter':
-    //   return state.map(layout => {
-    //     if (layout.id === action.layoutId) layout.controlParameters = layout.controlParameters?.filter(cp => cp.id !== action.controlParameter.id);
-    //     return layout;
-    //   });
     case 'saveParameterBadges':
       return state.map(layout => {
         if (layout.id === action.layoutId) layout.parameterBadges = action.parameterBadges;
@@ -49,6 +44,46 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
     case 'removeParameterBadge':
       return state.map(layout => {
         if (layout.id === action.layoutId) layout.parameterBadges = layout.parameterBadges?.filter(b => b.id !== action.parameterBadge.id);
+        return layout;
+      });
+    case 'addPreset':
+      return state.map(layout => {
+        if (layout.id === action.layoutId) {
+          if (!layout.presets) layout.presets = [];
+          layout.presets.push(action.preset);
+        }
+        return layout;
+      });
+    case 'editPreset':
+      return state.map(layout => {
+        if (layout.id === action.layoutId) {
+          layout.presets = layout.presets?.map(preset => {
+            if (preset.id === action.preset.id) return { ...preset, ...action.preset };
+            return preset;
+          });
+        }
+        return layout;
+      });
+    case 'removePreset':
+      return state.map(layout => {
+        if (layout.id === action.layoutId) {
+          // get order number for deleted preset
+          const missingOrder = layout.presets?.find(g => g.id === action.presetId)?.order;
+          layout.presets = layout.presets?.filter(preset => preset.id !== action.presetId);
+          // set order - 1 for presets that are bigger other than the deleted
+          if (missingOrder) {
+            layout.presets?.forEach(p => {
+              if (p.order > missingOrder) p.order--;
+            });
+          }
+        }
+        return layout;
+      });
+    case 'setPresetOrder':
+      return state.map(layout => {
+        if (layout.id === action.layoutId) {
+          layout.presets = action.presets;
+        }
         return layout;
       });
     case 'addGroup':
@@ -160,6 +195,16 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
               });
             }
             return group;
+          });
+        }
+        return layout;
+      });
+    case 'changePresetPicture':
+      return state.map(layout => {
+        if (layout.id === action.layoutId) {
+          layout.presets = layout.presets?.map(preset => {
+            if (preset.id === action.presetId) return { ...preset, image: action.image };
+            return preset;
           });
         }
         return layout;

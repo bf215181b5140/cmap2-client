@@ -10,6 +10,8 @@ import LayoutForm from './form/layoutForm.component';
 import ParameterBadges from './parameterBadges/parameterBadges.component';
 import { ModalContext } from '../../../../components/context/modal.context';
 import BasicModal from '../../../../components/modal/basicModal/basicModal.component';
+import Presets from './presets/presets/presets.component';
+import PresetsSection from './presets/presets.section';
 
 type LayoutSegments = 'preview' | 'settings' | 'parameterBadges' | 'presets';
 
@@ -56,7 +58,7 @@ export default function LayoutSection() {
     {segment === 'preview' && <LayoutPreview />}
     {segment === 'settings' && <LayoutForm layout={layout} />}
     {segment === 'parameterBadges' && <ParameterBadges />}
-    {segment === 'presets' && <></>}
+    {segment === 'presets' && <PresetsSection />}
 
   </Section>);
 }
