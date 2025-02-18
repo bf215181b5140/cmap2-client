@@ -6,7 +6,7 @@ import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
 import { SETTINGS } from '../store/settings/settings.store';
 import { Message } from 'node-osc';
-import { UsedButtonDTO } from 'cmap2-shared';
+import { UsedButtonDTO, UsedPresetDTO } from 'cmap2-shared';
 
 export class TrackedParametersService extends Map<VrcParameter['path'], TrackedParameter> {
   private clearOnAvatarChange: boolean = SETTINGS.get('trackedParameters').clearOnAvatarChange;
@@ -26,6 +26,7 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
     BRIDGE.on('osc:message', vrcParameter => this.onNewParameter(vrcParameter));
     BRIDGE.on('socket:applyParameters', callback => callback(this.toDto()));
     BRIDGE.on('socket:usedButton', usedButton => this.onUsedButton(usedButton));
+    BRIDGE.on('socket:usedPreset', usedPreset => this.onUsedPreset(usedPreset));
 
     setInterval(() => this.resetFrequencies(), this.resetFrequencyIntervalMs);
   }
@@ -41,8 +42,31 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
   private onUsedButton(usedButton: UsedButtonDTO) {
     const canSend = !usedButton.exp || this.consumeExpCost(usedButton.exp.path, usedButton.exp.value);
     if (!canSend) return;
+
     BRIDGE.emit('osc:sendMessage', new Message(usedButton.path, usedButton.value));
+
     usedButton.callbackParameters.forEach(cp => {
+      setTimeout(() => BRIDGE.emit('osc:sendMessage', new Message(cp.path, cp.value)), 1000 * cp.seconds);
+    });
+  }
+
+  /**
+  * UsedPreset is received from server when someone presses a preset button
+  *
+  * Check if preset can be used based on current exp
+  *
+  * Emit parameters and any additional callback parameters after a delay to vrchat
+  *
+  */
+  private onUsedPreset(usedPreset: UsedPresetDTO) {
+    const canSend = !usedPreset.exp || this.consumeExpCost(usedPreset.exp.path, usedPreset.exp.value);
+    if (!canSend) return;
+
+    usedPreset.parameters.forEach(p => {
+      BRIDGE.emit('osc:sendMessage', new Message(p.path, p.value));
+    });
+
+    usedPreset.callbackParameters.forEach(cp => {
       setTimeout(() => BRIDGE.emit('osc:sendMessage', new Message(cp.path, cp.value)), 1000 * cp.seconds);
     });
   }

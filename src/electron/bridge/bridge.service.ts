@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import TypedEmitter from 'typed-emitter/rxjs';
 import type { WindowSize } from '../../shared/enums/windowSize';
-import { TrackedParametersDTO, UsedButtonDTO, VrcParameter } from 'cmap2-shared';
+import { UsedButtonDTO, UsedPresetDTO, VrcParameter } from 'cmap2-shared';
 import { Message } from 'node-osc';
 import type { WindowState } from '../../shared/enums/windowState';
 
@@ -17,6 +17,7 @@ type MessageEvents = {
   'socket:deleteParameter': (path: string) => void;
   'socket:applyParameters': (callback: (parameters: VrcParameter[]) => void) => void;
   'socket:usedButton': (usedButton: UsedButtonDTO) => void;
+  'socket:usedPreset': (usedPreset: UsedPresetDTO) => void;
   'vrcDetector:detection': (isVrcDetected: boolean | null) => void;
 }
 

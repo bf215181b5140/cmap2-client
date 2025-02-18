@@ -1,8 +1,7 @@
 import { io, Socket } from 'socket.io-client';
-import { UsedButtonDTO, VrcParameter } from 'cmap2-shared';
+import { UsedButtonDTO, UsedPresetDTO, VrcParameter } from 'cmap2-shared';
 import { WEBSITE_URL } from '../../shared/const';
 import { BRIDGE } from '../bridge/bridge.service';
-import { Message } from 'node-osc';
 import { IPC } from '../ipc/typedIpc.service';
 import { Credentials } from '../../shared/objects/credentials';
 import { SETTINGS } from '../store/settings/settings.store';
@@ -74,6 +73,10 @@ export class SocketController {
 
     this.socket.on('usedButton', (usedButton: UsedButtonDTO) => {
       BRIDGE.emit('socket:usedButton', usedButton);
+    });
+
+    this.socket.on('usedPreset', (usedPreset: UsedPresetDTO) => {
+      BRIDGE.emit('socket:usedPreset', usedPreset);
     });
   }
 }
