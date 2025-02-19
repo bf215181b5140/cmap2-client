@@ -10,10 +10,16 @@ import { LayoutsPageContext } from '../../../layouts.context';
 import Segment from '../../../../../../components/segment/segment.component';
 import IconButton from '../../../../../../components/buttons/iconButton.component';
 import TextButton from '../../../../../../components/buttons/textButton.component';
+import HiddenInput from '../../../../../../components/input/hidden.component';
 
 interface PresetImageFormProps {
   presetSectionEvents: TypedEmitter<PresetsSectionEvents>;
   preset: PresetDTO;
+}
+
+interface PresetImageForm {
+  id: string
+file: FileList | null,
 }
 
 export default function PresetImageForm({ presetSectionEvents, preset }: PresetImageFormProps) {
@@ -21,7 +27,10 @@ export default function PresetImageForm({ presetSectionEvents, preset }: PresetI
   const { cmapFetch, DELETE } = useCmapFetch();
   const { validateImage } = useFileValidation();
   const { layoutsDispatch, layoutId } = useContext(LayoutsPageContext);
-  const { register, watch, reset, handleSubmit } = useForm<{ file: FileList | null }>();
+
+  const defaultValues: PresetImageForm = { file: null, id: preset.id };
+
+  const { register, setValue, watch, reset, handleSubmit } = useForm<PresetImageForm>({ defaultValues });
   const { ref, ...fileRegister } = register('file');
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
   const submitRef: RefObject<HTMLInputElement> = useRef(null);
@@ -30,7 +39,8 @@ export default function PresetImageForm({ presetSectionEvents, preset }: PresetI
   useImperativeHandle(ref, () => inputRef.current);
 
   useEffect(() => {
-    function onPresetSaved() {
+    function onPresetSaved(savedPreset: PresetDTO) {
+      setValue('id', savedPreset.id);
       submitRef.current?.click();
     }
 
@@ -42,7 +52,7 @@ export default function PresetImageForm({ presetSectionEvents, preset }: PresetI
   }, []);
 
   useEffect(() => {
-    reset();
+    reset(defaultValues);
   }, [preset]);
 
   useEffect(() => {
@@ -51,20 +61,20 @@ export default function PresetImageForm({ presetSectionEvents, preset }: PresetI
         () => presetSectionEvents.emit('onImageChange', { id: '', fileName: file.name, urlPath: URL.createObjectURL(file) }),
         () => {
           presetSectionEvents.emit('onImageChange', null);
-          reset();
+          reset(defaultValues);
         });
     }
   }, [file]);
 
-  function onSubmit(formData: any) {
-    if (formData.file[0] && preset?.id) {
+  function onSubmit(formData: PresetImageForm) {
+    if (formData.file?.[0] && formData?.id) {
       const postData = new FormData();
       postData.append('file', formData.file[0]);
-      postData.append('id', preset.id);
+      postData.append('id', formData.id);
 
       cmapFetch('layouts/preset/image', { method: 'POST', body: postData }, UploadedFileSchema, data => {
-        layoutsDispatch({ type: 'changePresetPicture', layoutId: layoutId || '', presetId: preset.id, image: data });
-        reset();
+        layoutsDispatch({ type: 'changePresetPicture', layoutId: layoutId || '', presetId: formData.id, image: data });
+        reset(defaultValues);
       });
     }
   }
@@ -72,11 +82,12 @@ export default function PresetImageForm({ presetSectionEvents, preset }: PresetI
   function onClear() {
     if (file) {
       presetSectionEvents.emit('onImageChange', null);
-      reset();
+      reset(defaultValues);
     } else if (preset?.image) {
       DELETE('layouts/preset/image', { id: preset.id }, undefined, () => {
         layoutsDispatch({ type: 'changePresetPicture', layoutId: layoutId || '', presetId: preset.id, image: null });
-        reset();
+        presetSectionEvents.emit('onImageChange', null);
+        reset(defaultValues);
       });
     }
   }
@@ -100,6 +111,7 @@ export default function PresetImageForm({ presetSectionEvents, preset }: PresetI
         <TextButton text={'Remove image'} onClick={onClear} disabled={!file && !preset?.image} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>
+        <HiddenInput name={'id'} register={register} />
         <input type="file" {...fileRegister} ref={inputRef} />
         <input type="submit" ref={submitRef} />
       </form>

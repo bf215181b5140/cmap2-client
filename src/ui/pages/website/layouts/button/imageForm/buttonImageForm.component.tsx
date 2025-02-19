@@ -5,7 +5,7 @@ import useFileValidation from '../../../../../hooks/fileValidation.hook';
 import { RefObject, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
 import { useForm } from 'react-hook-form';
-import { UploadedFileSchema } from 'cmap2-shared';
+import { ButtonDTO, UploadedFileSchema } from 'cmap2-shared';
 import Segment from '../../../../../components/segment/segment.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';
 import TextButton from '../../../../../components/buttons/textButton.component';
@@ -15,12 +15,20 @@ interface ButtonImageFormProps {
   buttonSectionEvents: TypedEmitter<ButtonSectionEvents>;
 }
 
+interface ButtonImageForm {
+  id: string
+  file: FileList | null,
+}
+
 export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageFormProps) {
 
   const { cmapFetch, DELETE } = useCmapFetch();
   const { validateImage } = useFileValidation();
   const { layoutsDispatch, layoutId, groupId, button } = useContext(LayoutsPageContext);
-  const { register, watch, reset, handleSubmit } = useForm<{ file: FileList | null }>();
+
+  const defaultValues: ButtonImageForm = { file: null, id: button?.id || '' };
+
+  const { register, setValue, watch, reset, handleSubmit } = useForm<ButtonImageForm>({ defaultValues });
   const { ref, ...fileRegister } = register('file');
   const inputRef: RefObject<HTMLInputElement> = useRef(null);
   const submitRef: RefObject<HTMLInputElement> = useRef(null);
@@ -29,7 +37,8 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
   useImperativeHandle(ref, () => inputRef.current);
 
   useEffect(() => {
-    function onButtonSaved() {
+    function onButtonSaved(savedButton: ButtonDTO) {
+      setValue('id', savedButton.id);
       submitRef.current?.click();
     }
 
@@ -41,7 +50,7 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
   }, []);
 
   useEffect(() => {
-    reset();
+    reset(defaultValues);
   }, [button]);
 
   useEffect(() => {
@@ -50,20 +59,20 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
         () => buttonSectionEvents.emit('onImageChange', { id: '', fileName: file.name, urlPath: URL.createObjectURL(file) }),
         () => {
           buttonSectionEvents.emit('onImageChange', null);
-          reset();
+          reset(defaultValues);
         });
     }
   }, [file]);
 
-  function onSubmit(formData: any) {
-    if (formData.file[0] && button?.id) {
+  function onSubmit(formData: ButtonImageForm) {
+    if (formData.file?.[0] && formData.id) {
       const postData = new FormData();
       postData.append('file', formData.file[0]);
-      postData.append('id', button.id);
+      postData.append('id', formData.id);
 
       cmapFetch('layouts/button/image', { method: 'POST', body: postData }, UploadedFileSchema, data => {
-        layoutsDispatch({ type: 'changeButtonPicture', layoutId: layoutId || '', groupId: groupId || '', buttonId: button.id, image: data });
-        reset();
+        layoutsDispatch({ type: 'changeButtonPicture', layoutId: layoutId || '', groupId: groupId || '', buttonId: formData.id, image: data });
+        reset(defaultValues);
       });
     }
   }
@@ -71,11 +80,11 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
   function onClear() {
     if (file) {
       buttonSectionEvents.emit('onImageChange', null);
-      reset();
+      reset(defaultValues);
     } else if (button?.image) {
       DELETE('layouts/button/image', { id: button.id }, undefined, () => {
         layoutsDispatch({ type: 'changeButtonPicture', layoutId: layoutId || '', groupId: groupId || '', buttonId: button.id, image: null });
-        reset();
+        reset(defaultValues);
       });
     }
   }
