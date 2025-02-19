@@ -9,11 +9,12 @@ interface TextButtonProps extends ReactProps {
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLInputElement>;
   icon?: string;
+  className?: string;
 }
 
-export default function TextButton({ type = 'button', text, disabled, onClick }: TextButtonProps) {
+export default function TextButton({ type = 'button', text, disabled, onClick, className }: TextButtonProps) {
 
-  return (<TextButtonStyled type={type} value={text} onClick={onClick} disabled={disabled} />);
+  return (<TextButtonStyled type={type} value={text} onClick={onClick} disabled={disabled} className={className} />);
 };
 
 const TextButtonStyled = styled.input`

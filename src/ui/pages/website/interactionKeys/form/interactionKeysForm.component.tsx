@@ -37,7 +37,7 @@ export default function InteractionKeysForm({ profile, setInteractionKeys }: Int
   };
 
   function onSubmit(formData: InteractionKeysFormDTO) {
-    POST('profile/interactionKeys', formData, z.array(InteractionKeySchema), (data) => {
+    POST('interactionKeys', formData, z.array(InteractionKeySchema), (data) => {
       setInteractionKeys(data);
       reset({ interactionKeys: data });
     });

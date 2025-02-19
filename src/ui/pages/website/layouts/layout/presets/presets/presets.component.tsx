@@ -47,7 +47,7 @@ export default function Presets({ selectedPreset, setSelectedPreset }: PresetsPr
 
       <NewItemStyled onClick={onSetNewPreset} aria-disabled={!canAddPreset}>
         {/* <i className={'ri-function-add-fill'} /> */}
-        <AddCounter canAddMore={canAddPreset}>{layout?.presets?.length}/{tier.presets}</AddCounter>
+        <AddCounter canAddMore={canAddPreset}>{layout?.presets?.length || 0}/{tier.presets}</AddCounter>
         {canAddPreset ? 'Add preset' : 'Limit reached'}
       </NewItemStyled>
 

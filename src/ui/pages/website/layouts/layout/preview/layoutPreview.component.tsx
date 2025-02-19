@@ -74,7 +74,7 @@ export default function LayoutPreview() {
             {/* Add Button */}
             <div onClick={event => onButtonClick(event, group)} className={'newItem'} aria-disabled={!canAddButton(group)}>
               {/* <i className={'ri-function-add-fill'} /> */}
-              <AddCounter canAddMore={canAddButton(group)}>{group.buttons?.length}/{tier.buttons}</AddCounter>
+              <AddCounter canAddMore={canAddButton(group)}>{group.buttons?.length || 0}/{tier.buttons}</AddCounter>
               {canAddButton(group) ? 'Add button' : 'Limit reached'}
             </div>
 
@@ -84,7 +84,7 @@ export default function LayoutPreview() {
         {/* Add Group */}
         <div onClick={event => onGroupClick(event)} className={'newItem'} aria-disabled={!canAddGroup(layout)}>
           <i className={'ri-function-add-fill'} />
-          <AddCounter canAddMore={canAddGroup(layout)}>{layout.groups?.length}/{tier.groups}</AddCounter>
+          <AddCounter canAddMore={canAddGroup(layout)}>{layout.groups?.length || 0}/{tier.groups}</AddCounter>
           {canAddGroup(layout) ? 'Add group' : 'Limit reached'}
         </div>
 
