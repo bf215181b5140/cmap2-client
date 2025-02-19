@@ -2,9 +2,9 @@ import TypedEmitter from 'typed-emitter/rxjs';
 import { PresetsSectionEvents } from '../presets.model';
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { useNotifications } from '../../../../../../hooks/useNotifications.hook';
-import { Dispatch, SetStateAction, useContext, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
-import { ImageOrientationSchema, PresetDTO, PresetFormDTO, PresetFormSchema, PresetSchema, VisibilityParameterConditionSchema } from 'cmap2-shared';
+import { ButtonDTO, ImageOrientationSchema, PresetDTO, PresetFormDTO, PresetFormSchema, PresetSchema, VisibilityParameterConditionSchema } from 'cmap2-shared';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Segment from '../../../../../../components/segment/segment.component';
@@ -19,6 +19,9 @@ import FormRemoveRow from '../../../../../../components/form/removeRow/formRemov
 import FormAddRow from '../../../../../../components/form/addRow/formAddRow.component';
 import FormControlBar from '../../../../../../components/form/formControlBar.component';
 import IconButton from '../../../../../../components/buttons/iconButton.component';
+import ButtonCopyModal from '../../preview/quickEditToolbar/buttonCopyModal/buttonCopyModal.component';
+import { ModalContext } from '../../../../../../components/context/modal.context';
+import PresetCopyModal from '../copyModal/presetCopyModal.component';
 
 interface PresetFormProps {
   presetSectionEvents: TypedEmitter<PresetsSectionEvents>;
@@ -28,15 +31,18 @@ interface PresetFormProps {
 
 export default function PresetForm({ presetSectionEvents, preset, setSelectedPreset }: PresetFormProps) {
 
-  const { POST, PUT } = useCmapFetch();
+  const { POST, PUT, DELETE } = useCmapFetch();
   const { addNotification } = useNotifications();
-  const { tier, interactionKeys, layoutsDispatch, layoutId, layout } = useContext(LayoutsPageContext);
+  const { setModal } = useContext(ModalContext);
+  const { tier, interactionKeys, layoutsDispatch, layoutId, layout, layouts } = useContext(LayoutsPageContext);
 
   const defaultFormValue: PresetFormDTO = {
     layoutId: layoutId || '',
     ...preset,
     id: preset.id || null
   };
+
+  const isNew = !defaultFormValue.id;
 
   const { register, setValue, reset, formState: { errors, isDirty }, control, watch, handleSubmit } = useForm<PresetFormDTO>({
     resolver: zodResolver(PresetFormSchema),
@@ -52,8 +58,6 @@ export default function PresetForm({ presetSectionEvents, preset, setSelectedPre
   useEffect(() => {
     reset(defaultFormValue);
   }, [preset]);
-
-  const isNew = !defaultFormValue.id;
 
   function onSubmit(formData: PresetFormDTO) {
     if (isNew) {
@@ -72,16 +76,20 @@ export default function PresetForm({ presetSectionEvents, preset, setSelectedPre
     }
   }
 
-  // function onDelete(preset: PresetDTO) {
-  //   customFetch('preset', {
-  //     method: 'DELETE',
-  //     body: JSON.stringify(preset),
-  //     headers: { 'Content-Type': 'application/json' }
-  //   }, () => {
-  //     avatarDataDispatch({ type: 'removePreset', preset: preset, avatarId: avatar.id!, layoutId: layout.id! });
-  //     navigate(-1);
-  //   });
-  // }
+  function onDelete() {
+    const presetId = formWatch.id;
+    if (!presetId) return;
+    DELETE('layouts/preset', { id: presetId }, undefined, () => {
+      layoutsDispatch({ type: 'removePreset', layoutId: layoutId || '', presetId: presetId });
+      addNotification('Success', 'Preset was deleted.');
+      setSelectedPreset(undefined);
+    });
+  }
+
+  function onCopy() {
+    if (isNew || !layout) return;
+    setModal(<PresetCopyModal layouts={layouts} layout={layout} preset={preset} onSuccess={(layoutId, preset) => layoutsDispatch({ type: 'addPreset', layoutId, preset })} />);
+  }
 
   // function setPresetPicture(file: UploadedFileDTO | null) {
   //   layoutsDispatch({ type: 'changePresetPicture', layoutId: layoutId || '', groupId: groupId || '', presetId: preset.id, image: file });
@@ -235,8 +243,12 @@ export default function PresetForm({ presetSectionEvents, preset, setSelectedPre
       </FormTable>
 
       <FormControlBar>
+        <IconButton role={'normal'} size={'small'} tooltip={'Create a copy'} icon={'ri-file-copy-line'} onClick={() => onCopy()} disabled={isNew} />
+        <hr />
         <IconButton role={'save'} disabled={!isDirty} />
         <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
+        <hr />
+        <IconButton role={'delete'} deleteKeyword={'preset'} size={'small'} onClick={() => onDelete()} disabled={!formWatch.id} />
       </FormControlBar>
 
     </form>
