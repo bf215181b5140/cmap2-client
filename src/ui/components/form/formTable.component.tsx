@@ -29,4 +29,15 @@ export const FormTableStyled = styled.table<{ width?: string, thAlign?: string, 
     font-weight: normal;
     text-align: ${props => props.thAlign ? props.thAlign : 'left'};
   }
+
+  fieldset {
+    margin: 0;
+    border-color: ${props => props.theme.colors.ui.element2};
+    transition: 0.1s linear;
+    
+    :hover {
+      border-color: ${props => props.theme.colors.ui.element1};
+    }
+  }
+
 `;

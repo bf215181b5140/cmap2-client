@@ -25,7 +25,7 @@ export default function FormAddRow({ onClick, colSpan = 1, items, limit }: FormA
 const FormAddRowStyled = styled.td`
   position: relative;
   text-align: center;
-  border: 2px dashed ${props => props.theme.colors.ui.element3};
+  border: 2px dashed ${props => props.theme.colors.ui.element2};
   padding: 7px;
   border-radius: 5px;
   cursor: pointer;

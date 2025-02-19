@@ -13,6 +13,7 @@ import { z } from 'zod';
 import { nanoid } from 'nanoid';
 import FormRemoveRow from '../../../../components/form/removeRow/formRemoveRow.component';
 import FormAddRow from '../../../../components/form/addRow/formAddRow.component';
+import FormControlRow from '../../../../components/form/formControlRow.component';
 
 interface InteractionKeysProps {
   profile: ProfilePageDTO;
@@ -45,7 +46,7 @@ export default function InteractionKeysForm({ profile, setInteractionKeys }: Int
 
   return (<Segment segmentTitle={'Interaction keys'} infoContent={segmentInfo} width={'Full'}>
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormTableStyled>
+      <FormTableStyled visible={true}>
         <thead>
         {fields.length > 0 &&
           <tr>
@@ -75,12 +76,12 @@ export default function InteractionKeysForm({ profile, setInteractionKeys }: Int
         <tr>
           <FormAddRow colSpan={3} items={fields.length} limit={profile.tier.interactionKeys} onClick={() => append(newKey)} />
         </tr>
+        <FormControlRow colspan={4}>
+          <IconButton role={'save'} disabled={!isDirty} />
+          <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
+        </FormControlRow>
         </tbody>
       </FormTableStyled>
-      <FormControlBar>
-        <IconButton role={'save'} disabled={!isDirty} />
-        <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
-      </FormControlBar>
     </form>
   </Segment>);
 }
