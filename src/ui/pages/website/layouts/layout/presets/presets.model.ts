@@ -1,7 +1,7 @@
-import { PresetDTO, UploadedFileDTO } from 'cmap2-shared';
+import { PresetButtonDTO, UploadedFileDTO } from 'cmap2-shared';
 
 export type PresetsSectionEvents = {
-  onFormChange: (preset: PresetDTO) => void;
+  onFormChange: (preset: PresetButtonDTO) => void;
   onImageChange: (image: UploadedFileDTO | null) => void;
-  onSaved: (preset: PresetDTO) => void;
+  onSaved: (preset: PresetButtonDTO) => void;
 }

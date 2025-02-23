@@ -2,9 +2,9 @@ import TypedEmitter from 'typed-emitter/rxjs';
 import { ButtonSectionEvents } from '../button.model';
 import { useContext, useEffect, useState } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
-import { ButtonDTO, UploadedFileDTO } from 'cmap2-shared';
+import { ParameterButtonDTO, UploadedFileDTO } from 'cmap2-shared';
 import Segment from '../../../../../components/segment/segment.component';
-import { LayoutButton } from 'cmap2-shared/react';
+import { LayoutButtonComponent } from 'cmap2-shared/react';
 
 interface ButtonPreviewProps {
   buttonSectionEvents: TypedEmitter<ButtonSectionEvents>;
@@ -12,11 +12,11 @@ interface ButtonPreviewProps {
 
 export default function ButtonPreview({ buttonSectionEvents }: ButtonPreviewProps) {
 
-  const { theme, button } = useContext(LayoutsPageContext);
-  const [previewButton, setPreviewButton] = useState<ButtonDTO | undefined>(button);
+  const { theme, parameterButton } = useContext(LayoutsPageContext);
+  const [previewButton, setPreviewButton] = useState<ParameterButtonDTO | undefined>(parameterButton);
 
   useEffect(() => {
-    function onButtonFormChanged(formButton: ButtonDTO) {
+    function onButtonFormChanged(formButton: ParameterButtonDTO) {
       setPreviewButton(state => ({ ...formButton, image: state?.image }));
     }
 
@@ -37,14 +37,14 @@ export default function ButtonPreview({ buttonSectionEvents }: ButtonPreviewProp
   }, []);
 
   useEffect(() => {
-    setPreviewButton(button);
-  }, [button]);
+    setPreviewButton(parameterButton);
+  }, [parameterButton]);
 
   if (!previewButton) return;
 
   return (<Segment segmentTitle={'Preview'} width={'Full'}>
     <div style={{ maxWidth: '350px' }}>
-      <LayoutButton button={previewButton} theme={theme} />
+      <LayoutButtonComponent parameterButton={previewButton} theme={theme} />
     </div>
   </Segment>);
 }

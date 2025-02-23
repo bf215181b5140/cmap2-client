@@ -1,7 +1,7 @@
-import { ButtonDTO, UploadedFileDTO } from 'cmap2-shared';
+import { ParameterButtonDTO, UploadedFileDTO } from 'cmap2-shared';
 
 export type ButtonSectionEvents = {
-  onFormChange: (button: ButtonDTO) => void;
+  onFormChange: (button: ParameterButtonDTO) => void;
   onImageChange: (image: UploadedFileDTO | null) => void;
-  onButtonSaved: (button: ButtonDTO) => void;
+  onButtonSaved: (button: ParameterButtonDTO) => void;
 }

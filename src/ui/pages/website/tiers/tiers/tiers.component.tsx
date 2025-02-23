@@ -24,9 +24,9 @@ export default function Tiers({ clientTier, tiers }: TiersProps) {
           </h2>
           <p>Up to <Highlight color={tier.color}>{tier.interactionKeys}</Highlight> interaction keys</p>
           <p>Up to <Highlight color={tier.color}>{tier.layouts}</Highlight> layouts</p>
-          <p>Up to <Highlight color={tier.color}>{tier.avatars}</Highlight> avatars per layout</p>
+          <p>Up to <Highlight color={tier.color}>{tier.layoutAvatars}</Highlight> avatars per layout</p>
           <p>Up to <Highlight color={tier.color}>{tier.groups}</Highlight> groups per layout</p>
-          <p>Up to <Highlight color={tier.color}>{tier.buttons}</Highlight> buttons per group</p>
+          <p>Up to <Highlight color={tier.color}>{tier.parameterButtons}</Highlight> buttons per group</p>
           <p>Up to <Highlight color={tier.color}>{tier.parameterBadges}</Highlight> state badges</p>
           <p>Up to <Highlight color={tier.color}>{tier.callbackParameters}</Highlight> additional parameters</p>
           {tier.rank !== minRank && <p>Unlock <Highlight color={tier.color}>{tier.rank === maxRank ? 'all' : 'more'}</Highlight> website backgrounds</p>}

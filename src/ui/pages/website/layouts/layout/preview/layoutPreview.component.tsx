@@ -2,11 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { MouseEvent, useContext, useState } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
 import { QuickEditItem } from './quickEditToolbar/quickEditToolbar.model';
-import { ButtonDTO, GroupDTO, LayoutDTO } from 'cmap2-shared';
+import { ParameterButtonDTO, GroupDTO, LayoutDTO } from 'cmap2-shared';
 import QuickEditToolbar from './quickEditToolbar/quickEditToolbar.component';
 import { Layout } from 'cmap2-shared/react';
 import { LayoutGroup } from 'cmap2-shared/react';
-import { LayoutButton } from 'cmap2-shared/react';
+import { LayoutButtonComponent } from 'cmap2-shared/react';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
 import styled from 'styled-components';
 import Background from '../../../../../components/background/background.component';
@@ -25,7 +25,7 @@ export default function LayoutPreview() {
   }
 
   function canAddButton(group: GroupDTO) {
-    return (group.buttons?.length || 0) < tier.buttons;
+    return (group.parameterButtons?.length || 0) < tier.parameterButtons;
   }
 
   function onGroupClick(event: MouseEvent<HTMLDivElement>, group?: GroupDTO) {
@@ -40,7 +40,7 @@ export default function LayoutPreview() {
     }
   }
 
-  function onButtonClick(event: MouseEvent<HTMLDivElement>, group: GroupDTO, button?: ButtonDTO) {
+  function onButtonClick(event: MouseEvent<HTMLDivElement>, group: GroupDTO, button?: ParameterButtonDTO) {
     event.stopPropagation();
     if (!button) {
       navigate(`/website/layouts/${layout?.id}/${group?.id}/new`);
@@ -67,14 +67,14 @@ export default function LayoutPreview() {
           <LayoutGroup key={group.id} theme={theme} group={group} onClick={event => onGroupClick(event, group)}>
 
             {/* Buttons */}
-            {group.buttons?.map(button => (
-              <LayoutButton key={button.id} theme={theme} button={button} onClick={event => onButtonClick(event, group, button)} />
+            {group.parameterButtons?.map(button => (
+              <LayoutButtonComponent key={button.id} theme={theme} parameterButton={button} onClick={event => onButtonClick(event, group, button)} />
             ))}
 
             {/* Add Button */}
             <div onClick={event => onButtonClick(event, group)} className={'newItem'} aria-disabled={!canAddButton(group)}>
               {/* <i className={'ri-function-add-fill'} /> */}
-              <AddCounter canAddMore={canAddButton(group)}>{group.buttons?.length || 0}/{tier.buttons}</AddCounter>
+              <AddCounter canAddMore={canAddButton(group)}>{group.parameterButtons?.length || 0}/{tier.parameterButtons}</AddCounter>
               {canAddButton(group) ? 'Add button' : 'Limit reached'}
             </div>
 

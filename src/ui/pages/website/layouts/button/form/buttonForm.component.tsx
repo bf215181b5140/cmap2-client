@@ -5,14 +5,13 @@ import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
 import { useNotifications } from '../../../../../hooks/useNotifications.hook';
 import { useContext, useEffect } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
-import { ButtonFormDTO, ButtonFormSchema, ButtonSchema, ButtonTypeSchema, ImageOrientationSchema, VisibilityParameterConditionSchema } from 'cmap2-shared';
+import { ParameterButtonFormDTO, ParameterButtonFormSchema, ParameterButtonSchema, ParameterButtonTypeSchema, ImageOrientationSchema, VisibilityParameterConditionSchema } from 'cmap2-shared';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Segment from '../../../../../components/segment/segment.component';
 import HiddenInput from '../../../../../components/input/hidden.component';
 import FormTable, { FormTableStyled } from '../../../../../components/form/formTable.component';
 import Input from '../../../../../components/input/input.component';
-import CheckboxInput from '../../../../../components/input/checkbox.component';
 import ParameterInput from '../../../../../components/input/parameterInput/parameterInput.component';
 import SelectInput from '../../../../../components/input/select.component';
 import NumberInput from '../../../../../components/input/number.component';
@@ -30,28 +29,27 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
   const navigate = useNavigate();
   const { POST, PUT } = useCmapFetch();
   const { addNotification } = useNotifications();
-  const { tier, interactionKeys, layoutsDispatch, layoutId, groupId, layout, group, button } = useContext(LayoutsPageContext);
+  const { tier, interactionKeys, layoutsDispatch, layoutId, groupId, layout, group, parameterButton } = useContext(LayoutsPageContext);
 
-  const defaultValue: ButtonFormDTO = {
+  const defaultValue: ParameterButtonFormDTO = {
     groupId: groupId || '',
     id: null,
     label: '',
-    showLabel: false,
     path: '',
     value: '' as any,
     valueAlt: null,
-    buttonType: ButtonTypeSchema.Enum.Button,
+    buttonType: ParameterButtonTypeSchema.Enum.Button,
     imageOrientation: ImageOrientationSchema.Enum.Square,
-    order: (group?.buttons?.length ?? 0) + 1,
+    order: (group?.parameterButtons?.length ?? 0) + 1,
     useCost: null,
     callbackParameters: [],
     visibilityParameters: [],
     interactionKeyId: null,
-    ...button,
+    ...parameterButton,
   };
 
-  const { register, setValue, reset, formState: { errors, isDirty }, control, watch, handleSubmit } = useForm<ButtonFormDTO>({
-    resolver: zodResolver(ButtonFormSchema),
+  const { register, setValue, reset, formState: { errors, isDirty }, control, watch, handleSubmit } = useForm<ParameterButtonFormDTO>({
+    resolver: zodResolver(ParameterButtonFormSchema),
     defaultValues: defaultValue,
   });
   const callbackParameters = useFieldArray({ control, name: 'callbackParameters' });
@@ -62,13 +60,13 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
 
   useEffect(() => {
     reset(defaultValue);
-  }, [button]);
+  }, [parameterButton]);
 
   const isNew = !defaultValue.id;
 
-  function onSubmit(formData: ButtonFormDTO) {
+  function onSubmit(formData: ParameterButtonFormDTO) {
     if (isNew) {
-      PUT('layouts/button', formData, ButtonSchema, data => {
+      PUT('layouts/button', formData, ParameterButtonSchema, data => {
         layoutsDispatch({ type: 'addButton', layoutId: layoutId || '', groupId: groupId || '', button: data });
         addNotification('Success', 'New button added.');
         buttonSectionEvents.emit('onButtonSaved', data);
@@ -77,7 +75,7 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
         // navigate(`/website/layouts/${layoutId}/${groupId}/${data.id}`);
       });
     } else {
-      POST('layouts/button', formData, ButtonSchema, data => {
+      POST('layouts/button', formData, ParameterButtonSchema, data => {
         layoutsDispatch({ type: 'editButton', layoutId: layoutId || '', groupId: groupId || '', button: data });
         buttonSectionEvents.emit('onButtonSaved', data);
         navigate(-1);
@@ -86,7 +84,7 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
     }
   }
 
-  // function onDelete(button: ButtonDTO) {
+  // function onDelete(button: ParameterButtonDTO) {
   //   customFetch('button', {
   //     method: 'DELETE',
   //     body: JSON.stringify(button),
@@ -113,22 +111,22 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
 
   function valuePrimaryPlaceholder(): string {
     switch (formWatch.buttonType) {
-      case ButtonTypeSchema.Enum.Button:
+      case ParameterButtonTypeSchema.Enum.Button:
         return 'Value';
-      case ButtonTypeSchema.Enum.Toggle:
+      case ParameterButtonTypeSchema.Enum.Toggle:
         return 'Active value';
-      case ButtonTypeSchema.Enum.Slider:
+      case ParameterButtonTypeSchema.Enum.Slider:
         return 'Minimum value';
     }
   }
 
   function valueSecondaryPlaceholder(): string {
     switch (formWatch.buttonType) {
-      case ButtonTypeSchema.Enum.Button:
+      case ParameterButtonTypeSchema.Enum.Button:
         return '';
-      case ButtonTypeSchema.Enum.Toggle:
+      case ParameterButtonTypeSchema.Enum.Toggle:
         return 'Inactive value';
-      case ButtonTypeSchema.Enum.Slider:
+      case ParameterButtonTypeSchema.Enum.Slider:
         return 'Maximum value';
     }
   }
@@ -145,12 +143,6 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
           <td><Input register={register} name={'label'} width={'300px'} errors={errors} /></td>
         </tr>
         <tr>
-          <th>Show label</th>
-          <td>
-            <CheckboxInput register={register} name={'showLabel'} errors={errors} />
-          </td>
-        </tr>
-        <tr>
           <th>Parameter</th>
           <td>
             <ParameterInput register={register} name={'path'} errors={errors} setValue={setValue} defaultAvatarVrcId={layout?.avatars.at(0)} defaultType={'input'} />
@@ -165,13 +157,13 @@ export default function ButtonForm({ buttonSectionEvents }: ButtonFormProps) {
         <tr>
           <td>
             <Input register={register} name={'valueAlt'} placeholder={valueSecondaryPlaceholder()} width={'100px'} errors={errors}
-                   readOnly={formWatch.buttonType !== ButtonTypeSchema.Enum.Slider && formWatch.buttonType !== ButtonTypeSchema.Enum.Toggle} />
+                   readOnly={formWatch.buttonType !== ParameterButtonTypeSchema.Enum.Slider && formWatch.buttonType !== ParameterButtonTypeSchema.Enum.Toggle} />
           </td>
         </tr>
         <tr>
           <th>Button type</th>
           <td>
-            <SelectInput options={ButtonTypeSchema.options.map(t => ({ key: t, value: t }))} register={register} name={'buttonType'} errors={errors} />
+            <SelectInput options={ParameterButtonTypeSchema.options.map(t => ({ key: t, value: t }))} register={register} name={'buttonType'} errors={errors} />
           </td>
         </tr>
         <tr>

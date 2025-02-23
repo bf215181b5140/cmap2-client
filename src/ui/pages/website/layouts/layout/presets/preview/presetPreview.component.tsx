@@ -1,23 +1,23 @@
 import TypedEmitter from 'typed-emitter/rxjs';
 import { useContext, useEffect, useState } from 'react';
-import { PresetDTO, UploadedFileDTO } from 'cmap2-shared';
-import { PresetButton } from 'cmap2-shared/react';
+import { PresetButtonDTO, UploadedFileDTO } from 'cmap2-shared';
+import { PresetButtonComponent } from 'cmap2-shared/react';
 import { PresetsSectionEvents } from '../presets.model';
 import { LayoutsPageContext } from '../../../layouts.context';
 import Segment from '../../../../../../components/segment/segment.component';
 
 interface PresetPreviewProps {
   presetSectionEvents: TypedEmitter<PresetsSectionEvents>;
-  preset: PresetDTO;
+  preset: PresetButtonDTO;
 }
 
 export default function PresetPreview({ presetSectionEvents, preset }: PresetPreviewProps) {
 
   const { theme } = useContext(LayoutsPageContext);
-  const [previewPreset, setPreviewPreset] = useState<PresetDTO>(preset);
+  const [previewPreset, setPreviewPreset] = useState<PresetButtonDTO>(preset);
 
   useEffect(() => {
-    function onPresetFormChanged(formPreset: PresetDTO) {
+    function onPresetFormChanged(formPreset: PresetButtonDTO) {
       setPreviewPreset(state => ({ ...formPreset, image: state?.image }));
     }
 
@@ -45,7 +45,7 @@ export default function PresetPreview({ presetSectionEvents, preset }: PresetPre
 
   return (<Segment segmentTitle={'Preview'} width={'Full'}>
     <div style={{ maxWidth: '350px' }}>
-      <PresetButton theme={theme} preset={previewPreset} />
+      <PresetButtonComponent theme={theme} presetButton={previewPreset} />
     </div>
   </Segment>);
 }

@@ -40,7 +40,7 @@ export default function LayoutsPage() {
 
   const layout = layouts?.find(l => l.id === layoutId);
   const group = layout?.groups?.find(g => g.id === groupId);
-  const button = group?.buttons?.find(b => b.id === buttonId);
+  const button = group?.parameterButtons?.find(b => b.id === buttonId);
 
   const section = button || buttonId === 'new' ? 'button' : group || groupId === 'new' ? 'group' : layout || layoutId === 'new' ? 'layout' : 'layouts';
 
@@ -56,7 +56,7 @@ export default function LayoutsPage() {
     buttonId,
     layout,
     group,
-    button
+    parameterButton: button
   };
 
   function onMenuItemClick(event: MouseEvent<HTMLElement>, path: string) {
@@ -103,9 +103,9 @@ export default function LayoutsPage() {
         {/* Button */}
         <div onClick={event => onMenuItemClick(event, `/website/layouts/${layout?.id}/${group?.id}/${button?.id}`)} aria-current={section === 'button'} aria-disabled={!button}>
           {button?.label || 'Button'}
-          {(group?.buttons?.length || 0) > 0 && <div className={'PageMenuDropdown'}>
+          {(group?.parameterButtons?.length || 0) > 0 && <div className={'PageMenuDropdown'}>
             <ul>
-              {group?.buttons?.map((b, index) =>
+              {group?.parameterButtons?.map((b, index) =>
                 <li key={b.id} onClick={event => onMenuItemClick(event, `/website/layouts/${layout?.id}/${group.id}/${b.id}`)}>{b.label || `Unnamed button ${index}`}</li>
               )}
             </ul>

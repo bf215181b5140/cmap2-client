@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { ModalContext } from '../../../../../../../components/context/modal.context';
-import { ButtonCopyDTO, ButtonCopySchema, ButtonDTO, ButtonSchema, LayoutDTO } from 'cmap2-shared';
+import { ParameterButtonCopyDTO, ParameterButtonCopySchema, ParameterButtonDTO, ParameterButtonSchema, LayoutDTO } from 'cmap2-shared';
 import Icon from '../../../../../../../components/icon/icon.component';
 import TextButton from '../../../../../../../components/buttons/textButton.component';
 import { useForm } from 'react-hook-form';
@@ -11,11 +11,12 @@ import FormTable from '../../../../../../../components/form/formTable.component'
 import useCmapFetch from '../../../../../../../hooks/cmapFetch.hook';
 import { useNotifications } from '../../../../../../../hooks/useNotifications.hook';
 import { SelectInputStyled } from '../../../../../../../components/input/input.style';
+import { getForcedObjectLabel } from 'cmap2-shared/dist/util';
 
 interface ButtonCopyModalProps {
   layouts: LayoutDTO[];
-  button: ButtonDTO;
-  onSuccess: (layoutId: string, groupId: string, button: ButtonDTO) => void;
+  button: ParameterButtonDTO;
+  onSuccess: (layoutId: string, groupId: string, button: ParameterButtonDTO) => void;
 }
 
 export default function ButtonCopyModal({ layouts, button, onSuccess }: ButtonCopyModalProps) {
@@ -23,15 +24,15 @@ export default function ButtonCopyModal({ layouts, button, onSuccess }: ButtonCo
   const { clearModal } = useContext(ModalContext);
   const { POST } = useCmapFetch();
   const { addNotification } = useNotifications();
-  const { setValue, register, formState: { errors }, handleSubmit } = useForm<ButtonCopyDTO>({
-    resolver: zodResolver(ButtonCopySchema),
+  const { setValue, register, formState: { errors }, handleSubmit } = useForm<ParameterButtonCopyDTO>({
+    resolver: zodResolver(ParameterButtonCopySchema),
     defaultValues: { id: button.id, groupId: '' }
   });
   const [layoutId, setLayoutId] = useState<string>('');
   const layout = layouts.find(l => l.id === layoutId);
 
-  function onSubmit(formData: ButtonCopyDTO) {
-    POST('layouts/button/copy', formData, ButtonSchema, data => {
+  function onSubmit(formData: ParameterButtonCopyDTO) {
+    POST('layouts/button/copy', formData, ParameterButtonSchema, data => {
       addNotification('Success', 'Button copied.');
       onSuccess(layoutId, formData.groupId, data);
       clearModal();
@@ -67,7 +68,7 @@ export default function ButtonCopyModal({ layouts, button, onSuccess }: ButtonCo
           <tr>
             <th>Group</th>
             <td>
-              <SelectInput options={layout?.groups?.map(g => ({ key: g.id, value: g.label })) || []} width={'100%'} readOnly={!layout || layout.groups?.length === 0} register={register}
+              <SelectInput options={layout?.groups?.map(g => ({ key: g.id, value: getForcedObjectLabel(g, 'group') })) || []} width={'100%'} readOnly={!layout || layout.groups?.length === 0} register={register}
                            name={'groupId'} errors={errors} />
             </td>
           </tr>

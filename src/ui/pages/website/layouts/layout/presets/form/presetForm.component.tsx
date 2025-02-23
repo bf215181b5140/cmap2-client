@@ -4,7 +4,7 @@ import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { useNotifications } from '../../../../../../hooks/useNotifications.hook';
 import React, { Dispatch, SetStateAction, useContext, useEffect } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
-import { ButtonDTO, ImageOrientationSchema, PresetDTO, PresetFormDTO, PresetFormSchema, PresetSchema, VisibilityParameterConditionSchema } from 'cmap2-shared';
+import { ParameterButtonDTO, ImageOrientationSchema, PresetButtonDTO, PresetButtonFormDTO, PresetButtonFormSchema, PresetButtonSchema, VisibilityParameterConditionSchema } from 'cmap2-shared';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Segment from '../../../../../../components/segment/segment.component';
@@ -25,8 +25,8 @@ import PresetCopyModal from '../copyModal/presetCopyModal.component';
 
 interface PresetFormProps {
   presetSectionEvents: TypedEmitter<PresetsSectionEvents>;
-  preset: PresetDTO;
-  setSelectedPreset: Dispatch<SetStateAction<PresetDTO | undefined>>;
+  preset: PresetButtonDTO;
+  setSelectedPreset: Dispatch<SetStateAction<PresetButtonDTO | undefined>>;
 }
 
 export default function PresetForm({ presetSectionEvents, preset, setSelectedPreset }: PresetFormProps) {
@@ -36,7 +36,7 @@ export default function PresetForm({ presetSectionEvents, preset, setSelectedPre
   const { setModal } = useContext(ModalContext);
   const { tier, interactionKeys, layoutsDispatch, layoutId, layout, layouts } = useContext(LayoutsPageContext);
 
-  const defaultFormValue: PresetFormDTO = {
+  const defaultFormValue: PresetButtonFormDTO = {
     layoutId: layoutId || '',
     ...preset,
     id: preset.id || null
@@ -44,8 +44,8 @@ export default function PresetForm({ presetSectionEvents, preset, setSelectedPre
 
   const isNew = !defaultFormValue.id;
 
-  const { register, setValue, reset, formState: { errors, isDirty }, control, watch, handleSubmit } = useForm<PresetFormDTO>({
-    resolver: zodResolver(PresetFormSchema),
+  const { register, setValue, reset, formState: { errors, isDirty }, control, watch, handleSubmit } = useForm<PresetButtonFormDTO>({
+    resolver: zodResolver(PresetButtonFormSchema),
     defaultValues: defaultFormValue,
   });
   const parameters = useFieldArray({ control, name: 'parameters' });
@@ -59,16 +59,16 @@ export default function PresetForm({ presetSectionEvents, preset, setSelectedPre
     reset(defaultFormValue);
   }, [preset]);
 
-  function onSubmit(formData: PresetFormDTO) {
+  function onSubmit(formData: PresetButtonFormDTO) {
     if (isNew) {
-      PUT('layouts/preset', formData, PresetSchema, data => {
+      PUT('layouts/preset', formData, PresetButtonSchema, data => {
         layoutsDispatch({ type: 'addPreset', layoutId: layoutId || '', preset: data });
         addNotification('Success', 'New preset added.');
         presetSectionEvents.emit('onSaved', data);
         setSelectedPreset(undefined);
       });
     } else {
-      POST('layouts/preset', formData, PresetSchema, data => {
+      POST('layouts/preset', formData, PresetButtonSchema, data => {
         layoutsDispatch({ type: 'editPreset', layoutId: layoutId || '', preset: data });
         presetSectionEvents.emit('onSaved', data);
         reset({ ...formData, ...data });
@@ -117,12 +117,6 @@ export default function PresetForm({ presetSectionEvents, preset, setSelectedPre
           <td><Input register={register} name={'label'} width={'300px'} errors={errors} /></td>
         </tr>
         <tr>
-          <th>Show label</th>
-          <td>
-            <CheckboxInput register={register} name={'showLabel'} errors={errors} />
-          </td>
-        </tr>
-        <tr>
           <th>Image orientation</th>
           <td>
             <SelectInput options={ImageOrientationSchema.options.map(o => ({ key: o, value: o }))} register={register} name={'imageOrientation'} errors={errors} />
@@ -159,7 +153,7 @@ export default function PresetForm({ presetSectionEvents, preset, setSelectedPre
             </tr>
           ))}
           <tr>
-            <FormAddRow colSpan={3} items={parameters.fields.length} limit={tier.presetParameters} onClick={() => parameters.append({ path: '', value: '' as unknown as number })} />
+            <FormAddRow colSpan={3} items={parameters.fields.length} limit={tier.presetButtonParameters} onClick={() => parameters.append({ path: '', value: '' as unknown as number })} />
           </tr>
           </tbody>
         </FormTableStyled>

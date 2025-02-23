@@ -20,7 +20,7 @@ export function useLayoutsPage() {
 
   const layout = layouts?.find(l => l.id === layoutId);
   const group = layout?.groups?.find(g => g.id === groupId);
-  const button = group?.buttons?.find(b => b.id === buttonId);
+  const button = group?.parameterButtons?.find(b => b.id === buttonId);
 
   const section = button || buttonId === 'new' ? 'button' : group || groupId === 'new' ? 'group' : layout || layoutId === 'new' ? 'layout' : 'layouts';
 

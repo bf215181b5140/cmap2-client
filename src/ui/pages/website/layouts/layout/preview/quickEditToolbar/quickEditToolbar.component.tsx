@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
 import { useNavigate } from 'react-router-dom';
-import { ButtonDTO, GroupDTO } from 'cmap2-shared';
+import { ParameterButtonDTO, GroupDTO } from 'cmap2-shared';
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { ModalContext } from '../../../../../../components/context/modal.context';
 import GroupCopyModal from './groupCopyModal/groupCopyModal.component';
@@ -21,7 +21,7 @@ export default function QuickEditToolbar({ item }: QuickEditToolbarProps) {
   const { layouts, layoutsDispatch, layout } = useContext(LayoutsPageContext);
   const { setModal } = useContext(ModalContext);
   const itemGroup = layout?.groups?.find(g => g.id === item?.groupId);
-  const itemButton = itemGroup?.buttons?.find(b => b.id === item?.buttonId);
+  const itemButton = itemGroup?.parameterButtons?.find(b => b.id === item?.buttonId);
 
   if (!layout) return;
 
@@ -45,9 +45,9 @@ export default function QuickEditToolbar({ item }: QuickEditToolbarProps) {
     });
   }
 
-  function onOrderButton(orderButton: ButtonDTO, change: number) {
+  function onOrderButton(orderButton: ParameterButtonDTO, change: number) {
     const newPosition = orderButton.order + change;
-    const newButtons = itemGroup?.buttons?.map(b => {
+    const newButtons = itemGroup?.parameterButtons?.map(b => {
       if (b.id === orderButton.id) {
         return { ...b, order: newPosition };
       } else if (b.order === newPosition) {
@@ -66,7 +66,7 @@ export default function QuickEditToolbar({ item }: QuickEditToolbarProps) {
     });
   }
 
-  function onCopyButton(button: ButtonDTO) {
+  function onCopyButton(button: ParameterButtonDTO) {
     setModal(<ButtonCopyModal layouts={layouts} button={button} onSuccess={(layoutId, groupId, button) => layoutsDispatch({ type: 'addButton', layoutId, groupId, button })} />);
   }
 
@@ -84,7 +84,7 @@ export default function QuickEditToolbar({ item }: QuickEditToolbarProps) {
     });
   }
 
-  function onDeleteButton(item: ButtonDTO) {
+  function onDeleteButton(item: ParameterButtonDTO) {
     const layoutId = layout?.id;
     const groupId = itemGroup?.id;
     const buttonId = item.id;
@@ -100,7 +100,7 @@ export default function QuickEditToolbar({ item }: QuickEditToolbarProps) {
       <div>
         <IconButton role={'normal'} icon={'ri-arrow-left-s-line'} disabled={itemButton.order <= 1} onClick={() => onOrderButton(itemButton, -1)} />
         Order: {itemButton.order}
-        <IconButton role={'normal'} icon={'ri-arrow-right-s-line'} disabled={itemButton.order >= (itemGroup?.buttons?.length || 1)} onClick={() => onOrderButton(itemButton, 1)} />
+        <IconButton role={'normal'} icon={'ri-arrow-right-s-line'} disabled={itemButton.order >= (itemGroup?.parameterButtons?.length || 1)} onClick={() => onOrderButton(itemButton, 1)} />
       </div>
       <div>
         Selected button: {itemButton.label}

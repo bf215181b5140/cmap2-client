@@ -1,15 +1,11 @@
 import TierBadge from '../../../../components/tierBadge/tierBadge.component';
 import React, { useContext } from 'react';
-import { ProfilePageDTO, TrackedParametersMap, UploadedFileDTO } from 'cmap2-shared';
+import { ProfilePageDTO, UploadedFileDTO } from 'cmap2-shared';
 import Segment from '../../../../components/segment/segment.component';
 import ProfilePicture from './components/profilePicture.component';
 import TextButton from '../../../../components/buttons/textButton.component';
-import useCmapFetch from '../../../../hooks/cmapFetch.hook';
-import { CredentialsContext } from '../../../../components/context/credentials.context';
-import { Credentials } from '../../../../../shared/objects/credentials';
 import styled from 'styled-components';
 import { ModalContext } from '../../../../components/context/modal.context';
-import BasicModal from '../../../../components/modal/basicModal/basicModal.component';
 import DeleteProfileModal from './deleteProfileModal/deleteProfileModal.component';
 
 interface ProfileOverviewProps {

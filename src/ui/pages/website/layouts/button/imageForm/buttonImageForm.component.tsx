@@ -5,7 +5,7 @@ import useFileValidation from '../../../../../hooks/fileValidation.hook';
 import { RefObject, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
 import { useForm } from 'react-hook-form';
-import { ButtonDTO, UploadedFileSchema } from 'cmap2-shared';
+import { ParameterButtonDTO, UploadedFileSchema } from 'cmap2-shared';
 import Segment from '../../../../../components/segment/segment.component';
 import IconButton from '../../../../../components/buttons/iconButton.component';
 import TextButton from '../../../../../components/buttons/textButton.component';
@@ -24,9 +24,9 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
 
   const { cmapFetch, DELETE } = useCmapFetch();
   const { validateImage } = useFileValidation();
-  const { layoutsDispatch, layoutId, groupId, button } = useContext(LayoutsPageContext);
+  const { layoutsDispatch, layoutId, groupId, parameterButton } = useContext(LayoutsPageContext);
 
-  const defaultValues: ButtonImageForm = { file: null, id: button?.id || '' };
+  const defaultValues: ButtonImageForm = { file: null, id: parameterButton?.id || '' };
 
   const { register, setValue, watch, reset, handleSubmit } = useForm<ButtonImageForm>({ defaultValues });
   const { ref, ...fileRegister } = register('file');
@@ -37,7 +37,7 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
   useImperativeHandle(ref, () => inputRef.current);
 
   useEffect(() => {
-    function onButtonSaved(savedButton: ButtonDTO) {
+    function onButtonSaved(savedButton: ParameterButtonDTO) {
       setValue('id', savedButton.id);
       submitRef.current?.click();
     }
@@ -51,7 +51,7 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
 
   useEffect(() => {
     reset(defaultValues);
-  }, [button]);
+  }, [parameterButton]);
 
   useEffect(() => {
     if (file) {
@@ -81,9 +81,9 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
     if (file) {
       buttonSectionEvents.emit('onImageChange', null);
       reset(defaultValues);
-    } else if (button?.image) {
-      DELETE('layouts/button/image', { id: button.id }, undefined, () => {
-        layoutsDispatch({ type: 'changeButtonPicture', layoutId: layoutId || '', groupId: groupId || '', buttonId: button.id, image: null });
+    } else if (parameterButton?.image) {
+      DELETE('layouts/button/image', { id: parameterButton.id }, undefined, () => {
+        layoutsDispatch({ type: 'changeButtonPicture', layoutId: layoutId || '', groupId: groupId || '', buttonId: parameterButton.id, image: null });
         reset(defaultValues);
       });
     }
@@ -104,8 +104,8 @@ export default function ButtonImageForm({ buttonSectionEvents }: ButtonImageForm
         <IconButton role={'normal'} tooltip={'Browse for file'} icon={browseIcon} onClick={onBrowse} />
       </div>
       <div>
-        <IconButton role={'save'} tooltip={'Save image'} onClick={() => submitRef.current?.click()} disabled={!file || !button?.id} />
-        <TextButton text={'Remove image'} onClick={onClear} disabled={!file && !button?.image} />
+        <IconButton role={'save'} tooltip={'Save image'} onClick={() => submitRef.current?.click()} disabled={!file || !parameterButton?.id} />
+        <TextButton text={'Remove image'} onClick={onClear} disabled={!file && !parameterButton?.image} />
       </div>
       <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>
         <input type="file" {...fileRegister} ref={inputRef} />

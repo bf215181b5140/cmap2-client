@@ -1,5 +1,5 @@
 import { createContext, Dispatch } from 'react';
-import { BackgroundDTO, ButtonDTO, GroupDTO, InteractionKeyDTO, LayoutDTO, ThemeDTO, TierDTO } from 'cmap2-shared';
+import { BackgroundDTO, ParameterButtonDTO, GroupDTO, InteractionKeyDTO, LayoutDTO, ThemeDTO, TierDTO } from 'cmap2-shared';
 import { LayoutsReducerAction } from './layouts.reducer';
 
 export interface LayoutsPageData {
@@ -14,7 +14,7 @@ export interface LayoutsPageData {
   buttonId: string | undefined;
   layout: LayoutDTO | undefined;
   group: GroupDTO | undefined;
-  button: ButtonDTO | undefined;
+  parameterButton: ParameterButtonDTO | undefined;
 }
 
 export const LayoutsPageContext = createContext<LayoutsPageData>(undefined!);

@@ -1,4 +1,4 @@
-import { ButtonDTO, GroupDTO, LayoutDTO, ParameterBadgeDTO, PresetDTO, UploadedFileDTO } from 'cmap2-shared';
+import { ParameterButtonDTO, GroupDTO, LayoutDTO, ParameterBadgeDTO, PresetButtonDTO, UploadedFileDTO } from 'cmap2-shared';
 
 export type LayoutsReducerAction = { type: 'setLayouts', layouts: LayoutDTO[] } |
   { type: 'addLayout', layout: LayoutDTO } |
@@ -12,14 +12,14 @@ export type LayoutsReducerAction = { type: 'setLayouts', layouts: LayoutDTO[] } 
   { type: 'editGroup', layoutId: string, group: GroupDTO } |
   { type: 'removeGroup', layoutId: string, groupId: string } |
   { type: 'setGroupOrder', layoutId: string, groups: GroupDTO[] } |
-  { type: 'addButton', layoutId: string, groupId: string, button: ButtonDTO } |
-  { type: 'editButton', layoutId: string, groupId: string, button: ButtonDTO } |
+  { type: 'addButton', layoutId: string, groupId: string, button: ParameterButtonDTO } |
+  { type: 'editButton', layoutId: string, groupId: string, button: ParameterButtonDTO } |
   { type: 'removeButton', layoutId: string, groupId: string, buttonId: string } |
-  { type: 'setButtonOrder', layoutId: string, groupId: string, buttons: ButtonDTO[] } |
-  { type: 'addPreset', layoutId: string, preset: PresetDTO } |
-  { type: 'editPreset', layoutId: string, preset: PresetDTO } |
+  { type: 'setButtonOrder', layoutId: string, groupId: string, buttons: ParameterButtonDTO[] } |
+  { type: 'addPreset', layoutId: string, preset: PresetButtonDTO } |
+  { type: 'editPreset', layoutId: string, preset: PresetButtonDTO } |
   { type: 'removePreset', layoutId: string, presetId: string } |
-  { type: 'setPresetOrder', layoutId: string, presets: PresetDTO[] } |
+  { type: 'setPresetOrder', layoutId: string, presets: PresetButtonDTO[] } |
   { type: 'changeButtonPicture', layoutId: string, groupId: string, buttonId: string, image: UploadedFileDTO | null } |
   { type: 'changePresetPicture', layoutId: string, presetId: string, image: UploadedFileDTO | null };
 
@@ -49,15 +49,15 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
     case 'addPreset':
       return state.map(layout => {
         if (layout.id === action.layoutId) {
-          if (!layout.presets) layout.presets = [];
-          layout.presets.push(action.preset);
+          if (!layout.presetButtons) layout.presetButtons = [];
+          layout.presetButtons.push(action.preset);
         }
         return layout;
       });
     case 'editPreset':
       return state.map(layout => {
         if (layout.id === action.layoutId) {
-          layout.presets = layout.presets?.map(preset => {
+          layout.presetButtons = layout.presetButtons?.map(preset => {
             if (preset.id === action.preset.id) return { ...preset, ...action.preset };
             return preset;
           });
@@ -68,11 +68,11 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
       return state.map(layout => {
         if (layout.id === action.layoutId) {
           // get order number for deleted preset
-          const missingOrder = layout.presets?.find(g => g.id === action.presetId)?.order;
-          layout.presets = layout.presets?.filter(preset => preset.id !== action.presetId);
+          const missingOrder = layout.presetButtons?.find(g => g.id === action.presetId)?.order;
+          layout.presetButtons = layout.presetButtons?.filter(preset => preset.id !== action.presetId);
           // set order - 1 for presets that are bigger other than the deleted
           if (missingOrder) {
-            layout.presets?.forEach(p => {
+            layout.presetButtons?.forEach(p => {
               if (p.order > missingOrder) p.order--;
             });
           }
@@ -82,7 +82,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
     case 'setPresetOrder':
       return state.map(layout => {
         if (layout.id === action.layoutId) {
-          layout.presets = action.presets;
+          layout.presetButtons = action.presets;
         }
         return layout;
       });
@@ -131,8 +131,8 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
         if (layout.id === action.layoutId && layout.groups) {
           const tempGroup = layout.groups.find(group => group.id === action.groupId);
           if (tempGroup) {
-            if (!tempGroup.buttons) tempGroup.buttons = [];
-            tempGroup.buttons.push(action.button);
+            if (!tempGroup.parameterButtons) tempGroup.parameterButtons = [];
+            tempGroup.parameterButtons.push(action.button);
           }
         }
         return layout;
@@ -142,7 +142,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
         if (layout.id === action.layoutId) {
           layout.groups = layout.groups?.map(group => {
             if (group.id === action.groupId) {
-              group.buttons = group.buttons?.map(button => {
+              group.parameterButtons = group.parameterButtons?.map(button => {
                 if (button.id === action.button.id) return { ...button, ...action.button, id: action.button.id! };
                 return button;
               });
@@ -158,11 +158,11 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
           layout.groups = layout.groups?.map(group => {
             if (group.id === action.groupId) {
               // get order number for deleted button
-              const missingOrder = group.buttons?.find(b => b.id === action.buttonId)?.order;
-              group.buttons = group.buttons?.filter(button => button.id !== action.buttonId);
+              const missingOrder = group.parameterButtons?.find(b => b.id === action.buttonId)?.order;
+              group.parameterButtons = group.parameterButtons?.filter(button => button.id !== action.buttonId);
               // set order - 1 for buttons that are bigger other than the deleted
               if (missingOrder) {
-                group.buttons?.forEach(b => {
+                group.parameterButtons?.forEach(b => {
                   if (b.order > missingOrder) b.order--;
                 });
               }
@@ -177,7 +177,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
         if (layout.id === action.layoutId) {
           layout.groups = layout.groups?.map(group => {
             if (group.id === action.groupId) {
-              group.buttons = action.buttons;
+              group.parameterButtons = action.buttons;
             }
             return group;
           });
@@ -189,7 +189,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
         if (layout.id === action.layoutId) {
           layout.groups = layout.groups?.map(group => {
             if (group.id === action.groupId) {
-              group.buttons = group.buttons?.map(button => {
+              group.parameterButtons = group.parameterButtons?.map(button => {
                 if (button.id === action.buttonId) return { ...button, image: action.image };
                 return button;
               });
@@ -202,7 +202,7 @@ export default function layoutsReducer(state: LayoutDTO[], action: LayoutsReduce
     case 'changePresetPicture':
       return state.map(layout => {
         if (layout.id === action.layoutId) {
-          layout.presets = layout.presets?.map(preset => {
+          layout.presetButtons = layout.presetButtons?.map(preset => {
             if (preset.id === action.presetId) return { ...preset, image: action.image };
             return preset;
           });

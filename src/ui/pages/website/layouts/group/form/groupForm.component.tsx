@@ -29,7 +29,6 @@ export default function GroupForm() {
     id: null,
     layoutId: layoutId || '',
     label: '',
-    showLabel: false,
     order: (layout?.groups?.length ?? 0) + 1,
     width: 'Full',
     visibilityParameters: [],
@@ -74,12 +73,6 @@ export default function GroupForm() {
           <th style={{ width: '110px' }}>Label</th>
           <td>
             <Input register={register} name={'label'} width={'300px'} errors={errors} />
-          </td>
-        </tr>
-        <tr>
-          <th>Show label</th>
-          <td>
-            <CheckboxInput register={register} name={'showLabel'} errors={errors} />
           </td>
         </tr>
         <tr>

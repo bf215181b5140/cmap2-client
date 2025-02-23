@@ -1,7 +1,7 @@
 import TypedEmitter from 'typed-emitter/rxjs';
 import { RefObject, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { PresetDTO, UploadedFileSchema } from 'cmap2-shared';
+import { PresetButtonDTO, UploadedFileSchema } from 'cmap2-shared';
 import styled from 'styled-components';
 import { PresetsSectionEvents } from '../presets.model';
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
@@ -14,7 +14,7 @@ import HiddenInput from '../../../../../../components/input/hidden.component';
 
 interface PresetImageFormProps {
   presetSectionEvents: TypedEmitter<PresetsSectionEvents>;
-  preset: PresetDTO;
+  preset: PresetButtonDTO;
 }
 
 interface PresetImageForm {
@@ -39,7 +39,7 @@ export default function PresetImageForm({ presetSectionEvents, preset }: PresetI
   useImperativeHandle(ref, () => inputRef.current);
 
   useEffect(() => {
-    function onPresetSaved(savedPreset: PresetDTO) {
+    function onPresetSaved(savedPreset: PresetButtonDTO) {
       setValue('id', savedPreset.id);
       submitRef.current?.click();
     }

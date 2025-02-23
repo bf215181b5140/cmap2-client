@@ -5,7 +5,6 @@ import ContentMenuLink from '../../components/menu/contentMenu/contentMenuLink.c
 import { CredentialsContext } from '../../components/context/credentials.context';
 import ProfilePage from './profile/profile.page';
 import InteractionKeysPage from './interactionKeys/interactionKeys.page';
-import ParametersPage from './state/parameters.page';
 import StylePage from './style/style.page';
 import LayoutsPage from './layouts/layouts.page';
 import ConnectionPage from './connection/connection.page';
@@ -24,7 +23,6 @@ export default function WebsitePage() {
   return (<>
     <ContentMenu>
       <ContentMenuLink to={'/website/connection'} icon={'ri-wifi-fill'} tooltip={'Connection'} />
-      <ContentMenuLink to={'/website/state'} icon={'ri-archive-stack-fill'} tooltip={'Status and parameters'} disabled={!apiToken} />
       <ContentMenuLink to={'/website/profile'} icon={'ri-profile-fill'} tooltip={'Profile'} disabled={!apiToken} />
       <ContentMenuLink to={'/website/layouts'} icon={'ri-layout-masonry-fill'} tooltip={'Layouts'} disabled={!apiToken} />
       <ContentMenuLink to={'/website/interactionKeys'} icon={'ri-key-2-fill'} tooltip={'Interaction keys'} disabled={!apiToken} />
@@ -41,7 +39,6 @@ export default function WebsitePage() {
 
     <Routes>
       <Route path="/connection" element={<ConnectionPage />} />
-      <Route path="/state" element={<ParametersPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/layouts/:layoutId?/:groupId?/:buttonId?" element={<LayoutsPage />} />
       <Route path="/interactionKeys" element={<InteractionKeysPage />} />

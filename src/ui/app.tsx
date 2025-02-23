@@ -69,8 +69,4 @@ const AppStyled = styled.div`
       color: ${props => props.theme.colors.font.textBright};
     }
   }
-
-  fieldset {
-    border-color: ${props => props.theme.colors.input.bg};
-  }
 `;

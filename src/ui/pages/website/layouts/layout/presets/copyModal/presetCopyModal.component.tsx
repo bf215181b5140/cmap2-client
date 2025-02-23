@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { ButtonCopyDTO, ButtonCopySchema, ButtonSchema, LayoutDTO, PresetCopyDTO, PresetCopySchema, PresetDTO, PresetSchema } from 'cmap2-shared';
+import React, { useContext } from 'react';
+import { LayoutDTO, PresetButtonCopyDTO, PresetButtonCopySchema, PresetButtonDTO, PresetButtonSchema } from 'cmap2-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ModalContext } from '../../../../../../components/context/modal.context';
@@ -14,8 +14,8 @@ import TextButton from '../../../../../../components/buttons/textButton.componen
 interface ButtonCopyModalProps {
   layouts: LayoutDTO[];
   layout: LayoutDTO;
-  preset: PresetDTO;
-  onSuccess: (layoutId: string, preset: PresetDTO) => void;
+  preset: PresetButtonDTO;
+  onSuccess: (layoutId: string, preset: PresetButtonDTO) => void;
 }
 
 export default function PresetCopyModal({ layouts, layout, preset, onSuccess }: ButtonCopyModalProps) {
@@ -23,13 +23,13 @@ export default function PresetCopyModal({ layouts, layout, preset, onSuccess }: 
   const { clearModal } = useContext(ModalContext);
   const { POST } = useCmapFetch();
   const { addNotification } = useNotifications();
-  const { setValue, register, formState: { errors }, handleSubmit } = useForm<PresetCopyDTO>({
-    resolver: zodResolver(PresetCopySchema),
+  const { setValue, register, formState: { errors }, handleSubmit } = useForm<PresetButtonCopyDTO>({
+    resolver: zodResolver(PresetButtonCopySchema),
     defaultValues: { id: preset.id, layoutId: layout.id }
   });
 
-  function onSubmit(formData: PresetCopyDTO) {
-    POST('layouts/preset/copy', formData, PresetSchema, data => {
+  function onSubmit(formData: PresetButtonCopyDTO) {
+    POST('layouts/preset/copy', formData, PresetButtonSchema, data => {
       addNotification('Success', 'Preset copied.');
       onSuccess(formData.layoutId, data);
       clearModal();

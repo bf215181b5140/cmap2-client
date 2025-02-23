@@ -1,21 +1,21 @@
 import Segment from '../../../../../../components/segment/segment.component';
-import { LayoutButtonWrapper, PresetButton } from 'cmap2-shared/react';
-import { ImageOrientationSchema, PresetDTO } from 'cmap2-shared';
+import { LayoutButtonWrapper, PresetButtonComponent } from 'cmap2-shared/react';
+import { ImageOrientationSchema, PresetButtonDTO } from 'cmap2-shared';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
 import AddCounter from '../../../../../../components/addCounter/addCounter.component';
 import styled from 'styled-components';
 
 interface PresetsProps {
-  selectedPreset: PresetDTO | undefined;
-  setSelectedPreset: Dispatch<SetStateAction<PresetDTO | undefined>>;
+  selectedPreset: PresetButtonDTO | undefined;
+  setSelectedPreset: Dispatch<SetStateAction<PresetButtonDTO | undefined>>;
 }
 
 export default function Presets({ selectedPreset, setSelectedPreset }: PresetsProps) {
 
   const { tier, theme, layout } = useContext(LayoutsPageContext);
 
-  function onPresetClick(preset: PresetDTO) {
+  function onPresetClick(preset: PresetButtonDTO) {
     if (preset.id === selectedPreset?.id) {
       setSelectedPreset(undefined);
     } else {
@@ -24,13 +24,12 @@ export default function Presets({ selectedPreset, setSelectedPreset }: PresetsPr
   }
 
   function onSetNewPreset() {
-    const newPreset: PresetDTO = {
+    const newPreset: PresetButtonDTO = {
       id: '',
       label: '',
-      showLabel: false,
       parameters: [],
       imageOrientation: ImageOrientationSchema.Enum.Square,
-      order: (layout?.presets?.length ?? 0) + 1,
+      order: (layout?.presetButtons?.length ?? 0) + 1,
       useCost: null,
       callbackParameters: [],
       visibilityParameters: [],
@@ -39,15 +38,15 @@ export default function Presets({ selectedPreset, setSelectedPreset }: PresetsPr
     setSelectedPreset(newPreset);
   }
 
-  const canAddPreset = (layout?.presets?.length || 0) < tier.presets;
+  const canAddPreset = (layout?.presetButtons?.length || 0) < tier.presetButtons;
 
   return (<Segment segmentTitle={'Presets'}>
     <LayoutButtonWrapper>
-      {layout?.presets?.map(preset => <PresetButton key={preset.id} theme={theme} preset={preset} onClick={() => onPresetClick(preset)} />)}
+      {layout?.presetButtons?.map(preset => <PresetButtonComponent key={preset.id} theme={theme} presetButton={preset} onClick={() => onPresetClick(preset)} />)}
 
       <NewItemStyled onClick={onSetNewPreset} aria-disabled={!canAddPreset}>
         {/* <i className={'ri-function-add-fill'} /> */}
-        <AddCounter canAddMore={canAddPreset}>{layout?.presets?.length || 0}/{tier.presets}</AddCounter>
+        <AddCounter canAddMore={canAddPreset}>{layout?.presetButtons?.length || 0}/{tier.presetButtons}</AddCounter>
         {canAddPreset ? 'Add preset' : 'Limit reached'}
       </NewItemStyled>
 

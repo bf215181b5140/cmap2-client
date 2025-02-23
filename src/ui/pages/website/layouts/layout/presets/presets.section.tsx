@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import TypedEmitter from 'typed-emitter/rxjs';
 import Section from '../../../../../components/section/section.component';
 import { PresetsSectionEvents } from './presets.model';
-import { PresetDTO } from 'cmap2-shared';
+import { PresetButtonDTO } from 'cmap2-shared';
 import { LayoutsPageContext } from '../../layouts.context';
 import PresetPreview from './preview/presetPreview.component';
 import PresetImageForm from './imageForm/presetImageForm.component';
@@ -14,7 +14,7 @@ export default function PresetsSection() {
 
   const { layoutId, layout } = useContext(LayoutsPageContext);
 
-  const [selectedPreset, setSelectedPreset] = useState<PresetDTO | undefined>();
+  const [selectedPreset, setSelectedPreset] = useState<PresetButtonDTO | undefined>();
   const [presetSectionEvents] = useState(new EventEmitter() as TypedEmitter<PresetsSectionEvents>);
 
   return (<>
