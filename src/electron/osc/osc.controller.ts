@@ -60,7 +60,7 @@ export class OscController {
     const value = this.valueFromArgumentType(message[1]);
     const vrcParameter: VrcParameter = { path, value };
 
-    BRIDGE.emit('osc:message', vrcParameter);
+    BRIDGE.emit('osc:vrcParameter', vrcParameter);
   }
 
   private send(message: Message) {

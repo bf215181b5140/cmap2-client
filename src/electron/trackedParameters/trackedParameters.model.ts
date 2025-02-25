@@ -1,24 +1,33 @@
 import { VrcParameter } from 'cmap2-shared/src/objects/vrcParameter';
 
-export class TrackedParameter {
-  private _value: VrcParameter['value'];
+export interface TrackedParameterDTO {
+  path: VrcParameter['path'];
+  value: VrcParameter['value'];
   frequency: number;
   lastActivity: number;
-  buffered: boolean = false
+  buffered: boolean;
+}
+
+export class TrackedParameter {
+  value: VrcParameter['value'];
+  frequency: number;
+  lastActivity: number;
+  buffered: boolean = false;
 
   constructor(value: VrcParameter['value']) {
-    this._value = value;
+    this.value = value;
     this.frequency = 1;
     this.lastActivity = Date.now();
   }
 
-  public set value(value: VrcParameter['value']) {
-    this._value = value;
+  public setValue(value: VrcParameter['value']) {
+    this.value = value;
     if (!this.buffered) this.frequency++;
     this.lastActivity = Date.now();
   }
 
-  public get value() {
-    return this._value;
+  public setBuffered(buffered: boolean) {
+    this.buffered = buffered;
+    if (!buffered) this.frequency = Math.max(0, this.frequency - 1);
   }
 }

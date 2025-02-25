@@ -32,7 +32,7 @@ export default function SendParameter() {
     window.IPC.send('osc:sendParameter', { path: formData.path, value: value });
   }
 
-  return (<Segment segmentTitle={'Send parameter to VRChat'}>
+  return (<Segment segmentTitle={'Send parameter to VRChat'} width={'Full'}>
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormTable>
         <tr>

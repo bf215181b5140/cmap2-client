@@ -1,45 +1,82 @@
 import { VrcParameter } from 'cmap2-shared/src/objects/vrcParameter';
 import { TrackedParameter } from './trackedParameters.model';
-import { z } from 'zod';
-import { parameterValueObjectOrAvatarSchema } from 'cmap2-shared/src/shared';
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
 import { SETTINGS } from '../store/settings/settings.store';
 import { Message } from 'node-osc';
-import { UsedButtonDTO, UsedPresetDTO } from 'cmap2-shared';
+import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO } from 'cmap2-shared';
 
 export class TrackedParametersService extends Map<VrcParameter['path'], TrackedParameter> {
   private clearOnAvatarChange: boolean = SETTINGS.get('trackedParameters').clearOnAvatarChange;
-  private socketParameterBlacklist = new Set<string>(SETTINGS.get('socketParameterBlacklist'));
 
-  private resetFrequencyIntervalMs = 2000;
+  private resetFrequencyIntervalMs = 2000; // How often do we reset/reduce frequency values
 
-  private bufferFrequencyLimit = Math.floor(this.resetFrequencyIntervalMs / 200); // anything more than once per 200ms gets buffered
-  private bufferTimeMs = 500;
+  private bufferFrequencyLimit = Math.floor(this.resetFrequencyIntervalMs / 300); // anything more than once per 400ms gets buffered
+  private bufferTimeMs = 1000;
 
   constructor() {
     super();
 
     SETTINGS.onChange('trackedParameters', settings => this.clearOnAvatarChange = settings.clearOnAvatarChange);
-    SETTINGS.onChange('socketParameterBlacklist', data => this.socketParameterBlacklist = new Set(data));
 
-    BRIDGE.on('osc:message', vrcParameter => this.onNewParameter(vrcParameter));
-    BRIDGE.on('socket:applyParameters', callback => callback(this.toDto()));
+    BRIDGE.on('osc:vrcParameter', vrcParameter => this.onVrcParameter(vrcParameter));
+    BRIDGE.on('socket:applyParameters', callback => callback(this.toVrcParameterList()));
     BRIDGE.on('socket:usedButton', usedButton => this.onUsedButton(usedButton));
     BRIDGE.on('socket:usedPreset', usedPreset => this.onUsedPreset(usedPreset));
+    BRIDGE.on('socket:usedAvatar', usedAvatar => this.onUsedAvatar(usedAvatar));
+
+    IPC.handle('trackedParameters:getTrackedParameters', async () => Array.from(this.entries()));
+    IPC.handle('trackedParameters:getBufferFrequencyLimit', async () => this.bufferFrequencyLimit);
 
     setInterval(() => this.resetFrequencies(), this.resetFrequencyIntervalMs);
   }
 
   /**
-  * UsedButton is received from server when someone presses a button
-  *
-  * Check if parameter can be used based on current exp
-  *
-  * Emit button parameter and any additional callback parameters after a delay to vrchat
-  *
-  */
-  private onUsedButton(usedButton: UsedButtonDTO) {
+   * Main entry method to consume vrcParameters from OSC
+   *
+   */
+  private onVrcParameter(vrcParameter: VrcParameter) {
+    const trackedParameter = this.setValue(vrcParameter);
+
+    // if it's change avatar parameter then execute that logic to clear parameters
+    if (this.clearOnAvatarChange && vrcParameter.path.startsWith('/avatar/change')) this.clearParametersAfterAvatarChange();
+
+    this.bufferAndEmitTrackedParameter(vrcParameter.path, trackedParameter);
+  }
+
+  /**
+   * Handle tracked parameter buffering and emit them when they're ready
+   *
+   */
+  bufferAndEmitTrackedParameter(path: string, trackedParameter: TrackedParameter) {
+    // if it's already buffered return
+    if (trackedParameter.buffered) return;
+
+    // check parameter frequency and buffer if needed before sending it over socket
+    if (trackedParameter.frequency > this.bufferFrequencyLimit) {
+      trackedParameter.setBuffered(true);
+      setTimeout(() => {
+        // send out value as it will be after timeout and unbuffer parameter
+        BRIDGE.emit('trackedParameters:vrcParameter', { path: path, value: trackedParameter.value });
+        IPC.emit('trackedParameters:trackedParameter', [path, trackedParameter]);
+        trackedParameter.setBuffered(false);
+      }, this.bufferTimeMs);
+    } else {
+      // emit parameter without buffering
+      BRIDGE.emit('trackedParameters:vrcParameter', { path: path, value: trackedParameter.value });
+      IPC.emit('trackedParameters:trackedParameter', [path, trackedParameter]);
+    }
+  }
+
+  /**
+   * UsedButton is received from server when someone presses a button
+   *
+   * Check if parameter can be used based on current exp
+   *
+   * Emit button parameter and any additional callback parameters after a delay to vrchat
+   *
+   */
+  private onUsedButton(usedButton: UsedParameterButtonDTO) {
     const canSend = !usedButton.exp || this.consumeExpCost(usedButton.exp.path, usedButton.exp.value);
     if (!canSend) return;
 
@@ -51,14 +88,14 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
   }
 
   /**
-  * UsedPreset is received from server when someone presses a preset button
-  *
-  * Check if preset can be used based on current exp
-  *
-  * Emit parameters and any additional callback parameters after a delay to vrchat
-  *
-  */
-  private onUsedPreset(usedPreset: UsedPresetDTO) {
+   * UsedPreset is received from server when someone presses a preset button
+   *
+   * Check if preset can be used based on current exp
+   *
+   * Emit parameters and any additional callback parameters after a delay to vrchat
+   *
+   */
+  private onUsedPreset(usedPreset: UsedPresetButtonDTO) {
     const canSend = !usedPreset.exp || this.consumeExpCost(usedPreset.exp.path, usedPreset.exp.value);
     if (!canSend) return;
 
@@ -69,6 +106,16 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
     usedPreset.callbackParameters.forEach(cp => {
       setTimeout(() => BRIDGE.emit('osc:sendMessage', new Message(cp.path, cp.value)), 1000 * cp.seconds);
     });
+  }
+
+  /**
+   * UsedAvatar is received from server when someone presses an avatar button
+   *
+   * Emit avatar change parameter to vrchat
+   *
+   */
+  private onUsedAvatar(usedAvatar: UsedAvatarButtonDTO) {
+    BRIDGE.emit('osc:sendMessage', new Message('/avatar/change', usedAvatar.vrcAvatarId));
   }
 
   /**
@@ -87,37 +134,10 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
     return true;
   }
 
-  private onNewParameter(vrcParameter: VrcParameter) {
-    const trackedParameter = this.setValue(vrcParameter.path, vrcParameter.value);
-    if (this.clearOnAvatarChange && vrcParameter.path.startsWith('/avatar/change')) this.clearParametersAfterAvatarChange();
-
-    // emit new parameter for application
-    BRIDGE.emit('trackedParameters:parameter', vrcParameter);
-    IPC.emit('trackedParameters:parameter', vrcParameter);
-
-    this.sendParameterToSocket(vrcParameter, trackedParameter);
-  }
-
-  private sendParameterToSocket(vrcParameter: VrcParameter, trackedParameter: TrackedParameter) {
-    // if it's blacklisted return
-    if (this.socketParameterBlacklist.has(vrcParameter.path)) return;
-
-    // if it's already buffered return
-    if (trackedParameter.buffered) return;
-
-    // check parameter frequency and buffer if needed before sending it over socket
-    if (trackedParameter.frequency > this.bufferFrequencyLimit) {
-      trackedParameter.buffered = true;
-      setTimeout(() => {
-        // send out value as it will be then
-        BRIDGE.emit('socket:sendParameter', { path: vrcParameter.path, value: trackedParameter.value });
-        trackedParameter.buffered = false;
-      }, this.bufferTimeMs);
-    } else {
-      BRIDGE.emit('socket:sendParameter', vrcParameter);
-    }
-  }
-
+  /**
+   * Logic for clearing parameters when detecting avatar change parameter
+   *
+   */
   private clearParametersAfterAvatarChange() {
     // wait time in ms before and after avatar change parameter where we collect avatar parameters
     const waitTime = 300;
@@ -132,31 +152,42 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
       });
 
       // emit new tracked parameters
-      const trackedparametersDto = this.toDto();
-      BRIDGE.emit('trackedParameters:parameters', trackedparametersDto);
-      BRIDGE.emit('socket:sendParameters', trackedparametersDto);
-      IPC.emit('trackedParameters:parameters', trackedparametersDto.filter(p => !this.socketParameterBlacklist.has(p.path)));
+      const vrcParameters = this.toVrcParameterList();
+      BRIDGE.emit('trackedParameters:vrcParameters', vrcParameters);
+      IPC.emit('trackedParameters:trackedParameters', Array.from(this.entries()));
 
     }, waitTime);
   }
 
+  /**
+   * Reset or reduce the frequency number for each tracked parameter
+   *
+   */
   private async resetFrequencies() {
-    const intervalPoints = Math.floor(this.resetFrequencyIntervalMs / 1000);
-    this.forEach(tp => tp.frequency = tp.frequency - intervalPoints);
+    // How many frequency points we reduce, calculated to 1 per full second for each second of reset interval (or at least one point)
+    const intervalPoints = Math.max(1, Math.floor(this.resetFrequencyIntervalMs / 1000));
+    this.forEach(tp => {
+      if (tp.buffered) return; // skip if parameter is buffered
+      tp.frequency = Math.max(0, tp.frequency - intervalPoints);
+    });
   }
 
-  public setValue(path: string, value: z.infer<typeof parameterValueObjectOrAvatarSchema>) {
-    let param = this.get(path);
+  /**
+   * Sets the value for vrcParameter in the map while also retreiving TrackedParameter object
+   *
+   */
+  public setValue(vrcParameter: VrcParameter) {
+    let param = this.get(vrcParameter.path);
     if (!param) {
-      param = new TrackedParameter(value);
+      param = new TrackedParameter(vrcParameter.value);
+      super.set(vrcParameter.path, param);
     } else {
-      param.value = value;
+      param.setValue(vrcParameter.value);
     }
-    super.set(path, param);
     return param;
   }
 
-  public toDto(): VrcParameter[] {
+  public toVrcParameterList(): VrcParameter[] {
     return [...this.entries()].map(p => ({ path: p[0], value: p[1].value }));
   }
 }

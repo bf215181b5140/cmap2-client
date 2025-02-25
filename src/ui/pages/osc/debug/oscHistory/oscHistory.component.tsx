@@ -12,7 +12,7 @@ export default function OscHistory() {
   const [oscParameterHistory, setOscParameterHistory] = useState<VrcParameterWithDate[]>([]);
 
   useEffect(() => {
-    const removeListener = window.IPC.receive('trackedParameters:parameter', (data) => {
+    const removeListener = window.IPC.receive('trackedParameters:vrcParameter', (data) => {
       setOscParameterHistory(state => [{ ...data, date: new Date() }, ...state.slice(0, 50)]);
     });
 

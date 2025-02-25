@@ -1,21 +1,18 @@
 import { io, Socket } from 'socket.io-client';
-import { UsedButtonDTO, UsedPresetDTO, VrcParameter } from 'cmap2-shared';
+import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO, VrcParameter } from 'cmap2-shared';
 import { WEBSITE_URL } from '../../shared/const';
 import { BRIDGE } from '../bridge/bridge.service';
 import { IPC } from '../ipc/typedIpc.service';
-import { Credentials } from '../../shared/objects/credentials';
 import { SETTINGS } from '../store/settings/settings.store';
 import log from 'electron-log';
-import { SocketSettings } from '../../shared/objects/settings';
 
 export class SocketController {
   private socket: Socket | undefined;
-  private settings: SocketSettings;
-  private credentials: Credentials;
+  private settings = SETTINGS.get('socket');
+  private credentials = SETTINGS.get('credentials');
+  private socketParameterBlacklist = new Set<string>(SETTINGS.get('socketParameterBlacklist'));
 
   constructor() {
-    this.settings = SETTINGS.get('socket');
-    this.credentials = SETTINGS.get('credentials');
 
     SETTINGS.onChange('socket', data => this.settings = data);
     SETTINGS.onChange('credentials', data => {
@@ -25,15 +22,15 @@ export class SocketController {
         this.connect();
       }
     });
+    SETTINGS.onChange('socketParameterBlacklist', data => this.socketParameterBlacklist = new Set(data));
 
     IPC.on('socket:connect', () => this.connect());
     IPC.on('socket:disconnect', () => this.socket?.close());
     IPC.handle('socket:connection', async () => !!this.socket?.connected);
 
     BRIDGE.on('vrcDetector:detection', data => this.socket?.emit('isVrcDetected', data));
-    BRIDGE.on('socket:sendParameter', data => this.socket?.emit('parameter', data));
-    BRIDGE.on('socket:sendParameters', data => this.socket?.emit('parameters', data));
-    BRIDGE.on('socket:deleteParameter', data => this.socket?.emit('deleteParameter', data));
+    BRIDGE.on('trackedParameters:vrcParameter', vrcParameter => this.onVrcParameter(vrcParameter));
+    BRIDGE.on('trackedParameters:vrcParameters', vrcParameters => this.onVrcParameters(vrcParameters));
 
     if (this.settings.autoConnect) this.connect();
   }
@@ -71,12 +68,24 @@ export class SocketController {
       IPC.emit('socket:connection', !!this.socket?.connected);
     });
 
-    this.socket.on('usedButton', (usedButton: UsedButtonDTO) => {
+    this.socket.on('usedButton', (usedButton: UsedParameterButtonDTO) => {
       BRIDGE.emit('socket:usedButton', usedButton);
     });
 
-    this.socket.on('usedPreset', (usedPreset: UsedPresetDTO) => {
+    this.socket.on('usedPreset', (usedPreset: UsedPresetButtonDTO) => {
       BRIDGE.emit('socket:usedPreset', usedPreset);
     });
+
+    this.socket.on('usedAvatar', (usedAvatar: UsedAvatarButtonDTO) => {
+      BRIDGE.emit('socket:usedAvatar', usedAvatar);
+    });
+  }
+
+  onVrcParameter(vrcParameter: VrcParameter) {
+    if (!this.socketParameterBlacklist.has(vrcParameter.path)) this.socket?.emit('parameter', vrcParameter);
+  }
+
+  onVrcParameters(vrcParameters: VrcParameter[]) {
+    this.socket?.emit('parameters', vrcParameters.filter(p => !this.socketParameterBlacklist.has(p.path)));
   }
 }

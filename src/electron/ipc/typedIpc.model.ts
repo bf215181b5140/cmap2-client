@@ -4,12 +4,13 @@ import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
 import { UpdateData } from '../updater/updater.model';
 import { WindowSize } from '../../shared/enums/windowSize';
-import { TrackedParameter } from '../trackedParameters/trackedParameters.model';
+import { TrackedParameter, TrackedParameterDTO } from '../trackedParameters/trackedParameters.model';
 
 export type IpcGetOptions = {
   'socket:connection': boolean;
   'osc:activity': number | undefined;
-  'trackedParameters:get': [string, TrackedParameter];
+  'trackedParameters:getTrackedParameters': [string, TrackedParameter][];
+  'trackedParameters:getBufferFrequencyLimit': number;
   'utility:fingerprint': string;
   // these stores should get reworked wihtout IPC calls
   getAvatars: VrcOscAvatar[];
@@ -35,8 +36,10 @@ export type IpcSendOptions = {
 };
 
 export type IpcReceiveOptions = {
-  'trackedParameters:parameter': VrcParameter;
-  'trackedParameters:parameters': VrcParameter[];
+  'trackedParameters:vrcParameter': VrcParameter;
+  'trackedParameters:vrcParameters': VrcParameter[];
+  'trackedParameters:trackedParameter': [string, TrackedParameter];
+  'trackedParameters:trackedParameters': [string, TrackedParameter][];
   'socket:connection': boolean;
   'vrcDetector:detection': boolean | null;
   'updater:data': UpdateData;
