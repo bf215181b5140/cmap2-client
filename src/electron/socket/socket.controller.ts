@@ -67,7 +67,6 @@ export class SocketController {
     });
 
     this.socket.on('usedParameterButton', (usedParameterButton: UsedParameterButtonDTO) => {
-      console.log('usedParameterButton' , usedParameterButton);
       BRIDGE.emit('socket:usedParameterButton', usedParameterButton);
     });
 
