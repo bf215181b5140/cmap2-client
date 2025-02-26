@@ -18,7 +18,6 @@ export default function ParameterSettings() {
   const [showIgnoredParameters, setShowIgnoredParameters] = useState<boolean>(false);
 
   const { register, formState: { errors, isDirty }, handleSubmit, reset, control, setValue } = useForm<TrackedParametersSettings>({ resolver: zodResolver(TrackedParametersSettingsSchema) });
-  const submitRef = useRef<HTMLInputElement>(null);
   // @ts-ignore
   const { fields, append, remove } = useFieldArray({ control, name: 'blacklist' });
 

@@ -3,7 +3,7 @@ import { WindowController } from './window/window.controller';
 import { TrayController } from './tray/tray.controller';
 import log from 'electron-log';
 import contextMenu from 'electron-context-menu';
-import VrcDetectorController from './vrcDetector/vrcDetector.controller';
+import GameDetectorController from './gameDetector/gameDetectorController';
 import { SocketController } from './socket/socket.controller';
 import { AVATARS } from './store/avatars/avatars.store';
 import { OscController } from './osc/osc.controller';
@@ -29,7 +29,7 @@ app.whenReady().then(() => {
   AVATARS;
 
   // start functions
-  new VrcDetectorController();
+  new GameDetectorController();
   new SocketController();
   new OscController();
   new TrackedParametersService();

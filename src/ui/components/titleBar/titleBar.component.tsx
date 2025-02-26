@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { WindowState } from '../../../shared/enums/windowState';
 import IconButton from '../buttons/iconButton.component';
-import useVrcDetector from '../../hooks/vrcDetector.hook';
+import useGameDetector from '../../hooks/gameDetector.hook';
 import useSocketConnection from '../../hooks/socketConnection.hook';
 
 export default function TitleBar() {
 
   const { color: color, icon: socketIcon } = useSocketConnection();
-  const { vrcStatusColor, icon: vrcIcon } = useVrcDetector();
+  const { gamesDetectedColor, gameDetectionIcon } = useGameDetector();
 
   function setWindowState(state: WindowState) {
     window.IPC.send('window:state', state);
@@ -15,7 +15,7 @@ export default function TitleBar() {
 
   return (<TitleBarStyled>
     <StatusStyled>
-      <i className={vrcIcon} style={{ color: vrcStatusColor }} />
+      <i className={gameDetectionIcon} style={{ color: gamesDetectedColor }} />
       <i className={socketIcon} style={{ color: color }} />
     </StatusStyled>
     <ButtonsStyled>

@@ -1,10 +1,10 @@
 import { Credentials } from '../../../shared/objects/credentials';
-import { AppSettings, OscSettings, SocketSettings, TrackedParametersSettings, VrcDetectorSettings } from '../../../shared/objects/settings';
+import { AppSettings, OscSettings, SocketSettings, TrackedParametersSettings, GameDetectorSettings } from '../../../shared/objects/settings';
 
 export interface SettingsStoreData {
   credentials: Credentials;
   app: AppSettings;
-  vrcDetector: VrcDetectorSettings;
+  gameDetector: GameDetectorSettings;
   osc: OscSettings;
   trackedParameters: TrackedParametersSettings;
   socket: SocketSettings;
@@ -17,8 +17,9 @@ export const settingsStoreDefaults: SettingsStoreData = {
     startInBackground: false,
     windowSize: 'Medium',
   },
-  vrcDetector: {
-    detect: true,
+  gameDetector: {
+    detectVRChat: true,
+    detectChilloutVR: true,
     frequency: 10,
   },
   osc: {

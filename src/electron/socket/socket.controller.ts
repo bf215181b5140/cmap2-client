@@ -26,7 +26,7 @@ export class SocketController {
     IPC.on('socket:disconnect', () => this.socket?.close());
     IPC.handle('socket:connection', async () => !!this.socket?.connected);
 
-    BRIDGE.on('vrcDetector:detection', data => this.socket?.emit('isVrcDetected', data));
+    BRIDGE.on('gameDetector:detectedGames', data => this.socket?.emit('detectedGames', data));
     BRIDGE.on('trackedParameters:vrcParameter', vrcParameter => this.socket?.emit('parameter', vrcParameter));
     BRIDGE.on('trackedParameters:vrcParameters', vrcParameters => this.socket?.emit('parameters', vrcParameters));
 
@@ -66,16 +66,17 @@ export class SocketController {
       IPC.emit('socket:connection', !!this.socket?.connected);
     });
 
-    this.socket.on('usedButton', (usedButton: UsedParameterButtonDTO) => {
-      BRIDGE.emit('socket:usedButton', usedButton);
+    this.socket.on('usedParameterButton', (usedParameterButton: UsedParameterButtonDTO) => {
+      console.log('usedParameterButton' , usedParameterButton);
+      BRIDGE.emit('socket:usedParameterButton', usedParameterButton);
     });
 
-    this.socket.on('usedPreset', (usedPreset: UsedPresetButtonDTO) => {
-      BRIDGE.emit('socket:usedPreset', usedPreset);
+    this.socket.on('usedPresetButton', (usedPresetButton: UsedPresetButtonDTO) => {
+      BRIDGE.emit('socket:usedPresetButton', usedPresetButton);
     });
 
-    this.socket.on('usedAvatar', (usedAvatar: UsedAvatarButtonDTO) => {
-      BRIDGE.emit('socket:usedAvatar', usedAvatar);
+    this.socket.on('usedAvatarButton', (usedAvatarButton: UsedAvatarButtonDTO) => {
+      BRIDGE.emit('socket:usedAvatarButton', usedAvatarButton);
     });
   }
 }

@@ -37,9 +37,9 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
 
     BRIDGE.on('osc:vrcParameter', vrcParameter => this.onVrcParameter(vrcParameter));
     BRIDGE.on('socket:applyParameters', callback => callback(this.toVrcParameterList()));
-    BRIDGE.on('socket:usedButton', usedButton => this.onUsedButton(usedButton));
-    BRIDGE.on('socket:usedPreset', usedPreset => this.onUsedPreset(usedPreset));
-    BRIDGE.on('socket:usedAvatar', usedAvatar => this.onUsedAvatar(usedAvatar));
+    BRIDGE.on('socket:usedParameterButton', usedParameterButton => this.onUsedParameterButton(usedParameterButton));
+    BRIDGE.on('socket:usedPresetButton', usedPresetButton => this.onUsedPresetButton(usedPresetButton));
+    BRIDGE.on('socket:usedAvatarButton', usedAvatarButton => this.onUsedAvatarButton(usedAvatarButton));
 
     IPC.handle('trackedParameters:getIgnoredParameters', async () => Array.from(this.ignoredParameters.values()));
     IPC.handle('trackedParameters:getTrackedParameters', async () => Array.from(this.entries()));
@@ -92,53 +92,53 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
   }
 
   /**
-   * UsedButton is received from server when someone presses a button
+   * usedParameterButton is received from server when someone presses a button
    *
    * Check if parameter can be used based on current exp
    *
    * Emit button parameter and any additional callback parameters after a delay to vrchat
    *
    */
-  private onUsedButton(usedButton: UsedParameterButtonDTO) {
-    const canSend = !usedButton.exp || this.consumeExpCost(usedButton.exp.path, usedButton.exp.value);
+  private onUsedParameterButton(usedParameterButton: UsedParameterButtonDTO) {
+    const canSend = !usedParameterButton.exp || this.consumeExpCost(usedParameterButton.exp.path, usedParameterButton.exp.value);
     if (!canSend) return;
 
-    BRIDGE.emit('osc:sendMessage', new Message(usedButton.path, usedButton.value));
+    BRIDGE.emit('osc:sendMessage', new Message(usedParameterButton.path, usedParameterButton.value));
 
-    usedButton.callbackParameters.forEach(cp => {
+    usedParameterButton.callbackParameters.forEach(cp => {
       setTimeout(() => BRIDGE.emit('osc:sendMessage', new Message(cp.path, cp.value)), 1000 * cp.seconds);
     });
   }
 
   /**
-   * UsedPreset is received from server when someone presses a preset button
+   * usedPresetButton is received from server when someone presses a preset button
    *
    * Check if preset can be used based on current exp
    *
    * Emit parameters and any additional callback parameters after a delay to vrchat
    *
    */
-  private onUsedPreset(usedPreset: UsedPresetButtonDTO) {
-    const canSend = !usedPreset.exp || this.consumeExpCost(usedPreset.exp.path, usedPreset.exp.value);
+  private onUsedPresetButton(usedPresetButton: UsedPresetButtonDTO) {
+    const canSend = !usedPresetButton.exp || this.consumeExpCost(usedPresetButton.exp.path, usedPresetButton.exp.value);
     if (!canSend) return;
 
-    usedPreset.parameters.forEach(p => {
+    usedPresetButton.parameters.forEach(p => {
       BRIDGE.emit('osc:sendMessage', new Message(p.path, p.value));
     });
 
-    usedPreset.callbackParameters.forEach(cp => {
+    usedPresetButton.callbackParameters.forEach(cp => {
       setTimeout(() => BRIDGE.emit('osc:sendMessage', new Message(cp.path, cp.value)), 1000 * cp.seconds);
     });
   }
 
   /**
-   * UsedAvatar is received from server when someone presses an avatar button
+   * usedAvatarButton is received from server when someone presses an avatar button
    *
    * Emit avatar change parameter to vrchat
    *
    */
-  private onUsedAvatar(usedAvatar: UsedAvatarButtonDTO) {
-    BRIDGE.emit('osc:sendMessage', new Message('/avatar/change', usedAvatar.vrcAvatarId));
+  private onUsedAvatarButton(usedAvatarButton: UsedAvatarButtonDTO) {
+    BRIDGE.emit('osc:sendMessage', new Message('/avatar/change', usedAvatarButton.vrcAvatarId));
   }
 
   /**

@@ -9,12 +9,13 @@ export const AppSettingsSchema = z.object({
 
 export type AppSettings = z.infer<typeof AppSettingsSchema>;
 
-export const VrcDetectorSettingsSchema = z.object({
-  detect: z.boolean(),
+export const GameDetectorSettingsSchema = z.object({
+  detectVRChat: z.boolean(),
+  detectChilloutVR: z.boolean(),
   frequency: z.number(),
 });
 
-export type VrcDetectorSettings = z.infer<typeof VrcDetectorSettingsSchema>;
+export type GameDetectorSettings = z.infer<typeof GameDetectorSettingsSchema>;
 
 export const OscSettingsSchema = z.object({
   ip: z.string().ip(),

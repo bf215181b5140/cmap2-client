@@ -1,40 +1,45 @@
-import { useEffect } from 'react';
-import useVrcDetector from '../../../../hooks/vrcDetector.hook';
+import useGameDetector from '../../../../hooks/gameDetector.hook';
 import Segment from '../../../../components/segment/segment.component';
 import FormTable from '../../../../components/form/formTable.component';
 import { useForm } from 'react-hook-form';
-import { VrcDetectorSettings, VrcDetectorSettingsSchema } from '../../../../../shared/objects/settings';
+import { GameDetectorSettings, GameDetectorSettingsSchema } from '../../../../../shared/objects/settings';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CheckboxInput from '../../../../components/input/checkbox.component';
 import FormControlBar from '../../../../components/form/formControlBar.component';
 import IconButton from '../../../../components/buttons/iconButton.component';
 import NumberInput from '../../../../components/input/number.component';
-import { settingsStoreDefaults } from '../../../../../electron/store/settings/settings.model';
 
-export default function VrcStatus() {
+export default function GameStatus() {
 
-  const { vrcStatus, vrcStatusColor, icon } = useVrcDetector();
-  const { register, formState: { errors, isDirty }, handleSubmit, reset } = useForm<VrcDetectorSettings>({
-    resolver: zodResolver(VrcDetectorSettingsSchema),
-    defaultValues: window.IPC.store.getSync('vrcDetector')
+  const { gamesDetectedText, gamesDetectedColor, gameDetectionIcon } = useGameDetector();
+  const { register, formState: { errors, isDirty }, handleSubmit, reset } = useForm<GameDetectorSettings>({
+    resolver: zodResolver(GameDetectorSettingsSchema),
+    defaultValues: window.IPC.store.getSync('gameDetector')
   });
 
-  function onSubmit(formData: VrcDetectorSettings) {
-    window.IPC.store.set('vrcDetector', formData);
+  function onSubmit(formData: GameDetectorSettings) {
+    window.IPC.store.set('gameDetector', formData);
     reset(formData);
   }
 
-  return (<Segment segmentTitle={'VRChat'}>
-    <div style={{ color: vrcStatusColor, marginBottom: '15px' }}>
-      <i className={icon} style={{ paddingRight: '5px', fontSize: '20px' }} />
-      {vrcStatus}
+  return (<Segment segmentTitle={'Games'}>
+    <div style={{ color: gamesDetectedColor, marginBottom: '15px' }}>
+      <i className={gameDetectionIcon} style={{ paddingRight: '5px', fontSize: '20px' }} />
+      {gamesDetectedText}
     </div>
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormTable visible={true}>
         <tr>
-          <td style={{ width: '110px' }}>Detect VRChat</td>
+          <td style={{ width: '130px' }}>Detect VRChat</td>
           <td style={{ width: '80px' }}>
-            <CheckboxInput name={'detect'} register={register} errors={errors} />
+            <CheckboxInput name={'detectVRChat'} register={register} errors={errors} />
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Detect ChilloutVR</td>
+          <td>
+            <CheckboxInput name={'detectChilloutVR'} register={register} errors={errors} />
           </td>
           <td></td>
         </tr>
