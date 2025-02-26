@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { ChangeEventHandler, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FieldErrors, FieldValues, Path, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import ParameterDropdown from './parameterDropdown.component';

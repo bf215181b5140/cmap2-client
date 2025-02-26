@@ -52,7 +52,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
     reset(defaultValue);
   }, [layout]);
 
-  const canAddAvatars = fields.length < tier.avatars;
+  const canAddAvatars = fields.length < tier.layoutAvatars;
   const isNew = !defaultValue.id;
 
   function onSubmit(formData: LayoutFormDTO) {
@@ -100,7 +100,7 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
             </tr>
           ))}
           <tr>
-            <FormAddRow colSpan={1} items={fields.length} limit={tier.avatars} onClick={() => append('')} />
+            <FormAddRow colSpan={1} items={fields.length} limit={tier.layoutAvatars} onClick={() => append('')} />
           </tr>
           </tbody>
         </FormTableStyled>

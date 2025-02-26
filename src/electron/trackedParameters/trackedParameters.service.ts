@@ -6,8 +6,21 @@ import { SETTINGS } from '../store/settings/settings.store';
 import { Message } from 'node-osc';
 import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO } from 'cmap2-shared';
 
+// const ignoredOscParameters = ['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
+//                               '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
+//                               '/avatar/parameters/AngularY', '/avatar/parameters/Grounded', '/avatar/parameters/Face',
+//                               '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureRight',
+//                               '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
+//                               '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude'];
+
 export class TrackedParametersService extends Map<VrcParameter['path'], TrackedParameter> {
-  private clearOnAvatarChange: boolean = SETTINGS.get('trackedParameters').clearOnAvatarChange;
+  private clearOnAvatarChange = SETTINGS.get('trackedParameters').clearOnAvatarChange;
+  private blacklist = new Set<string>(SETTINGS.get('trackedParameters').blacklist);
+  private ignoredParameters = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
+                                       '/avatar/parameters/AngularY',
+                                       '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureLeftWeight',
+                                       '/avatar/parameters/Voice', '/avatar/parameters/Viseme',
+                                       '/avatar/parameters/VelocityMagnitude']);
 
   private resetFrequencyIntervalMs = 2000; // How often do we reset/reduce frequency values
 
@@ -17,7 +30,10 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
   constructor() {
     super();
 
-    SETTINGS.onChange('trackedParameters', settings => this.clearOnAvatarChange = settings.clearOnAvatarChange);
+    SETTINGS.onChange('trackedParameters', settings => {
+      this.clearOnAvatarChange = settings.clearOnAvatarChange;
+      this.blacklist = new Set(settings.blacklist);
+    });
 
     BRIDGE.on('osc:vrcParameter', vrcParameter => this.onVrcParameter(vrcParameter));
     BRIDGE.on('socket:applyParameters', callback => callback(this.toVrcParameterList()));
@@ -25,6 +41,7 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
     BRIDGE.on('socket:usedPreset', usedPreset => this.onUsedPreset(usedPreset));
     BRIDGE.on('socket:usedAvatar', usedAvatar => this.onUsedAvatar(usedAvatar));
 
+    IPC.handle('trackedParameters:getIgnoredParameters', async () => Array.from(this.ignoredParameters.values()));
     IPC.handle('trackedParameters:getTrackedParameters', async () => Array.from(this.entries()));
     IPC.handle('trackedParameters:getBufferFrequencyLimit', async () => this.bufferFrequencyLimit);
 
@@ -36,6 +53,12 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
    *
    */
   private onVrcParameter(vrcParameter: VrcParameter) {
+    // filter ignored parameters
+    if (this.ignoredParameters.has(vrcParameter.path)) return;
+
+    // filter blacklisted parameters
+    if (this.blacklist.has(vrcParameter.path)) return;
+
     const trackedParameter = this.setValue(vrcParameter);
 
     // if it's change avatar parameter then execute that logic to clear parameters

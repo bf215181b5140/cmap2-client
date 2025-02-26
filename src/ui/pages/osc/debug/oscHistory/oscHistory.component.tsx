@@ -12,7 +12,7 @@ export default function OscHistory() {
   const [oscParameterHistory, setOscParameterHistory] = useState<VrcParameterWithDate[]>([]);
 
   useEffect(() => {
-    const removeListener = window.IPC.receive('trackedParameters:vrcParameter', (data) => {
+    const removeListener = window.IPC.receive('osc:vrcParameter', (data) => {
       setOscParameterHistory(state => [{ ...data, date: new Date() }, ...state.slice(0, 50)]);
     });
 
@@ -22,6 +22,7 @@ export default function OscHistory() {
   }, []);
 
   return (<Segment width={'Full'} segmentTitle={'OSC activity history'}>
+    <p>This is a list of last 50 OSC parameters, including any ignored or blacklisted parameters</p>
     <SegmentTable>
       <thead>
       <tr>

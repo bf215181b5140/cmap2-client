@@ -3,11 +3,13 @@ import Segment from '../../../../components/segment/segment.component';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
 import { TrackedParameter } from '../../../../../electron/trackedParameters/trackedParameters.model';
 import { theme } from 'cmap2-shared/react';
+import AvatarName from '../../../../components/savedAvatar/savedAvatar.component';
 
 export default function TrackedParameters() {
 
   const [trackedParameters, setTrackedParameters] = useState<Map<string, TrackedParameter>>(new Map());
   const [bufferFrequencyLimit, setSufferFrequencyLimit] = useState<number | undefined>();
+  const trackedAvatarId = trackedParameters.get('/avatar/change')?.value?.toString();
 
   useEffect(() => {
     function getTrackedParameters() {
@@ -25,7 +27,6 @@ export default function TrackedParameters() {
     const intervalId = setInterval(getTrackedParameters, 1500);
 
     const removeListener = window.IPC.receive('trackedParameters:trackedParameter', (data) => {
-      console.log('trackedParameters:trackedParameter', data);
       setTrackedParameters(state => new Map(state.set(data[0], data[1])));
     });
 
@@ -49,23 +50,10 @@ export default function TrackedParameters() {
     return 'High';
   }
 
-  function bufferedColor(trackedParameter: TrackedParameter) {
-    if (trackedParameter.buffered) {
-      return theme.colors.error;
-    } else {
-      return theme.colors.success;
-    }
-  }
+  return (<Segment width={'Full'} segmentTitle={'Parameters'} infoContent={segmentInfo}>
 
-  function bufferedIcon(trackedParameter: TrackedParameter) {
-    if (trackedParameter.buffered) {
-      return <i className={'ri-spam-3-fill'} />;
-    } else {
-      return <i className={'ri-shield-check-line'} />;
-    }
-  }
+    <AvatarName avatarId={trackedAvatarId} />
 
-  return (<Segment width={'Full'} segmentTitle={'Parameters'}>
     <SegmentTable>
       <thead>
       <tr>
@@ -97,3 +85,11 @@ export default function TrackedParameters() {
     </SegmentTable>
   </Segment>);
 }
+
+const segmentInfo = <>
+  <p>
+    <b>Frequncy</b> means how often a parameter is detected, if one parameter is being sent out too often (many times each second) it will start buffering.
+    <br />
+    <b>Buffering</b> means that the parameter wont be forwarded to the website right away, but will instead be sent out every ~1 second.
+  </p>
+</>;

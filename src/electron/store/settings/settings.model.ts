@@ -8,7 +8,6 @@ export interface SettingsStoreData {
   osc: OscSettings;
   trackedParameters: TrackedParametersSettings;
   socket: SocketSettings;
-  socketParameterBlacklist: string[];
 }
 
 export const settingsStoreDefaults: SettingsStoreData = {
@@ -29,9 +28,9 @@ export const settingsStoreDefaults: SettingsStoreData = {
   },
   trackedParameters: {
     clearOnAvatarChange: true,
+    blacklist: [],
   },
   socket: {
     autoConnect: true,
   },
-  socketParameterBlacklist: []
 };

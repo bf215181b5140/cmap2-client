@@ -9,6 +9,7 @@ import { TrackedParameter, TrackedParameterDTO } from '../trackedParameters/trac
 export type IpcGetOptions = {
   'socket:connection': boolean;
   'osc:activity': number | undefined;
+  'trackedParameters:getIgnoredParameters': string[];
   'trackedParameters:getTrackedParameters': [string, TrackedParameter][];
   'trackedParameters:getBufferFrequencyLimit': number;
   'utility:fingerprint': string;
@@ -36,6 +37,7 @@ export type IpcSendOptions = {
 };
 
 export type IpcReceiveOptions = {
+  'osc:vrcParameter': VrcParameter;
   'trackedParameters:vrcParameter': VrcParameter;
   'trackedParameters:vrcParameters': VrcParameter[];
   'trackedParameters:trackedParameter': [string, TrackedParameter];

@@ -69,4 +69,13 @@ const AppStyled = styled.div`
       color: ${props => props.theme.colors.font.textBright};
     }
   }
+
+  span.clickable {
+    color: ${props => props.theme.colors.font.textBright};
+    cursor: pointer;
+
+    :hover {
+      color: ${props => props.theme.colors.font.textActive};
+    }
+  }
 `;

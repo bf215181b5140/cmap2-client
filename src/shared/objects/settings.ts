@@ -26,6 +26,7 @@ export type OscSettings = z.infer<typeof OscSettingsSchema>;
 
 export const TrackedParametersSettingsSchema = z.object({
   clearOnAvatarChange: z.boolean(),
+  blacklist: z.array(z.string()),
 });
 
 export type TrackedParametersSettings = z.infer<typeof TrackedParametersSettingsSchema>;
@@ -35,7 +36,3 @@ export const SocketSettingsSchema = z.object({
 });
 
 export type SocketSettings = z.infer<typeof SocketSettingsSchema>;
-
-export const SocketParameterBlacklistSchema = z.array(z.string());
-
-export type SocketParameterBlacklist = z.infer<typeof SocketParameterBlacklistSchema>;

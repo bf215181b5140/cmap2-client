@@ -5,25 +5,9 @@ import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { OscSettings } from '../../shared/objects/settings';
 import { SETTINGS } from '../store/settings/settings.store';
 
-// const ignoredOscParameters = ['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
-//                               '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
-//                               '/avatar/parameters/AngularY', '/avatar/parameters/Grounded', '/avatar/parameters/Face',
-//                               '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureRight',
-//                               '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/GestureLeft', '/avatar/parameters/Voice',
-//                               '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude'];
-
-const ignoredOscParameters = ['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
-
-                              '/avatar/parameters/AngularY',
-                              '/avatar/parameters/GestureRightWeight',
-                              '/avatar/parameters/GestureLeftWeight', '/avatar/parameters/Voice',
-                              '/avatar/parameters/Viseme', '/avatar/parameters/VelocityMagnitude'];
-
 export class OscController {
   private oscServer: Server | undefined;
   private oscClient: Client | undefined;
-
-  private ignoredParameters: Set<string> = new Set(ignoredOscParameters);
 
   private lastActivity: number | undefined;
 
@@ -54,13 +38,11 @@ export class OscController {
 
     const path = message[0];
 
-    // filter ignored parameters
-    if (this.ignoredParameters.has(path)) return;
-
     const value = this.valueFromArgumentType(message[1]);
     const vrcParameter: VrcParameter = { path, value };
 
     BRIDGE.emit('osc:vrcParameter', vrcParameter);
+    IPC.emit('osc:vrcParameter', vrcParameter);
   }
 
   private send(message: Message) {

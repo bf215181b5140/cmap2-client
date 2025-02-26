@@ -1,12 +1,11 @@
 import { Page } from '../../../components/page/page.component';
-import OscHistory from './oscHistory/oscHistory.component';
-import SendParameter from './sendParameter/sendParameter.component';
 import TrackedParameters from '../parameters/trackedParameters/trackedParameters.component';
+import ParameterSettings from './parameterSettings/parameterSettings.component';
 
-export default function DebugPage() {
+export default function ParametersPage() {
 
   return (<Page flexDirection={'row'}>
-    <SendParameter />
-    <OscHistory />
+    <TrackedParameters />
+    <ParameterSettings />
   </Page>);
 }
