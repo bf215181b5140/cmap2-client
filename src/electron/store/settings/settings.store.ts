@@ -17,9 +17,6 @@ class SettingsStore extends CmapStore<SettingsStoreData> {
     IPC.store.get((key) => this.get(key));
     IPC.store.getSync((key) => this.get(key));
     IPC.store.set((key, data) => this.set(key, data));
-
-    IPC.on('window:size', data => this.set('app.windowSize', data));
-    BRIDGE.on('window:size', data => this.set('app.windowSize', data));
   }
 }
 

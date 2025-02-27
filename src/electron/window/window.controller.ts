@@ -20,10 +20,10 @@ export class WindowController {
       preload: fileURLToPath(new URL('../shared/preload.cjs', import.meta.url))
     }
   };
-  private settings: AppSettings;
+  private settings = SETTINGS.get('app');
 
   constructor() {
-    this.settings = SETTINGS.get('app');
+    SETTINGS.onChange('app', data => this.settings = data);
 
     IPC.cmapWindow = this;
 
@@ -47,7 +47,7 @@ export class WindowController {
 
   private getSizeProperties(windowSize: WindowSize) {
     switch (windowSize) {
-      case 'Big':
+      case 'Large':
         return { width: 1448, height: 936 };
       case 'Medium':
         return { width: 1124, height: 768 };
@@ -64,6 +64,8 @@ export class WindowController {
     this.window?.setSize(width, height);
     this.window?.setResizable(false);
     this.window?.center();
+    SETTINGS.set('app.windowSize', windowSize);
+    IPC.emit('window:size', windowSize);
   }
 
   private setWindowState(windowState: WindowState) {

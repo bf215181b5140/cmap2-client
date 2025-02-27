@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import './style/style.css';
 import 'remixicon/fonts/remixicon.css';
 import TitleBar from './components/titleBar/titleBar.component';
-import Content from './components/content/content.componenet';
 import AppMenu from './components/menu/appMenu/appMenu.component';
 import Context from './components/context/context.component';
 import LaunchPadPage from './pages/launchPad/launchPad.page';
@@ -14,26 +13,34 @@ import NotificationsPage from './pages/notifications/notifications.page';
 import AvatarsPage from './pages/avatars/avatars.page';
 import UpdaterPage from './pages/updater/updater.page';
 import WebsitePage from './pages/website/website.page';
+import ModalComponent from './components/modal/modal.component';
+import { ToastComponent } from './components/toast/toast.component';
+import { FetchStatusComponent } from './components/fetchStatus/fetchStatus.component';
 
 export default function App() {
 
   return (<AppStyled>
     <Context>
-      <TitleBar />
-      <Content>
-        <Routes>
-          <Route path="/osc/*" element={<OscPage />} />
-          <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
-          <Route path="/website/*" element={<WebsitePage />} />
-          {/* <Route path="/settings" element={<SettingsPage />} /> */}
-          {/* <Route path="/lovense" element={<LovensePage />} /> */}
-          <Route path="/updater" element={<UpdaterPage />} />
-          {/* <Route path="/guide" element={<GuidePage />} /> */}
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/testing" element={<TestingPage />} />
-          <Route path="*" element={<LaunchPadPage />} />
-        </Routes>
-      </Content>
+      <AppContent>
+        <TitleBar />
+        <ContentOverflow>
+          <Routes>
+            <Route path="/osc/*" element={<OscPage />} />
+            <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
+            <Route path="/website/*" element={<WebsitePage />} />
+            {/* <Route path="/settings" element={<SettingsPage />} /> */}
+            {/* <Route path="/lovense" element={<LovensePage />} /> */}
+            <Route path="/updater" element={<UpdaterPage />} />
+            {/* <Route path="/guide" element={<GuidePage />} /> */}
+            <Route path="/notifications" element={<NotificationsPage />} />
+            <Route path="/testing" element={<TestingPage />} />
+            <Route path="*" element={<LaunchPadPage />} />
+          </Routes>
+        </ContentOverflow>
+        <ModalComponent />
+        <ToastComponent />
+        <FetchStatusComponent />
+      </AppContent>
       <AppMenu />
     </Context>
   </AppStyled>);
@@ -78,4 +85,22 @@ const AppStyled = styled.div`
       color: ${props => props.theme.colors.font.textActive};
     }
   }
+`;
+
+const AppContent = styled.div`
+    overflow: hidden;
+    width: 100%;
+    background-color: ${props => props.theme.colors.ui.appBgOpaque};
+    border: 2px solid ${props => props.theme.colors.ui.background5};
+    border-radius: 10px;
+    flex: 1;
+    position: relative;
+`;
+
+const ContentOverflow = styled.div`
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
 `;

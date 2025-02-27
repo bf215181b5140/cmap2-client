@@ -15,7 +15,7 @@ export class TrayController extends Tray {
       { type: 'separator', },
       {
         label: 'Resize', type: 'submenu', submenu: [
-          { label: 'Big', click: () => BRIDGE.emit('window:size', 'Big') },
+          { label: 'Large', click: () => BRIDGE.emit('window:size', 'Large') },
           { label: 'Medium', click: () => BRIDGE.emit('window:size', 'Medium') },
           { label: 'Small', click: () => BRIDGE.emit('window:size', 'Small') },
         ]

@@ -37,6 +37,7 @@ export type IpcSendOptions = {
 };
 
 export type IpcReceiveOptions = {
+  'window:size': WindowSize;
   'osc:vrcParameter': VrcParameter;
   'trackedParameters:vrcParameter': VrcParameter;
   'trackedParameters:vrcParameters': VrcParameter[];

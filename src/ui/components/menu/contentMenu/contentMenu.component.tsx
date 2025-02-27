@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const ContentMenu = styled.div`
-  background: ${props => props.theme.colors.segment.bg};
+  background: ${props => props.theme.colors.ui.background3};
   position: sticky;
   top: 0;
   bottom: 0;
