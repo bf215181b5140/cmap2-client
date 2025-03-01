@@ -23,23 +23,25 @@ export default function App() {
     <Context>
       <AppContent>
         <TitleBar />
-        <ContentOverflow>
-          <Routes>
-            <Route path="/osc/*" element={<OscPage />} />
-            <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
-            <Route path="/website/*" element={<WebsitePage />} />
-            {/* <Route path="/settings" element={<SettingsPage />} /> */}
-            {/* <Route path="/lovense" element={<LovensePage />} /> */}
-            <Route path="/updater" element={<UpdaterPage />} />
-            {/* <Route path="/guide" element={<GuidePage />} /> */}
-            <Route path="/notifications" element={<NotificationsPage />} />
-            <Route path="/testing" element={<TestingPage />} />
-            <Route path="*" element={<LaunchPadPage />} />
-          </Routes>
-        </ContentOverflow>
-        <ModalComponent />
-        <ToastComponent />
-        <FetchStatusComponent />
+        <Content>
+          <ContentOverflow>
+            <Routes>
+              <Route path="/osc/*" element={<OscPage />} />
+              <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
+              <Route path="/website/*" element={<WebsitePage />} />
+              {/* <Route path="/settings" element={<SettingsPage />} /> */}
+              {/* <Route path="/lovense" element={<LovensePage />} /> */}
+              <Route path="/updater" element={<UpdaterPage />} />
+              {/* <Route path="/guide" element={<GuidePage />} /> */}
+              <Route path="/notifications" element={<NotificationsPage />} />
+              <Route path="/testing" element={<TestingPage />} />
+              <Route path="*" element={<LaunchPadPage />} />
+            </Routes>
+          </ContentOverflow>
+          <ModalComponent />
+          <ToastComponent />
+          <FetchStatusComponent />
+        </Content>
       </AppContent>
       <AppMenu />
     </Context>
@@ -88,19 +90,30 @@ const AppStyled = styled.div`
 `;
 
 const AppContent = styled.div`
-    overflow: hidden;
-    width: 100%;
-    background-color: ${props => props.theme.colors.ui.appBgOpaque};
-    border: 2px solid ${props => props.theme.colors.ui.background5};
-    border-radius: 10px;
-    flex: 1;
-    position: relative;
+  overflow: hidden;
+  width: 100%;
+  background-color: ${props => props.theme.colors.ui.appBgOpaque};
+  border: 2px solid ${props => props.theme.colors.ui.background5};
+  border-radius: 10px;
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Content = styled.div`
+  overflow: hidden;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 `;
 
 const ContentOverflow = styled.div`
-    overflow: auto;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
+  overflow: auto;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
 `;

@@ -29,31 +29,32 @@ export default function TitleBar() {
 }
 
 const TitleBarStyled = styled.div`
-    width: 100%;
-    background-color: ${props => props.theme.colors.ui.background3};
-    border-radius: 8px 8px 0 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    -webkit-app-region: drag;
-    -webkit-user-select: none;
-    padding: 0 8px;
+  width: 100%;
+  background-color: ${props => props.theme.colors.ui.background3};
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  padding: 0 8px;
+  z-index: 200;
 `;
 
 const StatusStyled = styled.div`
-    display: flex;
-    align-items: center;
-    font-size: 30px;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
 
-    i {
-        padding: 8px;
-        text-shadow: 0 0 3px black;
-    }
+  i {
+    padding: 8px;
+    text-shadow: 0 0 3px black;
+  }
 `;
 
 const ButtonsStyled = styled.div`
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    -webkit-app-region: none;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  -webkit-app-region: none;
 `;
