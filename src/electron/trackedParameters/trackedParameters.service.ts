@@ -17,7 +17,7 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
   private clearOnAvatarChange = SETTINGS.get('trackedParameters').clearOnAvatarChange;
   private blacklist = new Set<string>(SETTINGS.get('trackedParameters').blacklist);
   private ignoredParameters = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
-                                       '/avatar/parameters/AngularY',
+                                       '/avatar/parameters/AngularY', '/avatar/parameters/Upright',
                                        '/avatar/parameters/GestureRightWeight', '/avatar/parameters/GestureLeftWeight',
                                        '/avatar/parameters/Voice', '/avatar/parameters/Viseme',
                                        '/avatar/parameters/VelocityMagnitude']);

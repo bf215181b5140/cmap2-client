@@ -39,7 +39,7 @@ export const theme = {
     },
     navBar: {
       bg: '#15191dee',
-      text: '#a3a3a3',
+      text: '#979797',
       icon: '#166472EE',
       hoverBg: '#045b66EE',
       hoverIcon: '#54bed1',
