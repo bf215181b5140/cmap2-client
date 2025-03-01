@@ -7,21 +7,19 @@ import { CredentialsContext } from '../../context/credentials.context';
 
 export default function AppMenu() {
 
+  // todo: notification for update
   const { updateStatusColor } = useUpdateStatus();
   const { credentials: { isAdmin } } = useContext(CredentialsContext);
 
   return (<AppMenuStyled>
-    <AppMenuLink to={'/'} icon={'ri-rocket-2-fill'} tooltip={'Launch pad'} />
-    <AppMenuLink to={'/osc'} icon={'ri-gamepad-line'} tooltip={'VRChat and OSC'} />
-    <AppMenuLink to={'/avatars'} icon={'ri-contacts-book-fill'} tooltip={'Avatars'} />
-    <AppMenuLink to={'/website'} icon={'ri-global-line'} tooltip={'Website'} />
-    {isAdmin && <AppMenuLink to={'/admin'} icon={'ri-admin-line'} tooltip={'Admin'} />}
-    {/* <AppMenuLink to={'/lovense'} icon={'ri-wireless-charging-fill'} tooltip={'Lovense'} /> */}
-    <AppMenuLink to={'/notifications'} icon={'ri-discuss-line'} tooltip={'Notifications'} />
-    <AppMenuLink to={'/updater'} icon={'ri-download-2-fill'} tooltip={'Updates'} attentionIcon={!!updateStatusColor} attentionColor={updateStatusColor} />
-    <AppMenuLink to={'/guide'} icon={'ri-questionnaire-fill'} tooltip={'Help and guides'} />
-    <AppMenuLink to={'/settings'} icon="ri-settings-3-fill" tooltip={'Settings'} />
-    {IS_DEV && <AppMenuLink to={'/testing'} icon={'ri-flask-line'} tooltip={'Testing page'} />}
+    <AppMenuLink to={'/'} icon={'ri-rocket-2-fill'} text={'Launch pad'} />
+    <AppMenuLink to={'/osc'} icon={'ri-gamepad-line'} text={'OSC'} />
+    <AppMenuLink to={'/avatars'} icon={'ri-contacts-book-fill'} text={'Avatars'} />
+    <AppMenuLink to={'/website'} icon={'ri-global-line'} text={'Website'} />
+    {isAdmin && <AppMenuLink to={'/admin'} icon={'ri-admin-line'} text={'Admin'} />}
+    <AppMenuLink to={'/notifications'} icon={'ri-discuss-line'} text={'Notifications'} />
+    <AppMenuLink to={'/updater'} icon={'ri-download-2-fill'} text={'Updates'} />
+    {IS_DEV && <AppMenuLink to={'/testing'} icon={'ri-flask-line'} text={'Testing page'} />}
   </AppMenuStyled>);
 }
 

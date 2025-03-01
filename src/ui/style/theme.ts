@@ -38,7 +38,8 @@ export const theme = {
       bg: '#15191dEE',
     },
     navBar: {
-      bg: '#181f24ee',
+      bg: '#15191dee',
+      text: '#a3a3a3',
       icon: '#166472EE',
       hoverBg: '#045b66EE',
       hoverIcon: '#54bed1',
