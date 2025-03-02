@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import AppMenuLink from './appMenuLink.component';
 import { IS_DEV } from '../../../../shared/const';
-import useUpdateStatus from '../../../hooks/updateStatus.hook';
 import { useContext } from 'react';
 import { CredentialsContext } from '../../context/credentials.context';
 

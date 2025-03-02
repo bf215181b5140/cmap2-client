@@ -14,7 +14,6 @@ import { TrackedParametersService } from './trackedParameters/trackedParameters.
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
-  process.exit(0);
 }
 
 app.whenReady().then(() => {

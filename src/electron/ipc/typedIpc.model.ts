@@ -2,9 +2,9 @@ import { VrcOscAvatar } from '../../shared/objects/vrcOscAvatar';
 import { DetectedGamesDTO, VrcParameter } from 'cmap2-shared';
 import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
-import { UpdateData } from '../updater/updater.model';
+import { UpdaterData } from '../updater/updater.model';
 import { WindowSize } from '../../shared/enums/windowSize';
-import { TrackedParameter, TrackedParameterDTO } from '../trackedParameters/trackedParameters.model';
+import { TrackedParameter } from '../trackedParameters/trackedParameters.model';
 
 export type IpcGetOptions = {
   'socket:connection': boolean;
@@ -28,7 +28,7 @@ export type IpcSendOptions = {
   'socket:disconnect': undefined;
   'gameDetector:check': void;
   'updater:check': undefined;
-  'updater:start': string;
+  'updater:downloadAndInstall': string;
   // these stores should get reworked wihtout IPC calls
   saveAvatars: VrcOscAvatar[];
   saveNotification: Notification;
@@ -45,5 +45,6 @@ export type IpcReceiveOptions = {
   'trackedParameters:trackedParameters': [string, TrackedParameter][];
   'socket:connection': boolean;
   'gameDetector:detectedGames': DetectedGamesDTO;
-  'updater:data': UpdateData;
+  'updater:update': UpdaterData;
+  'updater:progress': number | false;
 };

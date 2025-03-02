@@ -9,9 +9,7 @@ import Context from './components/context/context.component';
 import LaunchPadPage from './pages/launchPad/launchPad.page';
 import OscPage from './pages/osc/osc.page';
 import TestingPage from './pages/testing/testing.page';
-import NotificationsPage from './pages/notifications/notifications.page';
 import AvatarsPage from './pages/avatars/avatars.page';
-import UpdaterPage from './pages/updater/updater.page';
 import WebsitePage from './pages/website/website.page';
 import ModalComponent from './components/modal/modal.component';
 import { ToastComponent } from './components/toast/toast.component';
@@ -31,9 +29,7 @@ export default function App() {
               <Route path="/website/*" element={<WebsitePage />} />
               {/* <Route path="/settings" element={<SettingsPage />} /> */}
               {/* <Route path="/lovense" element={<LovensePage />} /> */}
-              <Route path="/updater" element={<UpdaterPage />} />
               {/* <Route path="/guide" element={<GuidePage />} /> */}
-              <Route path="/notifications" element={<NotificationsPage />} />
               <Route path="/testing" element={<TestingPage />} />
               <Route path="*" element={<LaunchPadPage />} />
             </Routes>
