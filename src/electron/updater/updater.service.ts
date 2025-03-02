@@ -33,6 +33,7 @@ export default class UpdaterService {
     this.intervalId = setInterval(() => this.checkForUpdates(), 1800 * 1000);
   }
 
+  // todo perhaps look into getting releases straight from github https://api.github.com/repos/bf215181b5140/cmap2-client/releases/latest
   async checkForUpdates() {
     let data = await fetch(`${WEBSITE_URL}/api/updates`, {
       method: 'GET',
