@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const globalInputStyle = css<{ errors?: boolean, width?: string }>`
   font-family: Dosis-Bold, sans-serif;
-  font-size: 1em;
+  font-size: 16px;
   //margin: 7px;
   padding: 0 10px;
   color: ${props => props.theme.colors.font.text};

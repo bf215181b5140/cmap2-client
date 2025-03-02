@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import semver from 'semver';
 import { UpdateData } from '../../electron/updater/updater.model';
 import { theme } from '../style/theme';
+import { NotificationType, NotificationTypeSchema } from 'cmap2-shared';
 
 export default function useUpdateStatus() {
 
@@ -49,11 +50,21 @@ export default function useUpdateStatus() {
     return undefined;
   }
 
+  function updateSeverity(): NotificationType | undefined {
+    if (newUpdate) {
+      if (newMajor) return NotificationTypeSchema.Values.Error;
+      if (newMinor) return NotificationTypeSchema.Values.Warning;
+      if (newPatch) return NotificationTypeSchema.Values.Info;
+    }
+    return undefined;
+  }
+
   return {
     currentVersion: updateData?.currentVersion,
     latest: newUpdate ? updateData?.latest : undefined,
     updateStatus: updateStatus(),
     updateDetail: updateDetail(),
-    updateStatusColor: updateStatusColor()
+    updateStatusColor: updateStatusColor(),
+    updateSeverity: updateSeverity(),
   };
 }

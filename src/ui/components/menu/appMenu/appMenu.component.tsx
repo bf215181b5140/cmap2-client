@@ -7,8 +7,6 @@ import { CredentialsContext } from '../../context/credentials.context';
 
 export default function AppMenu() {
 
-  // todo: notification for update
-  const { updateStatusColor } = useUpdateStatus();
   const { credentials: { isAdmin } } = useContext(CredentialsContext);
 
   return (<AppMenuStyled>
@@ -17,8 +15,6 @@ export default function AppMenu() {
     <AppMenuLink to={'/avatars'} icon={'ri-contacts-book-fill'} text={'Avatars'} />
     <AppMenuLink to={'/website'} icon={'ri-global-line'} text={'Website'} />
     {isAdmin && <AppMenuLink to={'/admin'} icon={'ri-admin-line'} text={'Admin'} />}
-    <AppMenuLink to={'/notifications'} icon={'ri-discuss-line'} text={'Notifications'} />
-    <AppMenuLink to={'/updater'} icon={'ri-download-2-fill'} text={'Updates'} />
     {IS_DEV && <AppMenuLink to={'/testing'} icon={'ri-flask-line'} text={'Testing page'} />}
   </AppMenuStyled>);
 }

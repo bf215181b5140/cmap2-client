@@ -4,6 +4,8 @@ import IconButton from '../buttons/iconButton.component';
 import useGameDetector from '../../hooks/gameDetector.hook';
 import useSocketConnection from '../../hooks/socketConnection.hook';
 import TitleBarSelect from './titleBarSelect.component';
+import UpdateDrawer from '../drawer/updateDrawer/updateDrawer.component';
+import NotificationDrawer from '../drawer/notificationDrawer/notificationDrawer.component';
 
 export default function TitleBar() {
 
@@ -20,6 +22,10 @@ export default function TitleBar() {
       <i className={socketIcon} style={{ color: color }} />
     </StatusStyled>
     <ButtonsStyled>
+      <DrawersStyled>
+        <NotificationDrawer />
+        <UpdateDrawer />
+      </DrawersStyled>
       <TitleBarSelect />
       <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Tray')} icon={'ri-arrow-right-down-line'} />
       <IconButton role={'normal'} tooltip={false} size={'small'} onClick={() => setWindowState('Minimize')} icon={'ri-subtract-fill'} />
@@ -57,4 +63,11 @@ const ButtonsStyled = styled.div`
   gap: 6px;
   align-items: center;
   -webkit-app-region: none;
+`;
+
+const DrawersStyled = styled.div`
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 0 15px;
 `;

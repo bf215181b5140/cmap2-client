@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Page } from '../../../components/page/page.component';
 import BackgroundPicker from '../style/background/backgroundPicker.component';
 import StylePicker from '../style/theme/themePicker.component';
-import ProfilePreview from '../style/components/profilePreview.component';
 import NoConnection from '../../../components/noConnection/noConnection.component';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
 import { BackgroundDTO, StylePageDTO, StylePageSchema, ThemeDTO } from 'cmap2-shared';
@@ -21,14 +20,16 @@ export default function StylePage() {
   function setBackground(background: BackgroundDTO) {
     setStylesData(prevState => {
       if (!prevState) return undefined;
-      return { ...prevState, background: background };
+      prevState.client.background = background;
+      return { ...prevState };
     });
   }
 
   function setTheme(theme: ThemeDTO) {
     setStylesData(prevState => {
       if (!prevState) return undefined;
-      return { ...prevState, theme: theme };
+      prevState.client.theme = theme;
+      return { ...prevState };
     });
   }
 
@@ -43,15 +44,9 @@ export default function StylePage() {
       <div onClick={() => setSection('theme')} aria-current={section === 'theme'}>Theme</div>
     </PageMenu>
 
-    {section === 'background' && <>
-      <BackgroundPicker stylesData={stylesData} setBackground={setBackground} />
-      <ProfilePreview client={stylesData.client} />
-    </>}
+    {section === 'background' && <BackgroundPicker stylesData={stylesData} setBackground={setBackground} />}
 
-    {section === 'theme' && <>
-      <StylePicker stylesData={stylesData} setTheme={setTheme} />
-      <ProfilePreview client={stylesData.client} />
-    </>}
+    {section === 'theme' && <StylePicker stylesData={stylesData} setTheme={setTheme} />}
 
   </Page>);
 }
