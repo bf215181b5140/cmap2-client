@@ -5,6 +5,8 @@ import { BRIDGE } from '../bridge/bridge.service';
 import { SETTINGS } from '../store/settings/settings.store';
 import { Message } from 'node-osc';
 import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO } from 'cmap2-shared';
+import { TRACKED_PARAMETERS_STORE } from '../store/trackedParameters/trackedParameters.store';
+import { app } from 'electron';
 
 // const ignoredOscParameters = ['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
 //                               '/avatar/parameters/InStation', '/avatar/parameters/Seated', '/avatar/parameters/Upright',
@@ -15,6 +17,8 @@ import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO } from
 
 export class TrackedParametersService extends Map<VrcParameter['path'], TrackedParameter> {
   private clearOnAvatarChange = SETTINGS.get('trackedParameters').clearOnAvatarChange;
+  private saveParameters = SETTINGS.get('trackedParameters').saveParameters;
+  private saveParametersIntervalId: NodeJS.Timeout | undefined;
   private blacklist = new Set<string>(SETTINGS.get('trackedParameters').blacklist);
   private ignoredParameters = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
                                        '/avatar/parameters/AngularY', '/avatar/parameters/Upright',
@@ -32,8 +36,19 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
 
     SETTINGS.onChange('trackedParameters', settings => {
       this.clearOnAvatarChange = settings.clearOnAvatarChange;
+      this.saveParameters = settings.saveParameters;
       this.blacklist = new Set(settings.blacklist);
+
+      // call save parameter interval and if we're saving then save right away
+      this.saveParametersInterval();
+      if (this.saveParameters) this.saveParametersToStore();
     });
+
+    if (this.saveParameters) {
+      TRACKED_PARAMETERS_STORE.get('parameters').forEach(tp => this.setValue(tp));
+      this.saveParametersInterval();
+    }
+    app.on('quit', () => this.saveParametersToStore());
 
     BRIDGE.on('osc:vrcParameter', vrcParameter => this.onVrcParameter(vrcParameter));
     BRIDGE.on('socket:applyParameters', callback => callback(this.toVrcParameterList()));
@@ -212,5 +227,30 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
 
   public toVrcParameterList(): VrcParameter[] {
     return [...this.entries()].map(p => ({ path: p[0], value: p[1].value }));
+  }
+
+  /**
+   * Manage interval for periodically saving parameters to electron store. (In case app closes in a way that saving on close event wouldn't work)
+   *
+   * Saving every 60 seconds
+   *
+   */
+  private saveParametersInterval() {
+    if (this.saveParameters) {
+      if (this.saveParametersIntervalId) return;
+      this.saveParametersIntervalId = setInterval(() => this.saveParametersToStore(), 60 * 1000);
+    } else {
+      clearInterval(this.saveParametersIntervalId);
+      this.saveParametersIntervalId = undefined;
+    }
+  }
+
+  /**
+   * Saves parameters to store
+   *
+   */
+  private saveParametersToStore() {
+    TRACKED_PARAMETERS_STORE.set('parameters', this.toVrcParameterList());
+    console.log('saving parameters', this.toVrcParameterList().length);
   }
 }

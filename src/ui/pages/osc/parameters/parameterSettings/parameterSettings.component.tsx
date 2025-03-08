@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Segment from '../../../../components/segment/segment.component';
 import { TrackedParametersSettings, TrackedParametersSettingsSchema } from '../../../../../shared/objects/settings';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -35,15 +35,21 @@ export default function ParameterSettings() {
     <Form onSubmit={handleSubmit(onSubmit)} visible={true}>
       <FormTable>
         <tr>
-          <th style={{ width: '270px' }}>Clear old parameters on avatar change</th>
-          <td><CheckboxInput name={'clearOnAvatarChange'} register={register} errors={errors} /></td>
+          <th style={{ width: '160px' }}>Clear on avatar change</th>
+          <td style={{ width: '55px' }}><CheckboxInput name={'clearOnAvatarChange'} register={register} errors={errors} /></td>
+          <td><p>Will clear old parameters after changing avatar (not always 100% accurate)</p></td>
+        </tr>
+        <tr>
+          <th>Save parameters</th>
+          <td><CheckboxInput name={'saveParameters'} register={register} errors={errors} /></td>
+          <td><p>Will try save parameters on exit for next time you launch the application</p></td>
         </tr>
       </FormTable>
       <fieldset>
         <legend>Blacklist</legend>
         <p>Specify parameters that you don't want to track and forward to the website.</p>
         <p>
-          Some parameters are already automatically ignored because they are sent 100+ times a second during normal gameplay.
+          Some parameters are already automatically ignored because they are sent too many times a second during normal gameplay.
           <br />
           <span className={'clickable'} onClick={() => setShowIgnoredParameters(!showIgnoredParameters)}>
             Click to show the full list <i className={showIgnoredParameters ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'} />

@@ -22,7 +22,7 @@ export default function OscHistory() {
   }, []);
 
   return (<Segment width={'Full'} segmentTitle={'OSC activity history'}>
-    <p>This is a list of last 50 OSC parameters, including any ignored or blacklisted parameters</p>
+    <p>This is a list of last 50 OSC messages, including any ignored or blacklisted parameters</p>
     <SegmentTable>
       <thead>
       <tr>

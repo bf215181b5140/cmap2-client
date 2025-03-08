@@ -1,5 +1,5 @@
 import { Credentials } from '../../../shared/objects/credentials';
-import { AppSettings, OscSettings, SocketSettings, TrackedParametersSettings, GameDetectorSettings } from '../../../shared/objects/settings';
+import { AppSettings, GameDetectorSettings, OscSettings, SocketSettings, TrackedParametersSettings } from '../../../shared/objects/settings';
 
 export interface SettingsStoreData {
   credentials: Credentials;
@@ -29,6 +29,7 @@ export const settingsStoreDefaults: SettingsStoreData = {
   },
   trackedParameters: {
     clearOnAvatarChange: true,
+    saveParameters: true,
     blacklist: [],
   },
   socket: {

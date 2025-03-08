@@ -27,6 +27,7 @@ export type OscSettings = z.infer<typeof OscSettingsSchema>;
 
 export const TrackedParametersSettingsSchema = z.object({
   clearOnAvatarChange: z.boolean(),
+  saveParameters: z.boolean(),
   blacklist: z.array(z.string()),
 });
 
