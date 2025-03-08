@@ -1,4 +1,4 @@
-import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
 import { MouseEvent, useEffect, useReducer, useState } from 'react';
 import { BackgroundDTO, InteractionKeyDTO, LayoutsPageSchema, ThemeDTO, TierDTO } from 'cmap2-shared';
@@ -65,39 +65,6 @@ export default function LayoutsPage() {
   }
 
   return (<Page flexDirection={'column'}>
-
-    <PageMenu>
-      {/* Layout */}
-      <div onClick={event => onMenuItemClick(event, `/website/layouts/${layout?.id}`)}>
-        {layout?.label || 'Layout'}
-        {layouts.length > 0 && <div className={'PageMenuDropdown'}>
-          <ul>
-            {layouts.map(l =>
-              <li key={l.id} onClick={event => onMenuItemClick(event, `/website/layouts/${l.id}`)}>{l.label}</li>
-            )}
-          </ul>
-        </div>}
-      </div>
-    </PageMenu>
-
-    <Routes>
-      <Route path={'/'} element={<>layouts</>} />
-      <Route path={'/:layoutId'} element={<>layout</>} />
-      <Route path={'edit/layout/:layoutId'} element={<>editing layout</>} />
-      <Route path={'edit/group/:layoutId/:groupId'} element={<>editing group</>} />
-      <Route path={'edit/parameterButton/:layoutId/:groupId/:parameterButtonId'} element={<>editing parameter button</>} />
-      <Route path={'edit/presetButton/:layoutId/:presetButtonId'} element={<>editing preset button</>} />
-      <Route path={'edit/avatarButton/:avatarButtonId'} element={<>editing avatar button</>} />
-    </Routes>
-
-    <Link to={'/website/layouts'}>layouts</Link>
-    <Link to={'/website/layouts/layoutId'}>layout</Link>
-    <Link to={'/website/layouts/edit/layout/layoutId'}>editing layout</Link>
-    <Link to={'/website/layouts/edit/group/layoutId/groupId'}>editing group</Link>
-    <Link to={'/website/layouts/edit/parameterButton/layoutId/groupId/parameterButtonId'}>editing parameter button</Link>
-    <Link to={'/website/layouts/edit/presetButton/layoutId/presetButtonId'}>editing preset button</Link>
-    <Link to={'/website/layouts/edit/avatarButton/avatarButtonId'}>editing avatar button</Link>
-
     <LayoutsPageContext.Provider value={pageData}>
 
       <PageMenu>

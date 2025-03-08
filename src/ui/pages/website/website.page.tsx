@@ -40,7 +40,7 @@ export default function WebsitePage() {
     <Routes>
       <Route path="/connection" element={<ConnectionPage />} />
       <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/layouts/*" element={<LayoutsPage />} />
+      <Route path="/layouts/:layoutId?/:groupId?/:buttonId?" element={<LayoutsPage />} />
       <Route path="/interactionKeys" element={<InteractionKeysPage />} />
       <Route path="/style" element={<StylePage />} />
       <Route path="/tiers" element={<TiersPage />} />
