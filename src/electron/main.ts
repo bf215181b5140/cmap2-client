@@ -8,7 +8,6 @@ import { SocketController } from './socket/socket.controller';
 import { AVATARS } from './store/avatars/avatars.store';
 import { OscController } from './osc/osc.controller';
 import { UtilityController } from './utility/utility.controller';
-import { NotificationsStore } from './store/notifications/notifications.store';
 import UpdaterService from './updater/updater.service';
 import { TrackedParametersService } from './trackedParameters/trackedParameters.service';
 
@@ -24,7 +23,6 @@ app.whenReady().then(() => {
   log.eventLogger.startLogging();
 
   // Stores
-  new NotificationsStore();
   AVATARS;
 
   // start functions

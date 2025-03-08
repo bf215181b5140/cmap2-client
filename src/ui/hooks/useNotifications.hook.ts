@@ -22,7 +22,6 @@ export function useNotifications() {
       group: options?.group,
       dateTime: new Date().toLocaleString(),
     };
-    window.IPC.send('saveNotification', notification);
     if (options?.showToast !== false) {
       toastsDispatch({
         type: 'add',

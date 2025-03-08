@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useState } from 'react';
 import { Notification } from '../../shared/objects/notification';
 
 export interface Toast extends Notification {
@@ -37,6 +37,11 @@ function toastReducer(state: Toast[], action: ToastReducerAction): Toast[] {
 
 export function useToast() {
   const [toasts, internalDispatch] = useReducer(toastReducer, []);
+  const [toastHistory, setToastHistory] = useState<Toast[]>([]);
+
+  function saveToHistory(toast: Toast) {
+    setToastHistory(state => [toast, ...state]);
+  }
 
   // dispatch wrapper that sets a timeout on new toasts to clear them after 7 seconds
   function toastsDispatch(action: ToastReducerAction) {
@@ -45,9 +50,10 @@ export function useToast() {
       action.toast.timeoutId = setTimeout(() => {
         internalDispatch({ type: 'remove', toast: action.toast });
       }, 7000);
+      saveToHistory(action.toast);
     }
     internalDispatch(action);
   }
 
-  return { toasts, toastsDispatch };
+  return { toasts, toastsDispatch, toastHistory };
 }

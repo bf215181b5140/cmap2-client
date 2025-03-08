@@ -1,6 +1,5 @@
 import { VrcOscAvatar } from '../../shared/objects/vrcOscAvatar';
 import { DetectedGamesDTO, VrcParameter } from 'cmap2-shared';
-import { Notification } from '../../shared/objects/notification';
 import { WindowState } from '../../shared/enums/windowState';
 import { UpdaterData } from '../updater/updater.model';
 import { WindowSize } from '../../shared/enums/windowSize';
@@ -15,7 +14,6 @@ export type IpcGetOptions = {
   'utility:fingerprint': string;
   // these stores should get reworked wihtout IPC calls
   getAvatars: VrcOscAvatar[];
-  getNotifications: Notification[];
 };
 
 export type IpcSendOptions = {
@@ -31,9 +29,6 @@ export type IpcSendOptions = {
   'updater:downloadAndInstall': string;
   // these stores should get reworked wihtout IPC calls
   saveAvatars: VrcOscAvatar[];
-  saveNotification: Notification;
-  deleteNotification: Notification;
-  clearNotifications: void;
 };
 
 export type IpcReceiveOptions = {

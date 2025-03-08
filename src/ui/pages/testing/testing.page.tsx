@@ -2,8 +2,12 @@ import { Page } from '../../components/page/page.component';
 import React, { useEffect } from 'react';
 import './testing.style.css';
 import TextButton from '../../components/buttons/textButton.component';
+import Segment from '../../components/segment/segment.component';
+import { useNotifications } from '../../hooks/useNotifications.hook';
 
 export default function TestingPage() {
+
+  const { addNotification } = useNotifications();
 
   useEffect(() => {
     const listen = window.IPC.receive('updater:progress', data => console.log('updated progress', data))
@@ -20,6 +24,13 @@ export default function TestingPage() {
   return (<Page flexDirection={'column'}>
 
     <TextButton text={'download'} onClick={() => onClick()} />
+
+    <Segment>
+      <TextButton text={'Info'} onClick={() => addNotification('Info', 'This is an example info notification')} />
+      <TextButton text={'Success'} onClick={() => addNotification('Success', 'This is an example success notification')} />
+      <TextButton text={'Warning'} onClick={() => addNotification('Warning', 'This is an example warning notification')} />
+      <TextButton text={'Error'} onClick={() => addNotification('Error', 'This is an example error notification!')} />
+    </Segment>
 
   </Page>);
 }

@@ -21,34 +21,34 @@ export function ToastComponent() {
 }
 
 const ToastComponentStyled = styled.div`
-    position: absolute;
-    bottom: 20px;
-    left: 50px;
-    right: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    pointer-events: none;
-    z-index: 101;
+  position: absolute;
+  bottom: 20px;
+  left: 50px;
+  right: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 101;
 `;
 
 const ToastStyled = styled.div<{ background: string, border: string }>`
-    margin: 0;
-    padding: 10px 16px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 16px;
-    border-radius: 8px;
-    background: ${props => props.background};
-    border: 1px solid ${props => props.border};
-    filter: opacity(0.90);
-    pointer-events: none;
-    min-width: 200px;
-    max-width: 600px;
+  margin: 0;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  border-radius: 8px;
+  background: ${props => props.background};
+  border: 1px solid ${props => props.border};
+  filter: opacity(0.90);
+  pointer-events: none;
+  min-width: 200px;
+  max-width: 600px;
 
-    i {
-        font-size: 20px;
-    }
+  i {
+    font-size: 20px;
+  }
 `;
