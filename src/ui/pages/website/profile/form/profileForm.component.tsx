@@ -90,7 +90,7 @@ export default function ProfileForm({ profile, saveProfileForm }: ProfileFormPro
             </fieldset>
           </td>
         </tr>
-      <FormControlRow colspan={2}>
+      <FormControlRow colSpan={2}>
         <IconButton role={'save'} disabled={!isDirty} />
         <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
       </FormControlRow>

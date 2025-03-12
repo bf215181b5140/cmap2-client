@@ -8,7 +8,7 @@ const Form = styled.form<{ visible?: boolean }>`
   `}
 
   fieldset {
-    margin: 0;
+    margin: 5px 0;
     border-color: ${props => props.theme.colors.ui.element2};
     transition: 0.1s linear;
 

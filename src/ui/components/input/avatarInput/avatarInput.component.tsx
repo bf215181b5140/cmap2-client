@@ -30,7 +30,7 @@ export default function AvatarInput<T extends FieldValues>({ name, register, set
 
   function onApplySelection(avatarId: string) {
     // @ts-ignore
-    setValue(name, avatarId);
+    setValue(name, avatarId, { shouldDirty: true });
     setShowDropdown(false);
     if (onSelection) onSelection(avatarId);
   }

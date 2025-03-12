@@ -251,6 +251,5 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
    */
   private saveParametersToStore() {
     TRACKED_PARAMETERS_STORE.set('parameters', this.toVrcParameterList());
-    console.log('saving parameters', this.toVrcParameterList().length);
   }
 }

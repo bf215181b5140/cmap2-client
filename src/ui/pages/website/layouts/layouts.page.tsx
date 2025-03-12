@@ -1,27 +1,29 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
-import { MouseEvent, useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { BackgroundDTO, InteractionKeyDTO, LayoutsPageSchema, ThemeDTO, TierDTO } from 'cmap2-shared';
-import layoutsReducer from './layouts.reducer';
+import layoutsReducer from './reducers/layouts.reducer';
 import { LayoutsPageContext, LayoutsPageData } from './layouts.context';
-import { Page } from '../../../components/page/page.component';
-import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
-import LayoutSection from './layout/layout.section';
-import GroupSection from './group/group.section';
-import ButtonSection from './button/button.section';
-import LayoutsSection from './layoutsSelection/layoutsSelection.component';
+import LayoutPage from './layout/layout.page';
+import EditGroupPage from './edit/group/editGroup.page';
+import EditParameterButtonPage from './edit/parameterButton/editParameterButton.page';
 import NoConnection from '../../../components/noConnection/noConnection.component';
+import avatarButtonsReducer from './reducers/avatarButtons.reducer';
+import EditLayoutPage from './edit/layout/editLayoutPage';
+import EditPresetButtonPage from './edit/presetButton/editPresetButton.page';
+import EditAvatarButtonPage from './edit/avatarButton/editAvatarButton.page';
 
 export default function LayoutsPage() {
 
-  const navigate = useNavigate();
   const { GET } = useCmapFetch();
-  const { layoutId, groupId, buttonId } = useParams();
+
   const [tier, setTier] = useState<TierDTO | undefined>();
   const [background, setBackground] = useState<BackgroundDTO | undefined>();
   const [theme, setTheme] = useState<ThemeDTO | undefined>();
-  const [interactionKeys, setInteractionKeys] = useState<InteractionKeyDTO[]>([]);
   const [layouts, layoutsDispatch] = useReducer(layoutsReducer, []);
+  const [avatarButtons, avatarButtonsDispatch] = useReducer(avatarButtonsReducer, []);
+  const [interactionKeys, setInteractionKeys] = useState<InteractionKeyDTO[]>([]);
+
   const [noConnection, setNoConnection] = useState<boolean>(false);
 
   useEffect(() => {
@@ -29,8 +31,9 @@ export default function LayoutsPage() {
       setTier(data.tier);
       setBackground(data.background);
       setTheme(data.theme);
-      setInteractionKeys(data.interactionKeys);
       layoutsDispatch({ type: 'setLayouts', layouts: data.layouts });
+      avatarButtonsDispatch({ type: 'setAvatarButtons', avatarButtons: data.avatarButtons });
+      setInteractionKeys(data.interactionKeys);
     }, () => setNoConnection(true));
   }, []);
 
@@ -38,89 +41,34 @@ export default function LayoutsPage() {
 
   if (!tier || !background || !theme) return;
 
-  const layout = layouts?.find(l => l.id === layoutId);
-  const group = layout?.groups?.find(g => g.id === groupId);
-  const button = group?.parameterButtons?.find(b => b.id === buttonId);
-
-  const section = button || buttonId === 'new' ? 'button' : group || groupId === 'new' ? 'group' : layout || layoutId === 'new' ? 'layout' : 'layouts';
+  // const { layoutId, groupId, buttonId } = useParams();
+  // const layout = layouts?.find(l => l.id === layoutId);
+  // const group = layout?.groups?.find(g => g.id === groupId);
+  // const button = group?.parameterButtons?.find(b => b.id === buttonId);
 
   const pageData: LayoutsPageData = {
     tier,
     background,
-    theme: theme,
-    interactionKeys,
+    theme,
     layouts,
     layoutsDispatch,
-    layoutId,
-    groupId,
-    buttonId,
-    layout,
-    group,
-    parameterButton: button
+    avatarButtons,
+    avatarButtonsDispatch,
+    interactionKeys,
+    setInteractionKeys,
   };
 
-  function onMenuItemClick(event: MouseEvent<HTMLElement>, path: string) {
-    event.stopPropagation();
-    navigate(path);
-  }
+  return (<LayoutsPageContext.Provider value={pageData}>
 
-  return (<Page flexDirection={'column'}>
-    <LayoutsPageContext.Provider value={pageData}>
+    <Routes>
+      {/* <Route path={''} element={<LayoutPage />} /> */}
+      <Route path={':layoutId?'} element={<LayoutPage />} />
+      <Route path={'edit/layout/:layoutId'} element={<EditLayoutPage />} />
+      <Route path={'edit/group/:layoutId/:groupId'} element={<EditGroupPage />} />
+      <Route path={'edit/parameterButton/:layoutId/:groupId/:parameterButtonId'} element={<EditParameterButtonPage />} />
+      <Route path={'edit/presetButton/:layoutId/:presetButtonId'} element={<EditPresetButtonPage />} />
+      <Route path={'edit/avatarButton/:avatarButtonId'} element={<EditAvatarButtonPage />} />
+    </Routes>
 
-      <PageMenu>
-        <div onClick={() => navigate('/website/layouts')} aria-current={section === 'layouts'}>Layouts</div>
-
-        <i className={'ri-arrow-right-s-line'} />
-
-        {/* Layout */}
-        <div onClick={event => onMenuItemClick(event, `/website/layouts/${layout?.id}`)} aria-current={section === 'layout'} aria-disabled={!layout}>
-          {layout?.label || 'Layout'}
-          {layouts.length > 0 && <div className={'PageMenuDropdown'}>
-            <ul>
-              {layouts.map(l =>
-                <li key={l.id} onClick={event => onMenuItemClick(event, `/website/layouts/${l.id}`)}>{l.label}</li>
-              )}
-            </ul>
-          </div>}
-        </div>
-
-        <i className={'ri-arrow-right-s-line'} />
-
-        {/* Group */}
-        <div onClick={event => onMenuItemClick(event, `/website/layouts/${layout?.id}/${group?.id}`)} aria-current={section === 'group'} aria-disabled={!group}>
-          {group?.label || 'Group'}
-          {(layout?.groups?.length || 0) > 0 && <div className={'PageMenuDropdown'}>
-            <ul>
-              {layout?.groups?.map((g, index) =>
-                <li key={g.id} onClick={event => onMenuItemClick(event, `/website/layouts/${layout.id}/${g.id}`)}>{g.label || `Unnamed group ${index}`}</li>
-              )}
-            </ul>
-          </div>}
-        </div>
-
-        <i className={'ri-arrow-right-s-line'} />
-
-        {/* Button */}
-        <div onClick={event => onMenuItemClick(event, `/website/layouts/${layout?.id}/${group?.id}/${button?.id}`)} aria-current={section === 'button'} aria-disabled={!button}>
-          {button?.label || 'Button'}
-          {(group?.parameterButtons?.length || 0) > 0 && <div className={'PageMenuDropdown'}>
-            <ul>
-              {group?.parameterButtons?.map((b, index) =>
-                <li key={b.id} onClick={event => onMenuItemClick(event, `/website/layouts/${layout?.id}/${group.id}/${b.id}`)}>{b.label || `Unnamed button ${index}`}</li>
-              )}
-            </ul>
-          </div>}
-        </div>
-      </PageMenu>
-
-      {section === 'layout' && <LayoutSection />}
-
-      {section === 'group' && <GroupSection />}
-
-      {section === 'button' && <ButtonSection />}
-
-      {section === 'layouts' && <LayoutsSection />}
-
-    </LayoutsPageContext.Provider>
-  </Page>);
+    </LayoutsPageContext.Provider>);
 }

@@ -2,15 +2,15 @@ import styled, { css } from 'styled-components';
 import { ReactProps } from '../../types';
 
 interface FormControlRowProps extends ReactProps {
-  colspan?: number;
+  colSpan?: number;
   justifyContent?: string
   position?: 'top' | 'middle' | 'bottom';
 }
 
-export default function FormControlRow({ colspan, justifyContent, position = 'bottom', children }: FormControlRowProps) {
+export default function FormControlRow({ colSpan, justifyContent, position = 'bottom', children }: FormControlRowProps) {
 
   return (<FormControlRowStyled justifyContent={justifyContent} position={position} >
-    <td colSpan={colspan || 1}>
+    <td colSpan={colSpan || 1}>
       <div>{children}</div>
     </td>
   </FormControlRowStyled>);

@@ -42,6 +42,8 @@ export const InputStyled = styled.input<{ errors?: boolean, width?: string }>`
 export const SelectInputStyled = styled.select<{ errors?: boolean, width?: string }>`
   ${globalInputStyle};
   cursor: pointer;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
 
   &.readOnly {
     pointer-events: none;

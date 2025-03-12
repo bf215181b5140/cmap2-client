@@ -1,20 +1,18 @@
-import { createContext, Dispatch } from 'react';
-import { BackgroundDTO, ParameterButtonDTO, GroupDTO, InteractionKeyDTO, LayoutDTO, ThemeDTO, TierDTO } from 'cmap2-shared';
-import { LayoutsReducerAction } from './layouts.reducer';
+import { createContext, Dispatch, SetStateAction } from 'react';
+import { BackgroundDTO, ParameterButtonDTO, GroupDTO, InteractionKeyDTO, LayoutDTO, ThemeDTO, TierDTO, AvatarButtonDTO } from 'cmap2-shared';
+import { LayoutsReducerAction } from './reducers/layouts.reducer';
+import { AvatarButtonsReducerAction } from './reducers/avatarButtons.reducer';
 
 export interface LayoutsPageData {
   tier: TierDTO;
   background: BackgroundDTO;
   theme: ThemeDTO;
-  interactionKeys: InteractionKeyDTO[];
   layouts: LayoutDTO[];
   layoutsDispatch: Dispatch<LayoutsReducerAction>;
-  layoutId: string | undefined;
-  groupId: string | undefined;
-  buttonId: string | undefined;
-  layout: LayoutDTO | undefined;
-  group: GroupDTO | undefined;
-  parameterButton: ParameterButtonDTO | undefined;
+  avatarButtons: AvatarButtonDTO[];
+  avatarButtonsDispatch: Dispatch<AvatarButtonsReducerAction>;
+  interactionKeys: InteractionKeyDTO[];
+  setInteractionKeys: Dispatch<SetStateAction<InteractionKeyDTO[]>>;
 }
 
 export const LayoutsPageContext = createContext<LayoutsPageData>(undefined!);

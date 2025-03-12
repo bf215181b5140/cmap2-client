@@ -36,6 +36,12 @@ const PageMenu = styled.div<{ noMarginTop?: boolean }>`
       pointer-events: none;
       filter: saturate(0%);
     }
+    
+    > .PageMenuItemDescription {
+      color: ${props => props.theme.colors.font.textInactive};
+      margin-right: 10px;
+      font-size: 14px;
+    }
 
     > div.PageMenuDropdown {
       position: absolute;
