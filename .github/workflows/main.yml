@@ -24,6 +24,6 @@ jobs:
     - name: mirror-repository
       uses: spyoungtech/mirror-action@v0.5.1
       with:
-        REMOTE: 'https://lazorlux@bitbucket.org/changemyavatarparams/cmap-client.git'
+        REMOTE: 'https://lazorlux@bitbucket.org/changemyavatarparams/cmap2-client.git'
         GIT_USERNAME: lazorlux
         GIT_PASSWORD: ${{ secrets.BITBUCKET_PASSWORD }}
