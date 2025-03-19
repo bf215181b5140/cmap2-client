@@ -18,6 +18,7 @@ import { ModalContext } from '../../../../../../components/context/modal.context
 import { useNavigate } from 'react-router-dom';
 import FormControlRow from '../../../../../../components/form/formControlRow.component';
 import BasicModal from '../../../../../../components/modal/basicModal/basicModal.component';
+import AvatarInput from '../../../../../../components/input/avatarInput/avatarInput.component';
 
 interface AvatarButtonFormProps {
   avatarButtonEvents: TypedEmitter<EditAvatarButtonEvents>;
@@ -42,7 +43,7 @@ export default function AvatarButtonForm({ avatarButtonEvents, avatarButton }: A
     ...avatarButton,
   };
 
-  const { register, reset, formState: { errors, isDirty }, watch, handleSubmit } = useForm<AvatarButtonFormDTO>({
+  const { register, reset, setValue, formState: { errors, isDirty }, watch, handleSubmit } = useForm<AvatarButtonFormDTO>({
     resolver: zodResolver(AvatarButtonFormSchema),
     defaultValues: defaultValue,
   });
@@ -106,7 +107,7 @@ export default function AvatarButtonForm({ avatarButtonEvents, avatarButton }: A
         </tr>
         <tr>
           <th>VRChat avatar ID</th>
-          <td><Input register={register} name={'vrcAvatarId'} width={'470px'} errors={errors} /></td>
+          <td><AvatarInput register={register} setValue={setValue} name={'vrcAvatarId'} width={'430px'} errors={errors} /></td>
         </tr>
         <tr>
           <th>Image orientation</th>
