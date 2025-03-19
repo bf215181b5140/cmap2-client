@@ -14,6 +14,8 @@ import WebsitePage from './pages/website/website.page';
 import ModalComponent from './components/modal/modal.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { FetchStatusComponent } from './components/fetchStatus/fetchStatus.component';
+import ContentOverflow from './components/contentOverflow/contentOverflow.component';
+import SettingsPage from './pages/settings/settings.page';
 
 export default function App() {
 
@@ -27,7 +29,7 @@ export default function App() {
               <Route path="/osc/*" element={<OscPage />} />
               <Route path="/avatars/:avatarId?" element={<AvatarsPage />} />
               <Route path="/website/*" element={<WebsitePage />} />
-              {/* <Route path="/settings" element={<SettingsPage />} /> */}
+              <Route path="/settings" element={<SettingsPage />} />
               {/* <Route path="/lovense" element={<LovensePage />} /> */}
               {/* <Route path="/guide" element={<GuidePage />} /> */}
               <Route path="/testing" element={<TestingPage />} />
@@ -104,12 +106,4 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-`;
-
-const ContentOverflow = styled.div`
-  overflow: auto;
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: row;
 `;

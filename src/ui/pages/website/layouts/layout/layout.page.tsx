@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { LayoutsPageContext } from '../layouts.context';
 import Presets from './presets/presets.component';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -9,17 +9,14 @@ import Parameters from './parameters/parameters.component';
 import LayoutHeader from './header/layoutHeader.component';
 import { Page } from '../../../../components/page/page.component';
 
-type LayoutSections = 'parameters' | 'presets' | 'avatars' | 'interactionKeys';
-
 export default function LayoutPage() {
 
   const navigate = useNavigate();
-  const [section, setSection] = useState<LayoutSections | undefined>();
-  const { layouts } = useContext(LayoutsPageContext);
+  const { layoutSection, setLayoutSection, layouts } = useContext(LayoutsPageContext);
   const { layoutId } = useParams();
   const layout = layouts?.find(l => l.id === layoutId);
 
-  if (!section && layout) setSection('parameters');
+  if (!layoutSection && layout) setLayoutSection('parameters');
 
   useEffect(() => {
     if (layouts[0] && !layoutId) navigate(`/website/layouts/${layouts[0].id}`);
@@ -31,32 +28,32 @@ export default function LayoutPage() {
 
     <LayoutMenuStyled>
 
-      <LayoutMenuLinkStyled onClick={() => setSection('parameters')} aria-current={section === 'parameters'} aria-disabled={!layout}>
+      <LayoutMenuLinkStyled onClick={() => setLayoutSection('parameters')} aria-current={layoutSection === 'parameters'} aria-disabled={!layout}>
         <i className={'ri-layout-masonry-fill'} />
         Parameters
       </LayoutMenuLinkStyled>
 
-      {<LayoutMenuLinkStyled onClick={() => setSection('presets')} aria-current={section === 'presets'} aria-disabled={!layout}>
+      {<LayoutMenuLinkStyled onClick={() => setLayoutSection('presets')} aria-current={layoutSection === 'presets'} aria-disabled={!layout}>
         <i className={'ri-file-list-2-line'} />
         Presets
       </LayoutMenuLinkStyled>}
 
-      <LayoutMenuLinkStyled onClick={() => setSection('avatars')} aria-current={section === 'avatars'}>
+      <LayoutMenuLinkStyled onClick={() => setLayoutSection('avatars')} aria-current={layoutSection === 'avatars'}>
         <i className={'ri-group-line'} />
         Avatars
       </LayoutMenuLinkStyled>
 
-      <LayoutMenuLinkStyled onClick={() => setSection('interactionKeys')} aria-current={section === 'interactionKeys'}>
+      <LayoutMenuLinkStyled onClick={() => setLayoutSection('interactionKeys')} aria-current={layoutSection === 'interactionKeys'}>
         <i className={'ri-key-2-line'} />
         Interaction keys
       </LayoutMenuLinkStyled>
 
     </LayoutMenuStyled>
 
-    {(section === 'parameters' && layout) && <Parameters layout={layout} />}
-    {(section === 'presets' && layout) && <Presets layout={layout} />}
-    {section === 'avatars' && <Avatars />}
-    {section === 'interactionKeys' && <InteractionKeys />}
+    {(layoutSection === 'parameters' && layout) && <Parameters layout={layout} />}
+    {(layoutSection === 'presets' && layout) && <Presets layout={layout} />}
+    {layoutSection === 'avatars' && <Avatars />}
+    {layoutSection === 'interactionKeys' && <InteractionKeys />}
 
   </Page>);
 }

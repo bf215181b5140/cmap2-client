@@ -22,13 +22,22 @@ export default function Tiers({ clientTier, tiers }: TiersProps) {
             <Icon className="ri-medal-fill" color={tier.color} />
             {tier.label}
           </h2>
-          <p>Up to <Highlight color={tier.color}>{tier.interactionKeys}</Highlight> interaction keys</p>
-          <p>Up to <Highlight color={tier.color}>{tier.layouts}</Highlight> layouts</p>
-          <p>Up to <Highlight color={tier.color}>{tier.layoutAvatars}</Highlight> avatars per layout</p>
-          <p>Up to <Highlight color={tier.color}>{tier.groups}</Highlight> groups per layout</p>
-          <p>Up to <Highlight color={tier.color}>{tier.parameterButtons}</Highlight> buttons per group</p>
-          <p>Up to <Highlight color={tier.color}>{tier.parameterBadges}</Highlight> state badges</p>
-          <p>Up to <Highlight color={tier.color}>{tier.callbackParameters}</Highlight> additional parameters</p>
+          <p><Highlight color={tier.color}>{tier.layouts}</Highlight> layouts</p>
+          <p><Highlight color={tier.color}>{tier.layoutAvatars}</Highlight> avatars per layout</p>
+          <p><Highlight color={tier.color}>{tier.parameterBadges}</Highlight> parameter badges</p>
+          <p><Highlight color={tier.color}>{tier.groups}</Highlight> groups per layout</p>
+          <p><Highlight color={tier.color}>{tier.parameterButtons}</Highlight> parameter buttons per group</p>
+          <p>
+            <Highlight color={tier.color}>{tier.presetButtons}</Highlight> presets
+            and toggle up to <Highlight color={tier.color}>{tier.presetButtonParameters}</Highlight> parameters at once
+          </p>
+          <p><Highlight color={tier.color}>{tier.avatarButtons}</Highlight> avatar buttons</p>
+          <p><Highlight color={tier.color}>{tier.interactionKeys}</Highlight> interaction keys</p>
+          {tier.rank !== minRank && <p>
+            <Highlight color={tier.color}>{tier.visibilityParameters}</Highlight> visibility
+            and <Highlight color={tier.color}>{tier.callbackParameters}</Highlight> callback parameters
+          </p>}
+          {tier.rank !== minRank && <p>Create <Highlight color={tier.color}>{tier.inviteKeys}</Highlight> invite keys</p>}
           {tier.rank !== minRank && <p>Unlock <Highlight color={tier.color}>{tier.rank === maxRank ? 'all' : 'more'}</Highlight> website backgrounds</p>}
           {tier.rank !== minRank && <p>Unlock <Highlight color={tier.color}>{tier.rank === maxRank ? 'all' : 'more'}</Highlight> website styles</p>}
           {tier.useCost && <p>Unlock <Highlight color={tier.color}>cost system</Highlight> for buttons</p>}

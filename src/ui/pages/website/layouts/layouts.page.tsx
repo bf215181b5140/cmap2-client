@@ -3,7 +3,7 @@ import useCmapFetch from '../../../hooks/cmapFetch.hook';
 import { useEffect, useReducer, useState } from 'react';
 import { BackgroundDTO, InteractionKeyDTO, LayoutsPageSchema, ThemeDTO, TierDTO } from 'cmap2-shared';
 import layoutsReducer from './reducers/layouts.reducer';
-import { LayoutsPageContext, LayoutsPageData } from './layouts.context';
+import { LayoutSections, LayoutsPageContext, LayoutsPageData } from './layouts.context';
 import LayoutPage from './layout/layout.page';
 import EditGroupPage from './edit/group/editGroup.page';
 import EditParameterButtonPage from './edit/parameterButton/editParameterButton.page';
@@ -26,6 +26,8 @@ export default function LayoutsPage() {
 
   const [noConnection, setNoConnection] = useState<boolean>(false);
 
+  const [layoutSection, setLayoutSection] = useState<LayoutSections | undefined>();
+
   useEffect(() => {
     GET('layouts', LayoutsPageSchema, (data) => {
       setTier(data.tier);
@@ -47,6 +49,8 @@ export default function LayoutsPage() {
   // const button = group?.parameterButtons?.find(b => b.id === buttonId);
 
   const pageData: LayoutsPageData = {
+    layoutSection,
+    setLayoutSection,
     tier,
     background,
     theme,
