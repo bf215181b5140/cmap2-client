@@ -1,4 +1,4 @@
-import { VrcParameter } from 'cmap2-shared';
+import { VrcParameter } from 'cmap-shared';
 
 export interface TrackedParametersStoreData {
   parameters: VrcParameter[];

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { LayoutDTO, ParameterBadgeTypeSchema } from 'cmap2-shared';
+import { LayoutDTO, ParameterBadgeTypeSchema } from 'cmap-shared';
 import { useNavigate, useParams } from 'react-router-dom';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
 import AddNewButton from '../../../../../components/addNewButton/addNewButton.component';
 import { SelectInputStyled } from '../../../../../components/input/input.style';
 import { useContext } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
-import { HealthAndExp, ParameterBadge } from 'cmap2-shared/react';
+import { HealthAndExp, ParameterBadge } from 'cmap-shared/react';
 
 interface LayoutProps {
   layout?: LayoutDTO;

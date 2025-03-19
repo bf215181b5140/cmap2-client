@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
 import { useEffect, useReducer, useState } from 'react';
-import { BackgroundDTO, InteractionKeyDTO, LayoutsPageSchema, ThemeDTO, TierDTO } from 'cmap2-shared';
+import { BackgroundDTO, InteractionKeyDTO, LayoutsPageSchema, ThemeDTO, TierDTO } from 'cmap-shared';
 import layoutsReducer from './reducers/layouts.reducer';
 import { LayoutSections, LayoutsPageContext, LayoutsPageData } from './layouts.context';
 import LayoutPage from './layout/layout.page';

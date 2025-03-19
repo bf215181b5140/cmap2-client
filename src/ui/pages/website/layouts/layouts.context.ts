@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
-import { BackgroundDTO, InteractionKeyDTO, LayoutDTO, ThemeDTO, TierDTO, AvatarButtonDTO } from 'cmap2-shared';
+import { BackgroundDTO, InteractionKeyDTO, LayoutDTO, ThemeDTO, TierDTO, AvatarButtonDTO } from 'cmap-shared';
 import { LayoutsReducerAction } from './reducers/layouts.reducer';
 import { AvatarButtonsReducerAction } from './reducers/avatarButtons.reducer';
 

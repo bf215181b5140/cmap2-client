@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { VrcParameter } from 'cmap2-shared';
+import { VrcParameter } from 'cmap-shared';
 import Segment from '../../../../components/segment/segment.component';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
 

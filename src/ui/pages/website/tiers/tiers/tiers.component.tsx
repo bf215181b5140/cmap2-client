@@ -1,4 +1,4 @@
-import { TierDTO } from 'cmap2-shared';
+import { TierDTO } from 'cmap-shared';
 import Segment from '../../../../components/segment/segment.component';
 import Icon from '../../../../components/icon/icon.component';
 import styled from 'styled-components';

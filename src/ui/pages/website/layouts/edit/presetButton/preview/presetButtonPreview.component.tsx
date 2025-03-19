@@ -1,7 +1,7 @@
 import TypedEmitter from 'typed-emitter/rxjs';
 import { useContext, useEffect, useState } from 'react';
-import { PresetButtonDTO, UploadedFileDTO } from 'cmap2-shared';
-import { PresetButtonComponent } from 'cmap2-shared/react';
+import { PresetButtonDTO, UploadedFileDTO } from 'cmap-shared';
+import { PresetButtonComponent } from 'cmap-shared/react';
 import { EditPresetButtonEvents } from '../editPresetButton.model';
 import { LayoutsPageContext } from '../../../layouts.context';
 import Segment from '../../../../../../components/segment/segment.component';

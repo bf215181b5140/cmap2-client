@@ -1,6 +1,6 @@
 import TierBadge from '../../../../components/tierBadge/tierBadge.component';
 import React, { useContext } from 'react';
-import { ProfilePageDTO, UploadedFileDTO } from 'cmap2-shared';
+import { ProfilePageDTO, UploadedFileDTO } from 'cmap-shared';
 import Segment from '../../../../components/segment/segment.component';
 import ProfilePicture from './components/profilePicture.component';
 import TextButton from '../../../../components/buttons/textButton.component';

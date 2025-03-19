@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackgroundDTO, StylePageDTO } from 'cmap2-shared';
+import { BackgroundDTO, StylePageDTO } from 'cmap-shared';
 import styled from 'styled-components';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import Segment from '../../../../components/segment/segment.component';

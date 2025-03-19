@@ -1,6 +1,6 @@
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
-import { VrcParameter } from 'cmap2-shared';
+import { VrcParameter } from 'cmap-shared';
 import { ArgumentType, Client, Message, Server } from 'node-osc';
 import { OscSettings } from '../../shared/objects/settings';
 import { SETTINGS } from '../store/settings/settings.store';

@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO, VrcParameter } from 'cmap2-shared';
+import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO, VrcParameter } from 'cmap-shared';
 import { WEBSITE_URL } from '../../shared/const';
 import { BRIDGE } from '../bridge/bridge.service';
 import { IPC } from '../ipc/typedIpc.service';

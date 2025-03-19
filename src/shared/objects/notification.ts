@@ -1,4 +1,4 @@
-import { NotificationTypeSchema } from 'cmap2-shared';
+import { NotificationTypeSchema } from 'cmap-shared';
 import { z } from 'zod';
 
 export const NotificationSchema = z.object({

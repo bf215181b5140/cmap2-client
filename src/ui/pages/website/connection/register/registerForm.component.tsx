@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useContext } from 'react';
-import { RegisterFormDTO, RegisterFormSchema, RegisterInfoDTO, RegisterWithKeyFormDTO, RegisterWithKeyFormSchema } from 'cmap2-shared';
+import { RegisterFormDTO, RegisterFormSchema, RegisterInfoDTO, RegisterWithKeyFormDTO, RegisterWithKeyFormSchema } from 'cmap-shared';
 import { CredentialsContext } from '../../../../components/context/credentials.context';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import { Credentials } from '../../../../../shared/objects/credentials';

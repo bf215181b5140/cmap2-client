@@ -1,4 +1,4 @@
-import { ParameterButtonDTO, UploadedFileDTO } from 'cmap2-shared';
+import { ParameterButtonDTO, UploadedFileDTO } from 'cmap-shared';
 
 export type EditParameterButtonEvents = {
   onFormChange: (parameterButton: ParameterButtonDTO) => void;

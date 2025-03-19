@@ -3,8 +3,8 @@ import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
 import { GameDetectorSettings } from '../../shared/objects/settings';
 import { SETTINGS } from '../store/settings/settings.store';
-import { DetectedGamesDTO } from 'cmap2-shared';
-import { DetectedGameSchema } from 'cmap2-shared/src/enums/detectedGame';
+import { DetectedGamesDTO } from 'cmap-shared';
+import { DetectedGameSchema } from 'cmap-shared/src/enums/detectedGame';
 
 export default class GameDetectorController {
   private intervalId: NodeJS.Timeout | null = null;

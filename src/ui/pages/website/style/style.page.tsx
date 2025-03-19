@@ -4,7 +4,7 @@ import BackgroundPicker from '../style/background/backgroundPicker.component';
 import StylePicker from '../style/theme/themePicker.component';
 import NoConnection from '../../../components/noConnection/noConnection.component';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
-import { BackgroundDTO, StylePageDTO, StylePageSchema, ThemeDTO } from 'cmap2-shared';
+import { BackgroundDTO, StylePageDTO, StylePageSchema, ThemeDTO } from 'cmap-shared';
 import PageMenu from '../../../components/menu/pageMenu/pageMenu.component';
 
 export default function StylePage() {

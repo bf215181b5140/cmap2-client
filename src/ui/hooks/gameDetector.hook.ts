@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { theme } from '../style/theme';
-import { DetectedGameSchema, DetectedGamesDTO } from 'cmap2-shared';
+import { DetectedGameSchema, DetectedGamesDTO } from 'cmap-shared';
 
 export default function useGameDetector() {
 

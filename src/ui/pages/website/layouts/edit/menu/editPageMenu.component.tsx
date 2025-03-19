@@ -3,7 +3,7 @@ import { MouseEvent, useContext, useMemo } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
 import { useNavigate, useParams } from 'react-router-dom';
 import useEditPageItems from '../hooks/editPageItems.hook';
-import { getForcedItemLabel } from 'cmap2-shared';
+import { getForcedItemLabel } from 'cmap-shared';
 
 export default function EditPageMenu() {
 

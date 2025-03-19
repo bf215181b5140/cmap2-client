@@ -1,7 +1,7 @@
 import TypedEmitter from 'typed-emitter/rxjs';
 import { RefObject, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { LayoutDTO, PresetButtonDTO, UploadedFileSchema } from 'cmap2-shared';
+import { LayoutDTO, PresetButtonDTO, UploadedFileSchema } from 'cmap-shared';
 import styled from 'styled-components';
 import { EditPresetButtonEvents } from '../editPresetButton.model';
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';

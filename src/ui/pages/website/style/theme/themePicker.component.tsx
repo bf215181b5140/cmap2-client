@@ -1,11 +1,11 @@
 import React from 'react';
-import { ParameterButtonDTO, StylePageDTO, ThemeDTO } from 'cmap2-shared';
+import { ParameterButtonDTO, StylePageDTO, ThemeDTO } from 'cmap-shared';
 import styled from 'styled-components';
 import Segment from '../../../../components/segment/segment.component';
 import PickerOverlayTier from '../../../../components/pickerOverlay/PickerOverlayTier.component';
 import PickerOverlayCheck from '../../../../components/pickerOverlay/PickerOverlayCheck.component';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
-import { LayoutButtonComponent } from 'cmap2-shared/react';
+import { LayoutButtonComponent } from 'cmap-shared/react';
 
 interface ThemePickerProps {
   stylesData: StylePageDTO;

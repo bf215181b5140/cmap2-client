@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { MouseEvent, useContext } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
-import { GroupDTO, LayoutDTO, ParameterButtonDTO } from 'cmap2-shared';
-import { Layout, LayoutGroup, LayoutButtonComponent } from 'cmap2-shared/react';
+import { GroupDTO, LayoutDTO, ParameterButtonDTO } from 'cmap-shared';
+import { Layout, LayoutGroup, LayoutButtonComponent } from 'cmap-shared/react';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
 import styled from 'styled-components';
 import AddNewButton from '../../../../../components/addNewButton/addNewButton.component';

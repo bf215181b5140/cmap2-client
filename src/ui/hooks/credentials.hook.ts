@@ -1,4 +1,4 @@
-import { LoginTokenDTO } from 'cmap2-shared';
+import { LoginTokenDTO } from 'cmap-shared';
 import { useEffect, useState } from 'react';
 import { Credentials } from '../../shared/objects/credentials';
 

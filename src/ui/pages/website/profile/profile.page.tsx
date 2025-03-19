@@ -3,7 +3,7 @@ import { Page } from '../../../components/page/page.component';
 import ProfileOverview from './overview/profileOverview.component';
 import NoConnection from '../../../components/noConnection/noConnection.component';
 import useCmapFetch from '../../../hooks/cmapFetch.hook';
-import { ProfileFormDTO, ProfilePageDTO, ProfilePageSchema, UploadedFileDTO } from 'cmap2-shared';
+import { ProfileFormDTO, ProfilePageDTO, ProfilePageSchema, UploadedFileDTO } from 'cmap-shared';
 import ProfileForm from './form/profileForm.component';
 
 export default function ProfilePage() {

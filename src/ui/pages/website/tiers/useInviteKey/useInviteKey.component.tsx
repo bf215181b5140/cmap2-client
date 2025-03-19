@@ -1,6 +1,6 @@
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import { Dispatch, SetStateAction } from 'react';
-import { TierDTO, TierSchema, UseInviteKeyFormDTO, UseInviteKeyFormSchema } from 'cmap2-shared';
+import { TierDTO, TierSchema, UseInviteKeyFormDTO, UseInviteKeyFormSchema } from 'cmap-shared';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

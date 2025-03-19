@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../../../../../hooks/useNotifications.hook';
 import { useContext, useEffect } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
-import { GroupDTO, GroupFormDTO, GroupFormSchema, GroupSchema, GroupWidthSchema, LayoutDTO, VisibilityParameterConditionSchema } from 'cmap2-shared';
+import { GroupDTO, GroupFormDTO, GroupFormSchema, GroupSchema, GroupWidthSchema, LayoutDTO, VisibilityParameterConditionSchema } from 'cmap-shared';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Segment from '../../../../../../components/segment/segment.component';

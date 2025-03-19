@@ -4,7 +4,7 @@ import IconButton from '../buttons/iconButton.component';
 import { PAGE_ELEMENT_GAP } from '../page/page.component';
 import LoadingSpinner from '../loadingSpinner/loadingSpinner.component';
 import { ReactProps } from '../../types';
-import { GroupWidth } from 'cmap2-shared';
+import { GroupWidth } from 'cmap-shared';
 
 interface SegmentProps extends ReactProps {
   segmentTitle?: string;

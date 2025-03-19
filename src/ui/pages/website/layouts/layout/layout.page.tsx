@@ -16,7 +16,9 @@ export default function LayoutPage() {
   const { layoutId } = useParams();
   const layout = layouts?.find(l => l.id === layoutId);
 
-  if (!layoutSection && layout) setLayoutSection('parameters');
+  useEffect(() => {
+    if (!layoutSection && layout) setLayoutSection('parameters');
+  }, [layoutSection, layout]);
 
   useEffect(() => {
     if (layouts[0] && !layoutId) navigate(`/website/layouts/${layouts[0].id}`);

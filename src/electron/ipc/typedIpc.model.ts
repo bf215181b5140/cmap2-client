@@ -1,5 +1,5 @@
 import { VrcOscAvatar } from '../../shared/objects/vrcOscAvatar';
-import { DetectedGamesDTO, VrcParameter } from 'cmap2-shared';
+import { DetectedGamesDTO, VrcParameter } from 'cmap-shared';
 import { WindowState } from '../../shared/enums/windowState';
 import { UpdaterData } from '../updater/updater.model';
 import { WindowSize } from '../../shared/enums/windowSize';

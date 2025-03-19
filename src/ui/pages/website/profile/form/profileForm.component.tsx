@@ -1,4 +1,4 @@
-import { ClientVisibilitySchema, KeyValueDTO, ProfileFormDTO, ProfileFormSchema, ProfilePageDTO } from 'cmap2-shared';
+import { ClientVisibilitySchema, KeyValueDTO, ProfileFormDTO, ProfileFormSchema, ProfilePageDTO } from 'cmap-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';

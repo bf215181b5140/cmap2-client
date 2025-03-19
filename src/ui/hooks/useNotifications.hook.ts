@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Notification } from '../../shared/objects/notification';
 import { nanoid } from 'nanoid';
 import { ToastContext } from '../components/context/toast.context';
-import { NotificationType, NotificationTypeSchema } from 'cmap2-shared';
+import { NotificationType, NotificationTypeSchema } from 'cmap-shared';
 
 interface AddNotificationOptions {
   id?: string;

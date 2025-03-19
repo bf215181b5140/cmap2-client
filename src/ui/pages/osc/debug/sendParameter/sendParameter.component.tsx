@@ -6,7 +6,7 @@ import Input from '../../../../components/input/input.component';
 import IconButton from '../../../../components/buttons/iconButton.component';
 import React from 'react';
 import { z } from 'zod';
-import { convertParameterValueFromString, parameterValueAvatarIdSchema, parameterValueOrAvatarFormSchema } from 'cmap2-shared';
+import { convertParameterValueFromString, parameterValueAvatarIdSchema, parameterValueOrAvatarFormSchema } from 'cmap-shared';
 import ParameterInput from '../../../../components/input/parameterInput/parameterInput.component';
 
 const vrcParameterFormSchema = z.object({

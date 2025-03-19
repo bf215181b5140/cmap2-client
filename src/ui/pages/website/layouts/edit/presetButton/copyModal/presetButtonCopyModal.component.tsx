@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { getForcedItemLabel, LayoutDTO, PresetButtonCopyDTO, PresetButtonCopySchema, PresetButtonDTO, PresetButtonSchema } from 'cmap2-shared';
+import { getForcedItemLabel, LayoutDTO, PresetButtonCopyDTO, PresetButtonCopySchema, PresetButtonDTO, PresetButtonSchema } from 'cmap-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ModalContext } from '../../../../../../components/context/modal.context';

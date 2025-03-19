@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { GeneratedInviteKeyDTO, GeneratedInviteKeySchema, TierDTO } from 'cmap2-shared';
+import { GeneratedInviteKeyDTO, GeneratedInviteKeySchema, TierDTO } from 'cmap-shared';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import { ModalContext } from '../../../../components/context/modal.context';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';

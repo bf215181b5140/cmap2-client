@@ -1,10 +1,10 @@
-import { VrcParameter } from 'cmap2-shared/src/objects/vrcParameter';
+import { VrcParameter } from 'cmap-shared/src/objects/vrcParameter';
 import { TrackedParameter } from './trackedParameters.model';
 import { IPC } from '../ipc/typedIpc.service';
 import { BRIDGE } from '../bridge/bridge.service';
 import { SETTINGS } from '../store/settings/settings.store';
 import { Message } from 'node-osc';
-import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO } from 'cmap2-shared';
+import { UsedAvatarButtonDTO, UsedParameterButtonDTO, UsedPresetButtonDTO } from 'cmap-shared';
 import { TRACKED_PARAMETERS_STORE } from '../store/trackedParameters/trackedParameters.store';
 import { app } from 'electron';
 

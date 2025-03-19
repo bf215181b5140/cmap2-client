@@ -2,9 +2,9 @@ import TypedEmitter from 'typed-emitter/rxjs';
 import { EditParameterButtonEvents } from '../editParameterButton.model';
 import { useContext, useEffect, useState } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
-import { ParameterButtonDTO, UploadedFileDTO } from 'cmap2-shared';
+import { ParameterButtonDTO, UploadedFileDTO } from 'cmap-shared';
 import Segment from '../../../../../../components/segment/segment.component';
-import { LayoutButtonComponent } from 'cmap2-shared/react';
+import { LayoutButtonComponent } from 'cmap-shared/react';
 
 interface ParameterButtonPreviewProps {
   parameterButtonEvents: TypedEmitter<EditParameterButtonEvents>;

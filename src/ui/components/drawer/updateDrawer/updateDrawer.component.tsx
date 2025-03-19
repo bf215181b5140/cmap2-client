@@ -2,10 +2,10 @@ import Drawer from '../drawer.component';
 import React, { useEffect, useState } from 'react';
 import { UpdaterData } from '../../../../electron/updater/updater.model';
 import semver from 'semver';
-import { NotificationType, NotificationTypeSchema } from 'cmap2-shared';
+import { NotificationType, NotificationTypeSchema } from 'cmap-shared';
 import DrawerItem from '../drawerItem.component';
 import styled, { css } from 'styled-components';
-import { theme } from 'cmap2-shared/react';
+import { theme } from 'cmap-shared/react';
 
 export default function UpdateDrawer() {
 

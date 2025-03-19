@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { ReactProps } from '../../types';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { NotificationType } from 'cmap2-shared';
-import { theme } from 'cmap2-shared/react';
+import { NotificationType } from 'cmap-shared';
+import { theme } from 'cmap-shared/react';
 
 interface DrawerProps extends ReactProps {
   icon: string;

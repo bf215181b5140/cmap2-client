@@ -6,7 +6,7 @@ import log from 'electron-log/renderer';
 import { FetchStatusContext } from '../components/context/fetchStatus.context';
 import { nanoid } from 'nanoid';
 import { useNotifications } from './useNotifications.hook';
-import { ApiResponseSchema, NotificationType } from 'cmap2-shared';
+import { ApiResponseSchema, NotificationType } from 'cmap-shared';
 
 interface ResponseWithData {
   response: Response;

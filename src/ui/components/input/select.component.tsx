@@ -3,7 +3,7 @@ import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form
 import useInputError from '../../hooks/inputError.hook';
 import InputErrorMessage from './inputErrorMessage.component';
 import { SelectInputStyled } from './input.style';
-import { KeyValueDTO } from 'cmap2-shared';
+import { KeyValueDTO } from 'cmap-shared';
 
 interface SelectInputProps<T extends FieldValues> {
   name: Path<T>;

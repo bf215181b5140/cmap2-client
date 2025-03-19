@@ -1,6 +1,6 @@
 import Segment from '../../../../../components/segment/segment.component';
-import { LayoutButtonWrapper, PresetButtonComponent } from 'cmap2-shared/react';
-import { GroupDTO, LayoutDTO, PresetButtonDTO } from 'cmap2-shared';
+import { LayoutButtonWrapper, PresetButtonComponent } from 'cmap-shared/react';
+import { GroupDTO, LayoutDTO, PresetButtonDTO } from 'cmap-shared';
 import { useContext } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';

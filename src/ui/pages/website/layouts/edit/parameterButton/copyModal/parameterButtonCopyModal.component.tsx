@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { ModalContext } from '../../../../../../components/context/modal.context';
-import { ParameterButtonCopyDTO, ParameterButtonCopySchema, ParameterButtonDTO, ParameterButtonSchema, LayoutDTO, getForcedItemLabel } from 'cmap2-shared';
+import { ParameterButtonCopyDTO, ParameterButtonCopySchema, ParameterButtonDTO, ParameterButtonSchema, LayoutDTO, getForcedItemLabel } from 'cmap-shared';
 import Icon from '../../../../../../components/icon/icon.component';
 import TextButton from '../../../../../../components/buttons/textButton.component';
 import { useForm } from 'react-hook-form';

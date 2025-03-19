@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { ModalContext } from '../../../../../../components/context/modal.context';
-import { getForcedItemLabel, GroupCopyDTO, GroupCopySchema, GroupDTO, GroupSchema, LayoutDTO } from 'cmap2-shared';
+import { getForcedItemLabel, GroupCopyDTO, GroupCopySchema, GroupDTO, GroupSchema, LayoutDTO } from 'cmap-shared';
 import Icon from '../../../../../../components/icon/icon.component';
 import TextButton from '../../../../../../components/buttons/textButton.component';
 import { useForm } from 'react-hook-form';

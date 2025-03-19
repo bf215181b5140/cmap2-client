@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { LayoutsPageContext } from '../../layouts.context';
-import { AvatarButtonComponent, LayoutButtonWrapper } from 'cmap2-shared/react';
+import { AvatarButtonComponent, LayoutButtonWrapper } from 'cmap-shared/react';
 import AddCounter from '../../../../../components/addCounter/addCounter.component';
 import Segment from '../../../../../components/segment/segment.component';
 import { useNavigate } from 'react-router-dom';
 import AddNewButton from '../../../../../components/addNewButton/addNewButton.component';
-import { AvatarButtonDTO } from 'cmap2-shared';
+import { AvatarButtonDTO } from 'cmap-shared';
 import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
 import { useNotifications } from '../../../../../hooks/useNotifications.hook';
 import useDragItems from '../../../../../hooks/dragItems.hook';

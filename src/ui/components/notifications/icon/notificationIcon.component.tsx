@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNotifications } from '../../../hooks/useNotifications.hook';
 import { ReactProps } from '../../../types';
-import { NotificationType } from 'cmap2-shared';
+import { NotificationType } from 'cmap-shared';
 
 interface NotificationIconProps extends ReactProps {
   type: NotificationType,

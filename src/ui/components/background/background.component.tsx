@@ -1,5 +1,5 @@
 import styled, { css, DefaultTheme, FlattenInterpolation, ThemeProps } from 'styled-components';
-import { BackgroundDTO } from 'cmap2-shared';
+import { BackgroundDTO } from 'cmap-shared';
 
 const Background = styled.div<{ background: BackgroundDTO; }>`
   width: 100%;

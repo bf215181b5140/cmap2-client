@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { RegisterInfoDTO, RegisterInfoSchema } from 'cmap2-shared';
+import { RegisterInfoDTO, RegisterInfoSchema } from 'cmap-shared';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import LoadingSpinner from '../../../../components/loadingSpinner/loadingSpinner.component';
 import RegisterForm from './registerForm.component';

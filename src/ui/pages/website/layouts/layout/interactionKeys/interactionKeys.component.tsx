@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
-import { InteractionKeySchema, InteractionKeysFormDTO, InteractionKeysFormSchema } from 'cmap2-shared';
+import { InteractionKeySchema, InteractionKeysFormDTO, InteractionKeysFormSchema } from 'cmap-shared';
 import { LayoutsPageContext } from '../../layouts.context';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

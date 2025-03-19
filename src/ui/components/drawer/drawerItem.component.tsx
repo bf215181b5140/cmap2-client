@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { NotificationType } from 'cmap2-shared';
+import { NotificationType } from 'cmap-shared';
 
 const DrawerItem = styled.div<{ notificationType?: NotificationType }>`
   padding: 8px;

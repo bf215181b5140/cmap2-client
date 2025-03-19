@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GeneratedInviteKeyDTO, TierDTO, TiersPageSchema } from 'cmap2-shared';
+import { GeneratedInviteKeyDTO, TierDTO, TiersPageSchema } from 'cmap-shared';
 import Tiers from './tiers/tiers.component';
 import GenerateInviteKey from './generateInviteKey/generateInviteKey.component';
 import UseInviteKey from './useInviteKey/useInviteKey.component';

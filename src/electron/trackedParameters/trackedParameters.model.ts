@@ -1,4 +1,4 @@
-import { VrcParameter } from 'cmap2-shared/src/objects/vrcParameter';
+import { VrcParameter } from 'cmap-shared/src/objects/vrcParameter';
 
 export interface TrackedParameterDTO {
   path: VrcParameter['path'];

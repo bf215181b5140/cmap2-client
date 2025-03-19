@@ -1,4 +1,4 @@
-import { AvatarButtonDTO, UploadedFileDTO } from 'cmap2-shared';
+import { AvatarButtonDTO, UploadedFileDTO } from 'cmap-shared';
 
 export type AvatarButtonsReducerAction =
   { type: 'setAvatarButtons', avatarButtons: AvatarButtonDTO[] } |

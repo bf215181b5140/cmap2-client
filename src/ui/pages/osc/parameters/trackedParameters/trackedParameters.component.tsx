@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Segment from '../../../../components/segment/segment.component';
 import SegmentTable from '../../../../components/segment/segmentTable.component';
 import { TrackedParameter } from '../../../../../electron/trackedParameters/trackedParameters.model';
-import { theme } from 'cmap2-shared/react';
+import { theme } from 'cmap-shared/react';
 import AvatarName from '../../../../components/savedAvatar/savedAvatar.component';
 
 export default function TrackedParameters() {

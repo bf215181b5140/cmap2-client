@@ -1,4 +1,4 @@
-import { LayoutDTO, LayoutFormDTO, LayoutFormSchema, LayoutSchema } from 'cmap2-shared';
+import { LayoutDTO, LayoutFormDTO, LayoutFormSchema, LayoutSchema } from 'cmap-shared';
 import { useNavigate } from 'react-router-dom';
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { useNotifications } from '../../../../../../hooks/useNotifications.hook';

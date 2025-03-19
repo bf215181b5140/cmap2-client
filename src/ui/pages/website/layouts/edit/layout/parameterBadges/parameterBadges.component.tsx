@@ -1,7 +1,7 @@
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { useContext, useEffect } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
-import { LayoutDTO, ParameterBadgeFormDTO, ParameterBadgeFormSchema, ParameterBadgeSchema, ParameterBadgeTypeSchema } from 'cmap2-shared';
+import { LayoutDTO, ParameterBadgeFormDTO, ParameterBadgeFormSchema, ParameterBadgeSchema, ParameterBadgeTypeSchema } from 'cmap-shared';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { UploadedFileDTO, UploadedFileSchema } from 'cmap2-shared';
+import { UploadedFileDTO, UploadedFileSchema } from 'cmap-shared';
 import React, { RefObject, useEffect, useRef } from 'react';
 import useCmapFetch from '../../../../../hooks/cmapFetch.hook';
 import { useForm } from 'react-hook-form';

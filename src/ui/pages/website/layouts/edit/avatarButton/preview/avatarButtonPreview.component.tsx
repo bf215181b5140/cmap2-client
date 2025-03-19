@@ -1,7 +1,7 @@
 import TypedEmitter from 'typed-emitter/rxjs';
 import { useContext, useEffect, useState } from 'react';
-import { AvatarButtonDTO, UploadedFileDTO } from 'cmap2-shared';
-import { AvatarButtonComponent } from 'cmap2-shared/react';
+import { AvatarButtonDTO, UploadedFileDTO } from 'cmap-shared';
+import { AvatarButtonComponent } from 'cmap-shared/react';
 import { EditAvatarButtonEvents } from '../editAvatarButton.model';
 import { LayoutsPageContext } from '../../../layouts.context';
 import Segment from '../../../../../../components/segment/segment.component';

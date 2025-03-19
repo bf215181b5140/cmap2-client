@@ -5,7 +5,7 @@ import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { useNotifications } from '../../../../../../hooks/useNotifications.hook';
 import { useContext, useEffect } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
-import { GroupDTO, ImageOrientationSchema, LayoutDTO, ParameterButtonDTO, ParameterButtonFormDTO, ParameterButtonFormSchema, ParameterButtonSchema, ParameterButtonTypeSchema, VisibilityParameterConditionSchema } from 'cmap2-shared';
+import { GroupDTO, ImageOrientationSchema, LayoutDTO, ParameterButtonDTO, ParameterButtonFormDTO, ParameterButtonFormSchema, ParameterButtonSchema, ParameterButtonTypeSchema, VisibilityParameterConditionSchema } from 'cmap-shared';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Segment from '../../../../../../components/segment/segment.component';

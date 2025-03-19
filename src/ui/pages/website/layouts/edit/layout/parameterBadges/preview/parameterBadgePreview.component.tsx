@@ -1,4 +1,4 @@
-import { ParameterBadgeFormDTO, ParameterBadgeTypeSchema } from 'cmap2-shared';
+import { ParameterBadgeFormDTO, ParameterBadgeTypeSchema } from 'cmap-shared';
 import Icon from '../../../../../../../components/icon/icon.component';
 import styled from 'styled-components';
 

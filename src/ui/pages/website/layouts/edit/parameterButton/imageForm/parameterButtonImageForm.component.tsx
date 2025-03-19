@@ -5,7 +5,7 @@ import useFileValidation from '../../../../../../hooks/fileValidation.hook';
 import { RefObject, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
 import { useForm } from 'react-hook-form';
-import { GroupDTO, LayoutDTO, ParameterButtonDTO, UploadedFileSchema } from 'cmap2-shared';
+import { GroupDTO, LayoutDTO, ParameterButtonDTO, UploadedFileSchema } from 'cmap-shared';
 import Segment from '../../../../../../components/segment/segment.component';
 import IconButton from '../../../../../../components/buttons/iconButton.component';
 import FormControlBar from '../../../../../../components/form/formControlBar.component';
