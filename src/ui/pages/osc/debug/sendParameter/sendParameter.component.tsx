@@ -6,7 +6,7 @@ import Input from '../../../../components/input/input.component';
 import IconButton from '../../../../components/buttons/iconButton.component';
 import React from 'react';
 import { z } from 'zod';
-import { convertParameterValueFromString, parameterValueAvatarIdSchema, parameterValueOrAvatarFormSchema } from 'cmap-shared';
+import { parameterValueOrAvatarFormSchema } from 'cmap-shared';
 import ParameterInput from '../../../../components/input/parameterInput/parameterInput.component';
 
 const vrcParameterFormSchema = z.object({
@@ -34,9 +34,9 @@ export default function SendParameter() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormTable visible={true}>
         <tr>
-          <td ><ParameterInput register={register} name={'path'} placeholder={'Parameter'} setValue={setValue} errors={errors} /></td>
-          <td style={{width: '35%'}}><Input register={register} name={'value'} placeholder={'Value'} errors={errors} /></td>
-          <td style={{width: '46px'}}><IconButton type={'submit'} role={'normal'} tooltip={'Send parameter'} icon={'ri-contract-right-line'} disabled={!isDirty} /></td>
+          <td><ParameterInput register={register} name={'path'} placeholder={'Parameter'} setValue={setValue} errors={errors} /></td>
+          <td style={{ width: '35%' }}><Input register={register} name={'value'} placeholder={'Value'} errors={errors} /></td>
+          <td style={{ width: '46px' }}><IconButton type={'submit'} role={'normal'} tooltip={'Send parameter'} icon={'ri-contract-right-line'} disabled={!isDirty} /></td>
         </tr>
       </FormTable>
     </form>

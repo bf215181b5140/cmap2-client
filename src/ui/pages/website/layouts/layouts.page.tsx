@@ -74,5 +74,5 @@ export default function LayoutsPage() {
       <Route path={'edit/avatarButton/:avatarButtonId'} element={<EditAvatarButtonPage />} />
     </Routes>
 
-    </LayoutsPageContext.Provider>);
+  </LayoutsPageContext.Provider>);
 }

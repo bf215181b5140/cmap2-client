@@ -78,7 +78,7 @@ export default function EditPageMenu() {
 
     {/* Preset Button */}
     {presetButtonId && <>
-    <i className={'ri-arrow-right-s-line'} />
+      <i className={'ri-arrow-right-s-line'} />
       <div aria-current={currentItem === 'presetButton'}>
         <span className={'PageMenuItemDescription'}>Preset</span>
         {presetButton?.id ? getForcedItemLabel(presetButton, 'preset') : 'New'}
@@ -94,7 +94,7 @@ export default function EditPageMenu() {
 
     {/* Avatar Button */}
     {avatarButtonId && <>
-    <i className={'ri-arrow-right-s-line'} />
+      <i className={'ri-arrow-right-s-line'} />
       <div aria-current={currentItem === 'avatarButton'}>
         <span className={'PageMenuItemDescription'}>Avatar</span>
         {avatarButton?.id ? getForcedItemLabel(avatarButton, 'avatar') : 'New'}

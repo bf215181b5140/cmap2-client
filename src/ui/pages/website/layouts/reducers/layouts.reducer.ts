@@ -1,4 +1,4 @@
-import { ParameterButtonDTO, GroupDTO, LayoutDTO, ParameterBadgeDTO, PresetButtonDTO, UploadedFileDTO } from 'cmap-shared';
+import { GroupDTO, LayoutDTO, ParameterBadgeDTO, ParameterButtonDTO, PresetButtonDTO, UploadedFileDTO } from 'cmap-shared';
 
 export type LayoutsReducerAction = { type: 'setLayouts', layouts: LayoutDTO[] } |
   { type: 'addLayout', layout: LayoutDTO } |

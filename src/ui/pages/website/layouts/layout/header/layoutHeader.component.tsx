@@ -51,7 +51,7 @@ export default function LayoutHeader({ layout }: LayoutProps) {
           break;
       }
 
-    })
+    });
     return map;
   }
 

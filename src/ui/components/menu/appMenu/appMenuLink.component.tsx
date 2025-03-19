@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
-import { theme } from '../../../style/theme';
 import { NotificationType } from 'cmap-shared';
 
 interface AppMenuLinkProps {

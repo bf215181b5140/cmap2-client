@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { ModalContext } from '../../../../../../components/context/modal.context';
-import { ParameterButtonCopyDTO, ParameterButtonCopySchema, ParameterButtonDTO, ParameterButtonSchema, LayoutDTO, getForcedItemLabel } from 'cmap-shared';
+import { getForcedItemLabel, LayoutDTO, ParameterButtonCopyDTO, ParameterButtonCopySchema, ParameterButtonDTO, ParameterButtonSchema } from 'cmap-shared';
 import Icon from '../../../../../../components/icon/icon.component';
 import TextButton from '../../../../../../components/buttons/textButton.component';
 import { useForm } from 'react-hook-form';
@@ -67,7 +67,8 @@ export default function ParameterButtonCopyModal({ layouts, parameterButton, onS
           <tr>
             <th>Group</th>
             <td>
-              <SelectInput options={layout?.groups?.map(g => ({ key: g.id, value: getForcedItemLabel(g, 'group') })) || []} width={'100%'} readOnly={!layout || layout.groups?.length === 0} register={register}
+              <SelectInput options={layout?.groups?.map(g => ({ key: g.id, value: getForcedItemLabel(g, 'group') })) || []} width={'100%'} readOnly={!layout || layout.groups?.length === 0}
+                           register={register}
                            name={'groupId'} errors={errors} />
             </td>
           </tr>

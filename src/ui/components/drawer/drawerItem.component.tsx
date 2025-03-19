@@ -9,17 +9,17 @@ const DrawerItem = styled.div<{ notificationType?: NotificationType }>`
   width: 100%;
   
   ${props => {
-    switch (props.notificationType) {
-      case 'Warning':
-        return css`border-color: ${props => props.theme.colors.warning};`;
-      case 'Error':
-        return css`border-color: ${props => props.theme.colors.error};`;
-      case 'Success':
-        return css`border-color: ${props => props.theme.colors.success};`;
-      case 'Info':
-        return css`border-color: ${props => props.theme.colors.info};`;
-    }
-  }}
+  switch (props.notificationType) {
+    case 'Warning':
+      return css`border-color: ${props => props.theme.colors.warning};`;
+    case 'Error':
+      return css`border-color: ${props => props.theme.colors.error};`;
+    case 'Success':
+      return css`border-color: ${props => props.theme.colors.success};`;
+    case 'Info':
+      return css`border-color: ${props => props.theme.colors.info};`;
+  }
+}}
 `;
 
 export default DrawerItem;

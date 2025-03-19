@@ -12,7 +12,7 @@ export class OscController {
   private lastActivity: number | undefined;
 
   constructor() {
-    SETTINGS.onChange('osc', this.start)
+    SETTINGS.onChange('osc', this.start);
 
     IPC.handle('osc:activity', async () => this.lastActivity);
 

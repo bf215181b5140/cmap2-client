@@ -8,7 +8,6 @@ import { useNotifications } from '../../../../../../hooks/useNotifications.hook'
 import Icon from '../../../../../../components/icon/icon.component';
 import HiddenInput from '../../../../../../components/input/hidden.component';
 import FormTable from '../../../../../../components/form/formTable.component';
-import { SelectInputStyled } from '../../../../../../components/input/input.style';
 import TextButton from '../../../../../../components/buttons/textButton.component';
 import SelectInput from '../../../../../../components/input/select.component';
 

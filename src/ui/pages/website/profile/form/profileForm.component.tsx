@@ -5,7 +5,6 @@ import React from 'react';
 import useCmapFetch from '../../../../hooks/cmapFetch.hook';
 import FormTable from '../../../../components/form/formTable.component';
 import Input from '../../../../components/input/input.component';
-import FormControlBar from '../../../../components/form/formControlBar.component';
 import IconButton from '../../../../components/buttons/iconButton.component';
 import NotificationIcon from '../../../../components/notifications/icon/notificationIcon.component';
 import TextareaInput from '../../../../components/input/textarea.component';
@@ -90,10 +89,10 @@ export default function ProfileForm({ profile, saveProfileForm }: ProfileFormPro
             </fieldset>
           </td>
         </tr>
-      <FormControlRow colSpan={2}>
-        <IconButton role={'save'} disabled={!isDirty} />
-        <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
-      </FormControlRow>
+        <FormControlRow colSpan={2}>
+          <IconButton role={'save'} disabled={!isDirty} />
+          <IconButton role={'reset'} disabled={!isDirty} onClick={() => reset()} />
+        </FormControlRow>
       </FormTable>
     </form>
   </Segment>);

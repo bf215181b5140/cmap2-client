@@ -11,7 +11,6 @@ import TextButton from '../../../../components/buttons/textButton.component';
 import HiddenInput from '../../../../components/input/hidden.component';
 import { useNotifications } from '../../../../hooks/useNotifications.hook';
 import FormControlBar from '../../../../components/form/formControlBar.component';
-import Segment from '../../../../components/segment/segment.component';
 
 interface RegisterFormProps {
   registrationInfo: RegisterInfoDTO | undefined;
@@ -65,8 +64,8 @@ export default function RegisterForm({ registrationInfo, fingerprint, toLogin }:
         <td><Input register={register} name={'inviteKey'} errors={errors} /></td>
         <td>
           <FormControlBar margin={'0'}>
-          <TextButton type={'submit'} text={'Register'} />
-        </FormControlBar>
+            <TextButton type={'submit'} text={'Register'} />
+          </FormControlBar>
         </td>
       </tr>
     </FormTable>

@@ -6,28 +6,28 @@ export default function useDragItems<T extends { id: string; order: number; }>()
   // const [draggedOverItem, setDraggedOverItem] = useState<Item | null>(null);
 
   // Handler for drag start
-  function handleDragStart (event: DragEvent<HTMLDivElement>, item: T) {
+  function handleDragStart(event: DragEvent<HTMLDivElement>, item: T) {
     event.stopPropagation();
     setDraggedItem(item);
-    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.effectAllowed = 'move';
   }
 
   // Handler for drag end
-  function handleDragEnd (event: DragEvent<HTMLDivElement>, item: T) {
+  function handleDragEnd(event: DragEvent<HTMLDivElement>, item: T) {
     event.stopPropagation();
     // setDraggedOverItem(null);
     event.preventDefault();
   }
 
   // Handler for drag over (prevents default behavior)
-  function handleDragOver (event: DragEvent<HTMLDivElement>, item: T) {
+  function handleDragOver(event: DragEvent<HTMLDivElement>, item: T) {
     event.stopPropagation();
     // setDraggedOverItem(item)
     event.preventDefault();
   }
 
   // Handler for drop event
-  function handleDrop (event: DragEvent<HTMLDivElement>, item: T, handleChange: (item: T, replacingItem: T) => void) {
+  function handleDrop(event: DragEvent<HTMLDivElement>, item: T, handleChange: (item: T, replacingItem: T) => void) {
     event.stopPropagation();
     event.preventDefault();
 
@@ -40,8 +40,6 @@ export default function useDragItems<T extends { id: string; order: number; }>()
 
     handleChange(draggedItem, item);
     setDraggedItem(null);
-
-
 
     // Get new order of buttons
     // const newButtons = buttons
@@ -67,7 +65,7 @@ export default function useDragItems<T extends { id: string; order: number; }>()
       onDragEnd: (event: DragEvent<HTMLDivElement>) => handleDragEnd(event, item),
       onDragOver: (event: DragEvent<HTMLDivElement>) => handleDragOver(event, item),
       onDrop: (event: DragEvent<HTMLDivElement>) => handleDrop(event, item, handleChange)
-    }
+    };
   }
 
   return dragProps;

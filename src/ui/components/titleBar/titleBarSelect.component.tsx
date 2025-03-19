@@ -13,7 +13,7 @@ export default function TitleBarSelect() {
 
     return () => {
       removeListener();
-    }
+    };
   }, []);
 
   function setWindowSize(size: WindowSize) {

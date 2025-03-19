@@ -106,16 +106,16 @@ export default function ParameterButtonImageForm({ parameterButtonEvents, layout
 
     Upload PNG or JPEG files, up to 3MB.
 
-      <FormControlBar >
-        <IconButton role={'normal'} tooltip={'Browse for file'} icon={'ri-image-add-line'} onClick={onBrowse} />
-        <hr />
-        <IconButton  role={'remove'} tooltip={'Remove image'} onClick={onClear} disabled={!file && !parameterButton?.image} />
-      </FormControlBar>
+    <FormControlBar>
+      <IconButton role={'normal'} tooltip={'Browse for file'} icon={'ri-image-add-line'} onClick={onBrowse} />
+      <hr />
+      <IconButton role={'remove'} tooltip={'Remove image'} onClick={onClear} disabled={!file && !parameterButton?.image} />
+    </FormControlBar>
 
-      <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>
-        <input type="file" {...fileRegister} ref={inputRef} />
-        <input type="submit" ref={submitRef} />
-      </form>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>
+      <input type="file" {...fileRegister} ref={inputRef} />
+      <input type="submit" ref={submitRef} />
+    </form>
 
   </Segment>);
 }

@@ -6,7 +6,7 @@ const FormControlBar = styled.div<{ justifyContent?: string, margin?: string }>`
   flex-wrap: wrap;
   justify-content: ${props => props.justifyContent ?? 'flex-end'};
   align-items: center;
-  margin: ${props => props.margin ?? '12px 0 0 0' };
+  margin: ${props => props.margin ?? '12px 0 0 0'};
   gap: 6px;
 
   hr {

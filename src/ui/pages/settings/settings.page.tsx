@@ -22,7 +22,7 @@ export default function SettingsPage() {
 
     return () => {
       windowSizeListener();
-    }
+    };
   }, []);
 
   function onSubmit(formData: AppSettings) {

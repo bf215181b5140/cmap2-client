@@ -10,7 +10,7 @@ export default function NotificationDrawer() {
   return (<Drawer icon={'ri-discuss-line'} title={'Recent notifications'} emptyMessage={'No new notifications'}>
     {toastHistory.slice(0, 30).map(notification => (
       <DrawerItem notificationType={notification.type} key={notification.id}>
-        <p style={{margin: 0, padding: 0}}>{notification.message}</p>
+        <p style={{ margin: 0, padding: 0 }}>{notification.message}</p>
       </DrawerItem>
     ))}
   </Drawer>);

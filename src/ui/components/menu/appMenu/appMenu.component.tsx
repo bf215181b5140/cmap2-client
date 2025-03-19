@@ -11,7 +11,7 @@ export default function AppMenu() {
   const { fetchStatusRequests } = useContext(FetchStatusContext);
   const canInteract = !fetchStatusRequests || fetchStatusRequests.length === 0;
 
-  return (<AppMenuStyled style={{pointerEvents: canInteract ? 'initial' : 'none'}}>
+  return (<AppMenuStyled style={{ pointerEvents: canInteract ? 'initial' : 'none' }}>
     <AppMenuLink to={'/'} icon={'ri-rocket-2-fill'} text={'Launch pad'} />
     <AppMenuLink to={'/osc'} icon={'ri-gamepad-line'} text={'OSC'} />
     <AppMenuLink to={'/avatars'} icon={'ri-contacts-book-fill'} text={'Avatars'} />

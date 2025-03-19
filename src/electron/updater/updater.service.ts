@@ -128,7 +128,7 @@ export default class UpdaterService {
       file.on('finish', () => {
         file.close(() => {
           this.downloadInProgress = false;
-          const process = spawn(savePath, [], { detached: true, stdio: "ignore" });
+          const process = spawn(savePath, [], { detached: true, stdio: 'ignore' });
           process.unref();
           app.quit();
         });

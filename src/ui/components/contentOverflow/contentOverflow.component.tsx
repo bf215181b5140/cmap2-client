@@ -13,7 +13,7 @@ export default function ContentOverflow({ children }: ReactProps) {
 
   return (<ContentOverflowStyled ref={contentOverflowRef}>
     {children}
-  </ContentOverflowStyled>)
+  </ContentOverflowStyled>);
 }
 
 const ContentOverflowStyled = styled.div`

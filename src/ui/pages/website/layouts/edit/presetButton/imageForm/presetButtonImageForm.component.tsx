@@ -2,7 +2,6 @@ import TypedEmitter from 'typed-emitter/rxjs';
 import { RefObject, useContext, useEffect, useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { LayoutDTO, PresetButtonDTO, UploadedFileSchema } from 'cmap-shared';
-import styled from 'styled-components';
 import { EditPresetButtonEvents } from '../editPresetButton.model';
 import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import useFileValidation from '../../../../../../hooks/fileValidation.hook';
@@ -107,10 +106,10 @@ export default function PresetButtonImageForm({ presetButtonEvents, layout, pres
 
     Upload PNG or JPEG files, up to 3MB.
 
-    <FormControlBar >
+    <FormControlBar>
       <IconButton role={'normal'} tooltip={'Browse for file'} icon={'ri-image-add-line'} onClick={onBrowse} />
       <hr />
-      <IconButton  role={'remove'} tooltip={'Remove image'} onClick={onClear} disabled={!file && !presetButton?.image} />
+      <IconButton role={'remove'} tooltip={'Remove image'} onClick={onClear} disabled={!file && !presetButton?.image} />
     </FormControlBar>
 
     <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'none' }}>

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Segment from '../../../../components/segment/segment.component';
 import { useForm } from 'react-hook-form';
 import { OscSettings, OscSettingsSchema } from '../../../../../shared/objects/settings';
@@ -9,7 +8,6 @@ import FormControlBar from '../../../../components/form/formControlBar.component
 import IconButton from '../../../../components/buttons/iconButton.component';
 import useOscActivity from '../../../../hooks/oscActivity.hook';
 import Input from '../../../../components/input/input.component';
-import { settingsStoreDefaults } from '../../../../../electron/store/settings/settings.model';
 
 export default function OscStatus() {
 

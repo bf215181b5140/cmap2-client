@@ -37,4 +37,4 @@ const AddNewButton = styled.div.attrs({ className: 'newItem' })`
     }
   }
 `;
- export default AddNewButton;
+export default AddNewButton;

@@ -45,16 +45,16 @@ export default function Drawer({ icon, title, emptyMessage, notificationType, ch
     };
   }, []);
 
-  return(<DrawerStyled color={color}>
-    <i className={icon} onClick={() => setShowDrawer(!showDrawer)} aria-current={showDrawer} />
-    {showDrawer && <DrawerPopupStyled ref={ref}>
-      {title && <h2>{title}</h2>}
-      {children}
-      {(!children && emptyMessage) && <div className={'emptyMessage'}>{emptyMessage}</div> }
-    </DrawerPopupStyled>}
-  </DrawerStyled>
+  return (<DrawerStyled color={color}>
+      <i className={icon} onClick={() => setShowDrawer(!showDrawer)} aria-current={showDrawer} />
+      {showDrawer && <DrawerPopupStyled ref={ref}>
+        {title && <h2>{title}</h2>}
+        {children}
+        {(!children && emptyMessage) && <div className={'emptyMessage'}>{emptyMessage}</div>}
+      </DrawerPopupStyled>}
+    </DrawerStyled>
 
-  )
+  );
 }
 
 const DrawerStyled = styled.div<{ color: string }>`

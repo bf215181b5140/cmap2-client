@@ -28,8 +28,8 @@ export default function ProfileOverview({ profile, setImage }: ProfileOverviewPr
     <br />
     <h3>Account actions</h3>
     <DeleteButton text={'Delete account'} onClick={onShowDeleteModal} />
-</Segment>)
-  ;
+  </Segment>)
+    ;
 }
 
 const DeleteButton = styled(TextButton)`

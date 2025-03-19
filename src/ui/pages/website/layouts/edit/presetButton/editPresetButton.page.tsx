@@ -14,7 +14,7 @@ export default function EditPresetButtonPage() {
 
   const { layout, presetButton } = useEditPageItems();
   const [presetButtonEvents] = useState(new EventEmitter() as TypedEmitter<EditPresetButtonEvents>);
-  
+
   if (!layout) return;
 
   return (<Page flexDirection={'row'}>

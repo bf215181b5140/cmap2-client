@@ -34,7 +34,7 @@ class TypedIpcService {
     set: <K extends keyof SettingsStoreData>(func: (key: K, data: SettingsStoreData[K]) => void) => {
       ipcMain.on('store-set', (event: IpcMainEvent, key: K, data: SettingsStoreData[K]) => func(key, data));
     },
-  }
+  };
 }
 
 export const IPC = new TypedIpcService();

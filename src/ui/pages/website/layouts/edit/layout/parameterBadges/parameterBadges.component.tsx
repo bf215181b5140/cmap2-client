@@ -15,7 +15,6 @@ import Input from '../../../../../../components/input/input.component';
 import NumberInput from '../../../../../../components/input/number.component';
 import FormRemoveRow from '../../../../../../components/form/removeRow/formRemoveRow.component';
 import FormAddRow from '../../../../../../components/form/addRow/formAddRow.component';
-import FormControlBar from '../../../../../../components/form/formControlBar.component';
 import IconButton from '../../../../../../components/buttons/iconButton.component';
 import styled from 'styled-components';
 import ExternalLink from '../../../../../../components/externalLink/externalLink.component';
@@ -26,7 +25,7 @@ interface ParameterBadgesProps {
   layout: LayoutDTO | undefined;
 }
 
-export default function ParameterBadges({layout}: ParameterBadgesProps) {
+export default function ParameterBadges({ layout }: ParameterBadgesProps) {
 
   const { POST } = useCmapFetch();
   const { tier, layoutsDispatch } = useContext(LayoutsPageContext);

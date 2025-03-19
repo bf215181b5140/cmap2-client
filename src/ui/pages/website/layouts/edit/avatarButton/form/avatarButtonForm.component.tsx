@@ -4,7 +4,7 @@ import useCmapFetch from '../../../../../../hooks/cmapFetch.hook';
 import { useNotifications } from '../../../../../../hooks/useNotifications.hook';
 import React, { useContext, useEffect } from 'react';
 import { LayoutsPageContext } from '../../../layouts.context';
-import { AvatarButtonDTO, AvatarButtonFormDTO, AvatarButtonFormSchema, AvatarButtonSchema, getForcedItemLabel, ImageOrientationSchema, LayoutDTO } from 'cmap-shared';
+import { AvatarButtonDTO, AvatarButtonFormDTO, AvatarButtonFormSchema, AvatarButtonSchema, getForcedItemLabel, ImageOrientationSchema } from 'cmap-shared';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Segment from '../../../../../../components/segment/segment.component';
