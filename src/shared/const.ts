@@ -1,1 +1,3 @@
-export const WEBSITE_URL = import.meta.env.PROD ? 'https://changemyavatarparams.com' : 'http://localhost:8080';
+// vite env variables
+export const WEBSITE_URL = import.meta.env.DEV ? 'http://localhost:8080' : 'https://changemyavatarparams.com';
+export const IS_DEV = import.meta.env.DEV === true;

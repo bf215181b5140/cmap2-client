@@ -1,63 +1,59 @@
-import { OscService } from './osc.service';
-import TypedIpcMain from '../ipc/typedIpcMain';
-import { BridgeService } from '../bridge/bridge.service';
-import { VrcParameter } from 'cmap2-shared';
-import { GeneralSettings } from '../../shared/types/settings';
-import { Message } from 'node-osc';
+import { IPC } from '../ipc/typedIpc.service';
+import { BRIDGE } from '../bridge/bridge.service';
+import { VrcParameter } from 'cmap-shared';
+import { ArgumentType, Client, Message, Server } from 'node-osc';
+import { OscSettings } from '../../shared/objects/settings';
+import { SETTINGS } from '../store/settings/settings.store';
 
-export class OscController extends OscService {
-    private trackedParameters: Map<string, boolean | number | string> = new Map();
-    private isActive: boolean = false;
-    private lastActivity: number = 0;
+export class OscController {
+  private oscServer: Server | undefined;
+  private oscClient: Client | undefined;
 
-    /**
-     * Sets listeners for events and starts OSC server and client
-     */
-    constructor(settings: GeneralSettings) {
-        super(settings);
+  private lastActivity: number | undefined;
 
-        TypedIpcMain.on('setGeneralSettings', (settings) => {
-            if (!this.oscSettings) {
-                this.start(settings);
-            } else if (this.oscSettings.oscIp !== settings.oscIp ||
-                this.oscSettings.oscInPort !== settings.oscInPort ||
-                this.oscSettings.oscOutPort !== settings.oscOutPort) {
-                this.start(settings);
-            }
-        });
-        TypedIpcMain.handle('getLastOscActivity', async () => this.lastActivity);
-        TypedIpcMain.handle('getTrackedParameters', async () => this.trackedParameters);
+  constructor() {
+    SETTINGS.onChange('osc', this.start);
 
-        BridgeService.on('sendOscMessage', (message: Message) => this.send(message));
+    IPC.handle('osc:activity', async () => this.lastActivity);
 
-        // Currently nothing subscribes to this
-        // BridgeService.on('getOscActivity', () => BridgeService.emit('oscActivity', this.isActive));
+    BRIDGE.on('osc:sendMessage', message => this.send(message));
+    IPC.on('osc:sendParameter', data => this.send(new Message(data.path, data.value)));
+
+    this.start(SETTINGS.get('osc'));
+  }
+
+  private start(settings: OscSettings) {
+    if (this.oscServer) this.oscServer.close();
+    if (this.oscClient) this.oscClient.close();
+
+    this.oscClient = new Client(settings.ip, settings.inPort);
+    this.oscServer = new Server(settings.outPort, settings.ip);
+
+    this.oscServer.on('message', message => this.onOscMessage(message));
+  }
+
+  private onOscMessage(message: [string, ...ArgumentType[]]) {
+    // track last message activity
+    this.lastActivity = Date.now();
+
+    const path = message[0];
+
+    const value = this.valueFromArgumentType(message[1]);
+    const vrcParameter: VrcParameter = { path, value };
+
+    BRIDGE.emit('osc:vrcParameter', vrcParameter);
+    IPC.emit('osc:vrcParameter', vrcParameter);
+  }
+
+  private send(message: Message) {
+    if (this.oscClient) this.oscClient.send(message);
+  }
+
+  private valueFromArgumentType(arg: ArgumentType): boolean | number | string {
+    if (typeof arg === 'number' || typeof arg === 'boolean' || typeof arg === 'string') {
+      return arg;
+    } else {
+      return arg.value;
     }
-
-    /**
-     * Gets called every time a new osc message is received.<br>
-     * Used to track any osc activity.
-     * @protected
-     */
-    protected activity() {
-        this.lastActivity = Date.now();
-        if (!this.isActive) {
-            this.isActive = true;
-
-            // Currently nothing subscribes to this
-            // BridgeService.emit('oscActivity', this.isActive);
-        }
-    }
-
-    /**
-     * Gets called every time a new valid parameter is received.<br>
-     * Spam parameters have already been filtered.
-     * @param vrcParameter
-     * @protected
-     */
-    protected received(vrcParameter: VrcParameter) {
-        this.trackedParameters.set(vrcParameter.path, vrcParameter.value);
-        BridgeService.emit('vrcParameter', vrcParameter);
-        TypedIpcMain.emit('vrcParameter', vrcParameter);
-    }
+  }
 }
