@@ -70,16 +70,16 @@ export default function ParameterBadges({ layout }: ParameterBadgesProps) {
     let pathValue;
     switch (value) {
       case ParameterBadgeTypeSchema.Enum.Mute:
-        pathValue = '/avatar/parameters/Mute';
+        pathValue = '/avatar/parameters/MuteSelf';
         break;
       case ParameterBadgeTypeSchema.Enum.VrMode:
-        pathValue = '/avatar/parameters/VrMode';
+        pathValue = '/avatar/parameters/VRMode';
         break;
       case ParameterBadgeTypeSchema.Enum.TrackingType:
         pathValue = '/avatar/parameters/TrackingType';
         break;
       case ParameterBadgeTypeSchema.Enum.Afk:
-        pathValue = '/avatar/parameters/Afk';
+        pathValue = '/avatar/parameters/AFK';
         break;
       default:
         pathValue = '';
