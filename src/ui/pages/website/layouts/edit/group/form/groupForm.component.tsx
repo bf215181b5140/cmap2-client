@@ -81,6 +81,8 @@ export default function GroupForm({ layout, group }: GroupFormProps) {
     if (!group?.id) return;
     DELETE('layouts/group', { id: group.id }, undefined, () => {
       layoutsDispatch({ type: 'removeGroup', layoutId: layout.id, groupId: group.id });
+      addNotification('Success', 'Group was deleted.');
+      navigate(`/website/layouts/${layout.id}`);
     });
   }
 
