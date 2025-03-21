@@ -1,10 +1,10 @@
-import { app, Menu, Tray } from 'electron';
+import { app, Menu, Tray, NativeImage } from 'electron';
 import { BRIDGE } from '../bridge/bridge.service';
 
 export class TrayController extends Tray {
 
-  constructor() {
-    super('resources/icon.png');
+  constructor(nativeImage: NativeImage) {
+    super(nativeImage);
 
     this.setToolTip('Change my avatar params');
 
