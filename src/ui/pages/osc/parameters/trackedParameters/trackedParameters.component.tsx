@@ -64,7 +64,7 @@ export default function TrackedParameters() {
   }
 
   function addToBlacklist(path: string) {
-    console.log('adding to blacklist', path)
+    console.log('adding to blacklist', path);
     window.IPC.send('store:addParameterToBlacklist', path);
   }
 
@@ -87,7 +87,7 @@ export default function TrackedParameters() {
         <th style={{ width: '100px', textAlign: 'center' }}>Blacklist</th>
       </tr>
       </thead>
-      <tbody style={{wordBreak: 'break-all'}}>
+      <tbody style={{ wordBreak: 'break-all' }}>
       {trackedParameters.size === 0 && <tr>
         <td colSpan={5} style={{ textAlign: 'center' }}>Waiting for OSC activity...</td>
       </tr>}
@@ -98,7 +98,7 @@ export default function TrackedParameters() {
             <CopyValue onClick={() => onCopy(path)}>{path}</CopyValue>
           </td>
           {/* Value */}
-          <td style={{ maxWidth: '120px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+          <td style={{ maxWidth: '110px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
             <CopyValue onClick={() => onCopy(trackedParameter.value.toString())}>{trackedParameter.value.toString()}</CopyValue>
           </td>
           {/* Last message */}
@@ -118,9 +118,9 @@ export default function TrackedParameters() {
           {/* Blacklist */}
           <BlacklistCellStyled>
             {parameterBlacklist.has(path) ?
-              <i title={'Remove from blacklist'} className={'ri-close-circle-line'} style={{color: theme.colors.success}} onClick={() => removeFromBlacklist(path)} />
+              <i title={'Remove from blacklist'} className={'ri-close-circle-line'} style={{ color: theme.colors.error }} onClick={() => removeFromBlacklist(path)} />
               :
-              <i title={'Add to blacklist'} className={'ri-add-circle-line'} style={{color: theme.colors.error}} onClick={() => addToBlacklist(path)} />
+              <i title={'Add to blacklist'} className={'ri-add-circle-line'} onClick={() => addToBlacklist(path)} />
             }
           </BlacklistCellStyled>
         </tr>
@@ -149,21 +149,22 @@ const CopyValue = styled.span`
 
 const BlacklistCellStyled = styled.td`
   text-align: center !important;
-  
+
   i {
     padding: 2px 5px;
     cursor: pointer;
     font-size: 19px;
     transition: 0.1s linear;
-    
+
     :hover {
-      color: ${props => props.theme.colors.ui.element5};
+      color: ${props => props.theme.colors.ui.element5} !important;
     }
   }
 
   &[aria-disabled='true'] {
     pointer-events: none;
     filter: saturate(0%);
+
     > i {
       color: ${props => props.theme.colors.font.textInactive};
     }
