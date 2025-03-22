@@ -24,6 +24,12 @@ export default function ParameterSettings() {
   useEffect(() => {
     window.IPC.get('trackedParameters:getIgnoredParameters').then(data => setIgnoredParameters(data));
     window.IPC.store.get('trackedParameters').then(data => reset(data));
+
+    const settingsListener = window.IPC.receive('store:trackedParametersSettings', (data) => reset(data));
+
+    return () => {
+      if (settingsListener) settingsListener();
+    };
   }, []);
 
   function onSubmit(data: TrackedParametersSettings) {

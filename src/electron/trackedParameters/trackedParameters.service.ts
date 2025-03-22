@@ -17,8 +17,12 @@ import { app } from 'electron';
 
 export class TrackedParametersService extends Map<VrcParameter['path'], TrackedParameter> {
   private clearOnAvatarChange = SETTINGS.get('trackedParameters').clearOnAvatarChange;
+  private detectedAvatarId: string | undefined;
+  private avatarChangePath = '/avatar/change'
+
   private saveParameters = SETTINGS.get('trackedParameters').saveParameters;
   private saveParametersIntervalId: NodeJS.Timeout | undefined;
+
   private blacklist = new Set<string>(SETTINGS.get('trackedParameters').blacklist);
   private ignoredParameters = new Set(['/avatar/parameters/VelocityZ', '/avatar/parameters/VelocityY', '/avatar/parameters/VelocityX',
                                        '/avatar/parameters/AngularY', '/avatar/parameters/Upright',
@@ -27,7 +31,6 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
                                        '/avatar/parameters/VelocityMagnitude']);
 
   private resetFrequencyIntervalMs = 2000; // How often do we reset/reduce frequency values
-
   private bufferFrequencyLimit = Math.floor(this.resetFrequencyIntervalMs / 300); // anything more than once per 400ms gets buffered
   private bufferTimeMs = 1000;
 
@@ -45,7 +48,14 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
     });
 
     if (this.saveParameters) {
-      TRACKED_PARAMETERS_STORE.get('parameters').forEach(tp => this.setValue(tp));
+      // get saved parameters from store
+      const savedParameters = TRACKED_PARAMETERS_STORE.get('parameters');
+      // first check if we have avatar parameter saved (so other parameters can get associated with the avatar)
+      const savedAvatarId = savedParameters.find(tp => tp.path === this.avatarChangePath)?.value?.toString();
+      if (savedAvatarId) this.detectedAvatarId = savedAvatarId;
+      // set all parameters
+      savedParameters.forEach(tp => this.setValue(tp));
+      // start interval for saving
       this.saveParametersInterval();
     }
     app.on('quit', () => this.saveParametersToStore());
@@ -76,8 +86,11 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
 
     const trackedParameter = this.setValue(vrcParameter);
 
-    // if it's change avatar parameter then execute that logic to clear parameters
-    if (this.clearOnAvatarChange && vrcParameter.path.startsWith('/avatar/change')) this.clearParametersAfterAvatarChange();
+    // track avatar id and run clear parameters if needed
+    if (vrcParameter.path === this.avatarChangePath) {
+      this.detectedAvatarId = trackedParameter.value.toString();
+      if (this.clearOnAvatarChange) this.clearParametersAfterAvatarChange();
+    }
 
     this.bufferAndEmitTrackedParameter(vrcParameter.path, trackedParameter);
   }
@@ -153,7 +166,7 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
    *
    */
   private onUsedAvatarButton(usedAvatarButton: UsedAvatarButtonDTO) {
-    BRIDGE.emit('osc:sendMessage', new Message('/avatar/change', usedAvatarButton.vrcAvatarId));
+    BRIDGE.emit('osc:sendMessage', new Message(this.avatarChangePath, usedAvatarButton.vrcAvatarId));
   }
 
   /**
@@ -184,9 +197,15 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
       // set cutoutTime to 2 * wait time
       const cutoutTime = Date.now() - (waitTime * 2);
 
-      // filter tracked parameters that are older than cutoutTime
       this.forEach((tp, path) => {
-        if (tp.lastActivity < cutoutTime) this.delete(path);
+        if (tp.lastActivity < cutoutTime && tp.avatarId !== this.detectedAvatarId) {
+          // filter tracked parameters that are older than cutoutTime and their associated avatarId isn't currently detected avatar
+          // associated avatarId check prevents deleting parameters with currently default values (they won't be sent with avatar change) after switching worlds
+          this.delete(path);
+        } else {
+          // because parameters for new avatar come right before we have new avatar id (inside cutoutTime), we have to associate them with its correct new avatar id
+          tp.avatarId = this.detectedAvatarId;
+        }
       });
 
       // emit new tracked parameters
@@ -217,10 +236,10 @@ export class TrackedParametersService extends Map<VrcParameter['path'], TrackedP
   public setValue(vrcParameter: VrcParameter) {
     let param = this.get(vrcParameter.path);
     if (!param) {
-      param = new TrackedParameter(vrcParameter.value);
+      param = new TrackedParameter(vrcParameter.value, this.detectedAvatarId);
       super.set(vrcParameter.path, param);
     } else {
-      param.setValue(vrcParameter.value);
+      param.setValue(vrcParameter.value, this.detectedAvatarId);
     }
     return param;
   }

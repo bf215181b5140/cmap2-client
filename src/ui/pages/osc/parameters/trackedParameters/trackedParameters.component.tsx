@@ -4,11 +4,15 @@ import SegmentTable from '../../../../components/segment/segmentTable.component'
 import { TrackedParameter } from '../../../../../electron/trackedParameters/trackedParameters.model';
 import { theme } from 'cmap-shared/react';
 import AvatarName from '../../../../components/savedAvatar/savedAvatar.component';
+import styled from 'styled-components';
+import { useNotifications } from '../../../../hooks/useNotifications.hook';
 
 export default function TrackedParameters() {
 
+  const { addNotification } = useNotifications();
   const [trackedParameters, setTrackedParameters] = useState<Map<string, TrackedParameter>>(new Map());
   const [bufferFrequencyLimit, setSufferFrequencyLimit] = useState<number | undefined>();
+  const [parameterBlacklist, setParameterBlacklist] = useState<Set<string>>(new Set());
   const trackedAvatarId = trackedParameters.get('/avatar/change')?.value?.toString();
 
   useEffect(() => {
@@ -30,9 +34,12 @@ export default function TrackedParameters() {
       setTrackedParameters(state => new Map(state.set(data[0], data[1])));
     });
 
+    const settingsListener = window.IPC.receive('store:trackedParametersSettings', (data) => setParameterBlacklist(new Set(data.blacklist)));
+
     return () => {
       clearInterval(intervalId);
       if (removeListener) removeListener();
+      if (settingsListener) settingsListener();
     };
   }, []);
 
@@ -50,6 +57,21 @@ export default function TrackedParameters() {
     return 'High';
   }
 
+  function onCopy(value: string) {
+    navigator.clipboard.writeText(value).then(() => {
+      addNotification('Info', `Copied to clipboard`, { group: 'copyToClipboard' });
+    });
+  }
+
+  function addToBlacklist(path: string) {
+    console.log('adding to blacklist', path)
+    window.IPC.send('store:addParameterToBlacklist', path);
+  }
+
+  function removeFromBlacklist(path: string) {
+    window.IPC.send('store:removeParameterFromBlacklist', path);
+  }
+
   return (<Segment width={'Full'} segmentTitle={'Parameters'} infoContent={segmentInfo}>
 
     <AvatarName avatarId={trackedAvatarId} />
@@ -62,23 +84,45 @@ export default function TrackedParameters() {
         <th style={{ width: '120px', textAlign: 'center' }}>Last message</th>
         <th style={{ width: '100px', textAlign: 'center' }}>Frequency</th>
         <th style={{ width: '100px', textAlign: 'center' }}>Buffering</th>
+        <th style={{ width: '100px', textAlign: 'center' }}>Blacklist</th>
       </tr>
       </thead>
-      <tbody>
+      <tbody style={{wordBreak: 'break-all'}}>
       {trackedParameters.size === 0 && <tr>
         <td colSpan={5} style={{ textAlign: 'center' }}>Waiting for OSC activity...</td>
       </tr>}
       {[...trackedParameters.entries()].map(([path, trackedParameter]) => (
         <tr key={path}>
-          <td>{path}</td>
-          <td>{trackedParameter.value.toString()}</td>
-          <td style={{ textAlign: 'center' }}>{new Date(trackedParameter.lastActivity).toLocaleTimeString()}</td>
-          <td style={{ textAlign: 'center' }}><span style={{ color: frequencyColor(trackedParameter) }}>{frequencyText(trackedParameter)}</span></td>
+          {/* Path */}
+          <td>
+            <CopyValue onClick={() => onCopy(path)}>{path}</CopyValue>
+          </td>
+          {/* Value */}
+          <td style={{ maxWidth: '120px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+            <CopyValue onClick={() => onCopy(trackedParameter.value.toString())}>{trackedParameter.value.toString()}</CopyValue>
+          </td>
+          {/* Last message */}
+          <td style={{ textAlign: 'center' }}>
+            {new Date(trackedParameter.lastActivity).toLocaleTimeString()}
+          </td>
+          {/* Frequency */}
+          <td style={{ textAlign: 'center' }}>
+            <span style={{ color: frequencyColor(trackedParameter) }}>{frequencyText(trackedParameter)}</span>
+          </td>
+          {/* Buffering */}
           <td style={{ textAlign: 'center' }}>
             <span style={{ color: trackedParameter.buffered ? theme.colors.error : theme.colors.success }}>
               {trackedParameter.buffered ? 'Yes' : 'No'}
             </span>
           </td>
+          {/* Blacklist */}
+          <BlacklistCellStyled>
+            {parameterBlacklist.has(path) ?
+              <i title={'Remove from blacklist'} className={'ri-close-circle-line'} style={{color: theme.colors.success}} onClick={() => removeFromBlacklist(path)} />
+              :
+              <i title={'Add to blacklist'} className={'ri-add-circle-line'} style={{color: theme.colors.error}} onClick={() => addToBlacklist(path)} />
+            }
+          </BlacklistCellStyled>
         </tr>
       ))}
       </tbody>
@@ -93,3 +137,35 @@ const segmentInfo = <>
     <b>Buffering</b> means that the parameter wont be forwarded to the website right away, but will instead be sent out every ~1 second.
   </p>
 </>;
+
+const CopyValue = styled.span`
+  cursor: pointer;
+  transition: 0.05s linear;
+
+  :hover {
+    color: ${props => props.theme.colors.ui.element5};
+  }
+`;
+
+const BlacklistCellStyled = styled.td`
+  text-align: center !important;
+  
+  i {
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 19px;
+    transition: 0.1s linear;
+    
+    :hover {
+      color: ${props => props.theme.colors.ui.element5};
+    }
+  }
+
+  &[aria-disabled='true'] {
+    pointer-events: none;
+    filter: saturate(0%);
+    > i {
+      color: ${props => props.theme.colors.font.textInactive};
+    }
+  }
+`;
