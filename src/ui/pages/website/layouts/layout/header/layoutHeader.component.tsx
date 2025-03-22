@@ -18,7 +18,7 @@ export default function LayoutHeader({ layout }: LayoutProps) {
   const { layoutId } = useParams();
   const { tier, layouts } = useContext(LayoutsPageContext);
 
-  const canAddLayout = layouts.length <= tier.layouts;
+  const canAddLayout = layouts.length < tier.layouts;
 
   const health = Math.floor(Math.random() * 20);
   const exp = Math.floor(Math.random() * 100);

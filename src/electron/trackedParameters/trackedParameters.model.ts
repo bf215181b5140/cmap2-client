@@ -10,18 +10,21 @@ export interface TrackedParameterDTO {
 
 export class TrackedParameter {
   value: VrcParameter['value'];
+  avatarId: string | undefined;
   frequency: number;
   lastActivity: number;
   buffered: boolean = false;
 
-  constructor(value: VrcParameter['value']) {
+  constructor(value: VrcParameter['value'], avatarId?: string) {
     this.value = value;
+    this.avatarId = avatarId;
     this.frequency = 1;
     this.lastActivity = Date.now();
   }
 
-  public setValue(value: VrcParameter['value']) {
+  public setValue(value: VrcParameter['value'], avatarId?: string) {
     this.value = value;
+    this.avatarId = avatarId;
     if (!this.buffered) this.frequency++;
     this.lastActivity = Date.now();
   }

@@ -4,6 +4,7 @@ import { WindowState } from '../../shared/enums/windowState';
 import { UpdaterData } from '../updater/updater.model';
 import { WindowSize } from '../../shared/enums/windowSize';
 import { TrackedParameter } from '../trackedParameters/trackedParameters.model';
+import { TrackedParametersSettings } from '../../shared/objects/settings';
 
 export type IpcGetOptions = {
   'socket:connection': boolean;
@@ -27,6 +28,8 @@ export type IpcSendOptions = {
   'gameDetector:check': void;
   'updater:check': undefined;
   'updater:downloadAndInstall': string;
+  'store:addParameterToBlacklist': string;
+  'store:removeParameterFromBlacklist': string;
   // these stores should get reworked wihtout IPC calls
   saveAvatars: VrcOscAvatar[];
 };
@@ -42,4 +45,5 @@ export type IpcReceiveOptions = {
   'gameDetector:detectedGames': DetectedGamesDTO;
   'updater:update': UpdaterData;
   'updater:progress': number | false;
+  'store:trackedParametersSettings': TrackedParametersSettings;
 };

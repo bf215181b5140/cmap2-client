@@ -87,6 +87,8 @@ export default function LayoutForm({ layout }: LayoutFormProps) {
     if (!layout?.id) return;
     DELETE('layouts/layout', { id: layout.id }, undefined, () => {
       layoutsDispatch({ type: 'removeLayout', layout });
+      addNotification('Success', 'Layout was deleted.');
+      navigate(`/website/layouts`);
     });
   }
 

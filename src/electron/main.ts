@@ -1,4 +1,4 @@
-import { app } from 'electron';
+import { app, nativeImage } from 'electron';
 import { WindowController } from './window/window.controller';
 import { TrayController } from './tray/tray.controller';
 import log from 'electron-log';
@@ -10,6 +10,7 @@ import { OscController } from './osc/osc.controller';
 import { UtilityController } from './utility/utility.controller';
 import UpdaterService from './updater/updater.service';
 import { TrackedParametersService } from './trackedParameters/trackedParameters.service';
+import { IS_DEV } from '../shared/const';
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -33,9 +34,13 @@ app.whenReady().then(() => {
   new UtilityController();
   new UpdaterService();
 
-  // create window and tray
+  // create window
   new WindowController();
-  new TrayController();
+
+  // Start tray
+  const trayIconPath = IS_DEV ? 'resources/icon.png' : `${process.resourcesPath}/icon.png`;
+  const trayIcon = nativeImage.createFromPath(trayIconPath)
+  new TrayController(trayIcon);
 
   // Context menu for development
   if (!app.isPackaged) contextMenu();
