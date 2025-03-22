@@ -18,7 +18,7 @@ import { app } from 'electron';
 export class TrackedParametersService extends Map<VrcParameter['path'], TrackedParameter> {
   private clearOnAvatarChange = SETTINGS.get('trackedParameters').clearOnAvatarChange;
   private detectedAvatarId: string | undefined;
-  private avatarChangePath = '/avatar/change'
+  private avatarChangePath = '/avatar/change';
 
   private saveParameters = SETTINGS.get('trackedParameters').saveParameters;
   private saveParametersIntervalId: NodeJS.Timeout | undefined;
